@@ -46,14 +46,14 @@
 
     .nav-right-area { display: flex; align-items: center; gap: 10px; }
 
-    /* 📢 메가폰 공지 버튼 스타일 */
+    /* 🔮 유리(Crystal) 감성 공지 버튼 스타일 */
     .notice-icon-btn {
-      position: relative; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4);
+      position: relative; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
       color: var(--primary-blue); width: 44px; height: 44px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center; font-size: 20px;
-      cursor: pointer; transition: 0.3s;
+      cursor: pointer; transition: 0.3s; backdrop-filter: blur(8px);
     }
-    .notice-icon-btn:hover { background: rgba(56, 189, 248, 0.3); transform: translateY(-2px); }
+    .notice-icon-btn:hover { background: rgba(56, 189, 248, 0.25); transform: translateY(-2px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
     
     .notice-red-dot {
       position: absolute; top: -4px; right: -4px; width: 12px; height: 12px;
@@ -191,7 +191,7 @@
 
     .btn-load-more { width: 100%; padding: 18px; background: #0F172A; border: 1px dashed var(--border-color); color: var(--text-sub); font-size: 15px; font-weight: 700; border-radius: 18px; cursor: pointer; margin-top: 16px; }
     
-    /* 티어리스트 디자인 (TOP 21) */
+    /* 티어리스트 디자인 (TOP 21 전용 뱃지 색상 추가) */
     .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
     .tier-category-header { padding: 16px 24px; font-weight: 800; font-size: 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .tier-category-header.op { background: linear-gradient(90deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); color: var(--tier-op); border: 1px solid rgba(192, 132, 252, 0.3); border-left: 6px solid var(--tier-op); }
@@ -207,6 +207,7 @@
     .season-icon { width: 40px; height: 40px; object-fit: contain; }
     .td-info { flex: 1; display: flex; align-items: center; gap: 18px; padding-left: 12px; }
     .player-name { font-size: 16px; font-weight: 800; color: #fff; }
+    .td-stats { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
     .stat-pick { font-size: 15px; font-weight: 900; color: var(--primary-blue); }
 
     .coming-soon-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 100px 20px; text-align: center; }
@@ -243,7 +244,7 @@
     
     <div class="nav-right-area">
       <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
-        📢
+        💎
         <div id="notice-dot" class="notice-red-dot"></div>
       </div>
       <button class="donate-btn" onclick="alert('후원 계좌: 1002 5837 0089 김*율\n감사합니다!')">💛 후원하기</button>
@@ -316,7 +317,7 @@
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
-    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
+    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">💎 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
       <div>✨ <b style="color:#fff;">세부 특성 및 칭호 시스템 업데이트!</b></div>
       <div>💬 <b style="color:#fff;">커뮤니티 시스템 개발 중!</b></div>
@@ -445,7 +446,7 @@
         <span>🚀 라인 브레이커 (침투/스루패스 성공률)</span> <b id="sub-stat-penetration" style="color:#facc15;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span>📐 코너킥 장인 (평균 코너킥 획득)</span> <b id="sub-stat-corner" style="color:var(--primary-blue);">-</b>
+        <span>📐 코너킥 장인 (코너킥 골 비율)</span> <b id="sub-stat-corner-ratio" style="color:var(--primary-blue);">-</b>
       </div>
     </div>
   </div>
@@ -456,7 +457,7 @@
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 공지사항 로직
-  const LATEST_NOTICE_VERSION = "20260815_v7_final";
+  const LATEST_NOTICE_VERSION = "20260815_v9_perfect";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -516,29 +517,29 @@
     .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
 
-  // 🌟 TOP 21 팀컬러 데이터 복원 & 깨진 엠블럼/국기 수정 🌟
+  // 🌟 TOP 21 팀컬러 데이터 - 제공해주신 이미지 기반 완벽 1:1 매칭 🌟
   const teamColorData = [
-    { name: "레알 마드리드", rate: 15.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "바이에른 뮌헨", rate: 11.4, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "첼시", rate: 9.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "대한민국", rate: 8.5, logo: "https://flagcdn.com/w160/kr.png" },
-    { name: "유벤투스", rate: 7.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
-    { name: "잉글랜드", rate: 6.5, logo: "https://flagcdn.com/w160/gb-eng.png" },
-    { name: "맨체스터 유나이티드", rate: 5.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "AC 밀란", rate: 5.1, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
-    { name: "프랑스", rate: 4.5, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "리버풀", rate: 4.0, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "아스널", rate: 3.6, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
-    { name: "맨체스터 시티", rate: 3.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
-    { name: "FC 바르셀로나", rate: 2.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "파리 생제르맹", rate: 2.5, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
-    { name: "토트넘 홋스퍼", rate: 2.1, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
-    { name: "인터 밀란", rate: 1.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
-    { name: "네덜란드", rate: 1.5, logo: "https://flagcdn.com/w160/nl.png" },
-    { name: "포르투갈", rate: 1.2, logo: "https://flagcdn.com/w160/pt.png" },
-    { name: "아틀레티코 마드리드", rate: 1.0, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
-    { name: "도르트문트", rate: 0.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png" },
-    { name: "스페인", rate: 0.5, logo: "https://flagcdn.com/w160/es.png" }
+    { name: "레알 마드리드", rate: 7.8, count: 421, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "리버풀", rate: 6.5, count: 350, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "바이에른 뮌헨", rate: 5.8, count: 314, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "FC 바르셀로나", rate: 5.6, count: 301, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "첼시", rate: 5.3, count: 287, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "롬바르디아 FC", rate: 4.8, count: 261, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" }, // 인게임 이름: 롬바르디아 FC, 로고: 인테르
+    { name: "아스널", rate: 4.7, count: 254, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "대한민국", rate: 4.1, count: 220, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "브라질", rate: 3.8, count: 206, logo: "https://flagcdn.com/w160/br.png" },
+    { name: "맨체스터 시티", rate: 3.8, count: 204, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "스페인", rate: 3.7, count: 201, logo: "https://flagcdn.com/w160/es.png" },
+    { name: "맨체스터 유나이티드", rate: 3.7, count: 198, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" }, // 인게임 이름: 밀라노 FC, 로고: AC 밀란
+    { name: "프랑스", rate: 3.1, count: 169, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "독일", rate: 2.8, count: 150, logo: "https://flagcdn.com/w160/de.png" },
+    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "유벤투스", rate: 2.7, count: 146, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "파리 생제르맹", rate: 2.5, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "아틀레티코 마드리드", rate: 1.7, count: 93, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
+    { name: "토트넘 홋스퍼", rate: 1.6, count: 87, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
+    { name: "바이엘 04 레버쿠젠", rate: 1.5, count: 80, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
   ];
 
   function renderTeamColorTierList() {
@@ -546,7 +547,7 @@
     if(!container) return;
     container.innerHTML = "";
     let htmlString = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 21)</div>`;
-    
+
     for (let i = 0; i < teamColorData.length; i++) {
       const tc = teamColorData[i];
       let badgeClass = "t1"; let badgeLabel = "1 Tier";
@@ -560,7 +561,10 @@
           <div class="td-badge ${badgeClass}">${badgeLabel}</div>
           <div class="td-season"><img src="${tc.logo}" alt="엠블럼" class="season-icon" onerror="this.src='https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_0.png'"></div>
           <div class="td-info"><span class="player-name">${tc.name}</span></div>
-          <div class="td-stats"><div class="stat-pick">${tc.rate}%</div></div>
+          <div class="td-stats">
+            <div class="stat-pick">${tc.rate}%</div>
+            <div style="font-size:12px; color:var(--text-sub); font-weight:700; margin-top:2px;">${tc.count}명</div>
+          </div>
         </div>`;
     }
     container.innerHTML = htmlString;
@@ -704,6 +708,27 @@
       document.getElementById('global-loading').innerHTML = `<div class="error-msg">⚠️ 오류가 발생했습니다.</div>`;
     }
   }
+
+  function closeProfileModal() {
+    document.getElementById('profile-modal').style.display = 'none';
+  }
+
+  function openSubDetailModal() {
+    document.getElementById('sub-detail-modal').style.display = 'flex';
+  }
+
+  function closeSubDetailModal() {
+    document.getElementById('sub-detail-modal').style.display = 'none';
+  }
+
+  window.addEventListener('click', (e) => {
+    if(e.target === document.getElementById('profile-modal')) closeProfileModal();
+    if(e.target === document.getElementById('sub-detail-modal')) closeSubDetailModal();
+    if(e.target === document.getElementById('notice-modal')) closeNoticeModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') { closeProfileModal(); closeSubDetailModal(); closeNoticeModal(); }
+  });
 
   async function openDetailedProfile() {
     const modal = document.getElementById('profile-modal');
@@ -857,7 +882,7 @@
       document.getElementById('sub-stat-defend').innerText = `${avgTackle}회 (태클) / ${avgBlock}회 (블록)`;
       document.getElementById('sub-stat-yellow').innerText = avgYellow + "개";
       document.getElementById('sub-stat-penetration').innerText = penetrationRate + "%";
-      document.getElementById('sub-stat-corner').innerText = avgCorner + "회";
+      document.getElementById('sub-stat-corner-ratio').innerText = `${cornerRatio}% (${totalCornerGoal}골)`;
 
       const hNum = parseFloat(avgHeader);
       const fNum = parseFloat(avgFreekick);
