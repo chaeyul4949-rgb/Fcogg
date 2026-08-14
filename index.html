@@ -136,14 +136,14 @@
     .pie-subtext { font-size: 12px; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
     .winrate-desc { font-size: 14px; font-weight: 700; color: var(--primary-blue); margin-bottom: 16px; }
 
-    /* 플레이 스타일 칭호 배지 스타일 */
+    /* 플레이 스타일 칭호 배지 스타일 (닉네임 옆) */
     .style-badge { background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(192, 132, 252, 0.25)); border: 1px solid var(--primary-blue); color: var(--primary-blue); font-size: 13px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2); vertical-align: middle; }
 
     /* 심층 세부사항 더보기 버튼 스타일 */
     .btn-detail-more { width: 100%; margin-top: 14px; padding: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary-blue); font-size: 13px; font-weight: 800; border-radius: 12px; cursor: pointer; transition: 0.3s; }
     .btn-detail-more:hover { background: var(--primary-blue); color: #fff; }
 
-    /* 서브 팝업 창 */
+    /* 서브 팝업 창 (심층 세부사항용) */
     .sub-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(10px);
@@ -191,19 +191,23 @@
 
     .btn-load-more { width: 100%; padding: 18px; background: #0F172A; border: 1px dashed var(--border-color); color: var(--text-sub); font-size: 15px; font-weight: 700; border-radius: 18px; cursor: pointer; margin-top: 16px; }
     
-    /* 티어리스트 디자인 */
-    .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+    /* 티어리스트 디자인 (TOP 21) */
+    .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
     .tier-category-header { padding: 16px 24px; font-weight: 800; font-size: 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .tier-category-header.op { background: linear-gradient(90deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); color: var(--tier-op); border: 1px solid rgba(192, 132, 252, 0.3); border-left: 6px solid var(--tier-op); }
-    .player-row { display: flex; align-items: center; padding: 16px 24px; background-color: #0F172A; border: 1px solid var(--border-color); border-radius: 18px; }
-    .td-badge { width: 80px; text-align: center; font-weight: 900; font-style: italic; font-size: 16px; }
+    .player-row { display: flex; align-items: center; padding: 12px 20px; background-color: #0F172A; border: 1px solid var(--border-color); border-radius: 16px; }
+    
+    .td-badge { width: 80px; text-align: center; font-weight: 900; font-style: italic; font-size: 15px; }
     .td-badge.op { color: var(--tier-op); }
+    .td-badge.t1 { color: #FACC15; } /* 1티어 금색 */
+    .td-badge.t2 { color: #A3E635; } /* 2티어 연두색 */
+    .td-badge.t3 { color: #94A3B8; } /* 3티어 회색 */
+
     .td-season { width: 70px; display: flex; justify-content: center; align-items: center; }
-    .season-icon { width: 44px; height: 44px; object-fit: contain; }
+    .season-icon { width: 40px; height: 40px; object-fit: contain; }
     .td-info { flex: 1; display: flex; align-items: center; gap: 18px; padding-left: 12px; }
-    .player-name { font-size: 17px; font-weight: 800; color: #fff; }
-    .player-position { font-size: 11px; font-weight: 700; color: #CBD5E1; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; }
-    .stat-pick { font-size: 16px; font-weight: 900; color: var(--primary-blue); }
+    .player-name { font-size: 16px; font-weight: 800; color: #fff; }
+    .stat-pick { font-size: 15px; font-weight: 900; color: var(--primary-blue); }
 
     .coming-soon-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 100px 20px; text-align: center; }
     .coming-soon-icon { font-size: 64px; margin-bottom: 24px; }
@@ -256,7 +260,6 @@
         <button class="search-btn" onclick="searchSimpleData()">전적 검색</button>
       </div>
     </div>
-    
     <div id="simple-result-area" style="display: none;"></div>
     <div id="global-loading" style="display: none; text-align: center; padding: 60px; color: var(--text-sub);">
       <div class="spinner">⏳</div>
@@ -452,8 +455,8 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const LATEST_NOTICE_VERSION = "20260815_v4";
-
+  // 공지사항 로직
+  const LATEST_NOTICE_VERSION = "20260815_v7_final";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -470,7 +473,7 @@
     document.getElementById('notice-modal').style.display = 'none';
   }
 
-  // 🌟 핵심 탭 전환 함수 (누락되었던 부분 완벽 복구) 🌟
+  // 🌟 탭 전환 함수 🌟
   function switchTab(tabId, el) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -513,23 +516,49 @@
     .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
 
+  // 🌟 TOP 21 팀컬러 데이터 복원 & 깨진 엠블럼/국기 수정 🌟
   const teamColorData = [
-    { name: "레알 마드리드", rate: 7.0, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "리버풀", rate: 6.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "바이에른 뮌헨", rate: 6.1, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "FC 바르셀로나", rate: 5.5, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" }
+    { name: "레알 마드리드", rate: 15.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "바이에른 뮌헨", rate: 11.4, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "첼시", rate: 9.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "대한민국", rate: 8.5, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "유벤투스", rate: 7.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "잉글랜드", rate: 6.5, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "맨체스터 유나이티드", rate: 5.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "AC 밀란", rate: 5.1, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
+    { name: "프랑스", rate: 4.5, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "리버풀", rate: 4.0, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "아스널", rate: 3.6, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "맨체스터 시티", rate: 3.2, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "FC 바르셀로나", rate: 2.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "파리 생제르맹", rate: 2.5, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "토트넘 홋스퍼", rate: 2.1, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
+    { name: "인터 밀란", rate: 1.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
+    { name: "네덜란드", rate: 1.5, logo: "https://flagcdn.com/w160/nl.png" },
+    { name: "포르투갈", rate: 1.2, logo: "https://flagcdn.com/w160/pt.png" },
+    { name: "아틀레티코 마드리드", rate: 1.0, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
+    { name: "도르트문트", rate: 0.8, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png" },
+    { name: "스페인", rate: 0.5, logo: "https://flagcdn.com/w160/es.png" }
   ];
 
   function renderTeamColorTierList() {
     const container = document.getElementById("teamcolor-list-container");
     if(!container) return;
     container.innerHTML = "";
-    let htmlString = `<div class="tier-category-header op">👑 인기 팀컬러 리스트</div>`;
-    for (const tc of teamColorData) {
+    let htmlString = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 21)</div>`;
+    
+    for (let i = 0; i < teamColorData.length; i++) {
+      const tc = teamColorData[i];
+      let badgeClass = "t1"; let badgeLabel = "1 Tier";
+      if(i < 3) { badgeClass = "op"; badgeLabel = "OP"; }
+      else if(i < 8) { badgeClass = "t1"; badgeLabel = "1 Tier"; }
+      else if(i < 15) { badgeClass = "t2"; badgeLabel = "2 Tier"; }
+      else { badgeClass = "t3"; badgeLabel = "3 Tier"; }
+
       htmlString += `
         <div class="player-row">
-          <div class="td-badge op">OP</div>
-          <div class="td-season"><img src="${tc.logo}" alt="엠블럼" class="season-icon"></div>
+          <div class="td-badge ${badgeClass}">${badgeLabel}</div>
+          <div class="td-season"><img src="${tc.logo}" alt="엠블럼" class="season-icon" onerror="this.src='https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_0.png'"></div>
           <div class="td-info"><span class="player-name">${tc.name}</span></div>
           <div class="td-stats"><div class="stat-pick">${tc.rate}%</div></div>
         </div>`;
@@ -676,27 +705,6 @@
     }
   }
 
-  function closeProfileModal() {
-    document.getElementById('profile-modal').style.display = 'none';
-  }
-
-  function openSubDetailModal() {
-    document.getElementById('sub-detail-modal').style.display = 'flex';
-  }
-
-  function closeSubDetailModal() {
-    document.getElementById('sub-detail-modal').style.display = 'none';
-  }
-
-  window.addEventListener('click', (e) => {
-    if(e.target === document.getElementById('profile-modal')) closeProfileModal();
-    if(e.target === document.getElementById('sub-detail-modal')) closeSubDetailModal();
-    if(e.target === document.getElementById('notice-modal')) closeNoticeModal();
-  });
-  window.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') { closeProfileModal(); closeSubDetailModal(); closeNoticeModal(); }
-  });
-
   async function openDetailedProfile() {
     const modal = document.getElementById('profile-modal');
     modal.style.display = 'flex';
@@ -752,7 +760,7 @@
     let wins = 0, draws = 0, losses = 0, gameCount = 0;
     let totalGoals = 0, totalConceded = 0, totalShoot = 0, totalEffShoot = 0, totalPossess = 0;
     let totalFoul = 0, totalYellow = 0, totalFreekick = 0, totalOffside = 0;
-    let totalHeader = 0, totalTackle = 0, totalDribble = 0, totalBlock = 0, totalCorner = 0;
+    let totalHeader = 0, totalTackle = 0, totalDribble = 0, totalBlock = 0, totalCorner = 0, totalCornerGoal = 0, totalGoalsAll = 0;
     let totalThroughPassTry = 0, totalThroughPassSuccess = 0;
     let playerStats = {};
 
@@ -765,16 +773,20 @@
           const res = myInfo.matchDetail.matchResult;
           if (res === "승") wins++; else if (res === "패") losses++; else draws++;
 
-          totalGoals += parseInt(myInfo.shoot?.goalTotal || 0);
+          const goalTotal = parseInt(myInfo.shoot?.goalTotal || 0);
+          totalGoals += goalTotal;
+          totalGoalsAll += goalTotal;
           totalConceded += parseInt(enemyInfo?.shoot?.goalTotal || 0);
           totalShoot += parseInt(myInfo.shoot?.shootTotal || 0);
           totalEffShoot += parseInt(myInfo.shoot?.effectiveShootTotal || 0);
           totalPossess += parseInt(myInfo.matchDetail.possession || 0);
           totalFoul += parseInt(myInfo.matchDetail.foul || 0);
+          totalYellow += parseInt(myInfo.matchDetail.yellowCards || 0);
           totalFreekick += parseInt(myInfo.shoot?.goalFreekick || 0);
           totalOffside += parseInt(myInfo.matchDetail.offsideCount || 0);
           totalHeader += parseInt(myInfo.shoot?.goalHeading || 0);
           totalCorner += parseInt(myInfo.matchDetail.cornerKick || 0);
+          totalCornerGoal += parseInt(myInfo.shoot?.goalCornerKicks || 0);
 
           totalThroughPassTry += parseInt(myInfo.pass?.throughPassTry || 0);
           totalThroughPassSuccess += parseInt(myInfo.pass?.throughPassSuccess || 0);
@@ -837,6 +849,7 @@
       const avgYellow = (totalYellow / gameCount).toFixed(1);
       const avgCorner = (totalCorner / gameCount).toFixed(1);
       const penetrationRate = totalThroughPassTry > 0 ? ((totalThroughPassSuccess / totalThroughPassTry) * 100).toFixed(1) : 0;
+      const cornerRatio = totalGoalsAll > 0 ? ((totalCornerGoal / totalGoalsAll) * 100).toFixed(1) : 0;
 
       document.getElementById('sub-stat-header').innerText = avgHeader + "개";
       document.getElementById('sub-stat-freekick').innerText = avgFreekick + "개";
@@ -853,7 +866,7 @@
       const bNum = parseFloat(avgBlock);
       const yNum = parseFloat(avgYellow);
       const pRateNum = parseFloat(penetrationRate);
-      const cNum = parseFloat(avgCorner);
+      const cRatioNum = parseFloat(cornerRatio);
 
       let badgeText = "⚽ 밸런스형";
       if (hNum >= 0.4) badgeText = "👑 타이탄";
@@ -862,7 +875,7 @@
       else if (tNum >= 3.0 || bNum >= 1.0) badgeText = "🛡️ 철벽 수비수";
       else if (yNum >= 0.5) badgeText = "🔥 옐로카드 수집가";
       else if (pRateNum >= 35.0) badgeText = "🚀 라인 브레이커";
-      else if (cNum >= 2.0) badgeText = "📐 코너킥 장인";
+      else if (cRatioNum >= 15.0 && totalCornerGoal > 0) badgeText = "📐 코너킥 장인";
 
       const badgeEl = document.getElementById('player-style-badge');
       badgeEl.innerText = badgeText;
