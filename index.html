@@ -699,7 +699,9 @@
 
           totalShoot += parseInt(myInfo.shoot?.shootTotal || 0);
           totalEffShoot += parseInt(myInfo.shoot?.effectiveShootTotal || 0);
-          totalPossess += parseInt(myInfo.matchDetail.possess || 0);
+          
+          // 버그 수정: 점유율 파싱 (possession 이라는 정확한 key 사용)
+          totalPossess += parseInt(myInfo.matchDetail.possession || myInfo.matchDetail.possess || 0);
 
           totalFoul += parseInt(myInfo.matchDetail.foul || 0);
           totalYellow += parseInt(myInfo.matchDetail.yellowCards || 0);
