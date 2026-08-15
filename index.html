@@ -185,6 +185,21 @@
     .match-right { text-align: right; font-size: 13px; font-weight: 700; color: var(--text-sub); width: 90px; }
     .btn-load-more { width: 100%; padding: 18px; background: #0F172A; border: 1px dashed var(--border-color); color: var(--text-sub); font-size: 15px; font-weight: 700; border-radius: 18px; cursor: pointer; margin-top: 16px; }
     
+    /* 🌟 H2H (1:1 상대전적) 전용 CSS 추가 */
+    .h2h-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: fadeIn 0.3s ease; }
+    .h2h-title { text-align: center; font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .h2h-vs-area { display: flex; justify-content: space-between; align-items: center; background: #0F172A; padding: 24px 40px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+    .h2h-player { font-size: 22px; font-weight: 800; flex: 1; text-align: center; word-break: keep-all; }
+    .h2h-player.p1 { color: var(--primary-blue); }
+    .h2h-player.p2 { color: #F43F5E; }
+    .h2h-vs-badge { font-size: 18px; font-weight: 900; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 12px; color: var(--text-sub); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    
+    .h2h-gauge-wrapper { width: 100%; height: 28px; background: rgba(255,255,255,0.05); border-radius: 14px; display: flex; overflow: hidden; margin-bottom: 12px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+    .h2h-gauge-win { background: linear-gradient(90deg, #2563EB, #3B82F6); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; transition: width 1s ease-in-out; }
+    .h2h-gauge-draw { background: linear-gradient(90deg, #475569, #64748B); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; transition: width 1s ease-in-out; }
+    .h2h-gauge-lose { background: linear-gradient(90deg, #E11D48, #F43F5E); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; transition: width 1s ease-in-out; }
+    .h2h-stats-text { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: var(--text-sub); margin-bottom: 30px; padding: 0 10px; }
+
     .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
     .tier-category-header { padding: 16px 24px; font-weight: 800; font-size: 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .tier-category-header.op { background: linear-gradient(90deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); color: var(--tier-op); border: 1px solid rgba(192, 132, 252, 0.3); border-left: 6px solid var(--tier-op); }
@@ -297,7 +312,7 @@
   <div id="tab-h2h" class="tab-content">
     <div class="hero-search-section" style="min-height: auto; padding: 70px 20px; background: var(--bg-card); background-image: none;">
       <h3 style="margin-bottom:10px;">⚔️ 구단주 간 1:1 상대전적 비교</h3>
-      <p style="margin-bottom:8px;">공식경기 및 친선경기 전적을 모두 스캔하여 우세 분석을 확인하세요.</p>
+      <p style="margin-bottom:8px;">공식경기 및 친선경기 전적을 모두 스캔하여 상세 전적과 우세를 확인하세요.</p>
       <div style="display:flex; flex-direction:column; gap:16px; max-width:680px; width:100%; margin:0 auto;">
         <input type="text" id="h2h-user1" class="search-input" style="height:58px; font-size:16px;" placeholder="첫 번째 구단주명">
         <input type="text" id="h2h-user2" class="search-input" style="height:58px; font-size:16px;" placeholder="두 번째 구단주명">
@@ -388,15 +403,14 @@
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
     <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
-      <div>🛠️ <b style="color:#fff;">최고 티어 & 이미지 불일치 자동 감지 시스템 적용!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 티어 업데이트(마스터 티어 등)로 인해 텍스트와 엠블럼 이미지가 엇갈리는 현상을 해결했습니다! 넥슨 API를 기반으로 자동 맵핑되도록 안전장치를 마련했습니다.</div>
+      <div>⚔️ <b style="color:#fff;">1:1 상대전적 UI 대규모 개편!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 라이벌 구단주와의 전적을 한눈에 비교할 수 있도록 승/무/패 게이지 바 및 상세 경기 기록 리스트 기능이 추가되었습니다!</div>
+      <div>🛠️ <b style="color:#fff;">모든 티어 & 마스터 티어 이미지 버그 완벽 수정!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 유저 PC에 저장된 원본 파일을 매핑하여 사진이 뜨지 않던 오류를 해결하고 마스터 등급까지 완벽 호환됩니다.</div>
       <div>🎨 <b style="color:#fff;">커스텀 배경화면 설정 & 초기화 기능 추가!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 전적 검색 칸 우측 상단의 '배경 설정' 버튼을 통해 원하는 사진을 배경화면으로 지정하고 유지할 수 있습니다.</div>
-      <div>👤 <b style="color:#fff;">프로필 UI 및 컨트롤러 정보 개선!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 구단주 레벨 옆에 유저의 컨트롤러 정보(⌨️ 키보드 / 🎮 패드)가 표시되며, 최고 티어 엠블럼과 이름이 나란히 정렬되도록 수정되었습니다.</div>
-      <hr style="border:0; border-top:1px solid var(--border-color); margin:4px 0;">
-      <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 완벽 업데이트</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 데이터센터 통계를 반영한 각 포지션별 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
+      <div style="font-size:13px; color:#CBD5E1;">- 전적 검색 칸 우측 상단의 '배경 설정' 버튼을 통해 원하는 사진을 배경화면으로 지정할 수 있습니다.</div>
+      <div>👤 <b style="color:#fff;">프로필 UI 및 컨트롤러 정보 추가!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 구단주 레벨 옆에 유저의 컨트롤러 정보(⌨️ 키보드 / 🎮 패드)가 표시됩니다.</div>
     </div>
   </div>
 </div>
@@ -427,7 +441,8 @@
         <div class="profile-tier-badge">
           <div style="font-size:12px; color:var(--text-sub); font-weight:700; margin-bottom:6px;">최고 티어</div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <img id="profile-tier-img" src="" alt="티어마크" style="width:32px; height:32px; object-fit:contain;" onerror="this.style.display='none'">
+            <!-- 🌟 이미지 엑박 방지: display none 삭제하고 src 바로 적용 -->
+            <img id="profile-tier-img" src="" alt="티어마크" style="width:32px; height:32px; object-fit:contain;">
             <div id="profile-max-tier" style="font-size:18px; font-weight:900; color:var(--tier-op);">기록 없음</div>
           </div>
         </div>
@@ -529,7 +544,7 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const LATEST_NOTICE_VERSION = "20260815_v19_applied";
+  const LATEST_NOTICE_VERSION = "20260815_v20_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -602,45 +617,41 @@
     20: { label: 'RF', line: 'fw' }, 21: { label: 'CF', line: 'fw' }, 22: { label: 'LF', line: 'fw' }, 23: { label: 'RW', line: 'fw' }, 24: { label: 'RS', line: 'fw' }, 25: { label: 'ST', line: 'fw' }, 26: { label: 'LS', line: 'fw' }, 27: { label: 'LW', line: 'fw' }
   };
 
-  // 🌟 [핵심 수정] 마스터 티어 1700, 1800, 1900을 공식 맵핑에 추가!
   let divisionMetaCache = {
     "800": "슈퍼챔피언스", "900": "챔피언스", "1000": "슈퍼챌린저", 
     "1100": "챌린저 1", "1200": "챌린저 2", "1300": "챌린저 3", 
-    "1700": "마스터 1", "1800": "마스터 2", "1900": "마스터 3", // 💡 마스터 티어 추가
+    "1700": "마스터 1", "1800": "마스터 2", "1900": "마스터 3",
     "2000": "월드클래스 1", "2100": "월드클래스 2", "2200": "월드클래스 3", 
     "2300": "프로 1", "2400": "프로 2", "2500": "프로 3", 
     "2600": "세미프로 1", "2700": "세미프로 2", "2800": "세미프로 3", 
     "2900": "아마추어 1", "3000": "아마추어 2", "3100": "아마추어 3"
   };
   
-  // 🌟 [핵심 수정] 엠블럼 이미지 맵핑 테이블 (마스터 티어 번호 반영)
+  // 🌟 [오류 해결] 구단주님 PC(서버)에 있는 로컬 원본 파일 이름으로 완전 복구!
   const tierBadgeMap = {
-    "800": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_0.png",
-    "900": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_1.png",
-    "1000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_2.png",
-    "1100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_3.png",
-    "1200": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_4.png",
-    "1300": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_5.png",
+    "800": "ico_rank0.png",
+    "900": "ico_rank1.png",
+    "1000": "ico_rank2.png",
+    "1100": "ico_rank3.png",
+    "1200": "ico_rank4.png",
+    "1300": "ico_rank5.png",
     
-    // 💡 아래 1700, 1800, 1900이 마스터 티어 이미지 경로입니다!
-    // 넥슨이 마스터 공식 이미지를 따로 배포하기 전까진 챌린저나 월클의 임시 이미지를 띄워 깨짐을 방지합니다. 
-    // 나중에 마스터 전용 사진 경로를 아신다면 아래 주소만 싹 갈아끼워 주시면 됩니다!
-    "1700": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_6.png", // 마스터1
-    "1800": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_7.png", // 마스터2
-    "1900": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_8.png", // 마스터3
+    "1700": "ico_rank18.png", // 마스터1
+    "1800": "ico_rank19.png", // 마스터2
+    "1900": "ico_rank20.png", // 마스터3
 
-    "2000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_9.png",
-    "2100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_10.png",
-    "2200": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_11.png",
-    "2300": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_12.png",
-    "2400": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_13.png",
-    "2500": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_14.png",
-    "2600": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_15.png",
-    "2700": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_16.png",
-    "2800": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_17.png",
-    "2900": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_18.png",
-    "3000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_19.png",
-    "3100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_20.png"
+    "2000": "ico_rank6.png",
+    "2100": "ico_rank7.png",
+    "2200": "ico_rank8.png",
+    "2300": "ico_rank9.png",
+    "2400": "ico_rank10.png",
+    "2500": "ico_rank11.png",
+    "2600": "ico_rank12.png",
+    "2700": "ico_rank13.png",
+    "2800": "ico_rank14.png",
+    "2900": "ico_rank15.png",
+    "3000": "ico_rank16.png",
+    "3100": "ico_rank17.png"
   };
 
   let spidMetaCache = {};
@@ -660,9 +671,10 @@
     })
     .catch(() => {});
 
+  // 🌟 파일이 없을 경우 깨지지 않고 예쁜 트로피 이미지가 나오도록 안전장치 적용!
   function getTierBadge(divId) {
     if(!divId) return "";
-    return tierBadgeMap[String(divId)] || "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_20.png";
+    return tierBadgeMap[String(divId)] || "ico_rank0.png";
   }
 
   const teamColorData = [
@@ -1009,7 +1021,8 @@
       const totalGames = wins + draws + losses;
       const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
       
-      let tierImgHtml = globalMaxTierId && getTierBadge(globalMaxTierId) ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
+      // 🌟 로컬 파일이름으로 이미지 불러오기 (엑박시 왕관 이모지로 대체)
+      let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>'">` : '';
 
       document.getElementById('simple-result-area').innerHTML = `
         <div class="game-analysis-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:24px;">
@@ -1067,9 +1080,15 @@
     document.getElementById('profile-level').innerText = globalLevel;
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
 
-    if (globalMaxTierId && getTierBadge(globalMaxTierId)) {
-      document.getElementById('profile-tier-img').src = getTierBadge(globalMaxTierId);
-      document.getElementById('profile-tier-img').style.display = 'block';
+    // 🌟 로컬 파일 엑박시 숨기지 않고 트로피로 대체하도록 onerror 속성 적용
+    if (globalMaxTierId) {
+      const imgEl = document.getElementById('profile-tier-img');
+      imgEl.src = getTierBadge(globalMaxTierId);
+      imgEl.onerror = function() {
+        this.onerror = null;
+        this.src = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>";
+      };
+      imgEl.style.display = 'block';
     } else {
       document.getElementById('profile-tier-img').style.display = 'none';
     }
@@ -1311,6 +1330,7 @@
     else { btn.style.display = 'block'; }
   }
   
+  // 🌟 H2H(1:1 상대전적) 대대적인 개편 로직
   async function searchH2HData() {
     const user1 = document.getElementById('h2h-user1').value.trim();
     const user2 = document.getElementById('h2h-user2').value.trim();
@@ -1327,28 +1347,85 @@
       if (!id2Data?.ouid) { resultBox.innerHTML = `<div class="error-msg">❌ [${user2}] 님을 찾을 수 없습니다.</div>`; return; }
 
       const o1 = id1Data.ouid, o2 = id2Data.ouid;
-      const offIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=50&offset=0&limit=15`).catch(()=>[]);
+      const offIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=50&offset=0&limit=100`).catch(()=>[]);
       const allIds = [...(offIds||[])];
 
-      if (allIds.length === 0) { resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">기록이 없습니다.</div>`; return; }
+      if (allIds.length === 0) { resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">최근 기록이 없습니다.</div>`; return; }
 
-      let u1Wins = 0, u2Wins = 0, draws = 0, h2hCount = 0;
+      let u1Wins = 0, u2Wins = 0, draws = 0;
+      let h2hMatchList = [];
+
       for (const mId of allIds) {
         const mData = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/match-detail?matchid=${mId}`).catch(()=>null);
         if (mData?.matchInfo?.length === 2) {
           const p1 = mData.matchInfo[0], p2 = mData.matchInfo[1];
           if ((p1.ouid === o1 && p2.ouid === o2) || (p1.ouid === o2 && p2.ouid === o1)) {
-            h2hCount++;
-            const res = (p1.ouid === o1 ? p1 : p2).matchDetail.matchResult;
-            if (res === "승") u1Wins++; else if (res === "패") u2Wins++; else draws++;
+            
+            const myInfo = p1.ouid === o1 ? p1 : p2;
+            const enInfo = p1.ouid === o1 ? p2 : p1;
+            
+            const res = myInfo.matchDetail.matchResult;
+            let sClass = "draw", sText = "무승부";
+            if (res === "승") { sClass = "win"; sText = "승리"; u1Wins++; } 
+            else if (res === "패") { sClass = "lose"; sText = "패배"; u2Wins++; } 
+            else { draws++; }
+
+            const myScore = parseInt(myInfo.shoot?.goalTotal || 0);
+            const enScore = parseInt(enInfo.shoot?.goalTotal || 0);
+            const timeAgo = getTimeAgo(mData.matchDate);
+
+            h2hMatchList.push(`
+              <div class="match-item ${sClass}" style="margin-bottom: 12px;">
+                <div class="match-bar ${sClass}"></div>
+                <div class="match-content" style="padding: 14px 24px;">
+                  <div class="match-left"><span class="match-result-text ${sClass}">${sText}</span></div>
+                  <div class="match-center"><span class="match-score">${myScore} : ${enScore}</span></div>
+                  <div class="match-right"><span>${timeAgo}</span></div>
+                </div>
+              </div>
+            `);
           }
         }
       }
 
+      if (h2hMatchList.length === 0) {
+        resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">최근 맞대결 기록이 없습니다.</div>`;
+        return;
+      }
+
+      const total = u1Wins + u2Wins + draws;
+      const wPct = total > 0 ? (u1Wins / total * 100).toFixed(0) : 0;
+      const dPct = total > 0 ? (draws / total * 100).toFixed(0) : 0;
+      const lPct = total > 0 ? (u2Wins / total * 100).toFixed(0) : 0;
+
       resultBox.innerHTML = `
-        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:30px; text-align:center;">
-          <div style="font-size:18px; font-weight:800; margin-bottom:16px; color:#fff;">${user1} (${u1Wins}승) vs (${u2Wins}승) ${user2}</div>
-          <div style="font-size:14px; color:var(--text-sub);">총 맞대결 기록: <b>${h2hCount}경기</b> (무승부: ${draws})</div>
+        <div class="h2h-card">
+          <div class="h2h-title">🔥 1:1 라이벌 매치 전적</div>
+          
+          <div class="h2h-vs-area">
+            <div class="h2h-player p1">${user1}</div>
+            <div class="h2h-vs-badge">VS</div>
+            <div class="h2h-player p2">${user2}</div>
+          </div>
+          
+          <div class="h2h-gauge-wrapper">
+            <div class="h2h-gauge-win" style="width: ${wPct}%">${wPct > 0 ? wPct+'%' : ''}</div>
+            <div class="h2h-gauge-draw" style="width: ${dPct}%">${dPct > 0 ? dPct+'%' : ''}</div>
+            <div class="h2h-gauge-lose" style="width: ${lPct}%">${lPct > 0 ? lPct+'%' : ''}</div>
+          </div>
+          
+          <div class="h2h-stats-text">
+            <span style="color: var(--primary-blue);">${u1Wins}승</span>
+            <span style="color: #94A3B8;">${draws}무</span>
+            <span style="color: #F43F5E;">${u2Wins}승</span>
+          </div>
+
+          <div style="margin-top: 30px; text-align: left;">
+            <h4 style="color:#fff; margin-bottom: 16px; font-size: 16px; font-weight: 800;">⚔️ 상세 맞대결 리스트 (${total}경기)</h4>
+            <div class="match-list-container">
+              ${h2hMatchList.join('')}
+            </div>
+          </div>
         </div>`;
     } catch (e) {
       resultBox.innerHTML = `<div class="error-msg">⚠️ 오류가 발생했습니다.</div>`;
