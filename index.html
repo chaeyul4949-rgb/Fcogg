@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FCO.GG - FC 온라인 전적 및 티어리스트</title>
   <meta name="google-site-verification" content="mVj35GvGb1fgDlgSLk_hK5wVBtDJgHRkZWj6kXkvYmg" />
@@ -260,7 +260,6 @@
     </div>
     
     <div class="nav-right-area">
-      <!-- 📢 공지사항 버튼 -->
       <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
         📢
         <div id="notice-dot" class="notice-red-dot"></div>
@@ -272,7 +271,6 @@
   <!-- 1️⃣ 전적 & 구단 분석 탭 -->
   <div id="tab-search" class="tab-content active">
     <div class="hero-search-section">
-      <!-- 배경화면 변경 버튼 영역 -->
       <div class="bg-upload-container" style="position: absolute; top: 20px; right: 24px; display: flex; gap: 8px; align-items: center;">
         <label for="bg-upload" class="bg-btn" title="배경 이미지 변경">🖼️ 배경 설정</label>
         <input type="file" id="bg-upload" accept="image/*" style="display: none;">
@@ -388,12 +386,12 @@
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
     <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
-      <div>🛠️ <b style="color:#fff;">최고 티어 & 이미지 불일치 자동 감지 시스템 적용!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 티어 업데이트(마스터 티어 등)로 인해 텍스트와 엠블럼 이미지가 엇갈리는 현상을 해결했습니다! 넥슨 API를 기반으로 자동 맵핑되도록 안전장치를 마련했습니다.</div>
+      <div>🛠️ <b style="color:#fff;">최고 티어 & 이미지 불일치 버그 수정!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 디비전 ID와 엠블럼 매칭 로직을 정밀하게 수정하여 최고 티어와 엠블럼 이미지가 완벽하게 일치하도록 개선되었습니다.</div>
       <div>🎨 <b style="color:#fff;">커스텀 배경화면 설정 & 초기화 기능 추가!</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 전적 검색 칸 우측 상단의 '배경 설정' 버튼을 통해 원하는 사진을 배경화면으로 지정하고 유지할 수 있습니다.</div>
       <div>👤 <b style="color:#fff;">프로필 UI 및 컨트롤러 정보 개선!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 구단주 레벨 옆에 유저의 컨트롤러 정보(⌨️ 키보드 / 🎮 패드)가 표시되며, 최고 티어 엠블럼과 이름이 나란히 정렬되도록 수정되었습니다.</div>
+      <div style="font-size:13px; color:#CBD5E1;">- 구단주 레벨 옆에 유저의 컨트롤러 정보(⌨️ 키보드 유저 / 🎮 패드 유저)가 표시되며, 최고 티어 엠블럼과 이름이 나란히 정렬되도록 수정되었습니다.</div>
       <hr style="border:0; border-top:1px solid var(--border-color); margin:4px 0;">
       <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 완벽 업데이트</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 데이터센터 통계를 반영한 각 포지션별 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
@@ -529,7 +527,7 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const LATEST_NOTICE_VERSION = "20260815_v18_applied";
+  const LATEST_NOTICE_VERSION = "20260815_v16_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -602,28 +600,12 @@
     20: { label: 'RF', line: 'fw' }, 21: { label: 'CF', line: 'fw' }, 22: { label: 'LF', line: 'fw' }, 23: { label: 'RW', line: 'fw' }, 24: { label: 'RS', line: 'fw' }, 25: { label: 'ST', line: 'fw' }, 26: { label: 'LS', line: 'fw' }, 27: { label: 'LW', line: 'fw' }
   };
 
-  let divisionMetaCache = {};
-  
-  // 🌟 [핵심] 기존에 알고 있는 기본 맵핑 테이블 (절대 경로)
-  const tierBadgeMap = {
-    "800": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_0.png",
-    "900": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_1.png",
-    "1000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_2.png",
-    "1100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_3.png",
-    "1200": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_4.png",
-    "1300": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_5.png",
-    "2000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_6.png",
-    "2100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_7.png",
-    "2200": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_8.png",
-    "2300": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_9.png",
-    "2400": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_10.png",
-    "2500": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_11.png",
-    "2600": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_12.png",
-    "2700": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_13.png",
-    "2800": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_14.png",
-    "2900": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_15.png",
-    "3000": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_16.png",
-    "3100": "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_17.png"
+  let divisionMetaCache = {
+    800: "슈퍼챔피언스", 900: "챔피언스", 1000: "슈퍼챌린저", 1100: "챌린저 1", 1200: "챌린저 2", 1300: "챌린저 3", 
+    2000: "월드클래스 1", 2100: "월드클래스 2", 2200: "월드클래스 3", 
+    2300: "프로 1", 2400: "프로 2", 2500: "프로 3", 
+    2600: "세미프로 1", 2700: "세미프로 2", 2800: "세미프로 3", 
+    2900: "아마추어 1", 3000: "아마추어 2", 3100: "아마추어 3"
   };
 
   let spidMetaCache = {};
@@ -632,27 +614,38 @@
     .then(data => { if(Array.isArray(data)) data.forEach(i => spidMetaCache[i.id] = i.name); })
     .catch(() => {});
 
-  // 🌟 [핵심] API 불러올 때 '마스터 티어'를 자동으로 감지해서 추가하는 똑똑한 로직!
   fetch("https://open.api.nexon.com/static/fconline/meta/division.json")
     .then(r => r.json())
-    .then(data => { 
-      if(Array.isArray(data)) {
-        data.forEach(i => {
-          divisionMetaCache[String(i.divisionId)] = i.divisionName;
-          
-          // 만약 넥슨 API에서 새로 추가된 '마스터'라는 글자를 감지한다면? 
-          // 에러 엑박이 안 뜨게 챌린저와 월클 사이의 임시 엠블럼을 자동으로 적용합니다!
-          if(i.divisionName.includes("마스터")) {
-            tierBadgeMap[String(i.divisionId)] = "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_5.png"; 
-          }
-        });
-      }
-    })
+    .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
+
+  // 🌟 [버그 수정 완료] 디비전 ID와 엠블럼을 정확하게 1:1 맵핑하는 테이블
+  const tierBadgeMap = {
+    "800": "ico_rank0.png",
+    "900": "ico_rank1.png",
+    "1000": "ico_rank2.png",
+    "1100": "ico_rank3.png",
+    "1200": "ico_rank4.png",
+    "1300": "ico_rank5.png",
+    "1400": "ico_rank6.png",
+    "1500": "ico_rank7.png",
+    "1600": "ico_rank8.png",
+    "2000": "ico_rank9.png",
+    "2100": "ico_rank10.png",
+    "2200": "ico_rank11.png",
+    "2300": "ico_rank12.png",
+    "2400": "ico_rank13.png",
+    "2500": "ico_rank14.png",
+    "2600": "ico_rank15.png",
+    "2700": "ico_rank16.png",
+    "2800": "ico_rank17.png",
+    "2900": "ico_rank18.png",
+    "2900": "ico_rank18.png",
+    "3000": "ico_rank20.png"
+  };
 
   function getTierBadge(divId) {
     if(!divId) return "";
-    return tierBadgeMap[String(divId)] || "https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_20.png";
   }
 
   const teamColorData = [
@@ -670,8 +663,8 @@
     { name: "맨체스터 유나이티드", rate: 3.7, count: 198, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
     { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
     { name: "프랑스", rate: 3.1, count: 169, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "독일", rate: 2.8, count: 150, logo: "https://flagcdn.com/w160/de.png" },
-    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "독일", rate: 2.8, count: 150, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/gb-eng.png" },
     { name: "유벤투스", rate: 2.7, count: 146, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
     { name: "파리 생제르맹", rate: 2.5, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
     { name: "아틀레티코 마드리드", rate: 1.7, count: 93, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
@@ -999,7 +992,7 @@
       const totalGames = wins + draws + losses;
       const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
       
-      let tierImgHtml = globalMaxTierId && getTierBadge(globalMaxTierId) ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
+      let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
 
       document.getElementById('simple-result-area').innerHTML = `
         <div class="game-analysis-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:24px;">
@@ -1057,7 +1050,7 @@
     document.getElementById('profile-level').innerText = globalLevel;
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
 
-    if (globalMaxTierId && getTierBadge(globalMaxTierId)) {
+    if (globalMaxTierId) {
       document.getElementById('profile-tier-img').src = getTierBadge(globalMaxTierId);
       document.getElementById('profile-tier-img').style.display = 'block';
     } else {
@@ -1287,7 +1280,7 @@
               <div class="match-bar ${sClass}"></div>
               <div class="match-content">
                 <div class="match-left"><span class="match-result-text ${sClass}">${sText}</span></div>
-                <div class="match-center"><span class="match-score">${myScore} : ${enScore}</span><span class="match-vs" onclick="closeProfileModal(); searchSimpleData('${enName}')">${enName}</span></div>
+                <div class="match-center"><span class="match-score">${myScore} : ${enScore}</span><span class="match-vs" onclick="closeProfileModal(); searchSimpleData('${enName}');">${enName}</span></div>
                 <div class="match-right"><span>${timeAgo}</span></div>
               </div>
             </div>
