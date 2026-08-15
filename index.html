@@ -25,7 +25,22 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; padding: 30px 15px; line-height: 1.7; }
+    
+    /* 🌟 배경 이미지 적용을 위한 body 속성 */
+    body { 
+      background-color: var(--bg-main); 
+      color: var(--text-main); 
+      display: flex; 
+      justify-content: center; 
+      padding: 30px 15px; 
+      line-height: 1.7; 
+      background-size: cover; 
+      background-position: center; 
+      background-repeat: no-repeat; 
+      background-attachment: fixed; 
+      transition: background-image 0.3s ease-in-out;
+    }
+    
     .container { width: 100%; max-width: 1060px; }
 
     /* 네비게이션 바 */
@@ -46,7 +61,18 @@
 
     .nav-right-area { display: flex; align-items: center; gap: 10px; }
 
-    /* 💎 유리(Crystal) 감성 공지 버튼 스타일 */
+    /* 🌟 배경 설정 버튼 CSS */
+    .bg-btn {
+      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff; font-size: 13px; font-weight: 700; padding: 8px 14px;
+      border-radius: 10px; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px);
+      display: flex; align-items: center; justify-content: center; white-space: nowrap;
+    }
+    .bg-btn:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+    #bg-reset { background: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.4); color: #FDA4AF; }
+    #bg-reset:hover { background: rgba(244, 63, 94, 0.4); color: #fff; }
+
+    /* 📢 메가폰 감성 공지 버튼 스타일 */
     .notice-icon-btn {
       position: relative; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
       color: var(--primary-blue); width: 44px; height: 44px; border-radius: 14px;
@@ -75,6 +101,7 @@
 
     /* 검색 섹션 */
     .hero-search-section { 
+      position: relative; 
       text-align: center; padding: 90px 20px; 
       background: linear-gradient(to bottom, rgba(11, 17, 32, 0.5), rgba(11, 17, 32, 0.95)), url('image_7.png') center/cover no-repeat;
       border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 28px; box-shadow: 0 16px 40px rgba(0,0,0,0.5);
@@ -116,8 +143,7 @@
     /* 프로필 최상단 */
     .profile-top-card { display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px 30px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); flex-wrap: wrap; gap: 14px; }
     .profile-name-area h2 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .profile-name-area p { font-size: 14px; color: var(--text-sub); }
-    .profile-tier-badge { background: #0F172A; border: 1px solid var(--border-color); padding: 12px 24px; border-radius: 16px; display: flex; align-items: center; gap: 14px; }
+    .profile-tier-badge { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 12px 24px; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; min-width: 160px; }
 
     /* 대시보드 그리드 */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
@@ -248,8 +274,9 @@
     </div>
     
     <div class="nav-right-area">
+      <!-- 📢 공지사항 버튼 (메가폰 아이콘 적용) -->
       <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
-        💎
+        📢
         <div id="notice-dot" class="notice-red-dot"></div>
       </div>
       <button class="donate-btn" onclick="alert('후원 계좌: 1002 5837 0089 김*율\n감사합니다!')">💛 후원하기</button>
@@ -259,6 +286,13 @@
   <!-- 1️⃣ 전적 & 구단 분석 탭 -->
   <div id="tab-search" class="tab-content active">
     <div class="hero-search-section">
+      <!-- 배경화면 변경 버튼 영역 -->
+      <div class="bg-upload-container" style="position: absolute; top: 20px; right: 24px; display: flex; gap: 8px; align-items: center;">
+        <label for="bg-upload" class="bg-btn" title="배경 이미지 변경">🖼️ 배경 설정</label>
+        <input type="file" id="bg-upload" accept="image/*" style="display: none;">
+        <button id="bg-reset" class="bg-btn" title="배경 이미지 초기화" style="display: none;">🔄 초기화</button>
+      </div>
+      
       <h3>🎮 FC 온라인 실시간 전적 조회</h3>
       <p>구단주명을 검색하면 승률 및 내 스쿼드 분석을 확인할 수 있습니다.</p>
       <div class="search-box-wrapper">
@@ -306,10 +340,9 @@
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
-  <!-- 5️⃣ 특성 티어리스트 탭 (🌟 완벽 개편) -->
+  <!-- 5️⃣ 특성 티어리스트 탭 -->
   <div id="tab-trait" class="tab-content">
     <div class="trait-layout-container">
-      <!-- 좌측 스쿼드 그라운드 -->
       <div class="trait-left-panel">
         <h4 style="font-size:18px; font-weight:800; margin-bottom:6px; color:#fff;">포지션을 선택하세요.</h4>
         <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">데이터를 기반으로 꿀조합과 추천 특성을 안내합니다.</p>
@@ -357,7 +390,6 @@
         </div>
       </div>
 
-      <!-- 우측 특성 추천 리스트 영역 -->
       <div class="trait-right-panel">
         <h3 style="font-size:24px; font-weight:900; color:#fff; margin-bottom: 20px; text-align:center;">
           <span id="trait-pos-label" style="color:var(--primary-blue);">ST</span> 포지션 추천 특성
@@ -369,16 +401,17 @@
 </div>
 
 <!-- ============================================== -->
-<!-- 📢 공지사항 팝업 창 -->
+<!-- 📢 공지사항 팝업 창 (최신 업데이트 내용 반영) -->
 <!-- ============================================== -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
-    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">💎 공지사항</div>
+    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
-      <div>✨ <b style="color:#fff;">세부 특성 및 칭호 시스템 업데이트!</b></div>
-      <div>💬 <b style="color:#fff;">커뮤니티 시스템 개발 중!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 유저분들이 소통할 수 있는 커뮤니티 기능을 준비 중입니다.</div>
+      <div>🎨 <b style="color:#fff;">커스텀 배경화면 설정 & 초기화 기능 추가!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 전적 검색 칸 우측 상단의 '배경 설정' 버튼을 통해 원하는 사진을 배경화면으로 지정하고 유지할 수 있습니다.</div>
+      <div>👤 <b style="color:#fff;">프로필 UI 및 컨트롤러 정보 개선!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 구단주 레벨 옆에 유저의 컨트롤러 정보(⌨️ 키보드 유저 / 🎮 패드 유저)가 표시되며, 최고 티어 엠블럼과 이름이 나란히 정렬되도록 수정되었습니다.</div>
       <hr style="border:0; border-top:1px solid var(--border-color); margin:4px 0;">
       <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 완벽 업데이트</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 데이터센터 통계를 반영한 각 포지션별 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
@@ -401,16 +434,18 @@
         <div class="profile-name-area">
           <h2 id="profile-nickname">
             <span id="nickname-text">구단주명</span>
-            <span id="controller-icon" style="font-size: 24px; margin-left: 4px; vertical-align: middle;"></span>
             <span id="player-style-badge" class="style-badge" style="display:none;">분석 중</span>
           </h2>
-          <p>구단주 레벨: <b id="profile-level" style="color:var(--primary-blue); font-size:15px;">-</b></p>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+            <p>구단주 레벨: <b id="profile-level" style="color:var(--primary-blue); font-size:15px;">-</b></p>
+            <span id="controller-info" style="font-size:12px; font-weight:800; color:#fff; background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:10px; display:none; align-items:center; gap:6px;"></span>
+          </div>
         </div>
         
-        <div class="profile-tier-badge" style="background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); padding:10px 24px;">
-          <img id="profile-tier-img" src="" alt="티어마크" style="width:40px; height:40px; object-fit:contain;" onerror="this.style.display='none'">
-          <div style="text-align:left;">
-            <div style="font-size:12px; color:var(--text-sub); font-weight:700;">최고 티어</div>
+        <div class="profile-tier-badge">
+          <div style="font-size:12px; color:var(--text-sub); font-weight:700; margin-bottom:6px;">최고 티어</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img id="profile-tier-img" src="" alt="티어마크" style="width:32px; height:32px; object-fit:contain;" onerror="this.style.display='none'">
             <div id="profile-max-tier" style="font-size:18px; font-weight:900; color:var(--tier-op);">기록 없음</div>
           </div>
         </div>
@@ -512,14 +547,48 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 공지사항 로직
-  const LATEST_NOTICE_VERSION = "20260815_v14_applied";
+  // 공지사항 버전 업데이트 (빨간 점 표시용)
+  const LATEST_NOTICE_VERSION = "20260815_v15_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
     }
-    // 특성 티어리스트 첫 화면 ST 렌더링
     renderTraitData('ST');
+
+    // 커스텀 배경화면 로직
+    const uploadInput = document.getElementById('bg-upload');
+    const resetBtn = document.getElementById('bg-reset');
+    const body = document.body;
+
+    const savedBg = localStorage.getItem('customBackground');
+    if (savedBg) {
+      body.style.backgroundImage = `url('${savedBg}')`;
+      resetBtn.style.display = 'inline-flex';
+    }
+
+    uploadInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageUrl = e.target.result;
+          body.style.backgroundImage = `url('${imageUrl}')`;
+          try {
+            localStorage.setItem('customBackground', imageUrl);
+            resetBtn.style.display = 'inline-flex';
+          } catch (error) {
+            alert('이미지 용량이 너무 커서 다음 접속 시에는 유지되지 않을 수 있습니다. (권장: 5MB 이하)');
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    resetBtn.addEventListener('click', function() {
+      localStorage.removeItem('customBackground');
+      body.style.backgroundImage = 'none';
+      resetBtn.style.display = 'none';
+    });
   });
 
   function openNoticeModal() {
@@ -572,7 +641,6 @@
     .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
 
-  // 🌟 0~20번 최고 티어 엠블럼 매칭 함수 🌟
   function getTierBadge(divId) {
     if(!divId) return "";
     let s = String(divId);
@@ -599,7 +667,6 @@
     return "ico_rank20.png";
   }
 
-  // 🌟 TOP 21 팀컬러 데이터
   const teamColorData = [
     { name: "레알 마드리드", rate: 7.8, count: 421, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
     { name: "리버풀", rate: 6.5, count: 350, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
@@ -653,11 +720,6 @@
   }
   renderTeamColorTierList();
 
-  // ==========================================
-  // 🌟 [핵심] 특성 티어리스트 데이터 및 렌더링 로직 🌟
-  // ==========================================
-
-  // 제공해주신 캡처 이미지 이름 매칭
   const traitImgMap = {
     "아크로바틱 피니셔": "trait_icon_50.png",
     "크로스 포쳐": "trait_icon_51.png",
@@ -766,7 +828,6 @@
     }
   };
 
-  // 제공되지 않은 위치는 유사 포지션으로 연결
   function getTraitKey(pos) {
     if (traitsDB[pos]) return pos; 
     if(["LF"].includes(pos)) return "CF";
@@ -789,7 +850,6 @@
     const dbKey = getTraitKey(pos);
     const data = traitsDB[dbKey] || traitsDB["ST"];
 
-    // 💡 꿀조합 UI
     const combosHTML = `
       <div class="tier-board" style="padding:16px; margin-bottom:16px; background: linear-gradient(135deg, rgba(250, 204, 21, 0.08), rgba(250, 204, 21, 0.02)); border-color: rgba(250, 204, 21, 0.3);">
         <div style="font-size:16px; font-weight:900; color:#FACC15; margin-bottom:12px; display:flex; align-items:center; gap:8px;">💡 신규 특성 추천 조합 TOP 3</div>
@@ -801,7 +861,6 @@
       </div>
     `;
 
-    // 🌟 깔끔한 픽률 중심의 그리드 렌더링 함수
     const makeTraitListHTML = (arr, title, gradientClass) => {
       let html = `<div class="tier-board" style="padding:16px; margin-bottom:16px;"><div class="tier-category-header ${gradientClass}" style="margin-bottom:12px;">${title}</div>`;
       html += `<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">`;
@@ -809,11 +868,9 @@
       arr.forEach((item) => {
         let iconHtml = "";
         
-        // 이미지 매칭
         if(traitImgMap[item.n]) {
           iconHtml = `<img src="${traitImgMap[item.n]}" style="width: 50px; height: 56px; object-fit: contain;">`;
         } else {
-          // 이미지가 없으면 직관적인 이모지 삽입
           let iconTxt = "⚽";
           if(item.n.includes('방어') || item.n.includes('키퍼') || item.n.includes('펀칭') || item.n.includes('장악')) iconTxt = "🧤";
           else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박') || item.n.includes('블로커') || item.n.includes('몸싸움')) iconTxt = "🛡️";
@@ -953,6 +1010,7 @@
 
       const totalGames = wins + draws + losses;
       const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
+      
       let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
 
       document.getElementById('simple-result-area').innerHTML = `
@@ -964,7 +1022,7 @@
           <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:20px;">
             <div style="background:#0F172A; padding:16px; border-radius:14px; text-align:center;"><div style="font-size:12px; color:var(--text-sub);">최근 5경기 승률</div><div style="font-size:18px; font-weight:800; color:var(--win-color);">${winRate}%</div></div>
             <div style="background:#0F172A; padding:16px; border-radius:14px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-              <div style="font-size:12px; color:var(--text-sub);">최고 티어</div>
+              <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">최고 티어</div>
               <div style="display:flex; align-items:center; gap:8px;">${tierImgHtml}<div style="font-size:18px; font-weight:800; color:var(--tier-op);">${globalMaxTier}</div></div>
             </div>
           </div>
@@ -1119,7 +1177,14 @@
     const total = wins + draws + losses;
     const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
     
-    document.getElementById('controller-icon').innerText = kbdCount > padCount ? "⌨️" : "🎮";
+    const ctrlInfo = document.getElementById('controller-info');
+    if (kbdCount > padCount) {
+      ctrlInfo.innerHTML = "⌨️ 키보드 유저";
+    } else {
+      ctrlInfo.innerHTML = "🎮 패드 유저";
+    }
+    ctrlInfo.style.display = 'inline-flex';
+
     document.getElementById('stat-total-games').innerText = total;
     document.getElementById('stat-winrate-pct').innerText = `${winRate}%`;
     document.getElementById('stat-record-text').innerText = `${wins}승 ${draws}무 ${losses}패`;
