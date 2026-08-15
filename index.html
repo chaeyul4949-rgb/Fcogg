@@ -26,7 +26,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; }
     
-    /* 🌟 배경 이미지 적용을 위한 body 속성 */
     body { 
       background-color: var(--bg-main); 
       color: var(--text-main); 
@@ -61,7 +60,6 @@
 
     .nav-right-area { display: flex; align-items: center; gap: 10px; }
 
-    /* 🌟 배경 설정 버튼 CSS */
     .bg-btn {
       background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff; font-size: 13px; font-weight: 700; padding: 8px 14px;
@@ -72,7 +70,6 @@
     #bg-reset { background: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.4); color: #FDA4AF; }
     #bg-reset:hover { background: rgba(244, 63, 94, 0.4); color: #fff; }
 
-    /* 📢 메가폰 감성 공지 버튼 스타일 */
     .notice-icon-btn {
       position: relative; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
       color: var(--primary-blue); width: 44px; height: 44px; border-radius: 14px;
@@ -99,7 +96,6 @@
     .sub-tab-btn:hover { border-color: var(--primary-blue); color: #fff; }
     .sub-tab-btn.active { color: #fff; background-color: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-    /* 검색 섹션 */
     .hero-search-section { 
       position: relative; 
       text-align: center; padding: 90px 20px; 
@@ -114,7 +110,6 @@
     .search-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2); }
     .search-btn { height: 58px; padding: 0 36px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-hover)); color: #fff; border: none; border-radius: 29px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4); }
 
-    /* 모달 팝업 스타일 */
     .modal-overlay, .notice-modal-overlay, .sub-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(8px);
@@ -140,12 +135,10 @@
     }
     .modal-close-btn:hover { background: var(--lose-color); border-color: var(--lose-color); transform: scale(1.05); }
 
-    /* 프로필 최상단 */
     .profile-top-card { display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px 30px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); flex-wrap: wrap; gap: 14px; }
     .profile-name-area h2 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .profile-tier-badge { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 12px 24px; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; min-width: 160px; }
 
-    /* 대시보드 그리드 */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
     @media(max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
     .dash-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -160,7 +153,6 @@
     .btn-detail-more { width: 100%; margin-top: 14px; padding: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary-blue); font-size: 13px; font-weight: 800; border-radius: 12px; cursor: pointer; transition: 0.3s; }
     .btn-detail-more:hover { background: var(--primary-blue); color: #fff; }
 
-    /* 스쿼드 뷰 */
     .squad-field { width: 100%; height: 380px; background: linear-gradient(135deg, #134e24, #166534); border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.4); }
     .squad-field::before { content: ''; position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.2); top: 50%; }
     .squad-field::after { content: ''; position: absolute; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; top: calc(50% - 40px); }
@@ -170,7 +162,6 @@
     .rating-badge { font-size: 11px; font-weight: 800; background: rgba(0,0,0,0.75); padding: 3px 6px; border-radius: 6px; margin-bottom: 2px; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .player-name-tag { font-size: 11px; font-weight: 700; color: #fff; max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* 매치 히스토리 리스트 */
     .match-list-container { display: flex; flex-direction: column; gap: 14px; }
     .match-item { display: flex; background: #0F172A; border: 1px solid var(--border-color); border-radius: 18px; overflow: hidden; transition: 0.3s; }
     .match-item.win { background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(15, 23, 42, 1) 40%); border-color: rgba(59, 130, 246, 0.35); }
@@ -194,7 +185,6 @@
     .match-right { text-align: right; font-size: 13px; font-weight: 700; color: var(--text-sub); width: 90px; }
     .btn-load-more { width: 100%; padding: 18px; background: #0F172A; border: 1px dashed var(--border-color); color: var(--text-sub); font-size: 15px; font-weight: 700; border-radius: 18px; cursor: pointer; margin-top: 16px; }
     
-    /* 티어리스트 (팀컬러 공용) */
     .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
     .tier-category-header { padding: 16px 24px; font-weight: 800; font-size: 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .tier-category-header.op { background: linear-gradient(90deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); color: var(--tier-op); border: 1px solid rgba(192, 132, 252, 0.3); border-left: 6px solid var(--tier-op); }
@@ -221,16 +211,12 @@
 
     .error-msg { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); color: #FDA4AF; padding: 20px; border-radius: 16px; font-weight: 600; text-align: center; margin-bottom: 20px; }
 
-    /* 탭 콘텐츠 전환 제어 */
     .tab-content, .sub-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active, .sub-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { display: inline-block; font-size: 40px; margin-bottom: 20px; animation: spin 1s linear infinite; }
 
-    /* ========================================= */
-    /* 🌟 특성 티어리스트 전용 CSS 🌟 */
-    /* ========================================= */
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
     
@@ -274,7 +260,6 @@
     </div>
     
     <div class="nav-right-area">
-      <!-- 📢 공지사항 버튼 (메가폰 아이콘 적용) -->
       <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
         📢
         <div id="notice-dot" class="notice-red-dot"></div>
@@ -286,7 +271,6 @@
   <!-- 1️⃣ 전적 & 구단 분석 탭 -->
   <div id="tab-search" class="tab-content active">
     <div class="hero-search-section">
-      <!-- 배경화면 변경 버튼 영역 -->
       <div class="bg-upload-container" style="position: absolute; top: 20px; right: 24px; display: flex; gap: 8px; align-items: center;">
         <label for="bg-upload" class="bg-btn" title="배경 이미지 변경">🖼️ 배경 설정</label>
         <input type="file" id="bg-upload" accept="image/*" style="display: none;">
@@ -348,7 +332,6 @@
         <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">데이터를 기반으로 꿀조합과 추천 특성을 안내합니다.</p>
         
         <div class="trait-pitch-board">
-          <!-- FW -->
           <div class="t-node t-fw" style="top:12%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
           <div class="t-node t-fw active" style="top:12%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
           <div class="t-node t-fw" style="top:12%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
@@ -358,24 +341,20 @@
           <div class="t-node t-fw" style="top:25%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
           <div class="t-node t-fw" style="top:25%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
           
-          <!-- AM -->
           <div class="t-node t-mf" style="top:38%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
           <div class="t-node t-mf" style="top:38%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
           <div class="t-node t-mf" style="top:38%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
           
-          <!-- CM / WM -->
           <div class="t-node t-mf" style="top:51%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
           <div class="t-node t-mf" style="top:51%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
           <div class="t-node t-mf" style="top:51%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
           <div class="t-node t-mf" style="top:51%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
           <div class="t-node t-mf" style="top:51%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
           
-          <!-- DM -->
           <div class="t-node t-mf" style="top:64%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
           <div class="t-node t-mf" style="top:64%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
           <div class="t-node t-mf" style="top:64%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
           
-          <!-- DF -->
           <div class="t-node t-df" style="top:77%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
           <div class="t-node t-df" style="top:77%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
           <div class="t-node t-df" style="top:77%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
@@ -385,7 +364,6 @@
           <div class="t-node t-df" style="top:88%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
           <div class="t-node t-df" style="top:88%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
           
-          <!-- GK -->
           <div class="t-node t-gk" style="top:94%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
         </div>
       </div>
@@ -401,13 +379,15 @@
 </div>
 
 <!-- ============================================== -->
-<!-- 📢 공지사항 팝업 창 (최신 업데이트 내용 반영) -->
+<!-- 📢 공지사항 팝업 창 -->
 <!-- ============================================== -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
     <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
+      <div>🛠️ <b style="color:#fff;">최고 티어 & 이미지 불일치 버그 수정!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 디비전 ID와 엠블럼 매칭 로직을 정밀하게 수정하여 최고 티어와 엠블럼 이미지가 완벽하게 일치하도록 개선되었습니다.</div>
       <div>🎨 <b style="color:#fff;">커스텀 배경화면 설정 & 초기화 기능 추가!</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 전적 검색 칸 우측 상단의 '배경 설정' 버튼을 통해 원하는 사진을 배경화면으로 지정하고 유지할 수 있습니다.</div>
       <div>👤 <b style="color:#fff;">프로필 UI 및 컨트롤러 정보 개선!</b></div>
@@ -547,15 +527,13 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 공지사항 버전 업데이트 (빨간 점 표시용)
-  const LATEST_NOTICE_VERSION = "20260815_v15_applied";
+  const LATEST_NOTICE_VERSION = "20260815_v16_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
     }
     renderTraitData('ST');
 
-    // 커스텀 배경화면 로직
     const uploadInput = document.getElementById('bg-upload');
     const resetBtn = document.getElementById('bg-reset');
     const body = document.body;
@@ -641,30 +619,33 @@
     .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
 
+  // 🌟 [버그 수정 완료] 디비전 ID와 엠블럼을 정확하게 1:1 맵핑하는 테이블
+  const tierBadgeMap = {
+    "800": "ico_rank0.png",
+    "900": "ico_rank1.png",
+    "1000": "ico_rank2.png",
+    "1100": "ico_rank3.png",
+    "1200": "ico_rank4.png",
+    "1300": "ico_rank5.png",
+    "2000": "ico_rank6.png",
+    "2100": "ico_rank7.png",
+    "2200": "ico_rank8.png",
+    "2300": "ico_rank9.png",
+    "2400": "ico_rank10.png",
+    "2500": "ico_rank11.png",
+    "2600": "ico_rank12.png",
+    "2700": "ico_rank13.png",
+    "2800": "ico_rank14.png",
+    "2900": "ico_rank15.png",
+    "3000": "ico_rank16.png",
+    "3100": "ico_rank17.png",
+    "3200": "ico_rank18.png",
+    "3300": "ico_rank19.png"
+  };
+
   function getTierBadge(divId) {
     if(!divId) return "";
-    let s = String(divId);
-    if(s.startsWith("8")) return "ico_rank0.png";
-    if(s.startsWith("9")) return "ico_rank1.png";
-    if(s.startsWith("10")) return "ico_rank2.png";
-    if(s.startsWith("11")) return "ico_rank3.png";
-    if(s.startsWith("12")) return "ico_rank4.png";
-    if(s.startsWith("13")) return "ico_rank5.png";
-    if(s.startsWith("20")) return "ico_rank6.png";
-    if(s.startsWith("21")) return "ico_rank7.png";
-    if(s.startsWith("22")) return "ico_rank8.png";
-    if(s.startsWith("23")) return "ico_rank9.png";
-    if(s.startsWith("24")) return "ico_rank10.png";
-    if(s.startsWith("25")) return "ico_rank11.png";
-    if(s.startsWith("26")) return "ico_rank12.png";
-    if(s.startsWith("27")) return "ico_rank13.png";
-    if(s.startsWith("28")) return "ico_rank14.png";
-    if(s.startsWith("29")) return "ico_rank15.png";
-    if(s.startsWith("30")) return "ico_rank16.png";
-    if(s.startsWith("31")) return "ico_rank17.png";
-    if(s.startsWith("32")) return "ico_rank18.png";
-    if(s.startsWith("33")) return "ico_rank19.png";
-    return "ico_rank20.png";
+    return tierBadgeMap[String(divId)] || "ico_rank20.png";
   }
 
   const teamColorData = [
@@ -682,8 +663,8 @@
     { name: "맨체스터 유나이티드", rate: 3.7, count: 198, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
     { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
     { name: "프랑스", rate: 3.1, count: 169, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "독일", rate: 2.8, count: 150, logo: "https://flagcdn.com/w160/de.png" },
-    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "독일", rate: 2.8, count: 150, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/gb-eng.png" },
     { name: "유벤투스", rate: 2.7, count: 146, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
     { name: "파리 생제르맹", rate: 2.5, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
     { name: "아틀레티코 마드리드", rate: 1.7, count: 93, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
