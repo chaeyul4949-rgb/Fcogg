@@ -401,6 +401,7 @@
         <div class="profile-name-area">
           <h2 id="profile-nickname">
             <span id="nickname-text">구단주명</span>
+            <span id="controller-icon" style="font-size: 24px; margin-left: 4px; vertical-align: middle;"></span>
             <span id="player-style-badge" class="style-badge" style="display:none;">분석 중</span>
           </h2>
           <p>구단주 레벨: <b id="profile-level" style="color:var(--primary-blue); font-size:15px;">-</b></p>
@@ -512,7 +513,7 @@
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 공지사항 로직
-  const LATEST_NOTICE_VERSION = "20260815_v13_new_traits";
+  const LATEST_NOTICE_VERSION = "20260815_v14_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -570,6 +571,33 @@
     .then(r => r.json())
     .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
     .catch(() => {});
+
+  // 🌟 0~20번 최고 티어 엠블럼 매칭 함수 🌟
+  function getTierBadge(divId) {
+    if(!divId) return "";
+    let s = String(divId);
+    if(s.startsWith("8")) return "ico_rank0.png";
+    if(s.startsWith("9")) return "ico_rank1.png";
+    if(s.startsWith("10")) return "ico_rank2.png";
+    if(s.startsWith("11")) return "ico_rank3.png";
+    if(s.startsWith("12")) return "ico_rank4.png";
+    if(s.startsWith("13")) return "ico_rank5.png";
+    if(s.startsWith("20")) return "ico_rank6.png";
+    if(s.startsWith("21")) return "ico_rank7.png";
+    if(s.startsWith("22")) return "ico_rank8.png";
+    if(s.startsWith("23")) return "ico_rank9.png";
+    if(s.startsWith("24")) return "ico_rank10.png";
+    if(s.startsWith("25")) return "ico_rank11.png";
+    if(s.startsWith("26")) return "ico_rank12.png";
+    if(s.startsWith("27")) return "ico_rank13.png";
+    if(s.startsWith("28")) return "ico_rank14.png";
+    if(s.startsWith("29")) return "ico_rank15.png";
+    if(s.startsWith("30")) return "ico_rank16.png";
+    if(s.startsWith("31")) return "ico_rank17.png";
+    if(s.startsWith("32")) return "ico_rank18.png";
+    if(s.startsWith("33")) return "ico_rank19.png";
+    return "ico_rank20.png";
+  }
 
   // 🌟 TOP 21 팀컬러 데이터
   const teamColorData = [
@@ -925,7 +953,7 @@
 
       const totalGames = wins + draws + losses;
       const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
-      let tierImgHtml = globalMaxTierId ? `<img src="https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_${globalMaxTierId}.png" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
+      let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.style.display='none'">` : '';
 
       document.getElementById('simple-result-area').innerHTML = `
         <div class="game-analysis-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:24px;">
@@ -984,7 +1012,7 @@
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
 
     if (globalMaxTierId) {
-      document.getElementById('profile-tier-img').src = `https://ssl.nexon.com/s2/game/fo4/obt/rank/large/update_2009/ico_rank_${globalMaxTierId}.png`;
+      document.getElementById('profile-tier-img').src = getTierBadge(globalMaxTierId);
       document.getElementById('profile-tier-img').style.display = 'block';
     } else {
       document.getElementById('profile-tier-img').style.display = 'none';
@@ -1031,6 +1059,7 @@
     let totalHeader = 0, totalTackle = 0, totalDribble = 0, totalBlock = 0, totalCorner = 0, totalCornerGoal = 0, totalGoalsAll = 0;
     let totalThroughPassTry = 0, totalThroughPassSuccess = 0;
     let playerStats = {};
+    let kbdCount = 0, padCount = 0;
 
     for (const mData of matchesData) {
       if (mData?.matchInfo) {
@@ -1038,6 +1067,7 @@
         const enemyInfo = mData.matchInfo.find(i => i.ouid !== globalOuid);
         if (myInfo?.matchDetail) {
           gameCount++;
+          if (myInfo.matchDetail.controller === "keyboard") kbdCount++; else padCount++;
           const res = myInfo.matchDetail.matchResult;
           if (res === "승") wins++; else if (res === "패") losses++; else draws++;
 
@@ -1089,6 +1119,7 @@
     const total = wins + draws + losses;
     const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
     
+    document.getElementById('controller-icon').innerText = kbdCount > padCount ? "⌨️" : "🎮";
     document.getElementById('stat-total-games').innerText = total;
     document.getElementById('stat-winrate-pct').innerText = `${winRate}%`;
     document.getElementById('stat-record-text').innerText = `${wins}승 ${draws}무 ${losses}패`;
