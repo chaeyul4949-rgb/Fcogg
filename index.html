@@ -228,7 +228,7 @@
     .t-node.active.t-df { background: #3B82F6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
     .t-node.active.t-gk { background: #FACC15; color: #000; box-shadow: 0 0 15px rgba(250, 204, 21, 0.6); }
 
-    .trait-hex.silver { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #0f172a; border-radius: 10px; display:flex; align-items:center; justify-content:center; }
+    .trait-hex.silver { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #0f172a; border-radius: 12px; display:flex; align-items:center; justify-content:center; }
   </style>
 </head>
 <body>
@@ -306,7 +306,7 @@
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
-  <!-- 5️⃣ 특성 티어리스트 탭 -->
+  <!-- 5️⃣ 특성 티어리스트 탭 (🌟 완벽 개편) -->
   <div id="tab-trait" class="tab-content">
     <div class="trait-layout-container">
       <!-- 좌측 스쿼드 그라운드 -->
@@ -360,7 +360,7 @@
       <!-- 우측 특성 추천 리스트 영역 -->
       <div class="trait-right-panel">
         <h3 style="font-size:24px; font-weight:900; color:#fff; margin-bottom: 20px; text-align:center;">
-          <span id="trait-pos-label" style="color:var(--primary-blue);">ST</span> 포지션 1티어 특성
+          <span id="trait-pos-label" style="color:var(--primary-blue);">ST</span> 포지션 추천 특성
         </h3>
         <div id="trait-content-area" style="display:flex; flex-direction:column; gap:16px;"></div>
       </div>
@@ -381,7 +381,7 @@
       <div style="font-size:13px; color:#CBD5E1;">- 유저분들이 소통할 수 있는 커뮤니티 기능을 준비 중입니다.</div>
       <hr style="border:0; border-top:1px solid var(--border-color); margin:4px 0;">
       <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 완벽 업데이트</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 각 포지션별 1티어 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
+      <div style="font-size:13px; color:#CBD5E1;">- 데이터센터 통계를 반영한 각 포지션별 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
     </div>
   </div>
 </div>
@@ -392,12 +392,10 @@
 <div id="profile-modal" class="modal-overlay">
   <div class="modal-content">
     <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
-
     <div id="modal-loading" style="text-align: center; padding: 120px 20px; color: var(--text-sub);">
       <div class="spinner">⏳</div>
       <div style="font-weight:800; font-size:20px; color:#fff;">매치 기록을 스캔하여 정밀 분석 중입니다...</div>
     </div>
-
     <div id="profile-result-area" style="display: none;">
       <div class="profile-top-card">
         <div class="profile-name-area">
@@ -514,12 +512,12 @@
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 공지사항 로직
-  const LATEST_NOTICE_VERSION = "20260815_v12_final_trait";
+  const LATEST_NOTICE_VERSION = "20260815_v13_new_traits";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
     }
-    // 페이지 로드 시 특성 티어 탭 ST 기본 렌더링
+    // 특성 티어리스트 첫 화면 ST 렌더링
     renderTraitData('ST');
   });
 
@@ -531,7 +529,6 @@
 
   function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
 
-  // 🌟 탭 전환 함수 🌟
   function switchTab(tabId, el) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -548,7 +545,6 @@
     if(target) target.classList.add('active');
   }
 
-  // ==== [팀컬러, 선수 등 기존 상수 생략 없이 유지] ====
   const positionMap = {
     0: { label: 'GK', line: 'gk' },
     1: { label: 'SW', line: 'df' }, 2: { label: 'RWB', line: 'df' }, 3: { label: 'RB', line: 'df' }, 4: { label: 'RCB', line: 'df' }, 5: { label: 'CB', line: 'df' }, 6: { label: 'LCB', line: 'df' }, 7: { label: 'LB', line: 'df' }, 8: { label: 'LWB', line: 'df' },
@@ -565,9 +561,17 @@
   };
 
   let spidMetaCache = {};
-  fetch("https://open.api.nexon.com/static/fconline/meta/spid.json").then(r => r.json()).then(data => { if(Array.isArray(data)) data.forEach(i => spidMetaCache[i.id] = i.name); }).catch(() => {});
-  fetch("https://open.api.nexon.com/static/fconline/meta/division.json").then(r => r.json()).then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); }).catch(() => {});
+  fetch("https://open.api.nexon.com/static/fconline/meta/spid.json")
+    .then(r => r.json())
+    .then(data => { if(Array.isArray(data)) data.forEach(i => spidMetaCache[i.id] = i.name); })
+    .catch(() => {});
 
+  fetch("https://open.api.nexon.com/static/fconline/meta/division.json")
+    .then(r => r.json())
+    .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
+    .catch(() => {});
+
+  // 🌟 TOP 21 팀컬러 데이터
   const teamColorData = [
     { name: "레알 마드리드", rate: 7.8, count: 421, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
     { name: "리버풀", rate: 6.5, count: 350, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
@@ -625,7 +629,7 @@
   // 🌟 [핵심] 특성 티어리스트 데이터 및 렌더링 로직 🌟
   // ==========================================
 
-  // 제공해주신 캡처 이미지 매칭
+  // 제공해주신 캡처 이미지 이름 매칭
   const traitImgMap = {
     "아크로바틱 피니셔": "trait_icon_50.png",
     "크로스 포쳐": "trait_icon_51.png",
@@ -647,52 +651,103 @@
   };
 
   const traitsDB = {
-    "RW_FW": {
+    "ST": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 타이탄", "트릭스터 + 아크로바틱 피니셔"],
+      newTraits: [{n:"라인 브레이커", r:"45.7%"}, {n:"트릭스터", r:"19.8%"}, {n:"타이탄", r:"14.6%"}, {n:"크로스 포쳐", r:"9.6%"}, {n:"아크로바틱 피니셔", r:"8.7%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"22.8%"}, {n:"빠른 템포 공격", r:"17.4%"}, {n:"능숙한 몸싸움", r:"16.8%"}, {n:"근거리 슛 향상", r:"16.7%"}, {n:"감아차기 향상", r:"5.9%"}]
+    },
+    "CF": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 크로스 포쳐", "트릭스터 + 아크로바틱 피니셔"],
+      newTraits: [{n:"라인 브레이커", r:"47.3%"}, {n:"트릭스터", r:"24.3%"}, {n:"타이탄", r:"8.0%"}, {n:"크로스 포쳐", r:"7.7%"}, {n:"아크로바틱 피니셔", r:"6.9%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"21.2%"}, {n:"빠른 템포 공격", r:"17.1%"}, {n:"능숙한 몸싸움", r:"14.8%"}, {n:"근거리 슛 향상", r:"12.1%"}, {n:"감아차기 향상", r:"7.6%"}]
+    },
+    "RF": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 크로스 포쳐", "트릭스터 + 아크로바틱 피니셔"],
+      newTraits: [{n:"라인 브레이커", r:"49.4%"}, {n:"트릭스터", r:"34.1%"}, {n:"크로스 포쳐", r:"5.4%"}, {n:"아크로바틱 피니셔", r:"4.3%"}, {n:"타이탄", r:"3.8%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"23.1%"}, {n:"빠른 템포 공격", r:"17.9%"}, {n:"능숙한 몸싸움", r:"15.1%"}, {n:"근거리 슛 향상", r:"13.1%"}, {n:"감아차기 향상", r:"7.4%"}]
+    },
+    "RW": {
       combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 스피드스터", "트릭스터 + 아크로바틱 피니셔"],
-      newTraits:  [ {n:"라인 브레이커", r:"49.1%"}, {n:"트릭스터", r:"41.3%"}, {n:"스피드스터", r:"2.8%"}, {n:"크로스 포쳐", r:"1.5%"}, {n:"아크로바틱 피니셔", r:"1.4%"} ],
-      coaches: [ {n:"크로스 향상", r:"21.8%"}, {n:"능숙한 몸싸움", r:"15.5%"}, {n:"침착하게 골 찬스 만들기", r:"15.5%"}, {n:"빠른 템포 공격", r:"8.3%"}, {n:"침투 패스 후 바로 침투", r:"8.0%"} ]
+      newTraits: [{n:"라인 브레이커", r:"48.6%"}, {n:"트릭스터", r:"37.3%"}, {n:"스피드스터", r:"6.8%"}, {n:"아크로바틱 피니셔", r:"2.1%"}, {n:"크로스 포쳐", r:"1.8%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"13.2%"}, {n:"능숙한 몸싸움", r:"12.9%"}, {n:"크로스 향상", r:"12.8%"}, {n:"감아차기 향상", r:"11.5%"}, {n:"빠른 템포 공격", r:"9.7%"}]
+    },
+    "LW": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 스피드스터", "트릭스터 + 아크로바틱 피니셔"],
+      newTraits: [{n:"라인 브레이커", r:"46.9%"}, {n:"트릭스터", r:"39.0%"}, {n:"스피드스터", r:"6.8%"}, {n:"아크로바틱 피니셔", r:"2.2%"}, {n:"크로스 포쳐", r:"2.0%"}],
+      coaches: [{n:"감아차기 향상", r:"13.0%"}, {n:"능숙한 몸싸움", r:"12.9%"}, {n:"침착하게 골 찬스 만들기", r:"12.7%"}, {n:"크로스 향상", r:"12.3%"}, {n:"빠른 템포 공격", r:"11.2%"}]
+    },
+    "RS": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 타이탄", "트릭스터 + 크로스 포쳐"],
+      newTraits: [{n:"라인 브레이커", r:"41.5%"}, {n:"트릭스터", r:"25.8%"}, {n:"타이탄", r:"15.9%"}, {n:"크로스 포쳐", r:"8.6%"}, {n:"아크로바틱 피니셔", r:"6.4%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"22.2%"}, {n:"빠른 템포 공격", r:"17.7%"}, {n:"능숙한 몸싸움", r:"17.3%"}, {n:"근거리 슛 향상", r:"16.0%"}, {n:"감아차기 향상", r:"5.5%"}]
+    },
+    "LS": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 타이탄", "트릭스터 + 크로스 포쳐"],
+      newTraits: [{n:"라인 브레이커", r:"41.7%"}, {n:"트릭스터", r:"25.0%"}, {n:"타이탄", r:"17.4%"}, {n:"크로스 포쳐", r:"8.3%"}, {n:"아크로바틱 피니셔", r:"6.2%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"23.3%"}, {n:"빠른 템포 공격", r:"17.3%"}, {n:"근거리 슛 향상", r:"17.1%"}, {n:"능숙한 몸싸움", r:"16.8%"}, {n:"침투 패스 후 바로 침투", r:"5.2%"}]
+    },
+    "LAM": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 아크로바틱 피니셔", "트릭스터 + 파워 슈터"],
+      newTraits: [{n:"라인 브레이커", r:"50.9%"}, {n:"트릭스터", r:"25.4%"}, {n:"아크로바틱 피니셔", r:"6.3%"}, {n:"크로스 포쳐", r:"5.5%"}, {n:"타이탄", r:"4.6%"}],
+      coaches: [{n:"빠른 템포 공격", r:"19.6%"}, {n:"침착하게 골 찬스 만들기", r:"16.4%"}, {n:"능숙한 몸싸움", r:"14.7%"}, {n:"근거리 슛 향상", r:"10.0%"}, {n:"감아차기 향상", r:"9.9%"}]
+    },
+    "CAM": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 레이저 슈터", "트릭스터 + 크로스 포쳐"],
+      newTraits: [{n:"라인 브레이커", r:"44.9%"}, {n:"트릭스터", r:"29.0%"}, {n:"레이저 슈터", r:"6.6%"}, {n:"크로스 포쳐", r:"5.8%"}, {n:"아크로바틱 피니셔", r:"4.7%"}],
+      coaches: [{n:"침착하게 골 찬스 만들기", r:"21.6%"}, {n:"능숙한 몸싸움", r:"15.7%"}, {n:"빠른 템포 공격", r:"15.2%"}, {n:"근거리 슛 향상", r:"11.5%"}, {n:"감아차기 향상", r:"9.0%"}]
+    },
+    "LM": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 스피드스터", "트릭스터 + 크로스 포쳐"],
+      newTraits: [{n:"라인 브레이커", r:"49.1%"}, {n:"트릭스터", r:"41.3%"}, {n:"스피드스터", r:"2.8%"}, {n:"크로스 포쳐", r:"1.5%"}, {n:"아크로바틱 피니셔", r:"1.4%"}],
+      coaches: [{n:"크로스 향상", r:"21.8%"}, {n:"능숙한 몸싸움", r:"15.5%"}, {n:"침착하게 골 찬스 만들기", r:"15.5%"}, {n:"빠른 템포 공격", r:"8.3%"}, {n:"침투 패스 후 바로 침투", r:"8.0%"}]
+    },
+    "CDM": {
+      combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 타이탄"],
+      newTraits: [{n:"체이서", r:"34.8%"}, {n:"파이터", r:"31.0%"}, {n:"블로커", r:"15.5%"}, {n:"프레데터", r:"8.6%"}, {n:"타이탄", r:"5.0%"}],
+      coaches: [{n:"능숙한 압박", r:"27.2%"}, {n:"안정적인 빌드업", r:"21.9%"}, {n:"재정비", r:"15.7%"}, {n:"수비진영에서 역습 전개", r:"5.9%"}, {n:"우측 수비 강화", r:"5.5%"}]
+    },
+    "LWB": {
+      combos: ["체이서 + 파이터", "체이서 + 프레데터", "파이터 + 2개의 심장"],
+      newTraits: [{n:"체이서", r:"52.7%"}, {n:"파이터", r:"26.6%"}, {n:"프레데터", r:"6.1%"}, {n:"2개의 심장", r:"3.7%"}, {n:"와일드 태클러", r:"3.4%"}],
+      coaches: [{n:"크로스 향상", r:"13.6%"}, {n:"우측 수비 강화", r:"11.1%"}, {n:"재정비", r:"10.7%"}, {n:"능숙한 압박", r:"7.9%"}, {n:"퍼스트 터치 후 바로 이동", r:"7.6%"}]
+    },
+    "LB": {
+      combos: ["체이서 + 파이터", "체이서 + 와일드 태클러", "파이터 + 프레데터"],
+      newTraits: [{n:"체이서", r:"50.1%"}, {n:"파이터", r:"36.9%"}, {n:"프레데터", r:"5.7%"}, {n:"와일드 태클러", r:"2.8%"}, {n:"2개의 심장", r:"1.4%"}],
+      coaches: [{n:"좌측 수비 강화", r:"17.5%"}, {n:"재정비", r:"11.8%"}, {n:"크로스 향상", r:"11.5%"}, {n:"스탠딩 태클 향상", r:"11.1%"}, {n:"능숙한 몸싸움", r:"8.3%"}]
     },
     "CB": {
-      combos: ["체이서 + 파이터", "체이서 + 와일드 태클러", "파이터 + 프레데터"],
-      newTraits:  [ {n:"체이서", r:"53.0%"}, {n:"파이터", r:"26.5%"}, {n:"프레데터", r:"6.0%"}, {n:"2개의 심장", r:"3.7%"}, {n:"와일드 태클러", r:"3.3%"} ],
-      coaches: [ {n:"좌측 수비 강화", r:"13.0%"}, {n:"재정비", r:"10.0%"}, {n:"능숙한 압박", r:"8.3%"}, {n:"스탠딩 태클 향상", r:"7.1%"}, {n:"크로스 향상", r:"6.5%"} ]
-    },
-    "CDM_MF": {
-      combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 타이탄"],
-      newTraits:  [ {n:"체이서", r:"35.9%"}, {n:"파이터", r:"30.1%"}, {n:"블로커", r:"15.4%"}, {n:"프레데터", r:"8.7%"}, {n:"타이탄", r:"5.0%"} ],
-      coaches: [ {n:"능숙한 압박", r:"27.2%"}, {n:"안정적인 빌드업", r:"22.8%"}, {n:"재정비", r:"15.3%"}, {n:"수비진영에서 역습 전개", r:"5.9%"}, {n:"좌측 수비 강화", r:"5.5%"} ]
-    },
-    "LB_LWB": {
-      combos: ["체이서 + 파이터", "체이서 + 와일드 태클러", "파이터 + 2개의 심장"],
-      newTraits:  [ {n:"체이서", r:"50.1%"}, {n:"파이터", r:"36.9%"}, {n:"프레데터", r:"5.7%"}, {n:"와일드 태클러", r:"2.8%"}, {n:"2개의 심장", r:"1.4%"} ],
-      coaches: [ {n:"좌측 수비 강화", r:"17.5%"}, {n:"재정비", r:"11.8%"}, {n:"크로스 향상", r:"11.5%"}, {n:"스탠딩 태클 향상", r:"11.1%"}, {n:"능숙한 몸싸움", r:"8.3%"} ]
+      combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 프레데터"],
+      newTraits: [{n:"체이서", r:"36.6%"}, {n:"파이터", r:"20.9%"}, {n:"블로커", r:"17.9%"}, {n:"프레데터", r:"9.4%"}, {n:"타이탄", r:"7.4%"}],
+      coaches: [{n:"능숙한 압박", r:"20.3%"}, {n:"안정적인 빌드업", r:"18.2%"}, {n:"재정비", r:"15.2%"}, {n:"가로채기 노리기", r:"8.8%"}, {n:"수비진영에서 역습 전개", r:"6.0%"}]
     },
     "SW": {
       combos: ["체이서 + 파이터", "체이서 + 블로커", "와일드 태클러 + 타이탄"],
-      newTraits:  [ {n:"체이서", r:"35.4%"}, {n:"파이터", r:"17.1%"}, {n:"블로커", r:"17.0%"}, {n:"와일드 태클러", r:"7.7%"}, {n:"타이탄", r:"7.6%"} ],
-      coaches: [ {n:"재정비", r:"14.0%"}, {n:"능숙한 압박", r:"13.8%"}, {n:"스탠딩 태클 향상", r:"10.7%"}, {n:"가로채기 노리기", r:"10.6%"}, {n:"안정적인 빌드업", r:"10.4%"} ]
+      newTraits: [{n:"체이서", r:"35.4%"}, {n:"파이터", r:"17.1%"}, {n:"블로커", r:"17.0%"}, {n:"와일드 태클러", r:"7.7%"}, {n:"타이탄", r:"7.6%"}],
+      coaches: [{n:"재정비", r:"14.0%"}, {n:"능숙한 압박", r:"13.8%"}, {n:"스탠딩 태클 향상", r:"10.7%"}, {n:"가로채기 노리기", r:"10.6%"}, {n:"안정적인 빌드업", r:"10.4%"}]
     },
-    "RB_RWB": {
+    "RB": {
       combos: ["체이서 + 파이터", "체이서 + 2개의 심장", "파이터 + 와일드 태클러"],
-      newTraits:  [ {n:"체이서", r:"48.7%"}, {n:"파이터", r:"38.0%"}, {n:"프레데터", r:"5.8%"}, {n:"와일드 태클러", r:"2.9%"}, {n:"2개의 심장", r:"1.5%"} ],
-      coaches: [ {n:"우측 수비 강화", r:"16.8%"}, {n:"재정비", r:"12.2%"}, {n:"크로스 향상", r:"12.0%"}, {n:"스탠딩 태클 향상", r:"11.6%"}, {n:"능숙한 몸싸움", r:"8.2%"} ]
+      newTraits: [{n:"체이서", r:"48.7%"}, {n:"파이터", r:"38.0%"}, {n:"프레데터", r:"5.8%"}, {n:"와일드 태클러", r:"2.9%"}, {n:"2개의 심장", r:"1.5%"}],
+      coaches: [{n:"우측 수비 강화", r:"16.8%"}, {n:"재정비", r:"12.2%"}, {n:"크로스 향상", r:"12.0%"}, {n:"스탠딩 태클 향상", r:"11.6%"}, {n:"능숙한 몸싸움", r:"8.2%"}]
     },
     "GK": {
       combos: ["GK 데드아이 + GK 빠른 반응", "GK 데드아이 + GK 공중볼 장악", "GK 빠른 반응 + GK 공중볼 장악"],
-      newTraits:  [ {n:"GK 데드아이", r:"76.5%"}, {n:"GK 빠른 반응", r:"14.0%"}, {n:"GK 공중볼 장악", r:"9.5%"} ],
-      coaches: [ {n:"낮은 슛 방어", r:"57.0%"}, {n:"감아차기 방어", r:"18.0%"}, {n:"프리킥 방어", r:"13.2%"}, {n:"스로우 향상", r:"6.1%"}, {n:"근거리 슛 방어", r:"2.1%"} ]
+      newTraits: [{n:"GK 데드아이", r:"76.5%"}, {n:"GK 빠른 반응", r:"14.0%"}, {n:"GK 공중볼 장악", r:"9.5%"}],
+      coaches: [{n:"낮은 슛 방어", r:"57.0%"}, {n:"감아차기 방어", r:"18.0%"}, {n:"프리킥 방어", r:"13.2%"}, {n:"스로우 향상", r:"6.1%"}, {n:"근거리 슛 방어", r:"2.1%"}]
     }
   };
 
+  // 제공되지 않은 위치는 유사 포지션으로 연결
   function getTraitKey(pos) {
-    if(["ST","LS","RS","LW","LF","CF","RF","RW"].includes(pos)) return "RW_FW";
-    if(["LAM","CAM","RAM","LM","LCM","CM","RCM","RM","LDM","CDM","RDM"].includes(pos)) return "CDM_MF";
-    if(["CB","LCB","RCB"].includes(pos)) return "CB";
-    if(["LB","LWB"].includes(pos)) return "LB_LWB";
-    if(["RB","RWB"].includes(pos)) return "RB_RWB";
-    if(pos === "SW") return "SW";
-    if(pos === "GK") return "GK";
-    return "RW_FW";
+    if (traitsDB[pos]) return pos; 
+    if(["LF"].includes(pos)) return "CF";
+    if(["RAM"].includes(pos)) return "LAM";
+    if(["RM"].includes(pos)) return "LM";
+    if(["RCM", "LCM", "CM", "LDM", "RDM"].includes(pos)) return "CDM";
+    if(["RWB"].includes(pos)) return "LWB";
+    if(["LCB", "RCB"].includes(pos)) return "CB";
+    return "ST";
   }
 
   function selectTrait(pos, event) {
@@ -704,9 +759,9 @@
   function renderTraitData(pos) {
     document.getElementById('trait-pos-label').innerText = pos;
     const dbKey = getTraitKey(pos);
-    const data = traitsDB[dbKey];
+    const data = traitsDB[dbKey] || traitsDB["ST"];
 
-    // 추천 조합 HTML
+    // 💡 꿀조합 UI
     const combosHTML = `
       <div class="tier-board" style="padding:16px; margin-bottom:16px; background: linear-gradient(135deg, rgba(250, 204, 21, 0.08), rgba(250, 204, 21, 0.02)); border-color: rgba(250, 204, 21, 0.3);">
         <div style="font-size:16px; font-weight:900; color:#FACC15; margin-bottom:12px; display:flex; align-items:center; gap:8px;">💡 신규 특성 추천 조합 TOP 3</div>
@@ -718,33 +773,32 @@
       </div>
     `;
 
-    // 티어리스트 형태가 아닌 깔끔한 그리드 형태의 특성 아이콘 렌더링
+    // 🌟 깔끔한 픽률 중심의 그리드 렌더링 함수
     const makeTraitListHTML = (arr, title, gradientClass) => {
       let html = `<div class="tier-board" style="padding:16px; margin-bottom:16px;"><div class="tier-category-header ${gradientClass}" style="margin-bottom:12px;">${title}</div>`;
-      html += `<div style="display: flex; flex-wrap: wrap; gap: 10px;">`;
+      html += `<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">`;
       
       arr.forEach((item) => {
         let iconHtml = "";
         
-        // 🌟 보내주신 이미지 이름 매칭 적용 🌟
+        // 이미지 매칭
         if(traitImgMap[item.n]) {
           iconHtml = `<img src="${traitImgMap[item.n]}" style="width: 50px; height: 56px; object-fit: contain;">`;
         } else {
-          // 이미지가 없는 훈련 코치는 텍스트 아이콘으로 대처
+          // 이미지가 없으면 직관적인 이모지 삽입
           let iconTxt = "⚽";
-          if(item.n.includes('방어') || item.n.includes('키퍼') || item.n.includes('펀칭')) iconTxt = "🧤";
-          else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박')) iconTxt = "🛡️";
-          else if(item.n.includes('패스') || item.n.includes('빌드업') || item.n.includes('크로스') || item.n.includes('찬스')) iconTxt = "🎯";
-          else if(item.n.includes('템포')) iconTxt = "⚡";
+          if(item.n.includes('방어') || item.n.includes('키퍼') || item.n.includes('펀칭') || item.n.includes('장악')) iconTxt = "🧤";
+          else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박') || item.n.includes('블로커') || item.n.includes('몸싸움')) iconTxt = "🛡️";
+          else if(item.n.includes('패스') || item.n.includes('빌드업') || item.n.includes('크로스') || item.n.includes('찬스') || item.n.includes('레이저') || item.n.includes('이동')) iconTxt = "🎯";
+          else if(item.n.includes('템포') || item.n.includes('반응') || item.n.includes('심장') || item.n.includes('스피드')) iconTxt = "⚡";
           
           iconHtml = `<div class="trait-hex silver" style="width:50px; height:56px; font-size:20px;">${iconTxt}</div>`;
         }
 
-        // OP 뱃지 없이 깔끔하게 [아이콘 + 이름 + 픽률]만 표시
         html += `
-          <div style="background:#0F172A; border:1px solid var(--border-color); border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; width:calc(20% - 8px); min-width:85px;">
+          <div style="background:#0F172A; border:1px solid var(--border-color); border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; width:calc(20% - 8px); min-width:90px;">
             ${iconHtml}
-            <div style="font-size:12px; font-weight:800; color:#fff; text-align:center; margin-top:8px; line-height:1.3; height:32px; display:flex; align-items:center; word-break:keep-all;">${item.n}</div>
+            <div style="font-size:12px; font-weight:800; color:#fff; text-align:center; margin-top:8px; line-height:1.3; height:32px; display:flex; align-items:center; justify-content:center; word-break:keep-all;">${item.n}</div>
             <div style="font-size:15px; font-weight:900; color:var(--primary-blue); margin-top:4px;">${item.r}</div>
           </div>`;
       });
@@ -759,7 +813,7 @@
     document.getElementById('trait-content-area').innerHTML = contentHTML;
   }
 
-  // ==== 이하 전적 검색 기능 코드 동일하게 유지 ====
+  // ==== 전적 검색 로직 ====
   async function fetchNexonApi(apiUrl) {
     try {
       const response = await fetch(apiUrl, { headers: { "x-nxopen-api-key": NEXON_API_KEY } });
