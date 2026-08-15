@@ -46,7 +46,7 @@
 
     .nav-right-area { display: flex; align-items: center; gap: 10px; }
 
-    /* 🔮 유리(Crystal) 감성 공지 버튼 스타일 */
+    /* 💎 유리(Crystal) 감성 공지 버튼 스타일 */
     .notice-icon-btn {
       position: relative; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
       color: var(--primary-blue); width: 44px; height: 44px; border-radius: 14px;
@@ -88,16 +88,22 @@
     .search-btn { height: 58px; padding: 0 36px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-hover)); color: #fff; border: none; border-radius: 29px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4); }
 
     /* 모달 팝업 스타일 */
-    .modal-overlay {
+    .modal-overlay, .notice-modal-overlay, .sub-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(8px);
       z-index: 9999; display: none; justify-content: center; align-items: flex-start;
       overflow-y: auto; padding: 40px 20px; animation: fadeIn 0.3s ease;
     }
+    .notice-modal-overlay, .sub-modal-overlay { z-index: 10001; align-items: center; }
     .modal-content {
       background: var(--bg-main); width: 100%; max-width: 1060px;
       border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
       padding: 40px 30px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .notice-modal-content, .sub-modal-content {
+      background: var(--bg-card); width: 100%; max-width: 540px;
+      border-radius: 24px; border: 1px solid var(--border-color);
+      padding: 35px 30px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.7);
     }
     .modal-close-btn {
       position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05);
@@ -106,18 +112,6 @@
       cursor: pointer; transition: 0.2s; z-index: 10;
     }
     .modal-close-btn:hover { background: var(--lose-color); border-color: var(--lose-color); transform: scale(1.05); }
-
-    /* 공지사항 팝업 전용 스타일 */
-    .notice-modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(8px);
-      z-index: 10001; display: none; justify-content: center; align-items: center; padding: 20px;
-    }
-    .notice-modal-content {
-      background: var(--bg-card); width: 100%; max-width: 540px;
-      border-radius: 24px; border: 1px solid var(--border-color);
-      padding: 35px 30px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-    }
 
     /* 프로필 최상단 */
     .profile-top-card { display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px 30px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); flex-wrap: wrap; gap: 14px; }
@@ -136,24 +130,9 @@
     .pie-subtext { font-size: 12px; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
     .winrate-desc { font-size: 14px; font-weight: 700; color: var(--primary-blue); margin-bottom: 16px; }
 
-    /* 플레이 스타일 칭호 배지 스타일 (닉네임 옆) */
     .style-badge { background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(192, 132, 252, 0.25)); border: 1px solid var(--primary-blue); color: var(--primary-blue); font-size: 13px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2); vertical-align: middle; }
-
-    /* 심층 세부사항 더보기 버튼 스타일 */
     .btn-detail-more { width: 100%; margin-top: 14px; padding: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary-blue); font-size: 13px; font-weight: 800; border-radius: 12px; cursor: pointer; transition: 0.3s; }
     .btn-detail-more:hover { background: var(--primary-blue); color: #fff; }
-
-    /* 서브 팝업 창 (심층 세부사항용) */
-    .sub-modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(10px);
-      z-index: 10000; display: none; justify-content: center; align-items: center; padding: 20px;
-    }
-    .sub-modal-content {
-      background: var(--bg-card); width: 100%; max-width: 600px;
-      border-radius: 24px; border: 1px solid var(--border-color);
-      padding: 30px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-    }
 
     /* 스쿼드 뷰 */
     .squad-field { width: 100%; height: 380px; background: linear-gradient(135deg, #134e24, #166534); border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.4); }
@@ -171,7 +150,6 @@
     .match-item.win { background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(15, 23, 42, 1) 40%); border-color: rgba(59, 130, 246, 0.35); }
     .match-item.lose { background: linear-gradient(90deg, rgba(244, 63, 94, 0.12) 0%, rgba(15, 23, 42, 1) 40%); border-color: rgba(244, 63, 94, 0.35); }
     .match-item.draw { background: linear-gradient(90deg, rgba(245, 158, 11, 0.12) 0%, rgba(15, 23, 42, 1) 40%); border-color: rgba(245, 158, 11, 0.35); }
-
     .match-bar { width: 8px; flex-shrink: 0; }
     .match-bar.win { background-color: var(--win-color); }
     .match-bar.lose { background-color: var(--lose-color); }
@@ -188,22 +166,22 @@
     .match-score { font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #fff; }
     .match-vs { font-size: 14px; font-weight: 700; color: #E2E8F0; cursor: pointer; background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 10px; }
     .match-right { text-align: right; font-size: 13px; font-weight: 700; color: var(--text-sub); width: 90px; }
-
     .btn-load-more { width: 100%; padding: 18px; background: #0F172A; border: 1px dashed var(--border-color); color: var(--text-sub); font-size: 15px; font-weight: 700; border-radius: 18px; cursor: pointer; margin-top: 16px; }
     
-    /* 티어리스트 디자인 (TOP 21 전용 뱃지 색상 추가) */
+    /* 티어리스트 (팀컬러 공용) */
     .tier-board { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
     .tier-category-header { padding: 16px 24px; font-weight: 800; font-size: 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .tier-category-header.op { background: linear-gradient(90deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); color: var(--tier-op); border: 1px solid rgba(192, 132, 252, 0.3); border-left: 6px solid var(--tier-op); }
-    .player-row { display: flex; align-items: center; padding: 12px 20px; background-color: #0F172A; border: 1px solid var(--border-color); border-radius: 16px; }
-    
+    .tier-category-header.t1 { background: linear-gradient(90deg, rgba(250, 204, 21, 0.15), rgba(250, 204, 21, 0.05)); color: #FACC15; border: 1px solid rgba(250, 204, 21, 0.3); border-left: 6px solid #FACC15; }
+
+    .player-row { display: flex; align-items: center; padding: 12px 20px; background-color: #0F172A; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 4px; }
     .td-badge { width: 80px; text-align: center; font-weight: 900; font-style: italic; font-size: 15px; }
     .td-badge.op { color: var(--tier-op); }
-    .td-badge.t1 { color: #FACC15; } /* 1티어 금색 */
-    .td-badge.t2 { color: #A3E635; } /* 2티어 연두색 */
-    .td-badge.t3 { color: #94A3B8; } /* 3티어 회색 */
+    .td-badge.t1 { color: #FACC15; }
+    .td-badge.t2 { color: #A3E635; }
+    .td-badge.t3 { color: #94A3B8; }
 
-    .td-season { width: 70px; display: flex; justify-content: center; align-items: center; }
+    .td-season { width: 70px; display: flex; justify-content: center; align-items: center; font-size: 24px; }
     .season-icon { width: 40px; height: 40px; object-fit: contain; }
     .td-info { flex: 1; display: flex; align-items: center; gap: 18px; padding-left: 12px; }
     .player-name { font-size: 16px; font-weight: 800; color: #fff; }
@@ -220,10 +198,37 @@
     /* 탭 콘텐츠 전환 제어 */
     .tab-content, .sub-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active, .sub-content.active { display: block; }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { display: inline-block; font-size: 40px; margin-bottom: 20px; animation: spin 1s linear infinite; }
+
+    /* ========================================= */
+    /* 🌟 특성 티어리스트 전용 CSS 🌟 */
+    /* ========================================= */
+    .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
+    @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
+    
+    .trait-left-panel { flex: 0 0 380px; background: #111; border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
+    .trait-right-panel { flex: 1; display: flex; flex-direction: column; }
+    
+    .trait-pitch-board { position: relative; width: 100%; height: 500px; background: #1A1D24; border: 2px solid rgba(255,255,255,0.15); border-radius: 12px; overflow: hidden; margin-top: 10px; }
+    .trait-pitch-board::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: rgba(255,255,255,0.1); }
+    .trait-pitch-board::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border: 2px solid rgba(255,255,255,0.1); border-radius: 50%; }
+    
+    .t-node { position: absolute; width: 44px; height: 44px; border-radius: 50%; background: #2A303C; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; transform: translate(-50%, -50%); border: 2px solid #555; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .t-node:hover { transform: translate(-50%, -50%) scale(1.1); }
+    
+    .t-fw { border-color: #F43F5E; }
+    .t-mf { border-color: #10B981; }
+    .t-df { border-color: #3B82F6; }
+    .t-gk { border-color: #FACC15; }
+
+    .t-node.active.t-fw { background: #F43F5E; box-shadow: 0 0 15px rgba(244, 63, 94, 0.6); }
+    .t-node.active.t-mf { background: #10B981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
+    .t-node.active.t-df { background: #3B82F6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+    .t-node.active.t-gk { background: #FACC15; color: #000; box-shadow: 0 0 15px rgba(250, 204, 21, 0.6); }
+
+    .trait-hex.silver { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #0f172a; border-radius: 10px; display:flex; align-items:center; justify-content:center; }
   </style>
 </head>
 <body>
@@ -303,10 +308,62 @@
 
   <!-- 5️⃣ 특성 티어리스트 탭 -->
   <div id="tab-trait" class="tab-content">
-    <div class="coming-soon-card">
-      <div class="coming-soon-icon">⚡</div>
-      <div class="coming-soon-title">특성 티어리스트 서비스 준비 중</div>
-      <div class="coming-soon-desc">핵심 메타 특성 효용성을 정밀 분석 중입니다. (8월 16일 00시 업데이트 예정)</div>
+    <div class="trait-layout-container">
+      <!-- 좌측 스쿼드 그라운드 -->
+      <div class="trait-left-panel">
+        <h4 style="font-size:18px; font-weight:800; margin-bottom:6px; color:#fff;">포지션을 선택하세요.</h4>
+        <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">데이터를 기반으로 꿀조합과 추천 특성을 안내합니다.</p>
+        
+        <div class="trait-pitch-board">
+          <!-- FW -->
+          <div class="t-node t-fw" style="top:12%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
+          <div class="t-node t-fw active" style="top:12%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
+          <div class="t-node t-fw" style="top:12%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
+          <div class="t-node t-fw" style="top:25%; left:12%;" onclick="selectTrait('LW', event)">LW</div>
+          <div class="t-node t-fw" style="top:25%; left:31%;" onclick="selectTrait('LF', event)">LF</div>
+          <div class="t-node t-fw" style="top:25%; left:50%;" onclick="selectTrait('CF', event)">CF</div>
+          <div class="t-node t-fw" style="top:25%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
+          <div class="t-node t-fw" style="top:25%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
+          
+          <!-- AM -->
+          <div class="t-node t-mf" style="top:38%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
+          <div class="t-node t-mf" style="top:38%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
+          <div class="t-node t-mf" style="top:38%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
+          
+          <!-- CM / WM -->
+          <div class="t-node t-mf" style="top:51%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
+          <div class="t-node t-mf" style="top:51%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
+          <div class="t-node t-mf" style="top:51%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
+          <div class="t-node t-mf" style="top:51%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
+          <div class="t-node t-mf" style="top:51%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
+          
+          <!-- DM -->
+          <div class="t-node t-mf" style="top:64%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
+          <div class="t-node t-mf" style="top:64%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
+          <div class="t-node t-mf" style="top:64%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
+          
+          <!-- DF -->
+          <div class="t-node t-df" style="top:77%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
+          <div class="t-node t-df" style="top:77%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
+          <div class="t-node t-df" style="top:77%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
+          <div class="t-node t-df" style="top:77%; left:69%;" onclick="selectTrait('RCB', event)">RCB</div>
+          <div class="t-node t-df" style="top:77%; left:88%;" onclick="selectTrait('RWB', event)">RWB</div>
+          <div class="t-node t-df" style="top:88%; left:31%;" onclick="selectTrait('LB', event)">LB</div>
+          <div class="t-node t-df" style="top:88%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
+          <div class="t-node t-df" style="top:88%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
+          
+          <!-- GK -->
+          <div class="t-node t-gk" style="top:94%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
+        </div>
+      </div>
+
+      <!-- 우측 특성 추천 리스트 영역 -->
+      <div class="trait-right-panel">
+        <h3 style="font-size:24px; font-weight:900; color:#fff; margin-bottom: 20px; text-align:center;">
+          <span id="trait-pos-label" style="color:var(--primary-blue);">ST</span> 포지션 1티어 특성
+        </h3>
+        <div id="trait-content-area" style="display:flex; flex-direction:column; gap:16px;"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -323,8 +380,8 @@
       <div>💬 <b style="color:#fff;">커뮤니티 시스템 개발 중!</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 유저분들이 소통할 수 있는 커뮤니티 기능을 준비 중입니다.</div>
       <hr style="border:0; border-top:1px solid var(--border-color); margin:4px 0;">
-      <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 업데이트 안내</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 특성 티어리스트 데이터는 <b style="color:#fff;">8월 16일 00시</b>까지 업데이트될 예정입니다.</div>
+      <div>⚡ <b style="color:var(--primary-blue);">특성 티어리스트 완벽 업데이트</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 각 포지션별 1티어 신규 특성 및 훈련 코치 추천 조합 기능이 추가되었습니다!</div>
     </div>
   </div>
 </div>
@@ -457,11 +514,13 @@
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 공지사항 로직
-  const LATEST_NOTICE_VERSION = "20260815_v9_perfect";
+  const LATEST_NOTICE_VERSION = "20260815_v12_final_trait";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
     }
+    // 페이지 로드 시 특성 티어 탭 ST 기본 렌더링
+    renderTraitData('ST');
   });
 
   function openNoticeModal() {
@@ -470,9 +529,7 @@
     document.getElementById('notice-dot').style.display = 'none';
   }
 
-  function closeNoticeModal() {
-    document.getElementById('notice-modal').style.display = 'none';
-  }
+  function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
 
   // 🌟 탭 전환 함수 🌟
   function switchTab(tabId, el) {
@@ -491,6 +548,7 @@
     if(target) target.classList.add('active');
   }
 
+  // ==== [팀컬러, 선수 등 기존 상수 생략 없이 유지] ====
   const positionMap = {
     0: { label: 'GK', line: 'gk' },
     1: { label: 'SW', line: 'df' }, 2: { label: 'RWB', line: 'df' }, 3: { label: 'RB', line: 'df' }, 4: { label: 'RCB', line: 'df' }, 5: { label: 'CB', line: 'df' }, 6: { label: 'LCB', line: 'df' }, 7: { label: 'LB', line: 'df' }, 8: { label: 'LWB', line: 'df' },
@@ -507,31 +565,23 @@
   };
 
   let spidMetaCache = {};
-  fetch("https://open.api.nexon.com/static/fconline/meta/spid.json")
-    .then(r => r.json())
-    .then(data => { if(Array.isArray(data)) data.forEach(i => spidMetaCache[i.id] = i.name); })
-    .catch(() => {});
+  fetch("https://open.api.nexon.com/static/fconline/meta/spid.json").then(r => r.json()).then(data => { if(Array.isArray(data)) data.forEach(i => spidMetaCache[i.id] = i.name); }).catch(() => {});
+  fetch("https://open.api.nexon.com/static/fconline/meta/division.json").then(r => r.json()).then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); }).catch(() => {});
 
-  fetch("https://open.api.nexon.com/static/fconline/meta/division.json")
-    .then(r => r.json())
-    .then(data => { if(Array.isArray(data)) data.forEach(i => divisionMetaCache[String(i.divisionId)] = i.divisionName); })
-    .catch(() => {});
-
-  // 🌟 TOP 21 팀컬러 데이터 - 제공해주신 이미지 기반 완벽 1:1 매칭 🌟
   const teamColorData = [
     { name: "레알 마드리드", rate: 7.8, count: 421, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
     { name: "리버풀", rate: 6.5, count: 350, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
     { name: "바이에른 뮌헨", rate: 5.8, count: 314, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
     { name: "FC 바르셀로나", rate: 5.6, count: 301, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
     { name: "첼시", rate: 5.3, count: 287, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "롬바르디아 FC", rate: 4.8, count: 261, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" }, // 인게임 이름: 롬바르디아 FC, 로고: 인테르
+    { name: "롬바르디아 FC", rate: 4.8, count: 261, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
     { name: "아스널", rate: 4.7, count: 254, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
     { name: "대한민국", rate: 4.1, count: 220, logo: "https://flagcdn.com/w160/kr.png" },
     { name: "브라질", rate: 3.8, count: 206, logo: "https://flagcdn.com/w160/br.png" },
     { name: "맨체스터 시티", rate: 3.8, count: 204, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
     { name: "스페인", rate: 3.7, count: 201, logo: "https://flagcdn.com/w160/es.png" },
     { name: "맨체스터 유나이티드", rate: 3.7, count: 198, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" }, // 인게임 이름: 밀라노 FC, 로고: AC 밀란
+    { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
     { name: "프랑스", rate: 3.1, count: 169, logo: "https://flagcdn.com/w160/fr.png" },
     { name: "독일", rate: 2.8, count: 150, logo: "https://flagcdn.com/w160/de.png" },
     { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://flagcdn.com/w160/gb-eng.png" },
@@ -571,6 +621,145 @@
   }
   renderTeamColorTierList();
 
+  // ==========================================
+  // 🌟 [핵심] 특성 티어리스트 데이터 및 렌더링 로직 🌟
+  // ==========================================
+
+  // 제공해주신 캡처 이미지 매칭
+  const traitImgMap = {
+    "아크로바틱 피니셔": "trait_icon_50.png",
+    "크로스 포쳐": "trait_icon_51.png",
+    "라인 브레이커": "trait_icon_52.png",
+    "와일드 태클러": "trait_icon_53.png",
+    "체이서": "trait_icon_54.png",
+    "2개의 심장": "trait_icon_55.png",
+    "파이터": "trait_icon_56.png",
+    "GK 빠른 반응": "trait_icon_57.png",
+    "커맨더": "trait_icon_59.png",
+    "GK 공중볼 장악": "trait_icon_60.png",
+    "블로커": "trait_icon_62.png",
+    "스피드스터": "trait_icon_63.png",
+    "타이탄": "trait_icon_64.png",
+    "트릭스터": "trait_icon_65.png",
+    "파워 슈터": "trait_icon_66.png",
+    "프레데터": "trait_icon_67.png",
+    "GK 데드아이": "trait_icon_68 (1).png"
+  };
+
+  const traitsDB = {
+    "RW_FW": {
+      combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 스피드스터", "트릭스터 + 아크로바틱 피니셔"],
+      newTraits:  [ {n:"라인 브레이커", r:"49.1%"}, {n:"트릭스터", r:"41.3%"}, {n:"스피드스터", r:"2.8%"}, {n:"크로스 포쳐", r:"1.5%"}, {n:"아크로바틱 피니셔", r:"1.4%"} ],
+      coaches: [ {n:"크로스 향상", r:"21.8%"}, {n:"능숙한 몸싸움", r:"15.5%"}, {n:"침착하게 골 찬스 만들기", r:"15.5%"}, {n:"빠른 템포 공격", r:"8.3%"}, {n:"침투 패스 후 바로 침투", r:"8.0%"} ]
+    },
+    "CB": {
+      combos: ["체이서 + 파이터", "체이서 + 와일드 태클러", "파이터 + 프레데터"],
+      newTraits:  [ {n:"체이서", r:"53.0%"}, {n:"파이터", r:"26.5%"}, {n:"프레데터", r:"6.0%"}, {n:"2개의 심장", r:"3.7%"}, {n:"와일드 태클러", r:"3.3%"} ],
+      coaches: [ {n:"좌측 수비 강화", r:"13.0%"}, {n:"재정비", r:"10.0%"}, {n:"능숙한 압박", r:"8.3%"}, {n:"스탠딩 태클 향상", r:"7.1%"}, {n:"크로스 향상", r:"6.5%"} ]
+    },
+    "CDM_MF": {
+      combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 타이탄"],
+      newTraits:  [ {n:"체이서", r:"35.9%"}, {n:"파이터", r:"30.1%"}, {n:"블로커", r:"15.4%"}, {n:"프레데터", r:"8.7%"}, {n:"타이탄", r:"5.0%"} ],
+      coaches: [ {n:"능숙한 압박", r:"27.2%"}, {n:"안정적인 빌드업", r:"22.8%"}, {n:"재정비", r:"15.3%"}, {n:"수비진영에서 역습 전개", r:"5.9%"}, {n:"좌측 수비 강화", r:"5.5%"} ]
+    },
+    "LB_LWB": {
+      combos: ["체이서 + 파이터", "체이서 + 와일드 태클러", "파이터 + 2개의 심장"],
+      newTraits:  [ {n:"체이서", r:"50.1%"}, {n:"파이터", r:"36.9%"}, {n:"프레데터", r:"5.7%"}, {n:"와일드 태클러", r:"2.8%"}, {n:"2개의 심장", r:"1.4%"} ],
+      coaches: [ {n:"좌측 수비 강화", r:"17.5%"}, {n:"재정비", r:"11.8%"}, {n:"크로스 향상", r:"11.5%"}, {n:"스탠딩 태클 향상", r:"11.1%"}, {n:"능숙한 몸싸움", r:"8.3%"} ]
+    },
+    "SW": {
+      combos: ["체이서 + 파이터", "체이서 + 블로커", "와일드 태클러 + 타이탄"],
+      newTraits:  [ {n:"체이서", r:"35.4%"}, {n:"파이터", r:"17.1%"}, {n:"블로커", r:"17.0%"}, {n:"와일드 태클러", r:"7.7%"}, {n:"타이탄", r:"7.6%"} ],
+      coaches: [ {n:"재정비", r:"14.0%"}, {n:"능숙한 압박", r:"13.8%"}, {n:"스탠딩 태클 향상", r:"10.7%"}, {n:"가로채기 노리기", r:"10.6%"}, {n:"안정적인 빌드업", r:"10.4%"} ]
+    },
+    "RB_RWB": {
+      combos: ["체이서 + 파이터", "체이서 + 2개의 심장", "파이터 + 와일드 태클러"],
+      newTraits:  [ {n:"체이서", r:"48.7%"}, {n:"파이터", r:"38.0%"}, {n:"프레데터", r:"5.8%"}, {n:"와일드 태클러", r:"2.9%"}, {n:"2개의 심장", r:"1.5%"} ],
+      coaches: [ {n:"우측 수비 강화", r:"16.8%"}, {n:"재정비", r:"12.2%"}, {n:"크로스 향상", r:"12.0%"}, {n:"스탠딩 태클 향상", r:"11.6%"}, {n:"능숙한 몸싸움", r:"8.2%"} ]
+    },
+    "GK": {
+      combos: ["GK 데드아이 + GK 빠른 반응", "GK 데드아이 + GK 공중볼 장악", "GK 빠른 반응 + GK 공중볼 장악"],
+      newTraits:  [ {n:"GK 데드아이", r:"76.5%"}, {n:"GK 빠른 반응", r:"14.0%"}, {n:"GK 공중볼 장악", r:"9.5%"} ],
+      coaches: [ {n:"낮은 슛 방어", r:"57.0%"}, {n:"감아차기 방어", r:"18.0%"}, {n:"프리킥 방어", r:"13.2%"}, {n:"스로우 향상", r:"6.1%"}, {n:"근거리 슛 방어", r:"2.1%"} ]
+    }
+  };
+
+  function getTraitKey(pos) {
+    if(["ST","LS","RS","LW","LF","CF","RF","RW"].includes(pos)) return "RW_FW";
+    if(["LAM","CAM","RAM","LM","LCM","CM","RCM","RM","LDM","CDM","RDM"].includes(pos)) return "CDM_MF";
+    if(["CB","LCB","RCB"].includes(pos)) return "CB";
+    if(["LB","LWB"].includes(pos)) return "LB_LWB";
+    if(["RB","RWB"].includes(pos)) return "RB_RWB";
+    if(pos === "SW") return "SW";
+    if(pos === "GK") return "GK";
+    return "RW_FW";
+  }
+
+  function selectTrait(pos, event) {
+    document.querySelectorAll('.t-node').forEach(n => n.classList.remove('active'));
+    event.target.classList.add('active');
+    renderTraitData(pos);
+  }
+
+  function renderTraitData(pos) {
+    document.getElementById('trait-pos-label').innerText = pos;
+    const dbKey = getTraitKey(pos);
+    const data = traitsDB[dbKey];
+
+    // 추천 조합 HTML
+    const combosHTML = `
+      <div class="tier-board" style="padding:16px; margin-bottom:16px; background: linear-gradient(135deg, rgba(250, 204, 21, 0.08), rgba(250, 204, 21, 0.02)); border-color: rgba(250, 204, 21, 0.3);">
+        <div style="font-size:16px; font-weight:900; color:#FACC15; margin-bottom:12px; display:flex; align-items:center; gap:8px;">💡 신규 특성 추천 조합 TOP 3</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background: rgba(0,0,0,0.3); padding: 10px 16px; border-radius: 10px; font-size:14px; font-weight:700; color:#fff;">1️⃣ ${data.combos[0]}</div>
+          <div style="background: rgba(0,0,0,0.3); padding: 10px 16px; border-radius: 10px; font-size:14px; font-weight:700; color:#fff;">2️⃣ ${data.combos[1]}</div>
+          <div style="background: rgba(0,0,0,0.3); padding: 10px 16px; border-radius: 10px; font-size:14px; font-weight:700; color:#fff;">3️⃣ ${data.combos[2]}</div>
+        </div>
+      </div>
+    `;
+
+    // 티어리스트 형태가 아닌 깔끔한 그리드 형태의 특성 아이콘 렌더링
+    const makeTraitListHTML = (arr, title, gradientClass) => {
+      let html = `<div class="tier-board" style="padding:16px; margin-bottom:16px;"><div class="tier-category-header ${gradientClass}" style="margin-bottom:12px;">${title}</div>`;
+      html += `<div style="display: flex; flex-wrap: wrap; gap: 10px;">`;
+      
+      arr.forEach((item) => {
+        let iconHtml = "";
+        
+        // 🌟 보내주신 이미지 이름 매칭 적용 🌟
+        if(traitImgMap[item.n]) {
+          iconHtml = `<img src="${traitImgMap[item.n]}" style="width: 50px; height: 56px; object-fit: contain;">`;
+        } else {
+          // 이미지가 없는 훈련 코치는 텍스트 아이콘으로 대처
+          let iconTxt = "⚽";
+          if(item.n.includes('방어') || item.n.includes('키퍼') || item.n.includes('펀칭')) iconTxt = "🧤";
+          else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박')) iconTxt = "🛡️";
+          else if(item.n.includes('패스') || item.n.includes('빌드업') || item.n.includes('크로스') || item.n.includes('찬스')) iconTxt = "🎯";
+          else if(item.n.includes('템포')) iconTxt = "⚡";
+          
+          iconHtml = `<div class="trait-hex silver" style="width:50px; height:56px; font-size:20px;">${iconTxt}</div>`;
+        }
+
+        // OP 뱃지 없이 깔끔하게 [아이콘 + 이름 + 픽률]만 표시
+        html += `
+          <div style="background:#0F172A; border:1px solid var(--border-color); border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; width:calc(20% - 8px); min-width:85px;">
+            ${iconHtml}
+            <div style="font-size:12px; font-weight:800; color:#fff; text-align:center; margin-top:8px; line-height:1.3; height:32px; display:flex; align-items:center; word-break:keep-all;">${item.n}</div>
+            <div style="font-size:15px; font-weight:900; color:var(--primary-blue); margin-top:4px;">${item.r}</div>
+          </div>`;
+      });
+      html += `</div></div>`;
+      return html;
+    };
+
+    let contentHTML = combosHTML;
+    contentHTML += makeTraitListHTML(data.newTraits, "🥇 8강 획득 (신규 특성)", "t1");
+    contentHTML += makeTraitListHTML(data.coaches, "🛡️ 11강 획득 (훈련 코치)", "op");
+
+    document.getElementById('trait-content-area').innerHTML = contentHTML;
+  }
+
+  // ==== 이하 전적 검색 기능 코드 동일하게 유지 ====
   async function fetchNexonApi(apiUrl) {
     try {
       const response = await fetch(apiUrl, { headers: { "x-nxopen-api-key": NEXON_API_KEY } });
