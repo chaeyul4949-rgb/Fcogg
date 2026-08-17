@@ -153,11 +153,11 @@
     .btn-detail-more { width: 100%; margin-top: 14px; padding: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary-blue); font-size: 13px; font-weight: 800; border-radius: 12px; cursor: pointer; transition: 0.3s; }
     .btn-detail-more:hover { background: var(--primary-blue); color: #fff; }
 
-    .squad-field { width: 100%; height: 380px; background: linear-gradient(135deg, #134e24, #166534); border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.4); }
+    .squad-field { width: 100%; height: 380px; background: linear-gradient(135deg, #134e24, #166534); border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.4); margin-top: 14px; }
     .squad-field::before { content: ''; position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.2); top: 50%; }
     .squad-field::after { content: ''; position: absolute; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; top: calc(50% - 40px); }
     .squad-row { display: flex; justify-content: space-around; width: 100%; z-index: 2; }
-    .player-node { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .player-node { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
     .player-node img { width: 44px; height: 44px; border-radius: 50%; object-fit: contain; margin-bottom: 4px; background: rgba(0,0,0,0.4); }
     .rating-badge { font-size: 11px; font-weight: 800; background: rgba(0,0,0,0.75); padding: 3px 6px; border-radius: 6px; margin-bottom: 2px; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .player-name-tag { font-size: 11px; font-weight: 700; color: #fff; max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -403,6 +403,10 @@
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
     <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
+      <div>⚡ <b style="color:#fff;">[NEW] 스쿼드 최신화 딜레이 해결!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 팀을 갈아엎어도 옛날 선수가 뜨던 현상을 수정했습니다! 이제 단 1판만 플레이해도 <b style="color:var(--primary-blue)">가장 마지막 경기에 사용한 최신 11명 선발 명단</b>이 즉시 반영되어 나타납니다. (선수 평점은 여전히 최근 경기의 평균으로 똑똑하게 산출됩니다)</div>
+      <div>✨ <b style="color:#fff;">스쿼드 선수 강화 등급(+5, +8) 표시 기능 추가!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 이제 전적 검색 시 베스트 11 스쿼드 화면에서 선수들의 강화 등급이 뱃지로 표시되어 구단의 질을 쉽게 파악할 수 있습니다!</div>
       <div>⚔️ <b style="color:#fff;">1:1 상대전적 UI 대규모 개편!</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 라이벌 구단주와의 전적을 한눈에 비교할 수 있도록 승/무/패 게이지 바 및 상세 경기 기록 리스트 기능이 추가되었습니다!</div>
       <div>🛠️ <b style="color:#fff;">모든 티어 & 마스터 티어 이미지 버그 완벽 수정!</b></div>
@@ -441,8 +445,8 @@
         <div class="profile-tier-badge">
           <div style="font-size:12px; color:var(--text-sub); font-weight:700; margin-bottom:6px;">최고 티어</div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <!-- 🌟 이미지 엑박 방지: display none 삭제하고 src 바로 적용 -->
-            <img id="profile-tier-img" src="" alt="티어마크" style="width:32px; height:32px; object-fit:contain;">
+            <!-- 🌟 이미지 엑박 방지 적용 -->
+            <img id="profile-tier-img" src="" alt="티어마크" style="width:32px; height:32px; object-fit:contain;" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>';">
             <div id="profile-max-tier" style="font-size:18px; font-weight:900; color:var(--tier-op);">기록 없음</div>
           </div>
         </div>
@@ -485,7 +489,7 @@
 
       <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:30px; margin-bottom:24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <div class="winrate-title" style="margin-bottom:0;">🟢 내 팀의 구멍은 누구? (선발 TOP 11)</div>
+          <div class="winrate-title" style="margin-bottom:0;">🟢 내 팀의 구멍은 누구? (최신 선발 TOP 11)</div>
           <div style="font-size:12px; font-weight:700; display:flex; gap:10px;">
             <span style="color:#10B981;">🟢 7.5점 이상</span>
             <span style="color:#FACC15;">🟡 6.0점 이상</span>
@@ -544,7 +548,7 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const LATEST_NOTICE_VERSION = "20260815_v20_applied";
+  const LATEST_NOTICE_VERSION = "20260815_v22_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -627,7 +631,6 @@
     "2900": "아마추어 1", "3000": "아마추어 2", "3100": "아마추어 3"
   };
   
-  // 🌟 [오류 해결] 구단주님 PC(서버)에 있는 로컬 원본 파일 이름으로 완전 복구!
   const tierBadgeMap = {
     "800": "ico_rank0.png",
     "900": "ico_rank1.png",
@@ -671,7 +674,6 @@
     })
     .catch(() => {});
 
-  // 🌟 파일이 없을 경우 깨지지 않고 예쁜 트로피 이미지가 나오도록 안전장치 적용!
   function getTierBadge(divId) {
     if(!divId) return "";
     return tierBadgeMap[String(divId)] || "ico_rank0.png";
@@ -1021,8 +1023,8 @@
       const totalGames = wins + draws + losses;
       const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
       
-      // 🌟 로컬 파일이름으로 이미지 불러오기 (엑박시 왕관 이모지로 대체)
-      let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>'">` : '';
+      // 🌟 심플 전적검색창에서도 엑박 방지 적용
+      let tierImgHtml = globalMaxTierId ? `<img src="${getTierBadge(globalMaxTierId)}" style="width:28px; height:28px; object-fit:contain;" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>';">` : '';
 
       document.getElementById('simple-result-area').innerHTML = `
         <div class="game-analysis-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; padding:24px;">
@@ -1080,7 +1082,7 @@
     document.getElementById('profile-level').innerText = globalLevel;
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
 
-    // 🌟 로컬 파일 엑박시 숨기지 않고 트로피로 대체하도록 onerror 속성 적용
+    // 🌟 상세 프로필 창 엑박 방지 적용
     if (globalMaxTierId) {
       const imgEl = document.getElementById('profile-tier-img');
       imgEl.src = getTierBadge(globalMaxTierId);
@@ -1135,6 +1137,7 @@
     let totalThroughPassTry = 0, totalThroughPassSuccess = 0;
     let playerStats = {};
     let kbdCount = 0, padCount = 0;
+    let latestMatchPlayers = null; // 가장 최근 1경기 선발 저장용
 
     for (const mData of matchesData) {
       if (mData?.matchInfo) {
@@ -1166,6 +1169,12 @@
           
           let m_tackle = 0, m_block = 0, m_dribble = 0, m_yellow = 0;
           if (Array.isArray(myInfo.player)) {
+            
+            // 🌟 가장 최근 경기 1판의 선발 라인업 추출!
+            if (!latestMatchPlayers && myInfo.player.length > 0) {
+              latestMatchPlayers = myInfo.player.filter(p => p.spPosition !== 28);
+            }
+
             myInfo.player.forEach(p => {
               m_tackle += parseInt(p.status?.tackle || 0);
               m_block += parseInt(p.status?.block || 0);
@@ -1174,11 +1183,10 @@
 
               if (p.spPosition !== 28) {
                 if (!playerStats[p.spId]) {
-                  playerStats[p.spId] = { count: 0, ratingSum: 0, posId: p.spPosition };
+                  playerStats[p.spId] = { count: 0, ratingSum: 0 };
                 }
                 playerStats[p.spId].count += 1;
                 playerStats[p.spId].ratingSum += (p.status?.spRating || 0);
-                playerStats[p.spId].posId = p.spPosition;
               }
             });
           }
@@ -1263,26 +1271,46 @@
       badgeEl.style.display = 'inline-flex';
     }
 
-    let top11 = Object.entries(playerStats).sort((a, b) => b[1].count - a[1].count).slice(0, 11);
     let linesHTML = { fw: [], mf: [], df: [], gk: [] };
 
-    top11.forEach(([spId, stats]) => {
-      let avgRating = (stats.ratingSum / stats.count).toFixed(1);
-      let posData = positionMap[stats.posId] || { label: 'SUB', line: 'df' }; 
-      let pid = parseInt(String(spId).substring(3), 10);
-      
-      let ratingColor = '#F43F5E'; 
-      if (avgRating >= 7.5) ratingColor = '#10B981'; 
-      else if (avgRating >= 6.0) ratingColor = '#FACC15'; 
+    // 🌟 최신 1경기 스쿼드 기준으로 렌더링
+    if (latestMatchPlayers && latestMatchPlayers.length > 0) {
+      latestMatchPlayers.forEach(p => {
+        let spId = p.spId;
+        let grade = p.spGrade || 1;
+        let posId = p.spPosition;
+        
+        let avgRating = "0.0";
+        if (playerStats[spId] && playerStats[spId].count > 0) {
+          avgRating = (playerStats[spId].ratingSum / playerStats[spId].count).toFixed(1);
+        } else {
+          avgRating = (p.status?.spRating || 0).toFixed(1); 
+        }
 
-      linesHTML[posData.line].push(`
-        <div class="player-node">
-          <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p${pid}.png';" style="border: 3px solid ${ratingColor};">
-          <div class="rating-badge" style="color:${ratingColor};">${posData.label} | ${avgRating}</div>
-          <div class="player-name-tag">${spidMetaCache[spId] || '선수'}</div>
-        </div>
-      `);
-    });
+        let posData = positionMap[posId] || { label: 'SUB', line: 'df' }; 
+        let pid = parseInt(String(spId).substring(3), 10);
+        
+        let ratingColor = '#F43F5E'; 
+        if (avgRating >= 7.5) ratingColor = '#10B981'; 
+        else if (avgRating >= 6.0) ratingColor = '#FACC15'; 
+
+        // 🌟 강화 등급 뱃지 색상
+        let gradeBg = "#334155"; 
+        let gradeColor = "#fff";
+        if (grade >= 8) { gradeBg = "#EAB308"; gradeColor = "#000"; } 
+        else if (grade >= 5) { gradeBg = "#94A3B8"; gradeColor = "#000"; } 
+        else if (grade >= 2) { gradeBg = "#B45309"; gradeColor = "#fff"; } 
+
+        linesHTML[posData.line].push(`
+          <div class="player-node" style="position:relative;">
+            <div style="position:absolute; top:-6px; right:-6px; background:${gradeBg}; color:${gradeColor}; font-size:10px; font-weight:900; padding:2px 4px; border-radius:4px; border:1px solid #000; z-index:10;">+${grade}</div>
+            <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p${pid}.png';" style="border: 3px solid ${ratingColor};">
+            <div class="rating-badge" style="color:${ratingColor};">${posData.label} | ${avgRating}</div>
+            <div class="player-name-tag">${spidMetaCache[spId] || '선수'}</div>
+          </div>
+        `);
+      });
+    }
 
     document.getElementById('squad-row-fw').innerHTML = linesHTML.fw.join('') || '<div style="color:var(--text-muted); font-size:12px;">데이터 없음</div>';
     document.getElementById('squad-row-mf').innerHTML = linesHTML.mf.join('') || '<div style="color:var(--text-muted); font-size:12px;">데이터 없음</div>';
@@ -1347,6 +1375,7 @@
       if (!id2Data?.ouid) { resultBox.innerHTML = `<div class="error-msg">❌ [${user2}] 님을 찾을 수 없습니다.</div>`; return; }
 
       const o1 = id1Data.ouid, o2 = id2Data.ouid;
+      // 맞대결은 최대 100경기까지 스캔
       const offIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=50&offset=0&limit=100`).catch(()=>[]);
       const allIds = [...(offIds||[])];
 
