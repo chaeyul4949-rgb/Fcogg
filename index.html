@@ -265,7 +265,7 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { display: inline-block; font-size: 40px; margin-bottom: 20px; animation: spin 1s linear infinite; }
 
-    /* 특성 레이아웃 */
+    /* 특성 레이아웃 (2단) */
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
     
@@ -600,19 +600,18 @@
 
   // ==========================================================
   // 🌟 [Firebase 설정 영역]
-  // Firebase 콘솔에서 발급받은 키를 아래에 넣으면 전 세계 유저와 실시간 동기화됩니다!
+  // 사진에서 추출한 구단주님의 고유 API 키값을 완벽하게 입력했습니다!
   // ==========================================================
   let db = null;
   const firebaseConfig = {
-    apiKey: "", // ⬅️ 여기에 넣기
-    authDomain: "",
-    projectId: "", // ⬅️ 여기에 넣기
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyD_8kN03PyBQjOuW6cxMLHaUxMi6cci0LM",
+    authDomain: "fcogg-d209a.firebaseapp.com",
+    projectId: "fcogg-d209a",
+    storageBucket: "fcogg-d209a.firebasestorage.app",
+    messagingSenderId: "753291819052",
+    appId: "1:753291819052:web:25bd154da2c5d993823989"
   };
 
-  // Firebase 키가 입력되어 있으면 클라우드 DB 연결, 없으면 로컬 스토리지로 스마트 작동
   if (firebaseConfig.apiKey && firebaseConfig.projectId) {
     try {
       firebase.initializeApp(firebaseConfig);
@@ -665,7 +664,7 @@
   });
 
   // ==============================================
-  // 🌟 유저 추천 / 신고 / 후기 데이터 동기화 함수 🌟
+  // 🌟 유저 추천 / 신고 / 후기 데이터 실시간 통신 함수
   // ==============================================
   async function initMockDBUser(ouid, nickname) {
     if (db) {
@@ -1028,6 +1027,7 @@
       
       arr.forEach((item) => {
         let iconHtml = "";
+        
         if(traitImgMap[item.n]) {
           iconHtml = `<img src="${traitImgMap[item.n]}" style="width: 50px; height: 56px; object-fit: contain;">`;
         } else {
@@ -1036,6 +1036,7 @@
           else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박') || item.n.includes('블로커') || item.n.includes('몸싸움')) iconTxt = "🛡️";
           else if(item.n.includes('패스') || item.n.includes('빌드업') || item.n.includes('크로스') || item.n.includes('찬스') || item.n.includes('레이저') || item.n.includes('이동')) iconTxt = "🎯";
           else if(item.n.includes('템포') || item.n.includes('반응') || item.n.includes('심장') || item.n.includes('스피드')) iconTxt = "⚡";
+          
           iconHtml = `<div class="trait-hex silver" style="width:50px; height:56px; font-size:20px;">${iconTxt}</div>`;
         }
 
@@ -1398,7 +1399,6 @@
 
     let linesHTML = { fw: [], mf: [], df: [], gk: [] };
 
-    // 🌟 최신 1경기 스쿼드 렌더링 (4단계 강화 뱃지 색상 완벽 적용)
     if (latestMatchPlayers && latestMatchPlayers.length > 0) {
       latestMatchPlayers.forEach(p => {
         let spId = p.spId;
@@ -1416,19 +1416,18 @@
         if (avgRating >= 7.5) ratingColor = '#10B981'; 
         else if (avgRating >= 6.0) ratingColor = '#FACC15'; 
 
-        // 🌟 4단계 강화 뱃지 스타일링 분기 (갈/은/금/백금)
         let gradeStyle = "";
         if (grade >= 11) {
-          // 💎 11강 이상: 백금색 (영롱한 네온 광채)
+          // 💎 백금
           gradeStyle = "background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 50%, #38bdf8 100%); color: #082f49; box-shadow: 0 0 10px rgba(56,189,248,0.9); border: 1px solid #ffffff;";
         } else if (grade >= 8) {
-          // 🥇 8~10강: 금색 (골드)
+          // 🥇 금
           gradeStyle = "background: linear-gradient(135deg, #fef08a 0%, #eab308 100%); color: #422006; border: 1px solid #713f12;";
         } else if (grade >= 5) {
-          // 🥈 5~7강: 은색 (실버)
+          // 🥈 은
           gradeStyle = "background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%); color: #0f172a; border: 1px solid #334155;";
         } else {
-          // 🥉 5강 미만 (1~4강): 갈색 (브론즈)
+          // 🥉 갈색
           gradeStyle = "background: linear-gradient(135deg, #d97706 0%, #92400e 100%); color: #ffffff; border: 1px solid #451a03;";
         }
 
