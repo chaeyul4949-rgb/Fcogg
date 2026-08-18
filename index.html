@@ -6,6 +6,11 @@
   <title>FCO.GG - FC 온라인 전적 및 티어리스트</title>
   <meta name="google-site-verification" content="mVj35GvGb1fgDlgSLk_hK5wVBtDJgHRkZWj6kXkvYmg" />
   <link rel="icon" type="image/jpeg" href="IMG_0460.jpeg">
+  
+  <!-- 🌟 Firebase 실시간 DB SDK 로드 -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
@@ -42,7 +47,7 @@
     
     .container { width: 100%; max-width: 1060px; }
 
-    /* 네비게이션 바 (가로 스크롤 및 레이아웃 유지, 텍스트 제거) */
+    /* 네비게이션 바 */
     .navbar { 
       display: flex; align-items: center; justify-content: space-between; 
       background: rgba(21, 30, 50, 0.7); backdrop-filter: blur(12px);
@@ -260,7 +265,7 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { display: inline-block; font-size: 40px; margin-bottom: 20px; animation: spin 1s linear infinite; }
 
-    /* 특성 레이아웃 (2단) */
+    /* 특성 레이아웃 */
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
     
@@ -292,11 +297,8 @@
 <div class="container">
   <!-- 상단 네비게이션 -->
   <div class="navbar">
-    
-    <!-- 1. 좌측 로고 (고정) -->
     <div class="logo" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0])">FCO<span>.GG</span></div>
     
-    <!-- 2. 중앙 탭 영역 (스크롤 처리, 애니메이션 텍스트 제거) -->
     <div class="nav-center">
       <div class="main-tabs">
         <button class="tab-btn active" onclick="switchTab('search', this)">전적 & 구단 분석</button>
@@ -308,16 +310,13 @@
       </div>
     </div>
     
-    <!-- 3. 우측 버튼 영역 (고정) -->
     <div class="nav-right-area">
-      <!-- 📢 공지사항 버튼 -->
       <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
         📢
         <div id="notice-dot" class="notice-red-dot"></div>
       </div>
       <button class="donate-btn" onclick="alert('후원 계좌: 1002 5837 0089 김*율\n감사합니다!')">💛 후원하기</button>
     </div>
-    
   </div>
 
   <!-- 1️⃣ 전적 & 구단 분석 탭 -->
@@ -436,37 +435,27 @@
       <p style="margin-bottom:8px;">유저들에게 가장 많은 추천을 받은 매너 구단주 랭킹입니다.</p>
     </div>
     
-    <div class="tier-board" id="top10-list-container" style="max-width: 800px; margin: 0 auto;">
-      <!-- JS에서 랭킹 리스트가 렌더링 됩니다 -->
-    </div>
+    <div class="tier-board" id="top10-list-container" style="max-width: 800px; margin: 0 auto;"></div>
   </div>
 
 </div>
 
-<!-- ============================================== -->
 <!-- 📢 공지사항 팝업 창 -->
-<!-- ============================================== -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
     <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
+      <div>💎 <b style="color:#fff;">[NEW] 스쿼드 4단계 강화 뱃지(갈/은/금/백금) 완벽 지원!</b></div>
+      <div style="font-size:13px; color:#CBD5E1;">- 1~4강: 갈색 / 5~7강: 은색 / 8~10강: 금색 / 11강 이상: 백금색(영롱한 네온 광채)으로 뱃지가 표시됩니다!</div>
       <div>🌟 <b style="color:#fff;">[NEW] 인기 구단주 명예의 전당 오픈!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 매너 좋은 구단주를 추천해 주세요! 상단 '인기 구단주 랭킹' 탭에서 실시간 추천 랭킹 TOP 10을 확인할 수 있습니다.</div>
       <div>💬 <b style="color:#fff;">[NEW] 구단주 방명록(후기) 기능 추가!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 프로필 하단에 구단주와의 매치 후기를 남기고 다른 사람들의 평가도 확인해 보세요!</div>
-      <div style="margin-top:8px; border-top:1px dashed var(--border-color); padding-top:12px;">⚡ <b style="color:#fff;">스쿼드 최신화 딜레이 해결!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 단 1판만 플레이해도 <b style="color:var(--primary-blue)">가장 마지막 경기에 사용한 최신 11명 선발 명단</b>이 즉시 반영됩니다.</div>
-      <div>✨ <b style="color:#fff;">선수 강화 등급(+5, +8) 표시</b></div>
-      <div>⚔️ <b style="color:#fff;">1:1 상대전적 UI 대규모 개편!</b></div>
-      <div>🎨 <b style="color:#fff;">커스텀 배경화면 설정 & 초기화</b></div>
+      <div>⚡ <b style="color:#fff;">스쿼드 최신 선발 11명 즉시 반영</b></div>
     </div>
   </div>
 </div>
 
-<!-- ============================================== -->
 <!-- 🌟 상세 프로필 모달 팝업 창 -->
-<!-- ============================================== -->
 <div id="profile-modal" class="modal-overlay">
   <div class="modal-content">
     <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
@@ -486,7 +475,6 @@
             <span id="controller-info" style="font-size:12px; font-weight:800; color:#fff; background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:10px; display:none; align-items:center; gap:6px;"></span>
           </div>
           
-          <!-- 추천 & 신고 액션 버튼 -->
           <div class="user-action-btns">
             <button class="action-btn btn-rec" onclick="actRecommend()">👍 추천 (<span id="prof-rec-cnt">0</span>)</button>
             <button class="action-btn btn-rep" onclick="actReport()">🚨 비매너 신고</button>
@@ -568,18 +556,14 @@
           <button class="review-submit" onclick="addReview()">작성</button>
         </div>
         
-        <div id="review-list" class="review-list">
-          <!-- 후기 리스트 렌더링 영역 -->
-        </div>
+        <div id="review-list" class="review-list"></div>
       </div>
       
     </div>
   </div>
 </div>
 
-<!-- ============================================== -->
-<!-- 🌟 서브 팝업 창 (심층 세부 리포트) -->
-<!-- ============================================== -->
+<!-- 서브 팝업 창 (심층 세부 리포트) -->
 <div id="sub-detail-modal" class="sub-modal-overlay">
   <div class="sub-modal-content">
     <button class="modal-close-btn" onclick="closeSubDetailModal()">✕</button>
@@ -614,7 +598,30 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const LATEST_NOTICE_VERSION = "20260818_v25_applied";
+  // ==========================================================
+  // 🌟 [Firebase 설정 영역]
+  // Firebase 콘솔에서 발급받은 키를 아래에 넣으면 전 세계 유저와 실시간 동기화됩니다!
+  // ==========================================================
+  let db = null;
+  const firebaseConfig = {
+    apiKey: "", // ⬅️ 여기에 넣기
+    authDomain: "",
+    projectId: "", // ⬅️ 여기에 넣기
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+  };
+
+  // Firebase 키가 입력되어 있으면 클라우드 DB 연결, 없으면 로컬 스토리지로 스마트 작동
+  if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      console.log("🔥 Firebase 실시간 클라우드 DB 연동 완료!");
+    } catch(e) { console.error("Firebase 초기화 에러:", e); }
+  }
+
+  const LATEST_NOTICE_VERSION = "20260818_v26_applied";
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
@@ -657,86 +664,155 @@
     });
   });
 
-  function initMockDBUser(ouid, nickname) {
-    let users = JSON.parse(localStorage.getItem('fco_users')) || {};
-    if (!users[ouid]) {
-      users[ouid] = { nickname: nickname, rec: 0, rep: 0 };
+  // ==============================================
+  // 🌟 유저 추천 / 신고 / 후기 데이터 동기화 함수 🌟
+  // ==============================================
+  async function initMockDBUser(ouid, nickname) {
+    if (db) {
+      const userRef = db.collection('users').doc(ouid);
+      const doc = await userRef.get();
+      if (!doc.exists) {
+        await userRef.set({ nickname: nickname, rec: 0, rep: 0 }, { merge: true });
+        return { nickname: nickname, rec: 0, rep: 0 };
+      } else {
+        await userRef.update({ nickname: nickname });
+        return doc.data();
+      }
     } else {
-      users[ouid].nickname = nickname; 
-    }
-    localStorage.setItem('fco_users', JSON.stringify(users));
-    return users[ouid];
-  }
-
-  function actRecommend() {
-    let users = JSON.parse(localStorage.getItem('fco_users')) || {};
-    let currentUser = users[globalOuid];
-    if (currentUser) {
-      currentUser.rec += 1;
+      let users = JSON.parse(localStorage.getItem('fco_users')) || {};
+      if (!users[ouid]) {
+        users[ouid] = { nickname: nickname, rec: 0, rep: 0 };
+      } else {
+        users[ouid].nickname = nickname; 
+      }
       localStorage.setItem('fco_users', JSON.stringify(users));
-      document.getElementById('prof-rec-cnt').innerText = currentUser.rec;
-      renderTop10();
-      alert(`👍 '${globalNickname}' 구단주를 추천했습니다!`);
+      return users[ouid];
     }
   }
 
-  function actReport() {
-    if(confirm(`🚨 정말로 '${globalNickname}' 구단주를 비매너 신고하시겠습니까?\n(누적 신고 시 주의 구단주로 표시될 수 있습니다)`)) {
+  async function actRecommend() {
+    if (db) {
+      const userRef = db.collection('users').doc(globalOuid);
+      await userRef.set({
+        nickname: globalNickname,
+        rec: firebase.firestore.FieldValue.increment(1)
+      }, { merge: true });
+      const updatedDoc = await userRef.get();
+      document.getElementById('prof-rec-cnt').innerText = updatedDoc.data().rec || 0;
+      renderTop10();
+      alert(`👍 '${globalNickname}' 구단주를 추천했습니다! (실시간 반영됨)`);
+    } else {
       let users = JSON.parse(localStorage.getItem('fco_users')) || {};
       let currentUser = users[globalOuid];
       if (currentUser) {
-        currentUser.rep += 1;
+        currentUser.rec += 1;
         localStorage.setItem('fco_users', JSON.stringify(users));
-        alert('신고가 접수되었습니다. 깨끗한 FC 온라인 문화를 위해 감사합니다.');
+        document.getElementById('prof-rec-cnt').innerText = currentUser.rec;
+        renderTop10();
+        alert(`👍 '${globalNickname}' 구단주를 추천했습니다!`);
       }
     }
   }
 
-  function addReview() {
+  async function actReport() {
+    if(confirm(`🚨 정말로 '${globalNickname}' 구단주를 비매너 신고하시겠습니까?\n(누적 신고 시 주의 구단주로 표시될 수 있습니다)`)) {
+      if (db) {
+        const userRef = db.collection('users').doc(globalOuid);
+        await userRef.set({
+          nickname: globalNickname,
+          rep: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true });
+        alert('신고가 접수되었습니다. 깨끗한 FC 온라인 문화를 위해 감사합니다.');
+      } else {
+        let users = JSON.parse(localStorage.getItem('fco_users')) || {};
+        let currentUser = users[globalOuid];
+        if (currentUser) {
+          currentUser.rep += 1;
+          localStorage.setItem('fco_users', JSON.stringify(users));
+          alert('신고가 접수되었습니다. 깨끗한 FC 온라인 문화를 위해 감사합니다.');
+        }
+      }
+    }
+  }
+
+  async function addReview() {
     const input = document.getElementById('review-input');
     const text = input.value.trim();
     if(!text) return alert("후기 내용을 입력해 주세요.");
     
-    let reviews = JSON.parse(localStorage.getItem('fco_reviews')) || {};
-    if(!reviews[globalOuid]) reviews[globalOuid] = [];
-    
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
     
-    reviews[globalOuid].push({ text: text, date: dateStr });
-    localStorage.setItem('fco_reviews', JSON.stringify(reviews));
-    
-    input.value = '';
-    loadReviews();
+    if (db) {
+      await db.collection('users').doc(globalOuid).collection('reviews').add({
+        text: text,
+        date: dateStr,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      input.value = '';
+      loadReviews();
+    } else {
+      let reviews = JSON.parse(localStorage.getItem('fco_reviews')) || {};
+      if(!reviews[globalOuid]) reviews[globalOuid] = [];
+      reviews[globalOuid].push({ text: text, date: dateStr });
+      localStorage.setItem('fco_reviews', JSON.stringify(reviews));
+      input.value = '';
+      loadReviews();
+    }
   }
 
-  function loadReviews() {
-    let reviews = JSON.parse(localStorage.getItem('fco_reviews')) || {};
-    let list = reviews[globalOuid] || [];
+  async function loadReviews() {
     let listEl = document.getElementById('review-list');
     
-    if(list.length === 0) {
-      listEl.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub); font-size:14px; border:1px dashed var(--border-color); border-radius:14px;">첫 번째 후기를 남겨주세요!</div>`;
-      return;
-    }
-    
-    listEl.innerHTML = list.slice().reverse().map(r => `
-      <div class="review-item">
-        <div class="review-meta">
-          <span>💬 익명</span>
-          <span>${r.date}</span>
+    if (db) {
+      const snap = await db.collection('users').doc(globalOuid).collection('reviews').orderBy('createdAt', 'desc').get();
+      if(snap.empty) {
+        listEl.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub); font-size:14px; border:1px dashed var(--border-color); border-radius:14px;">첫 번째 후기를 남겨주세요!</div>`;
+        return;
+      }
+      listEl.innerHTML = snap.docs.map(doc => {
+        const r = doc.data();
+        return `
+          <div class="review-item">
+            <div class="review-meta">
+              <span>💬 익명</span>
+              <span>${r.date || ''}</span>
+            </div>
+            <div class="review-text">${r.text}</div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      let reviews = JSON.parse(localStorage.getItem('fco_reviews')) || {};
+      let list = reviews[globalOuid] || [];
+      if(list.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub); font-size:14px; border:1px dashed var(--border-color); border-radius:14px;">첫 번째 후기를 남겨주세요!</div>`;
+        return;
+      }
+      listEl.innerHTML = list.slice().reverse().map(r => `
+        <div class="review-item">
+          <div class="review-meta">
+            <span>💬 익명</span>
+            <span>${r.date}</span>
+          </div>
+          <div class="review-text">${r.text}</div>
         </div>
-        <div class="review-text">${r.text}</div>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 
-  function renderTop10() {
-    let users = JSON.parse(localStorage.getItem('fco_users')) || {};
-    let arr = Object.values(users).filter(u => u.rec > 0).sort((a, b) => b.rec - a.rec);
+  async function renderTop10() {
     let listEl = document.getElementById('top10-list-container');
-    
     if(!listEl) return;
+
+    let arr = [];
+    if (db) {
+      const snap = await db.collection('users').where('rec', '>', 0).orderBy('rec', 'desc').limit(10).get();
+      arr = snap.docs.map(d => d.data());
+    } else {
+      let users = JSON.parse(localStorage.getItem('fco_users')) || {};
+      arr = Object.values(users).filter(u => u.rec > 0).sort((a, b) => b.rec - a.rec);
+    }
 
     if(arr.length === 0) {
       listEl.innerHTML = `<div style="text-align:center; padding:60px 10px; color:var(--text-sub); font-size:15px; background:#0F172A; border-radius:16px; border:1px dashed var(--border-color);">아직 추천받은 구단주가 없습니다.<br>검색을 통해 첫 번째 추천의 주인공을 만들어주세요!</div>`;
@@ -952,7 +1028,6 @@
       
       arr.forEach((item) => {
         let iconHtml = "";
-        
         if(traitImgMap[item.n]) {
           iconHtml = `<img src="${traitImgMap[item.n]}" style="width: 50px; height: 56px; object-fit: contain;">`;
         } else {
@@ -961,7 +1036,6 @@
           else if(item.n.includes('태클') || item.n.includes('수비') || item.n.includes('압박') || item.n.includes('블로커') || item.n.includes('몸싸움')) iconTxt = "🛡️";
           else if(item.n.includes('패스') || item.n.includes('빌드업') || item.n.includes('크로스') || item.n.includes('찬스') || item.n.includes('레이저') || item.n.includes('이동')) iconTxt = "🎯";
           else if(item.n.includes('템포') || item.n.includes('반응') || item.n.includes('심장') || item.n.includes('스피드')) iconTxt = "⚡";
-          
           iconHtml = `<div class="trait-hex silver" style="width:50px; height:56px; font-size:20px;">${iconTxt}</div>`;
         }
 
@@ -1148,8 +1222,8 @@
     document.getElementById('profile-level').innerText = globalLevel;
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
 
-    let mockUser = initMockDBUser(globalOuid, globalNickname);
-    document.getElementById('prof-rec-cnt').innerText = mockUser.rec;
+    let mockUser = await initMockDBUser(globalOuid, globalNickname);
+    document.getElementById('prof-rec-cnt').innerText = mockUser.rec || 0;
 
     if (globalMaxTierId) {
       const imgEl = document.getElementById('profile-tier-img');
@@ -1324,6 +1398,7 @@
 
     let linesHTML = { fw: [], mf: [], df: [], gk: [] };
 
+    // 🌟 최신 1경기 스쿼드 렌더링 (4단계 강화 뱃지 색상 완벽 적용)
     if (latestMatchPlayers && latestMatchPlayers.length > 0) {
       latestMatchPlayers.forEach(p => {
         let spId = p.spId;
@@ -1341,14 +1416,25 @@
         if (avgRating >= 7.5) ratingColor = '#10B981'; 
         else if (avgRating >= 6.0) ratingColor = '#FACC15'; 
 
-        let gradeBg = "#334155"; let gradeColor = "#fff";
-        if (grade >= 8) { gradeBg = "#EAB308"; gradeColor = "#000"; } 
-        else if (grade >= 5) { gradeBg = "#94A3B8"; gradeColor = "#000"; } 
-        else if (grade >= 2) { gradeBg = "#B45309"; gradeColor = "#fff"; } 
+        // 🌟 4단계 강화 뱃지 스타일링 분기 (갈/은/금/백금)
+        let gradeStyle = "";
+        if (grade >= 11) {
+          // 💎 11강 이상: 백금색 (영롱한 네온 광채)
+          gradeStyle = "background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 50%, #38bdf8 100%); color: #082f49; box-shadow: 0 0 10px rgba(56,189,248,0.9); border: 1px solid #ffffff;";
+        } else if (grade >= 8) {
+          // 🥇 8~10강: 금색 (골드)
+          gradeStyle = "background: linear-gradient(135deg, #fef08a 0%, #eab308 100%); color: #422006; border: 1px solid #713f12;";
+        } else if (grade >= 5) {
+          // 🥈 5~7강: 은색 (실버)
+          gradeStyle = "background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%); color: #0f172a; border: 1px solid #334155;";
+        } else {
+          // 🥉 5강 미만 (1~4강): 갈색 (브론즈)
+          gradeStyle = "background: linear-gradient(135deg, #d97706 0%, #92400e 100%); color: #ffffff; border: 1px solid #451a03;";
+        }
 
         linesHTML[posData.line].push(`
           <div class="player-node" style="position:relative;">
-            <div style="position:absolute; top:-6px; right:-6px; background:${gradeBg}; color:${gradeColor}; font-size:10px; font-weight:900; padding:2px 4px; border-radius:4px; border:1px solid #000; z-index:10;">+${grade}</div>
+            <div style="position:absolute; top:-6px; right:-6px; ${gradeStyle} font-size:10px; font-weight:900; padding:2px 5px; border-radius:4px; z-index:10;">+${grade}</div>
             <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p${pid}.png';" style="border: 3px solid ${ratingColor};">
             <div class="rating-badge" style="color:${ratingColor};">${posData.label} | ${avgRating}</div>
             <div class="player-name-tag">${spidMetaCache[spId] || '선수'}</div>
@@ -1432,7 +1518,6 @@
         if (mData?.matchInfo?.length === 2) {
           const p1 = mData.matchInfo[0], p2 = mData.matchInfo[1];
           if ((p1.ouid === o1 && p2.ouid === o2) || (p1.ouid === o2 && p2.ouid === o1)) {
-            
             const myInfo = p1.ouid === o1 ? p1 : p2;
             const enInfo = p1.ouid === o1 ? p2 : p1;
             
