@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta name="google-site-verification" content="olVjRMLIJBwHcAcqcC0ti2xoJ3nOOUGfQG6KRrfByX4" />
   <meta name="naver-site-verification" content="db9cadad073089ac153a33a7a2fe2bfd77b40ab2" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7544544221453211"
-     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7544544221453211" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FCO.GG | FC 온라인 전적검색 및 티어리스트</title>
-<meta name="description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 한눈에! FCO.GG에서 간편하게 내 전적과 실시간 정보를 확인하세요.">
-<meta name="keywords" content="FC온라인, 피파온라인4, 피파, FC온라인전적검색, 피파전적검색,FC온라인티어리스트,FCOGG,피파전적검색사이트,FC온라인전적검색">
-  <meta property="og:title" content="FCO.GG | FC 온라인 전적검색 및 최신 티어리스트">
-    <meta property="og:description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 확인하세요.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fcogg.xyz">
-    <meta property="og:image" content="https://fcogg.xyz/IMG_0460.jpeg">
-    <meta property="og:site_name" content="FCO.GG">
-    <link rel="canonical" href="https://fcogg.xyz">
+  
+  <!-- SEO 및 OG 메타 태그 (FC온라인 & 피파온라인4 통합 최적화) -->
+  <title>FCO.GG | FC 온라인 & 피파 온라인 4 전적 검색, 티어리스트</title>
+  <meta name="description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 한눈에! FCO.GG에서 간편하게 내 전적과 실시간 정보를 확인하세요.">
+  <meta name="keywords" content="FC온라인, 피파온라인4, 피파, FC온라인전적검색, 피파전적검색, FC온라인티어리스트, FCOGG">
+
+  <!-- 오픈 그래프(카톡/디스코드/SNS 공유용) -->
+  <meta property="og:title" content="FCO.GG | FC 온라인 & 피파 온라인 4 전적 검색">
+  <meta property="og:description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 확인하세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fcogg.xyz">
+  <meta property="og:image" content="https://fcogg.xyz/IMG_0460.jpeg">
+  <meta property="og:site_name" content="FCO.GG">
+  <link rel="canonical" href="https://fcogg.xyz">
+  
   <meta name="google-site-verification" content="mVj35GvGb1fgDlgSLk_hK5wVBtDJgHRkZWj6kXkvYmg" />
   <link rel="icon" type="image/jpeg" href="IMG_0460.jpeg">
   
@@ -73,13 +76,13 @@
     
     .nav-center { flex: 1; min-width: 0; margin: 0 20px; position: relative; display: flex; flex-direction: column; justify-content: center; }
 
-    .main-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+    .main-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
     .main-tabs::-webkit-scrollbar { height: 6px; }
     .main-tabs::-webkit-scrollbar-track { background: rgba(0,0,0,0.15); border-radius: 10px; }
     .main-tabs::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.4); border-radius: 10px; }
     .main-tabs::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.8); }
 
-    .tab-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; font-weight: 700; padding: 12px 18px; cursor: pointer; border-radius: 12px; transition: 0.3s; white-space: nowrap; }
+    .tab-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; font-weight: 700; padding: 12px 18px; cursor: pointer; border-radius: 12px; transition: 0.3s; white-space: nowrap; user-select: none; }
     .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
     .tab-btn.active { color: #fff; background-color: var(--primary-blue); box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3); }
 
@@ -116,8 +119,13 @@
     }
     .donate-btn:hover { background: rgba(234, 179, 8, 0.3); color: #fff; transform: translateY(-2px); }
 
-    .sub-tabs { display: flex; gap: 10px; margin-bottom: 24px; }
-    .sub-tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); font-size: 13px; font-weight: 700; padding: 10px 24px; cursor: pointer; border-radius: 12px; transition: 0.2s; }
+    .sub-tabs { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
+    .sub-tabs::-webkit-scrollbar { height: 6px; }
+    .sub-tabs::-webkit-scrollbar-track { background: rgba(0,0,0,0.15); border-radius: 10px; }
+    .sub-tabs::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.4); border-radius: 10px; }
+    .sub-tabs::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.8); }
+
+    .sub-tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); font-size: 13px; font-weight: 700; padding: 10px 24px; cursor: pointer; border-radius: 12px; transition: 0.2s; white-space: nowrap; user-select: none; }
     .sub-tab-btn:hover { border-color: var(--primary-blue); color: #fff; }
     .sub-tab-btn.active { color: #fff; background-color: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
@@ -313,7 +321,7 @@
     <div class="logo" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0])">FCO<span>.GG</span></div>
     
     <div class="nav-center">
-      <div class="main-tabs">
+      <div class="main-tabs" id="scrollable-menu-1">
         <button class="tab-btn active" onclick="switchTab('search', this)">전적 & 구단 분석</button>
         <button class="tab-btn" onclick="switchTab('h2h', this)">1:1 상대전적</button>
         <button class="tab-btn" onclick="switchTab('player', this)">포지션별 선수 티어</button>
@@ -371,7 +379,7 @@
 
   <!-- 3️⃣ 포지션별 선수 티어 탭 -->
   <div id="tab-player" class="tab-content">
-    <div class="sub-tabs">
+    <div class="sub-tabs" id="scrollable-menu-2">
       <button class="sub-tab-btn active" onclick="switchSubTab('fw', this)">FW (공격수)</button>
       <button class="sub-tab-btn" onclick="switchSubTab('mf', this)">MF (미드필더)</button>
       <button class="sub-tab-btn" onclick="switchSubTab('df', this)">DF (수비수)</button>
@@ -613,7 +621,6 @@
 
   // ==========================================================
   // 🌟 [Firebase 설정 영역]
-  // 사진에서 추출한 구단주님의 고유 API 키값을 완벽하게 입력했습니다!
   // ==========================================================
   let db = null;
   const firebaseConfig = {
@@ -633,8 +640,45 @@
     } catch(e) { console.error("Firebase 초기화 에러:", e); }
   }
 
+  // 🌟 탭 메뉴 마우스 휠 & 드래그 스크롤 기능 🌟
+  function setupHorizontalScroll(elId) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+
+    // 1. 마우스 휠로 가로 스크롤
+    el.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        el.scrollLeft += (e.deltaY * 0.8); 
+      }
+    }, { passive: false });
+
+    // 2. 마우스 클릭 & 드래그로 가로 스크롤
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    el.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    });
+    window.addEventListener('mouseup', () => { isDown = false; });
+    el.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX) * 1.5; // 스크롤 속도 조절
+      el.scrollLeft = scrollLeft - walk;
+    });
+  }
+
   const LATEST_NOTICE_VERSION = "20260818_v26_applied";
   window.addEventListener('DOMContentLoaded', () => {
+    // 스크롤 기능 활성화 (메인 메뉴, 서브 메뉴)
+    setupHorizontalScroll('scrollable-menu-1');
+    setupHorizontalScroll('scrollable-menu-2');
+
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) {
       document.getElementById('notice-dot').style.display = 'block';
     }
@@ -921,28 +965,29 @@
     return tierBadgeMap[String(divId)] || "ico_rank0.png";
   }
 
+  // 🌟 업데이트된 최신 팀컬러 점유율 데이터 🌟
   const teamColorData = [
-    { name: "레알 마드리드", rate: 7.8, count: 421, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "리버풀", rate: 6.5, count: 350, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "바이에른 뮌헨", rate: 5.8, count: 314, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "FC 바르셀로나", rate: 5.6, count: 301, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "첼시", rate: 5.3, count: 287, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "롬바르디아 FC", rate: 4.8, count: 261, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
-    { name: "아스널", rate: 4.7, count: 254, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
-    { name: "대한민국", rate: 4.1, count: 220, logo: "https://flagcdn.com/w160/kr.png" },
-    { name: "브라질", rate: 3.8, count: 206, logo: "https://flagcdn.com/w160/br.png" },
-    { name: "맨체스터 시티", rate: 3.8, count: 204, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
-    { name: "스페인", rate: 3.7, count: 201, logo: "https://flagcdn.com/w160/es.png" },
-    { name: "맨체스터 유나이티드", rate: 3.7, count: 198, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "밀라노 FC", rate: 3.2, count: 170, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
-    { name: "프랑스", rate: 3.1, count: 169, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "독일", rate: 2.8, count: 150, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "잉글랜드", rate: 2.7, count: 148, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/gb-eng.png" },
-    { name: "유벤투스", rate: 2.7, count: 146, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
-    { name: "파리 생제르맹", rate: 2.5, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
-    { name: "아틀레티코 마드리드", rate: 1.7, count: 93, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
-    { name: "토트넘 홋스퍼", rate: 1.6, count: 87, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
-    { name: "바이엘 04 레버쿠젠", rate: 1.5, count: 80, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
+    { name: "레알 마드리드", rate: 7.5, count: 381, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "바이에른 뮌헨", rate: 5.9, count: 300, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "리버풀", rate: 5.8, count: 295, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "FC 바르셀로나", rate: 5.6, count: 283, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "첼시", rate: 5.5, count: 278, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "아스널", rate: 5.2, count: 262, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "롬바르디아 FC", rate: 4.9, count: 248, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
+    { name: "브라질", rate: 4.2, count: 214, logo: "https://flagcdn.com/w160/br.png" },
+    { name: "맨체스터 유나이티드", rate: 4.0, count: 202, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "맨체스터 시티", rate: 3.7, count: 188, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "대한민국", rate: 3.7, count: 188, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "스페인", rate: 3.5, count: 175, logo: "https://flagcdn.com/w160/es.png" },
+    { name: "밀라노 FC", rate: 3.2, count: 163, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
+    { name: "프랑스", rate: 2.9, count: 148, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "잉글랜드", rate: 2.7, count: 135, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "파리 생제르맹", rate: 2.6, count: 131, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "유벤투스", rate: 2.5, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "독일", rate: 2.5, count: 126, logo: "https://flagcdn.com/w160/de.png" },
+    { name: "아틀레티코 마드리드", rate: 1.8, count: 91, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
+    { name: "포르투갈", rate: 1.7, count: 85, logo: "https://flagcdn.com/w160/pt.png" },
+    { name: "이탈리아", rate: 1.7, count: 84, logo: "https://flagcdn.com/w160/it.png" }
   ];
 
   function renderTeamColorTierList() {
