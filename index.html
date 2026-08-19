@@ -253,7 +253,7 @@
     .h2h-gauge-win { background: linear-gradient(90deg, #1D4ED8, #3B82F6); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #fff; transition: width 1s ease-in-out; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
     .h2h-gauge-draw { background: linear-gradient(90deg, #334155, #64748B); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #fff; transition: width 1s ease-in-out; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
     .h2h-gauge-lose { background: linear-gradient(90deg, #BE123C, #F43F5E); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #fff; transition: width 1s ease-in-out; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-    .h2h-stats-text { display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: var(--text-sub); margin-bottom: 40px; padding: 0 10px; }
+    .h2h-stats-text { display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; color: var(--text-sub); margin-bottom: 20px; padding: 0 10px; }
 
     /* 🌟 H2H 500경기 로딩 게이지 바 CSS 🌟 */
     .progress-container { width: 100%; max-width: 500px; margin: 20px auto; background: #0F172A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); padding: 4px; overflow: hidden; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
@@ -472,17 +472,36 @@
 
 </div>
 
-<!-- 📢 공지사항 팝업 창 -->
+<!-- 🌟 📢 업데이트된 공지사항 팝업 창 -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
-    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항</div>
-    <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
-      <div>💎 <b style="color:#fff;">[NEW] 스쿼드 4단계 강화 뱃지(갈/은/금/백금) 완벽 지원!</b></div>
-      <div style="font-size:13px; color:#CBD5E1;">- 1~4강: 갈색 / 5~7강: 은색 / 8~10강: 금색 / 11강 이상: 백금색(영롱한 네온 광채)으로 뱃지가 표시됩니다!</div>
-      <div>🌟 <b style="color:#fff;">[NEW] 1:1 상대전적 친선경기 스캔 추가!</b></div>
-      <div>💬 <b style="color:#fff;">[NEW] 구단주 방명록(후기) 기능 추가!</b></div>
-      <div>⚡ <b style="color:#fff;">스쿼드 최신 선발 11명 즉시 반영</b></div>
+    <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:14px;">📢 공지사항 (업데이트 노트)</div>
+    
+    <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:14px;">
+      
+      <div>🔥 <b style="color:var(--primary-blue);">[대규모 업데이트] 1:1 상대전적 초정밀 스캔</b></div>
+      <div style="font-size:13px; color:#CBD5E1; padding-left:10px;">
+        - 스캔 범위가 <b>공식경기 500판 + 친선경기 200판</b>으로 대폭 늘어났습니다!<br>
+        - 상대전적 결과에 경기 종류(공식/친선) 뱃지가 추가되었습니다.<br>
+        - 로딩 화면에 초정밀 진행률(%) 게이지 바가 탑재되었습니다.<br>
+        - 이제 상대전적 결과창에서 누가 한수 위인지 재미있는 코멘트가 뜹니다!
+      </div>
+      
+      <div style="margin-top:6px;">👑 <b style="color:var(--tier-op);">[NEW] 스쿼드 베스트 11 시즌 마크 표시</b></div>
+      <div style="font-size:13px; color:#CBD5E1; padding-left:10px;">
+        - 전적 검색 후 스쿼드 포메이션을 볼 때, 선수들의 시즌 로고가 함께 표시됩니다.
+      </div>
+      
+      <div style="margin-top:6px;">🖱️ <b style="color:#fff;">[UX 개선] 상단 메뉴 가로 스크롤 지원</b></div>
+      <div style="font-size:13px; color:#CBD5E1; padding-left:10px;">
+        - PC 환경에서 마우스 휠 및 마우스 클릭 드래그로 탭 메뉴를 부드럽게 넘길 수 있습니다.
+      </div>
+
+      <hr style="border-color: rgba(255,255,255,0.05); margin: 4px 0;">
+
+      <div>💎 <b style="color:#fff;">스쿼드 4단계 강화 뱃지(갈/은/금/백금) 적용 완료!</b></div>
+      <div>💬 <b style="color:#fff;">구단주 방명록(후기) 기능 정상 서비스 중!</b></div>
     </div>
   </div>
 </div>
@@ -691,7 +710,9 @@
     });
   }
 
-  const LATEST_NOTICE_VERSION = "20260818_v26_applied";
+  // 🌟 공지사항 버전 업데이트됨! 🌟
+  const LATEST_NOTICE_VERSION = "20260819_v28_applied";
+  
   window.addEventListener('DOMContentLoaded', () => {
     setupHorizontalScroll('scrollable-menu-1');
     setupHorizontalScroll('scrollable-menu-2');
@@ -1483,6 +1504,9 @@
         let posData = positionMap[posId] || { label: 'SUB', line: 'df' }; 
         let pid = parseInt(String(spId).substring(3), 10);
         
+        // 🌟 시즌 ID 추출 (spId의 앞 3자리)
+        let seasonId = Math.floor(spId / 1000000);
+        
         let ratingColor = '#F43F5E'; 
         if (avgRating >= 7.5) ratingColor = '#10B981'; 
         else if (avgRating >= 6.0) ratingColor = '#FACC15'; 
@@ -1504,6 +1528,9 @@
 
         linesHTML[posData.line].push(`
           <div class="player-node" style="position:relative;">
+            <!-- 🌟 시즌 마크 오버레이 -->
+            <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/classes/ico_tr${seasonId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/classes/ico_tr${seasonId}_sm.png'; this.onerror=function(){this.style.display='none';};" style="position:absolute; top:-10px; left:-14px; width:28px; height:22px; object-fit:contain; z-index:10; background:transparent !important; border:none !important; border-radius:0 !important;">
+            
             <div style="position:absolute; top:-6px; right:-6px; ${gradeStyle} font-size:10px; font-weight:900; padding:2px 5px; border-radius:4px; z-index:10;">+${grade}</div>
             <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p${pid}.png';" style="border: 3px solid ${ratingColor};">
             <div class="rating-badge" style="color:${ratingColor};">${posData.label} | ${avgRating}</div>
@@ -1675,6 +1702,16 @@
       const wPct = total > 0 ? (u1Wins / total * 100).toFixed(0) : 0;
       const dPct = total > 0 ? (draws / total * 100).toFixed(0) : 0;
       const lPct = total > 0 ? (u2Wins / total * 100).toFixed(0) : 0;
+      
+      // 🌟 한 수 위 멘트 계산 로직 🌟
+      let commentHtml = "";
+      if (u1Wins > u2Wins) {
+          commentHtml = `<div style="text-align:center; font-size:22px; font-weight:900; color:#10B981; margin-bottom:30px; text-shadow:0 2px 5px rgba(0,0,0,0.5);">😎 ${user1}님이 한 수 위네요!</div>`;
+      } else if (u1Wins < u2Wins) {
+          commentHtml = `<div style="text-align:center; font-size:22px; font-weight:900; color:#F43F5E; margin-bottom:30px; text-shadow:0 2px 5px rgba(0,0,0,0.5);">😱 ${user2}님이 한 수 위네요!</div>`;
+      } else {
+          commentHtml = `<div style="text-align:center; font-size:22px; font-weight:900; color:#FACC15; margin-bottom:30px; text-shadow:0 2px 5px rgba(0,0,0,0.5);">🔥 막상막하! 우열을 가릴 수 없는 라이벌!</div>`;
+      }
 
       resultBox.innerHTML = `
         <div class="h2h-card">
@@ -1697,6 +1734,8 @@
             <span style="color: #94A3B8;">${draws}무</span>
             <span style="color: #F43F5E;">${u2Wins}승</span>
           </div>
+          
+          ${commentHtml}
 
           <div style="margin-top: 30px; text-align: left; background: rgba(0,0,0,0.2); padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
             <h4 style="color:#fff; margin-bottom: 16px; font-size: 18px; font-weight: 800; display:flex; align-items:center; gap:8px;">⚔️ 상세 맞대결 리스트 <span style="font-size:13px; color:var(--text-sub); font-weight:600;">(최근 스캔 기록 중 ${total}번 만남)</span></h4>
