@@ -480,7 +480,7 @@
     <div style="font-size:14px; color:var(--text-sub); line-height:1.6; background:#0F172A; padding:20px; border-radius:16px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:12px;">
       <div>💎 <b style="color:#fff;">[NEW] 스쿼드 4단계 강화 뱃지(갈/은/금/백금) 완벽 지원!</b></div>
       <div style="font-size:13px; color:#CBD5E1;">- 1~4강: 갈색 / 5~7강: 은색 / 8~10강: 금색 / 11강 이상: 백금색(영롱한 네온 광채)으로 뱃지가 표시됩니다!</div>
-      <div>🌟 <b style="color:#fff;">[NEW] 인기 구단주 명예의 전당 오픈!</b></div>
+      <div>🌟 <b style="color:#fff;">[NEW] 1:1 상대전적 친선경기 스캔 추가!</b></div>
       <div>💬 <b style="color:#fff;">[NEW] 구단주 방명록(후기) 기능 추가!</b></div>
       <div>⚡ <b style="color:#fff;">스쿼드 최신 선발 11명 즉시 반영</b></div>
     </div>
@@ -651,12 +651,20 @@
     } catch(e) { console.error("Firebase 초기화 에러:", e); }
   }
 
+  // 매치 종류 표시용 데이터맵
+  const matchTypeMap = {
+    50: "공식경기",
+    60: "공식 친선",
+    40: "클래식 1on1",
+    52: "감독모드",
+    30: "리그 친선"
+  };
+
   // 🌟 탭 메뉴 마우스 휠 & 드래그 스크롤 기능 🌟
   function setupHorizontalScroll(elId) {
     const el = document.getElementById(elId);
     if (!el) return;
 
-    // 1. 마우스 휠로 가로 스크롤
     el.addEventListener('wheel', (e) => {
       if (e.deltaY !== 0) {
         e.preventDefault();
@@ -664,7 +672,6 @@
       }
     }, { passive: false });
 
-    // 2. 마우스 클릭 & 드래그로 가로 스크롤
     let isDown = false;
     let startX;
     let scrollLeft;
@@ -679,14 +686,13 @@
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
-      const walk = (x - startX) * 1.5; // 스크롤 속도 조절
+      const walk = (x - startX) * 1.5; 
       el.scrollLeft = scrollLeft - walk;
     });
   }
 
   const LATEST_NOTICE_VERSION = "20260818_v26_applied";
   window.addEventListener('DOMContentLoaded', () => {
-    // 스크롤 기능 활성화 (메인 메뉴, 서브 메뉴)
     setupHorizontalScroll('scrollable-menu-1');
     setupHorizontalScroll('scrollable-menu-2');
 
@@ -731,9 +737,6 @@
     });
   });
 
-  // ==============================================
-  // 🌟 유저 추천 / 신고 / 후기 데이터 실시간 통신 함수
-  // ==============================================
   async function initMockDBUser(ouid, nickname) {
     if (db) {
       const userRef = db.collection('users').doc(ouid);
@@ -1127,7 +1130,6 @@
     document.getElementById('trait-content-area').innerHTML = contentHTML;
   }
 
-  // ==== 전적 검색 로직 ====
   async function fetchNexonApi(apiUrl) {
     try {
       const response = await fetch(apiUrl, { headers: { "x-nxopen-api-key": NEXON_API_KEY } });
@@ -1557,7 +1559,7 @@
     else { btn.style.display = 'block'; }
   }
   
-  // 🌟 H2H 500경기 스캔 기능 추가
+  // 🌟 H2H 500경기 (공식+친선) 스캔 기능 추가
   async function searchH2HData() {
     const user1 = document.getElementById('h2h-user1').value.trim();
     const user2 = document.getElementById('h2h-user2').value.trim();
@@ -1569,8 +1571,8 @@
     resultBox.innerHTML = `
       <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:24px; border:1px solid var(--border-color); box-shadow:0 10px 30px rgba(0,0,0,0.3);">
         <div class="spinner">⚽</div>
-        <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:10px;">상대전적을 찾기 위해 최근 500경기를 스캔 중입니다...</div>
-        <div style="font-size:13px; color:var(--text-sub); margin-bottom:20px;">시간이 조금 걸릴 수 있으니 잠시만 기다려주세요!</div>
+        <div style="font-size:20px; font-weight:900; color:#fff; margin-bottom:10px;">상대전적을 찾기 위해 매치 기록을 스캔 중입니다...</div>
+        <div style="font-size:13px; color:var(--text-sub); margin-bottom:20px;">(공식경기 500판 + 친선경기 200판 스캔)<br>시간이 조금 걸릴 수 있으니 잠시만 기다려주세요!</div>
         <div class="progress-container"><div id="h2h-progress" class="progress-bar"></div></div>
         <div id="h2h-progress-text" class="progress-text">0 / 0 경기 스캔 완료 (0%)</div>
       </div>`;
@@ -1584,15 +1586,27 @@
 
       const o1 = id1Data.ouid, o2 = id2Data.ouid;
       
-      // 🌟 최근 500경기 ID 스캔 로직 (0 ~ 400 offset)
       let allIds = [];
+      
+      // 🌟 1. 공식경기 (matchtype=50) 최대 500판 스캔
       for (let offset = 0; offset < 500; offset += 100) {
         const offIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=50&offset=${offset}&limit=100`).catch(()=>[]);
         if (!offIds || offIds.length === 0) break;
         allIds.push(...offIds);
       }
 
-      if (allIds.length === 0) { resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">최근 500경기 내 기록이 없습니다.</div>`; return; }
+      // 🌟 2. 공식 친선경기 (matchtype=60) 최대 100판 스캔
+      const friendlyIds1 = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=60&offset=0&limit=100`).catch(()=>[]);
+      if (friendlyIds1 && friendlyIds1.length > 0) allIds.push(...friendlyIds1);
+
+      // 🌟 3. 클래식 1on1 친선경기 (matchtype=40) 최대 100판 스캔
+      const friendlyIds2 = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${o1}&matchtype=40&offset=0&limit=100`).catch(()=>[]);
+      if (friendlyIds2 && friendlyIds2.length > 0) allIds.push(...friendlyIds2);
+
+      // 중복 ID 제거 (혹시 모를 상황 대비)
+      allIds = [...new Set(allIds)];
+
+      if (allIds.length === 0) { resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">최근 스캔 범위 내에 어떤 기록도 없습니다.</div>`; return; }
 
       let u1Wins = 0, u2Wins = 0, draws = 0;
       let h2hMatchList = [];
@@ -1622,6 +1636,9 @@
               const myScore = parseInt(myInfo.shoot?.goalTotal || 0);
               const enScore = parseInt(enInfo.shoot?.goalTotal || 0);
               const timeAgo = getTimeAgo(mData.matchDate);
+              
+              // 경기 종류(공식/친선) 뱃지 적용
+              const mTypeName = matchTypeMap[mData.matchType] || "친선/기타";
 
               h2hMatchList.push(`
                 <div class="match-item ${sClass}" style="margin-bottom: 12px;">
@@ -1629,7 +1646,10 @@
                   <div class="match-content" style="padding: 14px 24px;">
                     <div class="match-left"><span class="match-result-text ${sClass}">${sText}</span></div>
                     <div class="match-center"><span class="match-score">${myScore} : ${enScore}</span></div>
-                    <div class="match-right"><span>${timeAgo}</span></div>
+                    <div class="match-right" style="display:flex; flex-direction:column; align-items:flex-end;">
+                      <span style="font-size:11px; font-weight:800; background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:6px; margin-bottom:4px; color:#fff;">${mTypeName}</span>
+                      <span>${timeAgo}</span>
+                    </div>
                   </div>
                 </div>
               `);
@@ -1647,7 +1667,7 @@
       }
 
       if (h2hMatchList.length === 0) {
-        resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">최근 500경기 내 맞대결 기록이 없습니다.</div>`;
+        resultBox.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-sub);">스캔한 ${totalToScan}경기 중 두 분의 맞대결 기록이 없습니다.</div>`;
         return;
       }
 
@@ -1679,14 +1699,14 @@
           </div>
 
           <div style="margin-top: 30px; text-align: left; background: rgba(0,0,0,0.2); padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
-            <h4 style="color:#fff; margin-bottom: 16px; font-size: 18px; font-weight: 800; display:flex; align-items:center; gap:8px;">⚔️ 상세 맞대결 리스트 <span style="font-size:13px; color:var(--text-sub); font-weight:600;">(최근 500경기 내 총 ${total}번 만남)</span></h4>
+            <h4 style="color:#fff; margin-bottom: 16px; font-size: 18px; font-weight: 800; display:flex; align-items:center; gap:8px;">⚔️ 상세 맞대결 리스트 <span style="font-size:13px; color:var(--text-sub); font-weight:600;">(최근 스캔 기록 중 ${total}번 만남)</span></h4>
             <div class="match-list-container">
               ${h2hMatchList.join('')}
             </div>
           </div>
         </div>`;
     } catch (e) {
-      resultBox.innerHTML = `<div class="error-msg">⚠️ 오류가 발생했습니다.</div>`;
+      resultBox.innerHTML = `<div class="error-msg">⚠️ 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>`;
     }
   }
 </script>
