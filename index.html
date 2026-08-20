@@ -38,8 +38,8 @@
       --card-foreground: #fafafa;
       --popover: #18181b;
       --popover-foreground: #fafafa;
-      --primary: #38bdf8; 
-      --primary-foreground: #020817;
+      --primary: #ffffff; 
+      --primary-foreground: #09090b;
       --secondary: #27272a; 
       --secondary-foreground: #fafafa;
       --muted: #27272a;
@@ -48,7 +48,7 @@
       --accent-foreground: #fafafa;
       --border: #27272a;
       --input: #27272a;
-      --ring: #38bdf8;
+      --ring: #ffffff;
       --radius: 0.75rem;
 
       /* FCO 상태 색상 */
@@ -93,7 +93,7 @@
     .main-tabs { 
       display: flex; height: 38px; align-items: center; justify-content: flex-start; 
       border-radius: 0.5rem; background-color: var(--muted); padding: 4px; padding-bottom: 6px;
-      overflow-x: auto; scroll-behavior: smooth; gap: 4px; flex-wrap: nowrap; 
+      overflow-x: auto; scroll-behavior: smooth; gap: 0; flex-wrap: nowrap; 
     }
     .main-tabs::-webkit-scrollbar { height: 5px; display: block; }
     .main-tabs::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
@@ -151,7 +151,7 @@
     .hero-search-section { 
       position: relative; text-align: center; padding: 80px 20px; margin-bottom: 28px;
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      background-image: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05), transparent 70%);
+      background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
     }
     .hero-search-section h3 { font-size: 32px; font-weight: 800; margin-bottom: 12px; color: var(--foreground); letter-spacing: -0.02em; }
     .hero-search-section p { font-size: 15px; color: var(--muted-foreground); margin-bottom: 32px; }
@@ -163,7 +163,7 @@
       flex: 1; height: 44px; background-color: var(--background); border: 1px solid var(--input); 
       border-radius: 0.375rem; padding: 8px 16px; color: var(--foreground); font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; 
     }
-    .search-input:focus, .review-input:focus { border-color: var(--ring); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+    .search-input:focus, .review-input:focus { border-color: var(--ring); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); }
     
     .search-btn, .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 24px; font-weight: 600; border-radius: 0.375rem; }
     .search-btn:hover, .review-submit:hover { opacity: 0.9; }
@@ -223,7 +223,7 @@
     .pie-subtext { font-size: 12px; color: var(--muted-foreground); font-weight: 500; margin-top: 2px; }
     .winrate-desc { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
 
-    .style-badge { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--primary); font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
+    .style-badge { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: var(--primary); font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
     
     .btn-detail-more { width: 100%; margin-top: 16px; height: 40px; background: var(--secondary); color: var(--secondary-foreground); font-weight: 500; border-radius: 6px; }
     .btn-detail-more:hover { background: var(--muted); }
@@ -339,7 +339,7 @@
     .t-node.active { font-weight: 800; border-width: 2px; }
     .t-node.active.t-fw { background: rgba(244, 63, 94, 0.2); }
     .t-node.active.t-mf { background: rgba(16, 185, 129, 0.2); }
-    .t-node.active.t-df { background: rgba(56, 189, 248, 0.2); }
+    .t-node.active.t-df { background: rgba(255, 255, 255, 0.2); }
     .t-node.active.t-gk { background: rgba(245, 158, 11, 0.2); }
 
     .trait-hex.silver { background: var(--muted); color: var(--foreground); border-radius: 8px; display:flex; align-items:center; justify-content:center; border: 1px solid var(--border); }
@@ -1773,4 +1773,4 @@
 </script>
 
 </body>
-</html>
+</html> 
