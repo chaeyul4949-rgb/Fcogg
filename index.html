@@ -76,25 +76,27 @@
     
     .container { width: 100%; max-width: 1060px; }
 
-    /* 🌟 개선된 얇은 Navbar 🌟 */
+    /* 🌟 상단 Navbar 레이아웃 (공백 줄이고 바로 붙게 설정) 🌟 */
     .navbar { 
-      display: flex; align-items: center; justify-content: space-between; 
+      display: flex; align-items: center; justify-content: flex-start; gap: 16px; flex-wrap: wrap;
       background: rgba(24, 24, 27, 0.7); backdrop-filter: blur(16px);
       padding: 10px 16px; border-radius: var(--radius); 
       border: 1px solid var(--border); margin-bottom: 20px; 
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
-    .    .logo { font-size: 20px; font-weight: 900; color: #ffffff; cursor: pointer; flex-shrink: 0; }
-    .logo span { color: #000000; }
-
     
-    .nav-center { flex: 1; min-width: 0; margin: 0 16px; position: relative; display: flex; flex-direction: column; justify-content: center; }
+    /* 🌟 로고 색상 수정 (FCO: 흰색, GG: 튀지 않는 자연스러운 회색) 🌟 */
+    .logo { font-size: 20px; font-weight: 900; color: #ffffff; cursor: pointer; flex-shrink: 0; margin-right: 8px; }
+    .logo span { color: var(--muted-foreground); }
+    
+    .nav-center { flex: 0 1 auto; min-width: 0; margin: 0; position: relative; display: flex; flex-direction: column; justify-content: center; }
 
-    /* 🌟 회색 스크롤바가 보이도록 개선된 탭 메뉴 🌟 */
+    /* 🌟 회색 스크롤바 탭 메뉴 🌟 */
     .main-tabs { 
       display: flex; height: 38px; align-items: center; justify-content: flex-start; 
       border-radius: 0.5rem; background-color: var(--muted); padding: 4px; padding-bottom: 6px;
       overflow-x: auto; scroll-behavior: smooth; gap: 0; flex-wrap: nowrap; 
+      width: fit-content; max-width: 100%; 
     }
     .main-tabs::-webkit-scrollbar { height: 5px; display: block; }
     .main-tabs::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
@@ -109,7 +111,7 @@
     .tab-btn:hover { color: var(--foreground); }
     .tab-btn.active { background-color: var(--background); color: var(--foreground); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
-    .nav-right-area { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .nav-right-area { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: 0; }
 
     /* Buttons */
     .btn, .bg-btn, .notice-icon-btn, .search-btn, .sub-tab-btn, .review-submit, .btn-detail-more, .btn-load-more, .action-btn {
@@ -124,10 +126,8 @@
     .notice-icon-btn { width: 32px; height: 32px; background: transparent; border: 1px solid var(--border); font-size: 15px; color: var(--foreground); position: relative; }
     .notice-icon-btn:hover { background: var(--accent); }
     
-    /* 🌟 수정된 공지사항 빨간 점 🌟 */
     .notice-red-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background-color: var(--lose-color); border-radius: 50%; box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.9); display: none; }
 
-    /* 노란색 후원하기 버튼 */
     .donate-btn { 
       background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); 
       color: #FDE047; padding: 0 12px; height: 32px; border-radius: 0.375rem; 
@@ -149,17 +149,17 @@
     /* Shadcn Card Style */
     .shadcn-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1); }
 
+    /* 🌟 검색창 여백(Padding) 대폭 축소 🌟 */
     .hero-search-section { 
-      position: relative; text-align: center; padding: 80px 20px; margin-bottom: 28px;
+      position: relative; text-align: center; padding: 45px 20px; margin-bottom: 24px;
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
     }
-    .hero-search-section h3 { font-size: 32px; font-weight: 800; margin-bottom: 12px; color: var(--foreground); letter-spacing: -0.02em; }
-    .hero-search-section p { font-size: 15px; color: var(--muted-foreground); margin-bottom: 32px; }
+    .hero-search-section h3 { font-size: 32px; font-weight: 800; margin-bottom: 8px; color: var(--foreground); letter-spacing: -0.02em; }
+    .hero-search-section p { font-size: 15px; color: var(--muted-foreground); margin-bottom: 24px; }
     
     .search-box-wrapper { max-width: 540px; margin: 0 auto; display: flex; gap: 12px; width: 100%; }
     
-    /* Shadcn Input Style */
     .search-input, .review-input { 
       flex: 1; height: 44px; background-color: var(--background); border: 1px solid var(--input); 
       border-radius: 0.375rem; padding: 8px 16px; color: var(--foreground); font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; 
@@ -168,6 +168,9 @@
     
     .search-btn, .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 24px; font-weight: 600; border-radius: 0.375rem; }
     .search-btn:hover, .review-submit:hover { opacity: 0.9; }
+
+    /* H2H 레이아웃 */
+    .h2h-input-group { display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: nowrap; width: 100%; }
 
     /* Modals (Shadcn Dialog) */
     .modal-overlay, .notice-modal-overlay, .sub-modal-overlay {
@@ -215,7 +218,6 @@
 
     /* Dashboards */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-    @media(max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
     .dash-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     
     .winrate-title { font-size: 15px; font-weight: 700; color: var(--foreground); margin-bottom: 20px; align-self: flex-start; }
@@ -239,7 +241,7 @@
     .rating-badge { font-size: 10px; font-weight: 700; background: var(--background); padding: 2px 6px; border-radius: 4px; margin-bottom: 2px; color: var(--foreground); border: 1px solid var(--border); }
     .player-name-tag { font-size: 11px; font-weight: 500; color: var(--foreground); max-width: 64px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 4px; }
 
-    /* Match List - Flat Shadcn Style */
+    /* Match List */
     .match-list-container { display: flex; flex-direction: column; gap: 8px; }
     .match-item { display: flex; background: var(--background); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color 0.2s; }
     .match-item:hover { border-color: var(--muted-foreground); }
@@ -264,7 +266,7 @@
     .btn-load-more { width: 100%; height: 44px; background: transparent; border: 1px dashed var(--border); color: var(--muted-foreground); font-size: 14px; font-weight: 500; border-radius: 8px; margin-top: 8px; transition: 0.2s; }
     .btn-load-more:hover { border-color: var(--foreground); color: var(--foreground); }
     
-    /* 🌟 H2H (1:1 상대전적) CSS 🌟 */
+    /* 🌟 H2H CSS 🌟 */
     .h2h-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-top: 20px; animation: fadeIn 0.3s ease; }
     .h2h-title { text-align: center; font-size: 20px; font-weight: 800; color: var(--foreground); margin-bottom: 24px; }
     .h2h-vs-area { display: flex; justify-content: space-between; align-items: center; background: var(--background); padding: 24px 32px; border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--border); }
@@ -279,7 +281,6 @@
     .h2h-gauge-lose { background: var(--lose-color); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; transition: width 1s ease-in-out; }
     .h2h-stats-text { display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: var(--muted-foreground); margin-bottom: 24px; padding: 0 4px; }
 
-    /* 🌟 H2H Progress Bar 🌟 */
     .progress-container { width: 100%; max-width: 500px; margin: 20px auto; background: var(--muted); border-radius: 9999px; height: 12px; overflow: hidden; }
     .progress-bar { width: 0%; height: 100%; background: var(--primary); border-radius: 9999px; transition: width 0.3s ease; }
     .progress-text { font-size: 13px; font-weight: 500; color: var(--muted-foreground); margin-top: 8px; }
@@ -344,6 +345,35 @@
     .t-node.active.t-gk { background: rgba(245, 158, 11, 0.2); }
 
     .trait-hex.silver { background: var(--muted); color: var(--foreground); border-radius: 8px; display:flex; align-items:center; justify-content:center; border: 1px solid var(--border); }
+
+    /* 📱 모바일/패드 반응형 (Responsive UI) 설정 추가 */
+    @media (max-width: 800px) {
+      .navbar { justify-content: space-between; gap: 8px; padding: 12px 16px; }
+      .logo { margin-right: 0; }
+      .nav-center { order: 3; width: 100%; flex: 1 1 100%; margin-top: 8px; }
+      .main-tabs { width: 100%; }
+      .nav-right-area { order: 2; margin-left: auto; }
+
+      .hero-search-section { padding: 30px 16px !important; margin-bottom: 20px; }
+      .hero-search-section h3 { font-size: 26px; }
+      .search-box-wrapper { flex-direction: column; gap: 10px; }
+      .search-input { width: 100%; }
+      .search-btn { width: 100%; flex-shrink: 0; }
+      
+      .dashboard-grid { grid-template-columns: 1fr; gap: 16px; }
+      .profile-top-card { flex-direction: column; align-items: stretch; padding: 20px; gap: 16px; }
+      .user-action-btns { width: 100%; }
+      .action-btn { flex: 1; }
+      .profile-tier-badge { min-width: auto; align-items: center; margin-top: 0; }
+      
+      .h2h-input-group { flex-direction: column; align-items: stretch; }
+      .h2h-input-group .search-input { width: 100%; }
+      .h2h-vs-area { flex-direction: column; gap: 16px; padding: 20px; }
+      .h2h-player { font-size: 20px; }
+      
+      .review-input-box { flex-direction: column; }
+      .review-submit { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -398,15 +428,15 @@
 
   <!-- 2️⃣ 1:1 상대전적 탭 -->
   <div id="tab-h2h" class="tab-content">
-    <div class="hero-search-section" style="padding: 60px 20px;">
+    <div class="hero-search-section">
       <h3 style="margin-bottom:8px; font-size:24px;">⚔️ 1:1 라이벌 전적 검색</h3>
       <p style="margin-bottom:24px;">공식경기 및 친선경기 전적을 스캔하여 상세 우세를 확인하세요.</p>
       
       <!-- H2H 검색칸 가로 나란히(VS) 배치 -->
       <div style="display:flex; flex-direction:column; gap:16px; max-width:600px; width:100%; margin:0 auto;">
-        <div style="display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <div class="h2h-input-group">
           <input type="text" id="h2h-user1" class="search-input" style="flex:1; min-width:160px; text-align:center;" placeholder="첫 번째 구단주명">
-          <div style="font-size:14px; font-weight:700; color:var(--muted-foreground); background:var(--muted); padding:6px 12px; border-radius:6px;">VS</div>
+          <div style="font-size:14px; font-weight:700; color:var(--muted-foreground); background:var(--muted); padding:6px 12px; border-radius:6px; display:inline-block;">VS</div>
           <input type="text" id="h2h-user2" class="search-input" style="flex:1; min-width:160px; text-align:center;" placeholder="두 번째 구단주명">
         </div>
         <button class="search-btn" style="width:100%; margin-top:8px;" onclick="searchH2HData()">🔥 상대전적 스캔하기</button>
@@ -489,7 +519,7 @@
 
   <!-- 6️⃣ 인기 구단주 랭킹 탭 -->
   <div id="tab-ranking" class="tab-content">
-    <div class="hero-search-section" style="padding: 60px 20px; margin-bottom: 24px;">
+    <div class="hero-search-section">
       <h3 style="margin-bottom:8px; font-size:24px;">🏆 인기 구단주 명예의 전당</h3>
       <p style="margin-bottom:0;">유저들에게 가장 많은 추천을 받은 매너 구단주 랭킹 TOP 10</p>
     </div>
@@ -1774,4 +1804,4 @@
 </script>
 
 </body>
-</html> 
+</html>
