@@ -9,9 +9,10 @@
   <title>FCO.GG | FC 온라인 & 피파 온라인 4 전적 검색, 티어리스트</title>
   <meta name="description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 한눈에! FCO.GG에서 간편하게 내 전적과 실시간 정보를 확인하세요.">
 
-  <!-- 🌟 Firebase SDK -->
+  <!-- 🌟 Firebase SDK (Auth 인증 모듈 추가됨!) 🌟 -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -32,7 +33,7 @@
       --draw-color: #FF9500; 
       --tier-op: #5856D6; 
       
-      /* 🌟 AI 테마 컬러 (블루 & 골드) 🌟 */
+      /* AI 테마 컬러 */
       --ai-blue: #3B82F6;
       --ai-blue-bg: #EFF6FF;
       --pro-gold: #F59E0B;
@@ -49,7 +50,6 @@
       --muted-foreground: #8E8E93;
       --border: #38383A;
       
-      /* 🌟 다크모드 AI 테마 🌟 */
       --ai-blue: #60A5FA;
       --ai-blue-bg: rgba(59, 130, 246, 0.08);
       --pro-gold: #FBBF24;
@@ -106,12 +106,9 @@
     .h2h-focus-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; color: var(--foreground); font-weight: 700; text-align: center; }
     .h2h-focus-box input::placeholder { color: var(--muted-foreground); font-weight: 500; }
     .h2h-vs-badge { font-size: 14px; font-weight: 900; color: var(--background); background: var(--foreground); padding: 8px 16px; border-radius: 99px; }
-
-    /* H2H UI */
     .progress-container { width: 100%; height: 12px; background: var(--muted); border-radius: 99px; margin: 24px 0 12px; overflow: hidden; border: 1px solid var(--border); }
     .progress-bar { height: 100%; background: var(--foreground); width: 0%; transition: width 0.4s ease; }
     .progress-text { font-size: 14px; color: var(--muted-foreground); font-weight: 700; }
-    
     .h2h-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease; }
     .h2h-title { font-size: 16px; font-weight: 800; text-align: center; margin-bottom: 24px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 1px; }
     .h2h-vs-area { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 24px; }
@@ -124,7 +121,6 @@
     .h2h-gauge-lose { background: var(--lose-color); display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 13px; font-weight: 800; transition: width 0.6s ease; }
     .h2h-stats-text { display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; margin-bottom: 32px; }
 
-    /* 에러 상태 */
     .error-state { text-align: center; padding: 60px 20px; animation: fadeIn 0.3s; margin-top: 20px;}
     .error-state .emoji { font-size: 60px; margin-bottom: 20px; animation: float 2s infinite ease-in-out alternate; }
     .error-state h3 { font-size: 20px; font-weight: 800; color: var(--foreground); margin-bottom: 12px; }
@@ -155,7 +151,7 @@
     .stat-row span { font-weight: 600; color: var(--muted-foreground); }
     .stat-row b { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; color:var(--foreground); }
 
-    /* 🌟 AI 리포트 공통 CSS (간격 24px로 확대) 🌟 */
+    /* 🌟 AI 리포트 CSS 🌟 */
     .ai-box { border-radius: var(--radius); padding: 32px; margin-bottom: 24px; animation: fadeIn 0.5s ease; width: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
     .ai-header { font-size: 20px; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
     .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
@@ -163,43 +159,28 @@
     .ai-card-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
     .ai-card-text { font-size: 14.5px; color: var(--foreground); line-height: 1.7; word-break: keep-all; font-weight: 500; }
 
-    /* 일반 AI */
     .ai-basic { background: var(--ai-blue-bg); border: 2px solid var(--ai-blue); }
     .ai-basic .ai-header { color: var(--ai-blue); border-bottom-color: rgba(59, 130, 246, 0.2); }
 
-    /* FCO PRO AI */
     .ai-pro { background: var(--pro-gold-bg); border: 2px solid var(--pro-gold); position: relative; overflow: hidden; }
     .ai-pro .ai-header { color: var(--pro-gold); border-bottom-color: rgba(245, 158, 11, 0.2); }
-    
     .pro-blur-content { filter: blur(8px); transition: filter 0.5s ease; user-select: none; pointer-events: none; }
-    
-    .pro-overlay { 
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(255,255,255,0.4); backdrop-filter: blur(2px); 
-      display: flex; flex-direction: column; align-items: center; justify-content: center; 
-      z-index: 10; transition: opacity 0.4s ease; border-radius: var(--radius);
-    }
+    .pro-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.4); backdrop-filter: blur(2px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; transition: opacity 0.4s ease; border-radius: var(--radius); }
     [data-theme="dark"] .pro-overlay { background: rgba(0,0,0,0.6); }
 
-    .btn-unlock-pro { 
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); 
-      color: #FFF; font-weight: 900; font-size: 16px; padding: 16px 32px; 
-      border-radius: 99px; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); 
-      transition: 0.3s; display: flex; align-items: center; gap: 8px; 
-    }
+    .btn-unlock-pro { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #FFF; font-weight: 900; font-size: 16px; padding: 16px 32px; border-radius: 99px; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); transition: 0.3s; display: flex; align-items: center; gap: 8px; }
     .btn-unlock-pro:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4); }
 
     .btn-detail-more { width: 100%; margin-top: 16px; height: 40px; background: var(--foreground); color: var(--background); font-weight: 800; font-size: 13px; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s; }
     .btn-detail-more:hover { opacity: 0.9; }
 
-    /* 🌟 스쿼드 CSS 수정됨 (텍스트 투명화 버그 픽스) 🌟 */
+    /* 🌟 스쿼드 CSS 🌟 */
     .squad-section-wrapper { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
     .pro-squad-advisor { flex: 0 0 280px; position: relative; }
     .squad-field { flex: 1; min-width: 300px; height: 400px; background: #0C3823; border-radius: 16px; border: 1px solid var(--border); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; overflow: hidden; }
     .squad-field::before { content: ''; position: absolute; width: 100%; height: 1px; background: rgba(255,255,255,0.2); top: 50%; }
     .squad-field::after { content: ''; position: absolute; width: 80px; height: 80px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; top: calc(50% - 40px); }
     .squad-row { display: flex; justify-content: space-around; width: 100%; z-index: 2; }
-    
     .player-node { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
     .player-node img { width: 50px; height: 50px; border-radius: 50%; object-fit: contain; margin-bottom: 4px; background: #111; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     .rating-badge { font-size: 10px; font-weight: 800; background: var(--card); padding: 2px 8px; border-radius: 99px; margin-bottom: 4px; border: 1px solid var(--border); }
@@ -224,7 +205,6 @@
     .match-vs { font-size: 15px; font-weight: 700; color: var(--muted-foreground); cursor: pointer; background: var(--muted); padding: 6px 14px; border-radius: 8px; transition: 0.2s; }
     .match-vs:hover { background: var(--border); color: var(--foreground); }
     .match-right { text-align: right; font-size: 13px; font-weight: 600; color: var(--muted-foreground); width: 80px; }
-    
     .btn-load-more { width: 100%; height: 48px; background: transparent; border: 1px dashed var(--border); color: var(--muted-foreground); font-size: 14px; font-weight: 700; border-radius: 12px; margin-top: 16px; cursor: pointer; transition: 0.2s; }
     .btn-load-more:hover { border-color: var(--foreground); color: var(--foreground); }
 
@@ -239,7 +219,7 @@
     .review-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted-foreground); margin-bottom: 8px; font-weight: 600; }
     .review-text { color: var(--foreground); font-size: 14px; line-height: 1.5; word-break: break-all; }
 
-    /* 내 허브 & PRO 멤버십 공통 */
+    /* 🌟 내 허브 & 로그인 UI 공통 🌟 */
     .hub-container { display: flex; gap: 32px; align-items: flex-start; margin-top: 20px; }
     .hub-sidebar { width: 220px; background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); flex-shrink: 0; }
     .hub-menu-item { padding: 14px 16px; border-radius: 12px; color: var(--muted-foreground); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 4px; }
@@ -254,7 +234,28 @@
     .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; background: #FFFFFF; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .toggle-switch:checked::after { transform: translateX(20px); }
 
-    /* 특성 레이아웃 */
+    .auth-input { height:44px; padding:0 16px; border-radius:12px; border:1px solid var(--border); background:var(--background); color:var(--foreground); outline:none; transition: 0.2s; font-size: 14px; width: 100%; margin-bottom: 12px; }
+    .auth-input:focus { border-color: var(--muted-foreground); background: var(--card); }
+    .btn-google-login { width:100%; height:48px; background:#FFF; color:#1D1D1F; border:1px solid #E5E5EA; border-radius:12px; font-weight:800; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); transition:0.2s; margin-top: 8px;}
+    .btn-google-login:hover { background: #F9FAFB; transform: translateY(-1px); }
+
+    /* 팝업 모달 공통 */
+    .modal-overlay, .notice-modal-overlay, .sub-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; animation: fadeIn 0.3s ease; }
+    .notice-modal-overlay, .sub-modal-overlay { align-items: center; z-index: 10001; }
+    .modal-content, .notice-modal-content, .sub-modal-content { background: var(--card); width: 100%; border-radius: var(--radius); border: 1px solid var(--border); padding: 32px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .modal-content { max-width: 1060px; }
+    .notice-modal-content { max-width: 720px; padding: 48px 32px; } 
+    .sub-modal-content { max-width: 600px; } 
+    .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000; }
+    .modal-close-btn:hover { background: var(--muted-foreground); color: var(--card); transform: rotate(90deg); }
+
+    .tab-content, .sub-content { display: none; }
+    .tab-content.active, .sub-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .spinner { display: inline-block; font-size: 30px; margin-bottom: 12px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* 특성 레이아웃 & 보드 */
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
     .trait-left-panel { flex: 0 0 380px; background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
@@ -267,7 +268,6 @@
     .t-node.active { background: #111; color: #FFF; border-color: #FFF; }
     .trait-hex.silver { background: var(--background); color: var(--foreground); border-radius: 12px; display:flex; align-items:center; justify-content:center; border: 1px solid var(--border); }
 
-    /* 서브 탭 & 보드 */
     .sub-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; }
     .sub-tabs::-webkit-scrollbar { display: none; }
     .sub-tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted-foreground); font-size: 13px; padding: 0 16px; height: 36px; border-radius: 99px; flex-shrink: 0; }
@@ -297,24 +297,6 @@
     .coming-soon-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--foreground); }
     .coming-soon-desc { font-size: 14px; color: var(--muted-foreground); }
 
-    /* 팝업 모달 */
-    .modal-overlay, .notice-modal-overlay, .sub-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; animation: fadeIn 0.3s ease; }
-    .notice-modal-overlay, .sub-modal-overlay { align-items: center; z-index: 10001; }
-    .modal-content, .notice-modal-content, .sub-modal-content { background: var(--card); width: 100%; border-radius: var(--radius); border: 1px solid var(--border); padding: 32px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .modal-content { max-width: 1060px; }
-    
-    .notice-modal-content { max-width: 720px; padding: 48px 32px; } 
-    .sub-modal-content { max-width: 600px; } 
-    
-    .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000; }
-    .modal-close-btn:hover { background: var(--muted-foreground); color: var(--card); transform: rotate(90deg); }
-
-    .tab-content, .sub-content { display: none; }
-    .tab-content.active, .sub-content.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .spinner { display: inline-block; font-size: 30px; margin-bottom: 12px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
     @media (max-width: 1024px) {
       .ai-grid { grid-template-columns: 1fr; }
       .dashboard-grid { grid-template-columns: 1fr; }
@@ -330,18 +312,22 @@
 
 <div class="container">
   
+  <!-- 우측 상단 버튼 -->
   <div class="top-right-actions">
     <div class="bg-upload-container" style="display: flex; gap: 8px; align-items: center;">
       <label for="bg-upload" class="bg-btn" title="배경 이미지 변경">🖼️ 배경</label>
       <input type="file" id="bg-upload" accept="image/*" style="display: none;">
       <button id="bg-reset" class="bg-btn" style="display: none;">🔄 초기화</button>
     </div>
-    <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">
-      📢<div id="notice-dot" class="notice-red-dot"></div>
-    </div>
+    <div class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항">📢<div id="notice-dot" class="notice-red-dot"></div></div>
     <button class="donate-btn" onclick="alert('후원 계좌: 토스 1002 5837 0089 김*율\n감사합니다!')">💛 후원하기</button>
+    
+    <!-- 🌟 우측 상단 로그인 프로필 버튼 🌟 -->
+    <img id="top-user-avatar" src="" style="width:36px; height:36px; border-radius:50%; object-fit:cover; display:none; cursor:pointer; border:1px solid var(--border);" onclick="switchTab('hub', document.querySelectorAll('.tab-btn')[7])" title="내 허브 관리">
+    <div id="top-user-icon" class="notice-icon-btn" style="border-radius:50%; font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입">👤</div>
   </div>
 
+  <!-- 중앙 네비게이션 -->
   <header class="header-container">
     <div class="logo" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0])">FCO<span>.GG</span></div>
     <div class="main-tabs">
@@ -352,12 +338,12 @@
       <button class="tab-btn" onclick="switchTab('trait', this)">특성 티어리스트</button>
       <button class="tab-btn" onclick="switchTab('ranking', this)">🏆 인기 구단주</button>
       <button class="tab-btn" onclick="switchTab('update', this)">⏰ 갱신시간</button>
-      <!-- 🌟 PRO 멤버십 탭 🌟 -->
       <button class="tab-btn" onclick="switchTab('pro', this)">💎 PRO 멤버십</button>
-      <button class="tab-btn" onclick="switchTab('hub', this)">⚙️ 내 허브</button>
+      <button class="tab-btn" onclick="switchTab('hub', this); renderHubAuth();">⚙️ 내 허브</button>
     </div>
   </header>
 
+  <!-- 메인 검색 -->
   <div id="tab-search" class="tab-content active">
     <div class="hero-search-section" id="hero-section">
       <h1 style="font-weight:900; margin-bottom:16px; line-height:1.2;">
@@ -515,6 +501,11 @@
         <div class="hub-menu-item" onclick="alert('후원 계좌: 토스 1002 5837 0089 김*율\n감사합니다!')">💳 후원 내역</div>
       </div>
       <div class="hub-content">
+        <!-- 🌟 회원가입/로그인 관리 패널 🌟 -->
+        <div class="shadcn-card" style="padding: 24px;" id="hub-auth-container">
+          <!-- JS 렌더링 -->
+        </div>
+
         <div class="shadcn-card" style="padding: 24px;">
           <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">⚙️ 앱 설정</h3>
           <div class="setting-row">
@@ -538,15 +529,45 @@
   </div>
 </div>
 
+<!-- 🌟 로그인 / 회원가입 모달 (우측 상단 클릭 시) 🌟 -->
+<div id="auth-modal" class="modal-overlay">
+  <div class="sub-modal-content" style="max-width: 420px; padding: 40px 32px;">
+    <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+    <h3 style="font-size:24px; font-weight:900; margin-bottom:8px; text-align:center;">로그인 / 회원가입</h3>
+    <p style="font-size:14px; color:var(--muted-foreground); text-align:center; margin-bottom:24px;">계정을 연동하고 FCO PRO 혜택을 누리세요.</p>
+    
+    <input type="text" id="auth-id" class="auth-input" placeholder="아이디">
+    <input type="password" id="auth-pw" class="auth-input" placeholder="비밀번호 (가입 시 6자리 이상)" onkeypress="if(event.key==='Enter') handleLogin()">
+    
+    <div style="display:flex; gap:8px; margin-bottom: 24px;">
+      <button onclick="handleLogin()" style="flex:1; height:48px; background:var(--foreground); color:var(--background); border-radius:12px; font-weight:800; border:none; cursor:pointer; font-size:14px;">로그인</button>
+      <button onclick="handleRegister()" style="flex:1; height:48px; background:var(--card); color:var(--foreground); border-radius:12px; font-weight:800; border:1px solid var(--border); cursor:pointer; font-size:14px;">간편 가입</button>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+      <div style="font-size:12px; color:var(--muted-foreground); font-weight:600;">또는</div>
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+    </div>
+
+    <!-- 🌟 구글 로그인 연동 버튼 🌟 -->
+    <button class="btn-google-login" onclick="handleGoogleLogin()">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" style="width:20px;"> Google로 시작하기
+    </button>
+  </div>
+</div>
+
 <!-- 🌟 공지사항 모달 🌟 -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
+    
     <div style="text-align: center; margin-bottom: 32px;">
       <div style="font-size: 56px; margin-bottom: 12px;">🎉</div>
       <h2 style="font-size:36px; font-weight:900; color:var(--win-color); letter-spacing:-1px;">대규모 업데이트</h2>
       <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px; font-size: 16px;">FCO PRO AI 추가 및 버그 픽스</p>
     </div>
+    
     <div style="font-size:15px; color:var(--muted-foreground); line-height:1.7; background:var(--background); padding:32px; border-radius:16px; display:flex; flex-direction:column; gap:20px;">
       <div>🔥 <b style="color:var(--foreground); font-size:18px;">[NEW] FCO PRO 전용 프리미엄 기능</b><br>
         <span style="font-size:14px; font-weight:600; color:var(--draw-color);">1️⃣ PRO 실시간 매치업 상대 프리뷰 기능 추가</span><br>
@@ -557,7 +578,7 @@
         <span style="color:var(--muted-foreground); font-size:14px;">- 타이탄(헤딩골 기준), 드리블러(드리블 성공률 기준) 등 유저 맞춤형 칭호가 예전처럼 100% 정상 작동합니다.</span>
       </div>
       <div>🛡️ <b style="color:var(--foreground); font-size:18px;">UI 및 안정성 패치</b><br>
-        <span style="color:var(--muted-foreground); font-size:14px;">- 모달창 X버튼 닫기 버그 수정 및 심층 통계 요약 가독성 상향 (코너킥 비율 삭제, 패스 성공률/태클 등 메인 노출)</span>
+        <span style="color:var(--muted-foreground); font-size:14px;">- 내 허브 계정(회원가입/로그인) 연동 및 모달창 X버튼 닫기 버그 완벽 수정</span>
       </div>
     </div>
     <button class="pill-search-btn" style="width:100%; height:56px; font-size: 18px; margin-top: 24px; border-radius: 16px;" onclick="closeNoticeModal()">확인하고 시작하기</button>
@@ -580,7 +601,6 @@
           <div>
             <h2 id="profile-nickname">
               <span id="nickname-text">구단주명</span>
-              <!-- 🌟 칭호 뱃지 🌟 -->
               <span id="player-style-badge" class="style-badge" style="display:none; margin-left: 8px;">분석 중</span>
             </h2>
             <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
@@ -604,13 +624,13 @@
         </div>
       </div>
 
-      <!-- 🌟 AI 로딩 영역 🌟 -->
+      <!-- AI 로딩 영역 -->
       <div id="ai-loading" style="text-align:center; padding:30px 0; display:none;">
         <div class="spinner" style="font-size:24px;">⚽</div>
         <div style="font-size:14px; font-weight:700; color:var(--ai-blue); margin-top:12px;">최근 25경기 데이터를 기반으로 AI 리포트를 생성 중입니다...</div>
       </div>
 
-      <!-- 🌟 1. 일반 AI 리포트 (바로 표시) 🌟 -->
+      <!-- 1. 일반 AI 리포트 -->
       <div id="ai-content-basic" class="ai-box ai-basic" style="display:none;">
         <div class="ai-header">🔍 FCO AI 심층 분석 리포트</div>
         <div class="ai-grid">
@@ -620,16 +640,15 @@
         </div>
       </div>
 
-      <!-- 🌟 2. FCO PRO AI 리포트 🌟 -->
+      <!-- 🌟 2. FCO PRO AI 리포트 (결제 동선 최적화) 🌟 -->
       <div id="ai-content-pro" class="ai-box ai-pro" style="display:none; flex-direction:column; padding-bottom: 20px;">
         
-        <!-- 블러 해제 오버레이 -->
         <div class="pro-overlay" id="pro-overlay">
           <div style="font-size:18px; font-weight:900; margin-bottom:16px; color:var(--foreground);">프리미엄 1:1 맞춤형 솔루션이 준비되었습니다.</div>
+          <!-- 🌟 클릭 시 PRO 탭으로 자동 이동 🌟 -->
           <button class="btn-unlock-pro" onclick="goToProTab()">✨ FCO PRO AI 리포트 알아보기</button>
         </div>
         
-        <!-- 블러 컨텐츠 -->
         <div id="pro-blur-target" class="pro-blur-content">
           <div class="ai-header">👑 FCO PRO AI 정밀 분석 리포트 <span style="background:var(--pro-gold); color:#FFF; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px;">PRO</span></div>
           <div class="ai-grid">
@@ -649,7 +668,6 @@
         </div>
       </div>
 
-      <!-- 🌟 대시보드 (통계 크기 축소 및 패스/태클 노출) 🌟 -->
       <div class="dashboard-grid">
         <div class="dash-card">
           <div class="card-title" style="justify-content: flex-start;">승률 요약 (최근 25경기)</div>
@@ -670,13 +688,13 @@
         </div>
       </div>
 
-      <!-- 🌟 스쿼드 및 구멍 색출 영역 🌟 -->
+      <!-- 스쿼드 및 구멍 색출 영역 -->
       <div class="shadcn-card" style="padding: 24px; margin-bottom: 24px;">
         <div class="card-title">베스트 11 스쿼드 & <span style="color:var(--pro-gold); margin-left:4px;">PRO 교체 솔루션</span></div>
         <div class="squad-section-wrapper">
           
-          <!-- 좌측: PRO 구멍 색출 영역 -->
           <div class="ai-pro pro-squad-advisor" style="padding: 20px; border-radius: 12px; margin-bottom: 0;">
+            <!-- 🌟 클릭 시 PRO 탭으로 자동 이동 🌟 -->
             <div class="pro-overlay" id="squad-pro-overlay" style="border-radius: 12px; background: rgba(255,255,255,0.7);">
               <div style="font-size:14px; font-weight:800; text-align:center;">PRO 솔루션 잠금됨</div>
               <button class="btn-unlock-pro" style="font-size:12px; padding:8px 16px; margin-top:12px;" onclick="goToProTab()">알아보기</button>
@@ -685,13 +703,11 @@
             <div id="squad-pro-blur" class="pro-blur-content" style="display: flex; flex-direction: column; height: 100%;">
               <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:12px;">🚨 스쿼드 워스트(구멍)</div>
               <div id="worst-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
-              
               <div style="margin-top:24px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:12px;">💡 상위 랭커 대체 추천</div>
               <div id="replace-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
             </div>
           </div>
 
-          <!-- 우측: 기존 스쿼드 필드 (텍스트 색상 버그 수정완료) -->
           <div class="squad-field">
             <div class="squad-row" id="squad-row-fw"><div style="color:rgba(255,255,255,0.5); font-size:13px;">분석 중...</div></div>
             <div class="squad-row" id="squad-row-mf"></div>
@@ -721,7 +737,7 @@
   </div>
 </div>
 
-<!-- 🌟 서브 모달 (코너킥 삭제, 헤딩/프리킥골 추가, 드리블 성공률 추가) 🌟 -->
+<!-- 서브 모달 -->
 <div id="sub-detail-modal" class="sub-modal-overlay">
   <div class="sub-modal-content">
     <button class="modal-close-btn" onclick="closeSubDetailModal()">✕</button>
@@ -786,8 +802,164 @@
       }
     });
   }
+
+  // 🌟 Firebase Auth 객체 준비 🌟
+  let auth;
+  let googleProvider;
+  try {
+      auth = firebase.auth();
+      googleProvider = new firebase.auth.GoogleAuthProvider();
+  } catch(e) {}
+
+  // 🌟 로그인/회원가입 모달 열기/닫기 🌟
+  function openAuthModal() {
+      document.getElementById('auth-modal').style.display = 'flex';
+  }
+  function closeAuthModal() {
+      document.getElementById('auth-modal').style.display = 'none';
+  }
+
+  // 🌟 간편 회원가입 로직 (Firebase Email 활용 트릭) 🌟
+  function handleRegister() {
+    const id = document.getElementById('auth-id').value.trim();
+    const pw = document.getElementById('auth-pw').value.trim();
+    if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
+    if(pw.length < 6) return alert('비밀번호는 6자리 이상이어야 합니다.');
+    
+    // Firebase가 이메일 형식을 요구하므로, 아이디에 가짜 도메인을 붙여서 가입시킴
+    const fakeEmail = `${id}@fcogg.dummy.com`;
+    
+    if (auth) {
+        auth.createUserWithEmailAndPassword(fakeEmail, pw)
+        .then((userCredential) => {
+            alert('회원가입이 완료되었습니다! 자동 로그인됩니다.');
+            closeAuthModal();
+        })
+        .catch((error) => {
+            if(error.code === 'auth/email-already-in-use') alert('이미 존재하는 아이디입니다.');
+            else alert('오류: ' + error.message);
+        });
+    } else {
+        // Firebase 설정이 안되어있을 경우 로컬 스토리지 Fallback
+        let users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+        if(users[id]) return alert('이미 존재하는 아이디입니다.');
+        users[id] = { pw: pw };
+        localStorage.setItem('fco_auth_users', JSON.stringify(users));
+        localStorage.setItem('fco_current_user', id);
+        alert('회원가입 완료! 로그인 되었습니다. (로컬 모드)');
+        closeAuthModal();
+        renderHubAuth();
+    }
+  }
+
+  // 🌟 간편 로그인 로직 🌟
+  function handleLogin() {
+    const id = document.getElementById('auth-id').value.trim();
+    const pw = document.getElementById('auth-pw').value.trim();
+    if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
+    
+    const fakeEmail = `${id}@fcogg.dummy.com`;
+    
+    if (auth) {
+        auth.signInWithEmailAndPassword(fakeEmail, pw)
+        .then(() => {
+            closeAuthModal();
+        })
+        .catch(() => {
+            alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+        });
+    } else {
+        let users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+        if(!users[id] || users[id].pw !== pw) return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+        localStorage.setItem('fco_current_user', id);
+        closeAuthModal();
+        renderHubAuth();
+    }
+  }
+
+  // 🌟 구글 연동 로그인 🌟
+  function handleGoogleLogin() {
+      if (auth && googleProvider) {
+          auth.signInWithPopup(googleProvider)
+          .then(() => {
+              closeAuthModal();
+          })
+          .catch((error) => {
+              alert("구글 로그인 설정이 필요합니다. Firebase Console에서 Google Auth를 활성화해주세요.");
+          });
+      } else {
+          alert("Firebase 연결을 확인해주세요.");
+      }
+  }
+
+  // 🌟 로그아웃 🌟
+  function handleLogout() {
+      if (auth) {
+          auth.signOut();
+      }
+      localStorage.removeItem('fco_current_user');
+      renderHubAuth();
+  }
+
+  // 🌟 인증 상태 실시간 감지 (Firebase) 🌟
+  if (auth) {
+      auth.onAuthStateChanged((user) => {
+          if (user) {
+              // 구글 유저면 displayName, 간편 유저면 email 앞부분
+              let dispName = user.displayName || user.email.split('@')[0];
+              localStorage.setItem('fco_current_user', dispName);
+              
+              // 우측 상단 아이콘 아바타로 변경
+              document.getElementById('top-user-icon').style.display = 'none';
+              const avatar = document.getElementById('top-user-avatar');
+              avatar.src = user.photoURL || 'https://api.dicebear.com/7.x/initials/svg?seed=' + dispName;
+              avatar.style.display = 'flex';
+          } else {
+              localStorage.removeItem('fco_current_user');
+              document.getElementById('top-user-icon').style.display = 'flex';
+              document.getElementById('top-user-avatar').style.display = 'none';
+          }
+          renderHubAuth();
+      });
+  }
+
+  // 🌟 내 허브 & 로그인 상태 UI 렌더링 🌟
+  function renderHubAuth() {
+    const authContainer = document.getElementById('hub-auth-container');
+    if(!authContainer) return;
+    
+    const currentUser = localStorage.getItem('fco_current_user');
+    const isPro = localStorage.getItem('fco_pro_mode') === 'true';
+    
+    if(currentUser) {
+        authContainer.innerHTML = `
+            <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">👤 계정 정보</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--background); border:1px solid var(--border); padding:16px 20px; border-radius:16px;">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                    <div style="font-size:18px; font-weight:900; color:var(--foreground); display:flex; align-items:center; gap:6px;">
+                        ${escapeHtml(currentUser)} 님 ${isPro ? '<span style="background:var(--pro-gold); color:#FFF; font-size:10px; padding:2px 6px; border-radius:4px;">PRO</span>' : ''}
+                    </div>
+                    <div style="font-size:13px; color:var(--muted-foreground); font-weight:600;">
+                        멤버십 상태: <span style="${isPro ? 'color:var(--pro-gold); font-weight:800;' : 'color:var(--foreground);'}">${isPro ? '💎 PRO 구독 중' : '미구독'}</span>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" style="background:var(--card); border:1px solid var(--border); color:var(--foreground); padding:8px 16px; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; transition:0.2s;">로그아웃</button>
+            </div>
+        `;
+    } else {
+        // 비로그인 상태일 때 내 허브 화면
+        authContainer.innerHTML = `
+            <div style="text-align:center; padding: 20px 0;">
+                <div style="font-size:36px; margin-bottom:12px;">🔒</div>
+                <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">로그인이 필요합니다.</h3>
+                <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">로그인 후 환경설정 및 PRO 멤버십 관리가 가능합니다.</p>
+                <button onclick="openAuthModal()" style="background:var(--foreground); color:var(--background); padding:10px 24px; border-radius:8px; font-weight:800; border:none; cursor:pointer; font-size:14px;">로그인 하기</button>
+            </div>
+        `;
+    }
+  }
   
-  // 🌟 PRO 멤버십 이동 함수 🌟
+  // 🌟 PRO 탭 이동 함수 🌟
   function goToProTab() {
       closeProfileModal();
       const tabs = document.querySelectorAll('.tab-btn');
@@ -797,18 +969,27 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // 🌟 PRO 멤버십 활성화 로직 🌟
+  // 🌟 PRO 멤버십 활성화 스위치 🌟
   const proToggle = document.getElementById('pro-toggle');
   if(proToggle) {
       proToggle.checked = (localStorage.getItem('fco_pro_mode') === 'true');
   }
   function toggleProMode(e) {
+      const currentUser = localStorage.getItem('fco_current_user');
+      if(!currentUser && e.target.checked) {
+          e.target.checked = false;
+          alert("먼저 로그인을 진행해 주세요.");
+          openAuthModal();
+          return;
+      }
+
       localStorage.setItem('fco_pro_mode', e.target.checked);
       if(e.target.checked) {
-          alert("💎 PRO 멤버십이 활성화되었습니다!\n이제 모든 PRO AI 기능을 블러 없이 즉시 확인할 수 있습니다.");
+          alert("💎 PRO 기능이 활성화되었습니다!\n이제 모든 프리미엄 리포트를 블러 없이 확인할 수 있습니다.");
       } else {
-          alert("PRO 멤버십이 비활성화되었습니다.");
+          alert("PRO 기능이 비활성화되었습니다.");
       }
+      renderHubAuth();
   }
 
   function renderSearchHistory() {
@@ -842,22 +1023,14 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  let db = null;
-  if (true) {
-    try {
-      firebase.initializeApp({ apiKey: "AIzaSyD_8kN03PyBQjOuW6cxMLHaUxMi6cci0LM", projectId: "fcogg-d209a" });
-      db = firebase.firestore();
-    } catch(e) {}
-  }
-
-  const matchTypeMap = { 50: "공식경기", 60: "공식 친선", 40: "클래식 1on1" };
-  const LATEST_NOTICE_VERSION = "20260822_v51_final_proai"; 
+  const LATEST_NOTICE_VERSION = "20260822_v52_final_auth"; 
   
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) { 
         openNoticeModal(); 
     }
     renderTop10(); renderSearchHistory(); renderTeamColorTierList(); renderTraitData('ST');
+    renderHubAuth(); 
   });
 
   async function initMockDBUser(ouid, nickname) {
@@ -937,24 +1110,25 @@
     listEl.innerHTML = htmlString;
   }
 
-  /* 🌟 모달 닫기 이벤트 🌟 */
   function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; localStorage.setItem("fco_read_notice_version", LATEST_NOTICE_VERSION); document.getElementById('notice-dot').style.display = 'none'; }
   function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
   function closeSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'none'; }
   function openSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'flex'; }
+  
+  // 🌟 모달 닫기 이벤트(버그 수정됨) 🌟
   function closeProfileModal() { document.getElementById('profile-modal').style.display = 'none'; }
-
   window.addEventListener('click', (e) => {
     if(e.target === document.getElementById('profile-modal')) closeProfileModal();
     if(e.target === document.getElementById('sub-detail-modal')) closeSubDetailModal();
     if(e.target === document.getElementById('notice-modal')) closeNoticeModal();
+    if(e.target === document.getElementById('auth-modal')) closeAuthModal();
   });
-
   window.addEventListener('keydown', (e) => {
     if(e.key === 'Escape') {
       closeProfileModal();
       closeSubDetailModal();
       closeNoticeModal();
+      closeAuthModal();
     }
   });
   
@@ -982,79 +1156,6 @@
   fetch("https://open.api.nexon.com/static/fconline/meta/division.json").then(r => r.json()).then(data => { if(Array.isArray(data)) { data.forEach(i => { divisionMetaCache[String(i.divisionId)] = i.divisionName; }); } }).catch(() => {});
   function getTierBadge(divId) { if(!divId) return ""; return tierBadgeMap[String(divId)] || "ico_rank0.png"; }
 
-  const teamColorData = [
-    { name: "레알 마드리드", rate: 7.0, count: 305, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "리버풀", rate: 6.1, count: 263, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "바이에른 뮌헨", rate: 6.0, count: 259, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "FC 바르셀로나", rate: 6.0, count: 258, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "아스널", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
-    { name: "롬바르디아 FC", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
-    { name: "첼시", rate: 5.0, count: 215, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "맨체스터 유나이티드", rate: 4.6, count: 200, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "브라질", rate: 4.1, count: 179, logo: "https://flagcdn.com/w160/br.png" },
-    { name: "맨체스터 시티", rate: 3.6, count: 157, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
-    { name: "대한민국", rate: 3.6, count: 155, logo: "https://flagcdn.com/w160/kr.png" },
-    { name: "스페인", rate: 3.4, count: 146, logo: "https://flagcdn.com/w160/es.png" },
-    { name: "유벤투스", rate: 3.1, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
-    { name: "독일", rate: 3.0, count: 132, logo: "https://flagcdn.com/w160/de.png" },
-    { name: "밀라노 FC", rate: 3.0, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
-    { name: "프랑스", rate: 2.9, count: 127, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "파리 생제르맹", rate: 2.8, count: 122, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
-    { name: "잉글랜드", rate: 2.6, count: 114, logo: "https://flagcdn.com/w160/gb-eng.png" },
-    { name: "아틀레티코 마드리드", rate: 1.9, count: 84, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
-    { name: "포르투갈", rate: 1.5, count: 67, logo: "https://flagcdn.com/w160/pt.png" },
-    { name: "토트넘 홋스퍼", rate: 1.5, count: 66, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" }
-  ];
-  function renderTeamColorTierList() {
-    const container = document.getElementById("teamcolor-list-container"); if(!container) return;
-    container.innerHTML = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 21)</div>` + teamColorData.map((tc, i) => {
-      let badgeClass = "t1"; let badgeLabel = "1 Tier"; 
-      if(i < 3) { badgeClass = "op"; badgeLabel = "OP"; } 
-      else if(i < 8) { badgeClass = "t1"; badgeLabel = "1 Tier"; } 
-      else if(i < 15) { badgeClass = "t2"; badgeLabel = "2 Tier"; } 
-      else { badgeClass = "t3"; badgeLabel = "3 Tier"; }
-      
-      return `
-        <div class="player-row">
-          <div class="td-badge ${badgeClass}">${badgeLabel}</div>
-          <div class="td-season"><img src="${tc.logo}" style="width:32px; height:32px; object-fit:contain;"></div>
-          <div class="td-info" style="flex-direction:column; align-items:flex-start; gap:2px;">
-            <span style="font-size:14px; font-weight:800;">${tc.name}</span>
-            <span style="font-size:11px; color:var(--muted-foreground); font-weight:600;">${tc.count}명 (${tc.rate}%)</span>
-          </div>
-          <div class="td-stats"><div style="font-size:15px; font-weight:900;">${tc.rate}%</div></div>
-        </div>`;
-    }).join('');
-  }
-
-  const traitsDB = {
-    "ST": { combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 타이탄", "트릭스터 + 아크로바틱 피니셔"], newTraits: [{n:"라인 브레이커", r:"45.7%"}, {n:"트릭스터", r:"19.8%"}, {n:"타이탄", r:"14.6%"}], coaches: [{n:"침착하게 골 찬스 만들기", r:"22.8%"}, {n:"빠른 템포 공격", r:"17.4%"}] },
-    "CF": { combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 크로스 포쳐", "트릭스터 + 아크로바틱 피니셔"], newTraits: [{n:"라인 브레이커", r:"47.3%"}, {n:"트릭스터", r:"24.3%"}, {n:"타이탄", r:"8.0%"}], coaches: [{n:"침착하게 골 찬스 만들기", r:"21.2%"}, {n:"빠른 템포 공격", r:"17.1%"}] },
-    "RW": { combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 스피드스터", "트릭스터 + 아크로바틱 피니셔"], newTraits: [{n:"라인 브레이커", r:"48.6%"}, {n:"트릭스터", r:"37.3%"}, {n:"스피드스터", r:"6.8%"}], coaches: [{n:"침착하게 골 찬스 만들기", r:"13.2%"}, {n:"능숙한 몸싸움", r:"12.9%"}] },
-    "CAM": { combos: ["라인 브레이커 + 트릭스터", "라인 브레이커 + 레이저 슈터", "트릭스터 + 크로스 포쳐"], newTraits: [{n:"라인 브레이커", r:"44.9%"}, {n:"트릭스터", r:"29.0%"}, {n:"레이저 슈터", r:"6.6%"}], coaches: [{n:"침착하게 골 찬스 만들기", r:"21.6%"}, {n:"능숙한 몸싸움", r:"15.7%"}] },
-    "CDM": { combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 타이탄"], newTraits: [{n:"체이서", r:"34.8%"}, {n:"파이터", r:"31.0%"}, {n:"블로커", r:"15.5%"}], coaches: [{n:"능숙한 압박", r:"27.2%"}, {n:"안정적인 빌드업", r:"21.9%"}] },
-    "CB": { combos: ["체이서 + 파이터", "체이서 + 블로커", "파이터 + 프레데터"], newTraits: [{n:"체이서", r:"36.6%"}, {n:"파이터", r:"20.9%"}, {n:"블로커", r:"17.9%"}], coaches: [{n:"능숙한 압박", r:"20.3%"}, {n:"안정적인 빌드업", r:"18.2%"}] },
-    "GK": { combos: ["GK 데드아이 + GK 빠른 반응", "GK 데드아이 + GK 공중볼 장악", "GK 빠른 반응 + GK 공중볼 장악"], newTraits: [{n:"GK 데드아이", r:"76.5%"}, {n:"GK 빠른 반응", r:"14.0%"}, {n:"GK 공중볼 장악", r:"9.5%"}], coaches: [{n:"낮은 슛 방어", r:"57.0%"}, {n:"감아차기 방어", r:"18.0%"}] }
-  };
-  function getTraitKey(pos) {
-    if (traitsDB[pos]) return pos; 
-    if(["LF"].includes(pos)) return "CF"; if(["RAM", "LAM"].includes(pos)) return "CAM";
-    if(["RM", "LM"].includes(pos)) return "RW"; if(["RCM", "LCM", "CM", "LDM", "RDM"].includes(pos)) return "CDM";
-    if(["RWB", "LWB", "RB", "LB"].includes(pos)) return "CB"; if(["LCB", "RCB", "SW"].includes(pos)) return "CB";
-    return "ST";
-  }
-  function selectTrait(pos, event) { document.querySelectorAll('.t-node').forEach(n => n.classList.remove('active')); event.target.classList.add('active'); renderTraitData(pos); }
-  function renderTraitData(pos) {
-    document.getElementById('trait-pos-label').innerText = pos; const data = traitsDB[getTraitKey(pos)] || traitsDB["ST"];
-    const combosHTML = `<div class="tier-board" style="padding:16px; margin-bottom:16px;"><div style="font-size:14px; font-weight:800; margin-bottom:12px;">💡 신규 추천 조합 TOP 3</div><div style="display:flex; flex-direction:column; gap:6px;">` + data.combos.map((c,i)=>`<div style="background:var(--background); padding:8px 12px; border-radius:8px; font-size:13px; font-weight:600;">${i+1}️⃣ ${c}</div>`).join('') + `</div></div>`;
-    const makeTraitListHTML = (arr, title) => {
-      let html = `<div class="tier-board" style="padding:16px; margin-bottom:16px;"><div class="tier-category-header t1" style="margin-bottom:12px; font-size:13px;">${title}</div><div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">`;
-      html += arr.map(item => `<div style="background:var(--background); border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; width:calc(33% - 6px);"><div class="trait-hex silver" style="width:36px; height:36px; font-size:16px;">⚽</div><div style="font-size:11px; font-weight:700; text-align:center; margin-top:8px; word-break:keep-all;">${item.n}</div><div style="font-size:12px; font-weight:800; color:var(--foreground); margin-top:4px;">${item.r}</div></div>`).join('');
-      return html + `</div></div>`;
-    };
-    document.getElementById('trait-content-area').innerHTML = combosHTML + makeTraitListHTML(data.newTraits, "🥇 8강 획득 (신규 특성)") + makeTraitListHTML(data.coaches, "🛡️ 11강 획득 (훈련 코치)");
-  }
-
   async function fetchNexonApi(apiUrl) {
     const response = await fetch(apiUrl, { headers: { "x-nxopen-api-key": NEXON_API_KEY } });
     if (response.status === 429) { 
@@ -1078,8 +1179,6 @@
 
   let globalOuid = "", globalNickname = "", globalMaxTier = "", globalMaxTierId = null, globalLevel = "";
   let globalMatchDetails = []; let currentMatchLoadIndex = 0;
-  
-  // 🌟 AI 전역 변수 🌟
   window.currentProAIStats = {};
 
   async function searchDirectData() {
@@ -1093,7 +1192,6 @@
 
     try {
       const idData = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/id?nickname=${encodeURIComponent(nickname)}`);
-      
       if (!idData?.ouid) { 
         document.getElementById('global-loading').style.display = 'none';
         resultArea.innerHTML = `
@@ -1108,7 +1206,6 @@
       }
       
       addSearchHistory(nickname);
-
       globalOuid = idData.ouid; globalNickname = nickname;
       let mockUser = await initMockDBUser(globalOuid, globalNickname);
 
@@ -1131,9 +1228,7 @@
         resultArea.style.display = 'block'; return;
       }
 
-      let wins = 0, draws = 0, losses = 0;
-      let matchHTMLList = [];
-      
+      let wins = 0, draws = 0, losses = 0; let matchHTMLList = [];
       const detailPromises = matchIds.map(mId => fetchNexonApi(`https://open.api.nexon.com/fconline/v1/match-detail?matchid=${mId}`).catch(()=>null));
       const matchDetails = await Promise.all(detailPromises);
 
@@ -1217,14 +1312,11 @@
     document.getElementById('profile-result-area').style.display = 'none'; 
     document.getElementById('modal-loading').style.display = 'block';
     
-    // 🌟 AI 리포트 초기 세팅 🌟
     document.getElementById('ai-loading').style.display = 'block';
     document.getElementById('ai-content-basic').style.display = 'none';
     document.getElementById('ai-content-pro').style.display = 'none';
 
-    // 🌟 PRO 멤버십 활성화 상태 체크 (활성화 시 블러/오버레이 제거) 🌟
     const isProMode = localStorage.getItem('fco_pro_mode') === 'true';
-    
     const overlay = document.getElementById('pro-overlay');
     const blurTarget = document.getElementById('pro-blur-target');
     const squadOverlay = document.getElementById('squad-pro-overlay');
@@ -1249,9 +1341,7 @@
     let mockUser = await initMockDBUser(globalOuid, globalNickname);
     document.getElementById('prof-rec-cnt').innerText = mockUser.rec || 0;
 
-    if (globalMaxTierId) {
-      document.getElementById('profile-tier-img').src = getTierBadge(globalMaxTierId);
-    }
+    if (globalMaxTierId) document.getElementById('profile-tier-img').src = getTierBadge(globalMaxTierId);
 
     try {
       const matchIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${globalOuid}&matchtype=50&offset=0&limit=25`);
@@ -1278,18 +1368,10 @@
     let totalGoals = 0, totalConceded = 0, totalPossess = 0, totalTackle = 0, totalBlock = 0;
     let totalShoot = 0, totalEffShoot = 0, totalYellow = 0;
     let totalThroughPassTry = 0, totalThroughPassSuccess = 0;
-    
-    // 🌟 추가된 데이터 수집 🌟
-    let totalHeadingGoal = 0;
-    let totalFreekickGoal = 0;
-    let totalPassTry = 0;
-    let totalPassSuccess = 0;
-    let totalDribbleTry = 0;
-    let totalDribbleSuccess = 0;
-
-    let enTotalCross = 0;
-    let enTotalThrough = 0;
-
+    let totalHeadingGoal = 0, totalFreekickGoal = 0;
+    let totalPassTry = 0, totalPassSuccess = 0;
+    let totalDribbleTry = 0, totalDribbleSuccess = 0;
+    let enTotalCross = 0, enTotalThrough = 0;
     let playerStats = {}; let kbdCount = 0, padCount = 0; let latestMatchPlayers = null; 
 
     for (const mData of matchesData) {
@@ -1339,7 +1421,6 @@
     }
 
     const total = wins + draws + losses; const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
-    
     const ctrlInfo = document.getElementById('controller-info');
     if (ctrlInfo) { ctrlInfo.innerHTML = (kbdCount > padCount) ? "⌨️ 키보드" : "🎮 패드"; ctrlInfo.style.display = 'inline-flex'; }
 
@@ -1371,14 +1452,12 @@
       let freekickPerGame = totalFreekickGoal / gameCount;
       let dribbleSuccessRate = totalDribbleTry > 0 ? (totalDribbleSuccess / totalDribbleTry) * 100 : 0;
 
-      // 🌟 심층 경기 통계 (메인 컴팩트 노출) 🌟
       safeSetText('stat-avg-goal', avgGoal);
       safeSetText('stat-avg-concede', avgConcede);
       safeSetText('stat-avg-pass-rate', overallPassRate + "%");
       safeSetText('stat-avg-possess', avgPossess + "%");
       safeSetText('stat-avg-defend', `${avgTackle} / ${avgBlock}`);
 
-      // 🌟 서브 모달 업데이트 (드리블 등) 🌟
       safeSetText('stat-avg-concede-modal', avgConcede);
       safeSetText('stat-avg-possess-modal', avgPossess + "%");
       safeSetText('sub-stat-pass-rate', overallPassRate + "%");
@@ -1390,32 +1469,15 @@
       safeSetText('sub-stat-special-goal', `${totalHeadingGoal}골 / ${totalFreekickGoal}골`);
       safeSetText('sub-stat-yellow', avgYellow + "개");
 
-      // 🌟 칭호 시스템 & 사유 저장 🌟
       let badgeText = "⚽ 밸런스형";
       let titleReason = "전체적인 공수 밸런스가 매우 안정적입니다.";
-      
-      if (dribbleSuccessRate >= 55 && totalDribbleTry >= 3) { 
-          badgeText = "🌪️ 드리블러"; 
-          titleReason = `평균 유저(50%) 대비 드리블 돌파 성공률이 <b style='color:var(--ai-blue);'>${dribbleSuccessRate.toFixed(1)}%</b>로 압도적입니다.`;
-      } else if (headingPerGame >= 0.3) { 
-          badgeText = "🗿 타이탄"; 
-          titleReason = `평균 유저(0.2골) 대비 헤딩 득점이 경기당 <b style='color:var(--ai-blue);'>${headingPerGame.toFixed(1)}골</b>로 매우 높습니다.`;
-      } else if (freekickPerGame >= 0.1) { 
-          badgeText = "🎯 프리킥 장인"; 
-          titleReason = `평균 유저 대비 세트피스(프리킥) 득점 비율이 최상위권입니다.`;
-      } else if (parseFloat(avgTackle) >= 3.0) { 
-          badgeText = "🛡️ 통곡의 벽"; 
-          titleReason = `평균 유저(2.0회) 대비 경기당 태클 성공이 <b style='color:var(--ai-blue);'>${avgTackle}회</b>로 월등히 높습니다.`;
-      } else if (parseFloat(penetrationRate) >= 30.0) { 
-          badgeText = "🚀 라인 브레이커"; 
-          titleReason = `평균 유저(25%) 대비 스루패스 성공률이 <b style='color:var(--ai-blue);'>${penetrationRate}%</b>로 날카롭습니다.`;
-      } else if (parseFloat(avgGoal) >= 2.0) { 
-          badgeText = "🔥 폭격기"; 
-          titleReason = `평균 유저(1.2골) 대비 평균 득점력이 <b style='color:var(--ai-blue);'>${avgGoal}골</b>로 파괴적입니다.`;
-      } else if (parseFloat(overallPassRate) >= 90) { 
-          badgeText = "🎯 마에스트로"; 
-          titleReason = `평균 유저(85%) 대비 전체 패스 성공률이 <b style='color:var(--ai-blue);'>${overallPassRate}%</b>로 최상위권입니다.`;
-      }
+      if (dribbleSuccessRate >= 55 && totalDribbleTry >= 3) { badgeText = "🌪️ 드리블러"; titleReason = `평균 유저(50%) 대비 드리블 돌파 성공률이 <b style='color:var(--ai-blue);'>${dribbleSuccessRate.toFixed(1)}%</b>로 압도적입니다.`; } 
+      else if (headingPerGame >= 0.3) { badgeText = "🗿 타이탄"; titleReason = `평균 유저(0.2골) 대비 헤딩 득점이 경기당 <b style='color:var(--ai-blue);'>${headingPerGame.toFixed(1)}골</b>로 매우 높습니다.`; } 
+      else if (freekickPerGame >= 0.1) { badgeText = "🎯 프리킥 장인"; titleReason = `평균 유저 대비 세트피스(프리킥) 득점 비율이 최상위권입니다.`; } 
+      else if (parseFloat(avgTackle) >= 3.0) { badgeText = "🛡️ 통곡의 벽"; titleReason = `평균 유저(2.0회) 대비 경기당 태클 성공이 <b style='color:var(--ai-blue);'>${avgTackle}회</b>로 월등히 높습니다.`; } 
+      else if (parseFloat(penetrationRate) >= 30.0) { badgeText = "🚀 라인 브레이커"; titleReason = `평균 유저(25%) 대비 스루패스 성공률이 <b style='color:var(--ai-blue);'>${penetrationRate}%</b>로 날카롭습니다.`; } 
+      else if (parseFloat(avgGoal) >= 2.0) { badgeText = "🔥 폭격기"; titleReason = `평균 유저(1.2골) 대비 평균 득점력이 <b style='color:var(--ai-blue);'>${avgGoal}골</b>로 파괴적입니다.`; } 
+      else if (parseFloat(overallPassRate) >= 90) { badgeText = "🎯 마에스트로"; titleReason = `평균 유저(85%) 대비 전체 패스 성공률이 <b style='color:var(--ai-blue);'>${overallPassRate}%</b>로 최상위권입니다.`; }
 
       const badgeEl = document.getElementById('player-style-badge'); 
       if(badgeEl) { badgeEl.innerText = badgeText; badgeEl.style.display = 'inline-flex'; }
@@ -1442,25 +1504,18 @@
     if (latestMatchPlayers && latestMatchPlayers.length > 0) {
       latestMatchPlayers.forEach(p => {
         let spId = p.spId; let grade = p.spGrade || 1; let posId = p.spPosition;
-        
         let avgRatingNum = 0;
         if (playerStats[spId] && playerStats[spId].count > 0) { avgRatingNum = playerStats[spId].ratingSum / playerStats[spId].count; } 
         else { avgRatingNum = p.status?.spRating || 0; }
         
         let posData = positionMap[parseInt(posId)] || { label: 'SUB', line: 'df' }; 
-        
         if(avgRatingNum > highestRating) { highestRating = avgRatingNum; mvpSpId = spId; }
         if(avgRatingNum > 0 && avgRatingNum < lowestRating) { lowestRating = avgRatingNum; worstSpId = spId; worstPosLabel = posData.label; }
 
         let avgRating = avgRatingNum.toFixed(1);
         let pid = parseInt(String(spId).substring(3), 10);
         let seasonId = Math.floor(spId / 1000000);
-        
-        /* 🌟 스쿼드 폰트 색상 버그 픽스: var(--foreground)로 지정하여 항상 잘 보이게 함 🌟 */
-        let ratingColor = 'var(--foreground)'; 
-        if (avgRatingNum >= 7.5) ratingColor = 'var(--win-color)'; 
-        else if (avgRatingNum > 0 && avgRatingNum < 6.0) ratingColor = 'var(--lose-color)'; 
-        
+        let ratingColor = '#FFFFFF'; if (avgRatingNum >= 7.5) ratingColor = 'var(--win-color)'; else if (avgRatingNum < 6.0) ratingColor = 'var(--lose-color)'; 
         let playerNameStr = spidMetaCache[spId] || '선수';
 
         let gradeStyle = "";
@@ -1500,11 +1555,9 @@
     setHtml('squad-row-df', linesHTML.df.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
     setHtml('squad-row-gk', linesHTML.gk.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
 
-    // 🌟 모든 계산 끝난 후 AI 리포트 자동 생성 🌟
     generateAIReports();
   }
 
-  // 🌟 AI 리포트 생성 로직 🌟
   function generateAIReports() {
     setTimeout(() => {
       document.getElementById('ai-loading').style.display = 'none';
@@ -1519,7 +1572,6 @@
       const isKb = stats.isKeyboard || false;
       const currentWinRate = stats.currentWinRate || 0;
 
-      // --- 1. 기본 AI 리포트 (칭호 설명 & 지표 강화판) ---
       let basicText = `
         <div style="display:flex; flex-direction:column; gap:12px;">
           <div style="background:var(--background); padding:16px; border-radius:12px; border-left:4px solid var(--ai-blue);">
@@ -1536,64 +1588,35 @@
       `;
       document.getElementById('ai-basic-text').innerHTML = basicText;
 
-      // --- 2. FCO PRO AI 리포트 ---
-      let weakness = "";
-      let solutionText = "";
-      let strategy = "";
-      let matchup = "";
+      let weakness = ""; let solutionText = ""; let strategy = ""; let matchup = "";
+      if (concede >= 1.5) { weakness = `수비 전환 시 <b style="color:var(--lose-color);">하프스페이스 공간 노출</b>이 잦습니다. 상대 역습 시 센터백과 풀백 사이의 간격이 크게 벌어져 쉽게 뚫리는 경향이 있습니다.`; solutionText = `센터백(CB)을 직접 조종하여 튀어나가는 수비를 자제하세요. <b>수비형 미드필더(CDM)를 커서로 잡고 패스 길목을 차단</b>하는 '지역 방어' 위주로 전환하면 실점률을 확실히 낮출 수 있습니다.`; } 
+      else if (goal < 1.0) { weakness = `상대 페널티 박스 근처에서 <b style="color:var(--lose-color);">진입 패스 경로 창출</b>에 실패하고 있습니다. 무의미한 횡패스와 백패스 비율이 높아 득점 찬스 자체가 부족합니다.`; solutionText = `공격이 막힐 때 억지로 뚫으려 하지 말고, 스트라이커의 <b>'침투 요청(Q)' 후 2선 미드필더의 강력한 중거리 슛(ZD/D)</b> 비중을 늘리세요. 수비가 끌려나올 때 뒷공간이 열립니다.`; } 
+      else if (pass < 30) { weakness = `결정적인 <b style="color:var(--lose-color);">전진 킬패스(스루패스) 타이밍</b>을 자주 놓쳐 공격 템포가 죽습니다. 상대 수비가 정비되기 전에 찌르는 창의적 시도가 매우 부족합니다.`; solutionText = `역습 찬스 시 볼을 오래 끌지 마세요. 최전방 공격수가 수비수와 동일 선상에 섰을 때 <b>지체 없이 ZW(로빙 스루) 또는 W(스루패스)</b>를 찔러 넣는 과감한 패턴을 1순위로 연습하세요.`; } 
+      else { weakness = `전반적인 통계는 매우 우수하나, 리드 상황에서 <b style="color:var(--lose-color);">무리한 전진 패스로 인한 턴오버</b>가 간헐적으로 발생해 불필요한 역습 실점을 내어줍니다.`; solutionText = `이기고 있는 상황에서는 공격 템포를 늦추세요. <b>백패스를 적극 활용하여 상대방이 압박하러 튀어나오도록 유도</b>하고, 틈이 보일 때만 전진 패스를 시도해 승리를 굳히세요.`; }
 
-      // ① 약점 분석
-      if (concede >= 1.5) {
-          weakness = `수비 전환 시 <b style="color:var(--lose-color);">하프스페이스 공간 노출</b>이 잦습니다. 상대 역습 시 센터백과 풀백 사이의 간격이 크게 벌어져 쉽게 뚫리는 경향이 있습니다.`;
-          solutionText = `센터백(CB)을 직접 조종하여 튀어나가는 수비를 자제하세요. <b>수비형 미드필더(CDM)를 커서로 잡고 패스 길목을 차단</b>하는 '지역 방어' 위주로 전환하면 실점률을 확실히 낮출 수 있습니다.`;
-      } else if (goal < 1.0) {
-          weakness = `상대 페널티 박스 근처에서 <b style="color:var(--lose-color);">진입 패스 경로 창출</b>에 실패하고 있습니다. 무의미한 횡패스와 백패스 비율이 높아 득점 찬스 자체가 부족합니다.`;
-          solutionText = `공격이 막힐 때 억지로 뚫으려 하지 말고, 스트라이커의 <b>'침투 요청(Q)' 후 2선 미드필더의 강력한 중거리 슛(ZD/D)</b> 비중을 늘리세요. 수비가 끌려나올 때 뒷공간이 열립니다.`;
-      } else if (pass < 30) {
-          weakness = `결정적인 <b style="color:var(--lose-color);">전진 킬패스(스루패스) 타이밍</b>을 자주 놓쳐 공격 템포가 죽습니다. 상대 수비가 정비되기 전에 찌르는 창의적 시도가 매우 부족합니다.`;
-          solutionText = `역습 찬스 시 볼을 오래 끌지 마세요. 최전방 공격수가 수비수와 동일 선상에 섰을 때 <b>지체 없이 ZW(로빙 스루) 또는 W(스루패스)</b>를 찔러 넣는 과감한 패턴을 1순위로 연습하세요.`;
-      } else {
-          weakness = `전반적인 통계는 매우 우수하나, 리드 상황에서 <b style="color:var(--lose-color);">무리한 전진 패스로 인한 턴오버</b>가 간헐적으로 발생해 불필요한 역습 실점을 내어줍니다.`;
-          solutionText = `이기고 있는 상황에서는 공격 템포를 늦추세요. <b>백패스를 적극 활용하여 상대방이 압박하러 튀어나오도록 유도</b>하고, 틈이 보일 때만 전진 패스를 시도해 승리를 굳히세요.`;
-      }
-
-      // ② 실시간 매치업 프리뷰
       if (stats.gameCount > 0 && (stats.enTotalCross > 0 || stats.enTotalThrough > 0)) {
-          if (stats.enTotalCross > stats.enTotalThrough * 1.5) {
-              matchup = `⚠️ 이 상대는 전체 공격의 60% 이상을 <b style="color:var(--lose-color);">측면 크로스와 헤딩(뚝배기)</b>에 의존합니다. 사이드 돌파를 허용하지 말고 풀백을 수동으로 내려 수비하세요.`;
-          } else if (stats.enTotalThrough > stats.enTotalCross * 1.5) {
-              matchup = `⚠️ 이 상대는 <b style="color:var(--lose-color);">중앙 스루패스와 침투</b> 위주의 공격을 선호합니다. 수비 라인을 무리하게 올리지 말고 센터백 사이 간격을 좁히세요.`;
-          } else {
-              matchup = `💡 이 상대는 측면과 중앙을 고르게 활용하는 <b>밸런스형 유저</b>입니다. 상대의 1차 빌드업 경로를 예측하여 차단하는 압박 수비가 필요합니다.`;
-          }
-      } else {
-          matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 기본 수비 포메이션을 유지하세요.`;
-      }
+          if (stats.enTotalCross > stats.enTotalThrough * 1.5) matchup = `⚠️ 이 상대는 전체 공격의 60% 이상을 <b style="color:var(--lose-color);">측면 크로스와 헤딩(뚝배기)</b>에 의존합니다. 사이드 돌파를 허용하지 말고 풀백을 수동으로 내려 수비하세요.`;
+          else if (stats.enTotalThrough > stats.enTotalCross * 1.5) matchup = `⚠️ 이 상대는 <b style="color:var(--lose-color);">중앙 스루패스와 침투</b> 위주의 공격을 선호합니다. 수비 라인을 무리하게 올리지 말고 센터백 사이 간격을 좁히세요.`;
+          else matchup = `💡 이 상대는 측면과 중앙을 고르게 활용하는 <b>밸런스형 유저</b>입니다. 상대의 1차 빌드업 경로를 예측하여 차단하는 압박 수비가 필요합니다.`;
+      } else { matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 기본 수비 포메이션을 유지하세요.`; }
 
-      // ③ 승률 상승 그래프
       const expectedWinRate = Math.min(100, currentWinRate + 14); 
       const diffPct = expectedWinRate - currentWinRate;
-
       let solutionWithGraph = `
         <div style="margin-bottom: 12px; line-height: 1.6;">${solutionText}</div>
-        
         <div style="margin-top: 16px; padding: 16px; background: var(--background); border-radius: 12px; border: 1px solid var(--border);">
           <div style="font-size: 13px; font-weight: 800; color: var(--foreground); margin-bottom: 12px;">📈 솔루션 적용 시 예상 승률 변화</div>
-          
           <div style="margin-bottom: 10px;">
             <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px;">
-              <span style="color: var(--muted-foreground);">현재 승률</span>
-              <span style="color: var(--foreground);">${currentWinRate}%</span>
+              <span style="color: var(--muted-foreground);">현재 승률</span><span style="color: var(--foreground);">${currentWinRate}%</span>
             </div>
             <div style="width: 100%; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;">
               <div style="width: ${currentWinRate}%; height: 100%; background: var(--muted-foreground); border-radius: 99px; transition: width 1s ease;"></div>
             </div>
           </div>
-
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 4px;">
-              <span style="color: var(--pro-gold);">예상 승률</span>
-              <span style="color: var(--pro-gold);">${expectedWinRate}% <span style="font-size: 11px;">(+${diffPct}%p)</span></span>
+              <span style="color: var(--pro-gold);">예상 승률</span><span style="color: var(--pro-gold);">${expectedWinRate}% <span style="font-size: 11px;">(+${diffPct}%p)</span></span>
             </div>
             <div style="width: 100%; height: 8px; background: var(--pro-gold-bg); border-radius: 99px; overflow: hidden; border: 1px solid var(--pro-gold);">
               <div style="width: ${expectedWinRate}%; height: 100%; background: var(--pro-gold); border-radius: 99px; transition: width 1s ease;"></div>
@@ -1602,19 +1625,14 @@
         </div>
       `;
 
-      // ④ 기기 맞춤형 전술
-      if (isKb) {
-          strategy = `<b>[⌨️ 키보드 최적화 전술]</b><br>수비 시 <b>[E]키(달리기) 남발</b>을 줄여 역동작을 방지해야 합니다. [C]키를 누른 채 수비 라인을 맞춰 길목을 선점하세요. 공격 시 측면 윙어에게 '뒤에서 침투' 지시를 내리면 키보드 환경에서 훨씬 효과적인 침투가 나옵니다.`;
-      } else {
-          strategy = `<b>[🎮 패드 최적화 전술]</b><br>패드의 강점인 <b>360도 미세 아날로그 조작</b>을 극대화하세요. 페널티 박스 근처에서 <b>LT/L2(등지기) 후 C드리블</b>로 수비수 타이밍을 완벽히 뺏은 후, ZD(감아차기)나 컷백 공간을 창출하는 것을 적극 추천합니다.`;
-      }
+      if (isKb) { strategy = `<b>[⌨️ 키보드 최적화 전술]</b><br>수비 시 <b>[E]키(달리기) 남발</b>을 줄여 역동작을 방지해야 합니다. [C]키를 누른 채 수비 라인을 맞춰 길목을 선점하세요. 공격 시 측면 윙어에게 '뒤에서 침투' 지시를 내리면 키보드 환경에서 훨씬 효과적인 침투가 나옵니다.`; } 
+      else { strategy = `<b>[🎮 패드 최적화 전술]</b><br>패드의 강점인 <b>360도 미세 아날로그 조작</b>을 극대화하세요. 페널티 박스 근처에서 <b>LT/L2(등지기) 후 C드리블</b>로 수비수 타이밍을 완벽히 뺏은 후, ZD(감아차기)나 컷백 공간을 창출하는 것을 적극 추천합니다.`; }
 
       document.getElementById('pro-ai-weakness').innerHTML = weakness;
       document.getElementById('pro-ai-matchup').innerHTML = matchup;
       document.getElementById('pro-ai-solution').innerHTML = solutionWithGraph;
       document.getElementById('pro-ai-strategy').innerHTML = strategy;
 
-      // 🌟 스쿼드 구멍 및 교체 선수 렌더링 🌟
       if (stats.worstSpId) {
           const worstName = spidMetaCache[stats.worstSpId] || '선수';
           document.getElementById('worst-player-info').innerHTML = `<span style="color:var(--lose-color); font-weight:900;">${stats.worstPosLabel} ${worstName}</span><br>평균 평점 <b>${stats.lowestRating}점</b>으로 스쿼드 내 최하위입니다. 대인 마크 및 오프더볼 움직임 개선이 시급합니다.`;
