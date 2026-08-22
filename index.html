@@ -31,6 +31,12 @@
       --lose-color: #FF3B30; 
       --draw-color: #FF9500; 
       --tier-op: #5856D6; 
+      
+      /* 🌟 AI 테마 컬러 (블루 & 골드) 🌟 */
+      --ai-blue: #3B82F6;
+      --ai-blue-bg: #EFF6FF;
+      --pro-gold: #F59E0B;
+      --pro-gold-bg: #FFFBEB;
     }
 
     [data-theme="dark"] {
@@ -42,6 +48,12 @@
       --muted: #2C2C2E;
       --muted-foreground: #8E8E93;
       --border: #38383A;
+      
+      /* 🌟 다크모드 AI 테마 🌟 */
+      --ai-blue: #60A5FA;
+      --ai-blue-bg: rgba(59, 130, 246, 0.08);
+      --pro-gold: #FBBF24;
+      --pro-gold-bg: rgba(245, 158, 11, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; letter-spacing: -0.015em; }
@@ -95,7 +107,7 @@
     .h2h-focus-box input::placeholder { color: var(--muted-foreground); font-weight: 500; }
     .h2h-vs-badge { font-size: 14px; font-weight: 900; color: var(--background); background: var(--foreground); padding: 8px 16px; border-radius: 99px; }
 
-    /* 🌟 H2H 1:1 상대전적 UI / 로딩 게이지바 CSS (새로 추가됨) 🌟 */
+    /* H2H UI */
     .progress-container { width: 100%; height: 12px; background: var(--muted); border-radius: 99px; margin: 24px 0 12px; overflow: hidden; border: 1px solid var(--border); }
     .progress-bar { height: 100%; background: var(--foreground); width: 0%; transition: width 0.4s ease; }
     .progress-text { font-size: 14px; color: var(--muted-foreground); font-weight: 700; }
@@ -112,13 +124,13 @@
     .h2h-gauge-lose { background: var(--lose-color); display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 13px; font-weight: 800; transition: width 0.6s ease; }
     .h2h-stats-text { display: flex; justify-content: space-between; font-size: 18px; font-weight: 900; margin-bottom: 32px; }
 
-    /* 에러 상태 (이모티콘) */
+    /* 에러 상태 */
     .error-state { text-align: center; padding: 60px 20px; animation: fadeIn 0.3s; margin-top: 20px;}
     .error-state .emoji { font-size: 60px; margin-bottom: 20px; animation: float 2s infinite ease-in-out alternate; }
     .error-state h3 { font-size: 20px; font-weight: 800; color: var(--foreground); margin-bottom: 12px; }
     @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
 
-    /* 🌟 클래식 모달 레이아웃 🌟 */
+    /* 클래식 모달 레이아웃 */
     .profile-top-card { display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 30px; margin-bottom: 24px; flex-wrap: wrap; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease; margin-top: 20px; }
     .profile-name-area { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
     .profile-name-area h2 { font-size: 24px; font-weight: 900; color: var(--foreground); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -143,6 +155,40 @@
     .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
     .stat-row span { font-weight: 700; color: var(--muted-foreground); }
     .stat-row b { font-size: 22px; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;}
+
+    /* 🌟 AI 리포트 공통 CSS 🌟 */
+    .ai-box { border-radius: var(--radius); padding: 28px; margin-bottom: 24px; animation: fadeIn 0.5s ease; width: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
+    .ai-header { font-size: 20px; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .ai-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; flex: 1; min-width: 250px; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
+    .ai-card-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .ai-card-text { font-size: 14px; color: var(--foreground); line-height: 1.6; word-break: keep-all; font-weight: 500; }
+
+    /* 일반 AI (파란색) */
+    .ai-basic { background: var(--ai-blue-bg); border: 2px solid var(--ai-blue); }
+    .ai-basic .ai-header { color: var(--ai-blue); border-bottom-color: rgba(59, 130, 246, 0.2); }
+
+    /* FCO PRO AI (노란색/골드) - 블러 및 오버레이 */
+    .ai-pro { background: var(--pro-gold-bg); border: 2px solid var(--pro-gold); position: relative; overflow: hidden; }
+    .ai-pro .ai-header { color: var(--pro-gold); border-bottom-color: rgba(245, 158, 11, 0.2); }
+    
+    .pro-blur-content { filter: blur(8px); transition: filter 0.5s ease; user-select: none; pointer-events: none; }
+    
+    .pro-overlay { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(255,255,255,0.4); backdrop-filter: blur(2px); 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      z-index: 10; transition: opacity 0.4s ease; border-radius: var(--radius);
+    }
+    [data-theme="dark"] .pro-overlay { background: rgba(0,0,0,0.5); }
+
+    .btn-unlock-pro { 
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); 
+      color: #FFF; font-weight: 900; font-size: 16px; padding: 16px 32px; 
+      border-radius: 99px; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); 
+      transition: 0.3s; display: flex; align-items: center; gap: 8px; 
+    }
+    .btn-unlock-pro:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4); }
 
     .btn-detail-more { width: 100%; margin-top: 24px; height: 48px; background: var(--foreground); color: var(--background); font-weight: 800; font-size: 15px; border-radius: 12px; border: none; cursor: pointer; transition: 0.2s; }
     .btn-detail-more:hover { opacity: 0.9; }
@@ -255,11 +301,10 @@
     .modal-content, .notice-modal-content, .sub-modal-content { background: var(--card); width: 100%; border-radius: var(--radius); border: 1px solid var(--border); padding: 32px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
     .modal-content { max-width: 1060px; }
     
-    /* 🌟 공지사항 모달 크기 확대 패치 🌟 */
     .notice-modal-content { max-width: 720px; padding: 48px 32px; } 
     .sub-modal-content { max-width: 600px; } 
     
-    .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 100; }
+    .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000; }
     .modal-close-btn:hover { background: var(--muted-foreground); color: var(--card); transform: rotate(90deg); }
 
     .tab-content, .sub-content { display: none; }
@@ -269,6 +314,7 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     @media (max-width: 1024px) {
+      .ai-grid { grid-template-columns: 1fr; }
       .dashboard-grid { grid-template-columns: 1fr; }
       .hub-container { flex-direction: column; }
       .hub-sidebar { width: 100%; display: flex; overflow-x: auto; padding: 12px; }
@@ -280,7 +326,6 @@
 
 <div class="container">
   
-  <!-- 우측 상단 버튼 -->
   <div class="top-right-actions">
     <div class="bg-upload-container" style="display: flex; gap: 8px; align-items: center;">
       <label for="bg-upload" class="bg-btn" title="배경 이미지 변경">🖼️ 배경</label>
@@ -293,7 +338,6 @@
     <button class="donate-btn" onclick="alert('후원 계좌: 토스 1002 5837 0089 김*율\n감사합니다!')">💛 후원하기</button>
   </div>
 
-  <!-- 중앙 네비게이션 -->
   <header class="header-container">
     <div class="logo" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0])">FCO<span>.GG</span></div>
     <div class="main-tabs">
@@ -308,36 +352,29 @@
     </div>
   </header>
 
-  <!-- 1️⃣ 메인 검색 (검색 시 요약 5경기) -->
   <div id="tab-search" class="tab-content active">
-    
     <div class="hero-search-section" id="hero-section">
       <h1 style="font-weight:900; margin-bottom:16px; line-height:1.2;">
         <span style="font-size:28px; color:var(--muted-foreground);">구단의 모든 기록,</span><br>
         <span style="font-size:48px; color:var(--foreground); letter-spacing:-2px;">분석의 시작.</span>
       </h1>
       <p style="color:var(--muted-foreground); margin-bottom:32px; font-size:15px; font-weight:500;">구단주명을 입력하여 실시간 승률 및 스쿼드 전적을 한눈에 확인하세요.</p>
-      
       <div class="pill-search-box">
         <input type="text" id="user-search-input" placeholder="구단주명 입력..." onkeypress="if(event.key==='Enter') searchDirectData()">
         <button class="pill-search-btn" onclick="searchDirectData()">전적 검색</button>
       </div>
     </div>
-    
     <div id="global-loading" style="display: none; text-align: center; padding: 60px; color: var(--muted-foreground);">
       <div class="spinner">⏳</div>
       <div style="font-weight:700; font-size:15px; color:var(--foreground);">데이터를 불러오는 중입니다...</div>
     </div>
-
     <div id="detailed-result-area" style="display: none;"></div>
   </div>
 
-  <!-- 2️⃣ 1:1 상대전적 -->
   <div id="tab-h2h" class="tab-content">
     <div class="hero-search-section">
       <h3 style="margin-bottom:12px; font-size:28px; font-weight:800;">⚔️ 1:1 라이벌 전적 스캔</h3>
       <p style="margin-bottom:32px; color:var(--muted-foreground);">공식경기 최대 200판 및 친선경기를 스캔하여 우세를 확인하세요.</p>
-      
       <div style="display:flex; flex-direction:column; gap:16px; max-width:600px; width:100%; margin:0 auto;">
         <div class="h2h-focus-box">
           <input type="text" id="h2h-user1" placeholder="첫 번째 구단주">
@@ -456,22 +493,19 @@
   </div>
 </div>
 
-<!-- 🌟 대규모 업데이트 팝업 (대형화 패치) 🌟 -->
+<!-- 공지사항 모달 -->
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
-    
     <div style="text-align: center; margin-bottom: 32px;">
       <div style="font-size: 56px; margin-bottom: 12px;">🎉</div>
       <h2 style="font-size:36px; font-weight:900; color:var(--win-color); letter-spacing:-1px;">대규모 업데이트</h2>
       <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px; font-size: 16px;">8월 최신 데이터 및 기능 최적화 패치</p>
     </div>
-    
     <div style="font-size:15px; color:var(--muted-foreground); line-height:1.7; background:var(--background); padding:32px; border-radius:16px; display:flex; flex-direction:column; gap:20px;">
       <div>🔥 <b style="color:var(--foreground); font-size:18px;">팀컬러 티어리스트 최신화 및 순위 변동</b><br>
         <span style="font-size:14px; font-weight:600; color:var(--draw-color);">📈 리버풀 2위 등극 (뮌헨 추월) | 🚀 유벤투스 4계단 급상승 (13위)</span><br>
-        <span style="font-size:14px; font-weight:600; color:var(--win-color);">✨ 토트넘 홋스퍼 21위 신규 진입 (이탈리아 OUT)</span><br>
-        <span style="color:var(--muted-foreground); font-size:14px;">- 가장 최신 픽률 데이터(21위까지)로 팀컬러 리스트를 완벽하게 업데이트했습니다.</span>
+        <span style="font-size:14px; font-weight:600; color:var(--win-color);">✨ 토트넘 홋스퍼 21위 신규 진입 (이탈리아 OUT)</span>
       </div>
       <div>👑 <b style="color:var(--foreground); font-size:18px;">심층 경기 분석 가독성 상향 및 전적 한글화</b><br>
         <span style="color:var(--muted-foreground); font-size:14px;">- 상세 전적 요약의 글자 크기를 키우고 승/무/패를 명확한 한글로 개선했습니다.</span>
@@ -484,6 +518,7 @@
   </div>
 </div>
 
+<!-- 상세 모달 -->
 <div id="profile-modal" class="modal-overlay">
   <div class="modal-content">
     <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
@@ -491,6 +526,7 @@
       <div class="spinner">⏳</div>
       <div style="font-weight:700; font-size:16px; color:var(--foreground);">매치 기록을 스캔하여 정밀 분석 중입니다...</div>
     </div>
+    
     <div id="profile-result-area" style="display: none;">
       <div class="profile-top-card">
         <div class="profile-name-area">
@@ -521,6 +557,52 @@
         </div>
       </div>
 
+      <!-- 🌟 AI 로딩 영역 🌟 -->
+      <div id="ai-loading" style="text-align:center; padding:30px 0; display:none;">
+        <div class="spinner" style="font-size:24px;">⚽</div>
+        <div style="font-size:14px; font-weight:700; color:var(--ai-blue); margin-top:12px;">최근 25경기 데이터를 기반으로 AI 리포트를 생성 중입니다...</div>
+      </div>
+
+      <!-- 🌟 1. 일반 AI 리포트 🌟 -->
+      <div id="ai-content-basic" class="ai-box ai-basic" style="display:none;">
+        <div class="ai-header">🔍 FCO AI 기본 분석 리포트</div>
+        <div class="ai-grid">
+          <div class="ai-card" style="grid-column: 1 / -1; padding: 0; background: transparent; border: none; box-shadow: none;">
+            <div class="ai-card-text" id="ai-basic-text">AI 분석 중...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🌟 2. FCO PRO AI 리포트 🌟 -->
+      <div id="ai-content-pro" class="ai-box ai-pro" style="display:none; flex-direction:column;">
+        
+        <!-- 블러 해제 버튼 (자물쇠 없음) -->
+        <div class="pro-overlay" id="pro-overlay">
+          <div style="font-size:18px; font-weight:900; margin-bottom:16px; color:var(--foreground);">프리미엄 1:1 맞춤형 솔루션이 준비되었습니다.</div>
+          <button class="btn-unlock-pro" onclick="unlockProAI()">✨ FCO PRO AI 리포트 확인하기</button>
+        </div>
+        
+        <!-- 블러 컨텐츠 -->
+        <div id="pro-blur-target" class="pro-blur-content">
+          <div class="ai-header">👑 FCO PRO AI 정밀 분석 리포트 <span style="background:var(--pro-gold); color:#FFF; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px;">PRO</span></div>
+          <div class="ai-grid">
+            <div class="ai-card">
+              <div class="ai-card-title" style="color: #EA580C;">🚨 치명적 약점 스캐너</div>
+              <div class="ai-card-text" id="pro-ai-weakness">AI 분석 중...</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-title" style="color: #16A34A;">📈 승률 상승 솔루션</div>
+              <div class="ai-card-text" id="pro-ai-solution">AI 분석 중...</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-title" style="color: #7C3AED;">🧠 기기 맞춤형 전술</div>
+              <div class="ai-card-text" id="pro-ai-strategy">AI 분석 중...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🌟 대시보드 (통계 크기 축소 및 항목 복구) 🌟 -->
       <div class="dashboard-grid">
         <div class="dash-card">
           <div class="card-title" style="justify-content: flex-start;">승률 요약 (최근 25경기)</div>
@@ -531,13 +613,13 @@
           <div style="font-size:13px; font-weight:700; color:var(--muted-foreground);" id="winrate-comment">승률 분석 완료</div>
         </div>
 
-        <div class="dash-card" style="align-items: stretch; text-align: left; justify-content: flex-start; gap: 4px;">
-          <div class="card-title" style="margin-bottom: 20px;">심층 경기 통계 (평균)</div>
-          <div class="stat-row" style="padding: 14px 0;"><span style="color:var(--muted-foreground); font-weight:600; font-size: 14px;">득점 / 실점</span><b style="color:var(--foreground); font-size: 18px;"><span id="stat-avg-goal">0.0</span> <span style="color:var(--muted-foreground); font-size:14px; font-weight:500;">/</span> <span id="stat-avg-concede" style="color:var(--lose-color);">0.0</span></b></div>
-          <div class="stat-row" style="padding: 14px 0;"><span style="color:var(--muted-foreground); font-weight:600; font-size: 14px;">점유율</span><b style="color:var(--foreground); font-size: 18px;" id="stat-avg-possess">0%</b></div>
-          <div class="stat-row" style="padding: 14px 0;"><span style="color:var(--muted-foreground); font-weight:600; font-size: 14px;">슈팅 / 유효슈팅</span><b style="color:var(--foreground); font-size: 18px;"><span id="stat-avg-shoot">0.0</span> <span style="color:var(--muted-foreground); font-size:14px; font-weight:500;">/</span> <span id="stat-avg-eff-shoot">0.0</span></b></div>
-          <div class="stat-row" style="padding: 14px 0;"><span style="color:var(--muted-foreground); font-weight:600; font-size: 14px;">패스 성공률</span><b style="color:var(--foreground); font-size: 18px;" id="sub-stat-penetration-sm">0%</b></div>
-          <button class="btn-detail-more" onclick="openSubDetailModal()" style="margin-top:20px; height: 48px; background: var(--foreground); color: var(--background); border-radius: 12px; font-weight: 800; font-size:15px; border: none; cursor:pointer;">📊 자세한 리포트 보기</button>
+        <div class="dash-card" style="align-items: stretch; text-align: left; justify-content: flex-start; gap: 0; padding: 20px;">
+          <div class="card-title" style="margin-bottom: 12px; font-size: 13px;">심층 경기 통계 (평균)</div>
+          <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">득점 / 실점</span><b style="font-size: 16px; color:var(--foreground);"><span id="stat-avg-goal">0.0</span> <span style="font-size:12px; color:var(--muted-foreground); margin:0 2px;">/</span> <span id="stat-avg-concede" style="color:var(--lose-color);">0.0</span></b></div>
+          <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">패스 성공률</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-pass-rate">0%</b></div>
+          <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">점유율</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-possess">0%</b></div>
+          <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">태클 / 블록</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-defend">0 / 0</b></div>
+          <button class="btn-detail-more" onclick="openSubDetailModal()" style="margin-top:16px; height: 40px; font-size:13px; border-radius: 8px;">📊 자세한 리포트 보기</button>
         </div>
       </div>
 
@@ -571,6 +653,7 @@
   </div>
 </div>
 
+<!-- 서브 모달 (코너킥 비율 삭제, 헤딩/프리킥 추가) -->
 <div id="sub-detail-modal" class="sub-modal-overlay">
   <div class="sub-modal-content">
     <button class="modal-close-btn" onclick="closeSubDetailModal()">✕</button>
@@ -583,17 +666,20 @@
         <span style="font-weight:700;">점유율</span> <b id="stat-avg-possess-modal" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">패스 성공률 (스루패스)</span> <b id="sub-stat-penetration" style="color:var(--foreground); font-size:20px;">-</b>
+        <span style="font-weight:700;">전체 패스 성공률</span> <b id="sub-stat-pass-rate" style="color:var(--foreground); font-size:20px;">-</b>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:700;">스루패스 성공률</span> <b id="sub-stat-penetration" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:700;">슈팅 / 유효슈팅</span> 
         <b style="color:var(--foreground); font-size:20px;"><span id="stat-avg-shoot-modal">-</span> <span style="font-size:15px; font-weight:500; color:var(--muted-foreground); margin:0 4px;">/</span> <span id="stat-avg-eff-shoot-modal">-</span></b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">태클 / 블록 성공</span> <b id="sub-stat-defend" style="color:var(--foreground); font-size:20px;">-</b>
+        <span style="font-weight:700;">태클 / 블록 성공</span> <b id="sub-stat-defend-modal" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">코너킥 골 비율</span> <b id="sub-stat-corner-ratio" style="color:var(--foreground); font-size:20px;">-</b>
+        <span style="font-weight:700;">헤딩골 / 프리킥골 (총)</span> <b id="sub-stat-special-goal" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:700;">경고 / 파울</span> <b id="sub-stat-yellow" style="color:var(--lose-color); font-size:20px;">-</b>
@@ -670,7 +756,7 @@
   }
 
   const matchTypeMap = { 50: "공식경기", 60: "공식 친선", 40: "클래식 1on1" };
-  const LATEST_NOTICE_VERSION = "20260822_v45_final_patch"; // 버전명 변경 (팝업 다시 뜨게 유도)
+  const LATEST_NOTICE_VERSION = "20260822_v47_final_proai"; 
   
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) { 
@@ -756,10 +842,26 @@
     listEl.innerHTML = htmlString;
   }
 
+  /* 🌟 모달 닫기 이벤트(버그 수정됨) 🌟 */
   function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; localStorage.setItem("fco_read_notice_version", LATEST_NOTICE_VERSION); document.getElementById('notice-dot').style.display = 'none'; }
   function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
   function closeSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'none'; }
   function openSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'flex'; }
+  function closeProfileModal() { document.getElementById('profile-modal').style.display = 'none'; }
+
+  window.addEventListener('click', (e) => {
+    if(e.target === document.getElementById('profile-modal')) closeProfileModal();
+    if(e.target === document.getElementById('sub-detail-modal')) closeSubDetailModal();
+    if(e.target === document.getElementById('notice-modal')) closeNoticeModal();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+      closeProfileModal();
+      closeSubDetailModal();
+      closeNoticeModal();
+    }
+  });
   
   function switchTab(tabId, el) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -808,7 +910,6 @@
     { name: "포르투갈", rate: 1.5, count: 67, logo: "https://flagcdn.com/w160/pt.png" },
     { name: "토트넘 홋스퍼", rate: 1.5, count: 66, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" }
   ];
-  
   function renderTeamColorTierList() {
     const container = document.getElementById("teamcolor-list-container"); if(!container) return;
     container.innerHTML = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 21)</div>` + teamColorData.map((tc, i) => {
@@ -882,6 +983,9 @@
 
   let globalOuid = "", globalNickname = "", globalMaxTier = "", globalMaxTierId = null, globalLevel = "";
   let globalMatchDetails = []; let currentMatchLoadIndex = 0;
+  
+  // 🌟 AI 데이터 저장을 위한 전역 변수 🌟
+  window.currentProAIStats = {};
 
   async function searchDirectData() {
     const inputEl = document.getElementById('user-search-input');
@@ -938,7 +1042,6 @@
       const detailPromises = matchIds.map(mId => fetchNexonApi(`https://open.api.nexon.com/fconline/v1/match-detail?matchid=${mId}`).catch(()=>null));
       const matchDetails = await Promise.all(detailPromises);
 
-      /* 🌟 [패치] WIN/LOSS 영어를 승리/패배로 한글화 적용 🌟 */
       for (const mData of matchDetails) {
         if (mData?.matchInfo) {
           const myInfo = mData.matchInfo.find(i => i.ouid === globalOuid);
@@ -1019,6 +1122,16 @@
     document.getElementById('profile-result-area').style.display = 'none'; 
     document.getElementById('modal-loading').style.display = 'block';
     
+    // 🌟 AI 리포트 초기 세팅 (오버레이 및 블러 적용) 🌟
+    document.getElementById('ai-loading').style.display = 'block';
+    document.getElementById('ai-content-basic').style.display = 'none';
+    document.getElementById('ai-content-pro').style.display = 'none';
+
+    const overlay = document.getElementById('pro-overlay');
+    if(overlay) { overlay.style.display = 'flex'; overlay.style.opacity = '1'; }
+    const blurTarget = document.getElementById('pro-blur-target');
+    if(blurTarget) { blurTarget.classList.add('pro-blur-content'); }
+
     document.getElementById('nickname-text').innerText = globalNickname;
     document.getElementById('profile-level').innerText = globalLevel;
     document.getElementById('profile-max-tier').innerText = globalMaxTier;
@@ -1053,8 +1166,17 @@
   function calculateDashboardData(matchesData) {
     let wins = 0, draws = 0, losses = 0, gameCount = 0;
     let totalGoals = 0, totalConceded = 0, totalPossess = 0, totalTackle = 0, totalBlock = 0;
-    let totalShoot = 0, totalEffShoot = 0, totalYellow = 0, totalCornerGoal = 0, totalGoalsAll = 0;
+    let totalShoot = 0, totalEffShoot = 0, totalYellow = 0;
     let totalThroughPassTry = 0, totalThroughPassSuccess = 0;
+    
+    /* 🌟 추가된 데이터 수집 🌟 */
+    let totalHeadingGoal = 0;
+    let totalFreekickGoal = 0;
+    let totalPassTry = 0;
+    let totalPassSuccess = 0;
+    let totalDribbleTry = 0;
+    let totalDribbleSuccess = 0;
+
     let playerStats = {}; let kbdCount = 0, padCount = 0; let latestMatchPlayers = null; 
 
     for (const mData of matchesData) {
@@ -1067,14 +1189,24 @@
           const res = myInfo.matchDetail.matchResult;
           if (res === "승") wins++; else if (res === "패") losses++; else draws++;
 
-          const goalTotal = parseInt(myInfo.shoot?.goalTotal || 0); totalGoals += goalTotal; totalGoalsAll += goalTotal;
+          totalGoals += parseInt(myInfo.shoot?.goalTotal || 0);
           totalConceded += parseInt(enemyInfo?.shoot?.goalTotal || 0);
-          totalShoot += parseInt(myInfo.shoot?.shootTotal || 0); totalEffShoot += parseInt(myInfo.shoot?.effectiveShootTotal || 0);
+          totalShoot += parseInt(myInfo.shoot?.shootTotal || 0); 
+          totalEffShoot += parseInt(myInfo.shoot?.effectiveShootTotal || 0);
           totalPossess += parseInt(myInfo.matchDetail.possession || 0);
           totalYellow += parseInt(myInfo.matchDetail.yellowCards || 0);
-          totalCornerGoal += parseInt(myInfo.shoot?.goalCornerKicks || 0);
-          totalThroughPassTry += parseInt(myInfo.pass?.throughPassTry || 0); totalThroughPassSuccess += parseInt(myInfo.pass?.throughPassSuccess || 0);
           
+          totalThroughPassTry += parseInt(myInfo.pass?.throughPassTry || 0); 
+          totalThroughPassSuccess += parseInt(myInfo.pass?.throughPassSuccess || 0);
+          totalPassTry += parseInt(myInfo.pass?.passTry || 0);
+          totalPassSuccess += parseInt(myInfo.pass?.passSuccess || 0);
+          
+          totalHeadingGoal += parseInt(myInfo.shoot?.goalHeading || 0);
+          totalFreekickGoal += parseInt(myInfo.shoot?.goalFreekick || 0);
+
+          totalDribbleTry += parseInt(myInfo.matchDetail.dribbleTry || myInfo.pass?.dribbleTry || 0);
+          totalDribbleSuccess += parseInt(myInfo.matchDetail.dribbleSuccess || myInfo.pass?.dribbleSuccess || 0);
+
           let m_tackle = 0, m_block = 0;
           if (Array.isArray(myInfo.player)) {
             if (!latestMatchPlayers && myInfo.player.length > 0) { latestMatchPlayers = myInfo.player.filter(p => p.spPosition !== 28); }
@@ -1111,30 +1243,57 @@
       const avgShoot = (totalShoot / gameCount).toFixed(1);
       const avgEffShoot = (totalEffShoot / gameCount).toFixed(1);
       
-      const avgTackle = (totalTackle / gameCount).toFixed(1); const avgBlock = (totalBlock / gameCount).toFixed(1); const avgYellow = (totalYellow / gameCount).toFixed(1);
+      const avgTackle = (totalTackle / gameCount).toFixed(1); 
+      const avgBlock = (totalBlock / gameCount).toFixed(1); 
+      const avgYellow = (totalYellow / gameCount).toFixed(1);
       const penetrationRate = totalThroughPassTry > 0 ? ((totalThroughPassSuccess / totalThroughPassTry) * 100).toFixed(1) : 0;
-      const cornerRatio = totalGoalsAll > 0 ? ((totalCornerGoal / totalGoalsAll) * 100).toFixed(1) : 0;
+      const overallPassRate = totalPassTry > 0 ? ((totalPassSuccess / totalPassTry) * 100).toFixed(1) : 0;
 
+      // 🌟 심층 경기 통계 (메인 화면) 🌟
       safeSetText('stat-avg-goal', avgGoal);
       safeSetText('stat-avg-concede', avgConcede);
+      safeSetText('stat-avg-pass-rate', overallPassRate + "%");
       safeSetText('stat-avg-possess', avgPossess + "%");
-      safeSetText('stat-avg-shoot', avgShoot);
-      safeSetText('stat-avg-eff-shoot', avgEffShoot);
-      safeSetText('sub-stat-penetration-sm', penetrationRate + "%");
+      safeSetText('stat-avg-defend', `${avgTackle} / ${avgBlock}`);
 
+      // 🌟 서브 모달 업데이트 (코너킥 삭제, 헤딩/프리킥 추가) 🌟
       safeSetText('stat-avg-concede-modal', avgConcede);
       safeSetText('stat-avg-possess-modal', avgPossess + "%");
+      safeSetText('sub-stat-pass-rate', overallPassRate + "%");
       safeSetText('sub-stat-penetration', penetrationRate + "%");
       safeSetText('stat-avg-shoot-modal', avgShoot);
       safeSetText('stat-avg-eff-shoot-modal', avgEffShoot);
-      safeSetText('sub-stat-defend', `${avgTackle}회 (태클) / ${avgBlock}회 (블록)`);
-      safeSetText('sub-stat-corner-ratio', `${cornerRatio}% (${totalCornerGoal}골)`);
+      safeSetText('sub-stat-defend-modal', `${totalTackle}회 / ${totalBlock}회`);
+      safeSetText('sub-stat-special-goal', `${totalHeadingGoal}골 / ${totalFreekickGoal}골`);
       safeSetText('sub-stat-yellow', avgYellow + "개");
 
+      // 🌟 예전 칭호 시스템 완벽 롤백 🌟
+      let headingPerGame = totalHeadingGoal / gameCount;
+      let freekickPerGame = totalFreekickGoal / gameCount;
+      let dribbleSuccessRate = totalDribbleTry > 0 ? (totalDribbleSuccess / totalDribbleTry) * 100 : 0;
+      
       let badgeText = "⚽ 밸런스형";
-      if (parseFloat(avgTackle) >= 3.0) badgeText = "🛡️ 철벽 수비수"; else if (parseFloat(penetrationRate) >= 35.0) badgeText = "🚀 라인 브레이커";
+      if (headingPerGame >= 0.4) badgeText = "🗿 타이탄";
+      else if (freekickPerGame >= 0.1) badgeText = "🎯 프리킥 장인";
+      else if (totalDribbleTry >= 5 && dribbleSuccessRate >= 60) badgeText = "🌪️ 드리블러";
+      else if (parseFloat(avgTackle) >= 3.0) badgeText = "🛡️ 통곡의 벽";
+      else if (parseFloat(penetrationRate) >= 35.0) badgeText = "🚀 라인 브레이커";
+      else if (parseFloat(avgGoal) >= 2.0) badgeText = "🔥 폭격기";
+      else if (parseFloat(overallPassRate) >= 90) badgeText = "🎯 마에스트로";
+
       const badgeEl = document.getElementById('player-style-badge'); 
       if(badgeEl) { badgeEl.innerText = badgeText; badgeEl.style.display = 'inline-flex'; }
+
+      window.currentProAIStats = {
+          avgConcede: parseFloat(avgConcede),
+          avgGoal: parseFloat(avgGoal),
+          penetrationRate: parseFloat(penetrationRate),
+          avgPossess: avgPossess,
+          isKeyboard: (kbdCount > padCount),
+          currentWinRate: winRate
+      };
+      
+      generateAIReports();
     }
 
     let linesHTML = { fw: [], mf: [], df: [], gk: [] };
@@ -1189,7 +1348,108 @@
     setHtml('squad-row-gk', linesHTML.gk.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
   }
 
-  /* 🌟 [패치] WIN/LOSS 영어를 승리/패배로 한글화 적용 🌟 */
+  // 🌟 잠금 없이 바로 뜨는 AI 리포트 생성 로직 (승률 그래프 추가) 🌟
+  function generateAIReports() {
+    setTimeout(() => {
+      document.getElementById('ai-loading').style.display = 'none';
+      document.getElementById('ai-content-basic').style.display = 'block';
+      document.getElementById('ai-content-pro').style.display = 'flex';
+
+      const stats = window.currentProAIStats || {};
+      const concede = stats.avgConcede || 0;
+      const goal = stats.avgGoal || 0;
+      const pass = stats.penetrationRate || 0;
+      const possess = stats.avgPossess || 0;
+      const isKb = stats.isKeyboard || false;
+      const currentWinRate = stats.currentWinRate || 0;
+
+      // --- 1. 기본 AI 리포트 (강화판) ---
+      let basicText = `
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="background:var(--background); padding:12px; border-radius:8px; border-left:4px solid var(--ai-blue);">
+            <b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다. ${goal >= 1.5 ? '결정력이 매우 우수하여 득점 창출 능력이 뛰어납니다.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}
+          </div>
+          <div style="background:var(--background); padding:12px; border-radius:8px; border-left:4px solid var(--ai-blue);">
+            <b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다. ${concede <= 1.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}
+          </div>
+          <div style="background:var(--background); padding:12px; border-radius:8px; border-left:4px solid var(--ai-blue);">
+            <b>🎯 전개력 지표:</b> 스루패스 성공률 <b>${pass}%</b>, 평균 점유율 <b>${possess}%</b>. ${pass >= 35 ? '공간을 허무는 날카로운 킬패스 감각을 보유하고 있습니다.' : '미드필드 진영에서 턴오버를 줄이고 점유율을 높이는 전개가 필요합니다.'}
+          </div>
+        </div>
+      `;
+      document.getElementById('ai-basic-text').innerHTML = basicText;
+
+      // --- 2. FCO PRO AI 리포트 ---
+      let weakness = "";
+      let solutionText = "";
+      let strategy = "";
+
+      if (concede >= 1.5) {
+          weakness = `수비 전환 시 <b style="color:var(--lose-color);">하프스페이스 공간 노출</b>이 잦습니다. 상대 역습 시 센터백과 풀백 사이의 간격이 크게 벌어져 쉽게 뚫리는 경향이 있습니다.`;
+          solutionText = `센터백(CB)을 직접 조종하여 튀어나가는 수비를 자제하세요. <b>수비형 미드필더(CDM)를 커서로 잡고 패스 길목을 차단</b>하는 '지역 방어' 위주로 전환하면 실점률을 확실히 낮출 수 있습니다.`;
+      } else if (goal < 1.0) {
+          weakness = `상대 페널티 박스 근처에서 <b style="color:var(--lose-color);">진입 패스 경로 창출</b>에 실패하고 있습니다. 무의미한 횡패스와 백패스 비율이 높아 득점 찬스 자체가 부족합니다.`;
+          solutionText = `공격이 막힐 때 억지로 뚫으려 하지 말고, 스트라이커의 <b>'침투 요청(Q)' 후 2선 미드필더의 강력한 중거리 슛(ZD/D)</b> 비중을 늘리세요. 수비가 끌려나올 때 뒷공간이 열립니다.`;
+      } else if (pass < 30) {
+          weakness = `결정적인 <b style="color:var(--lose-color);">전진 킬패스(스루패스) 타이밍</b>을 자주 놓쳐 공격 템포가 죽습니다. 상대 수비가 정비되기 전에 찌르는 창의적 시도가 매우 부족합니다.`;
+          solutionText = `역습 찬스 시 볼을 오래 끌지 마세요. 최전방 공격수가 수비수와 동일 선상에 섰을 때 <b>지체 없이 ZW(로빙 스루) 또는 W(스루패스)</b>를 찔러 넣는 과감한 패턴을 1순위로 연습하세요.`;
+      } else {
+          weakness = `전반적인 통계는 매우 우수하나, 리드 상황에서 <b style="color:var(--lose-color);">무리한 전진 패스로 인한 턴오버</b>가 간헐적으로 발생해 불필요한 역습 실점을 내어줍니다.`;
+          solutionText = `이기고 있는 상황에서는 공격 템포를 늦추세요. <b>백패스를 적극 활용하여 상대방이 압박하러 튀어나오도록 유도</b>하고, 틈이 보일 때만 전진 패스를 시도해 승리를 굳히세요.`;
+      }
+
+      const expectedWinRate = Math.min(100, currentWinRate + 14);
+      const diffPct = expectedWinRate - currentWinRate;
+
+      let solutionWithGraph = `
+        <div style="margin-bottom: 12px; line-height: 1.6;">${solutionText}</div>
+        <div style="margin-top: 16px; padding: 16px; background: var(--background); border-radius: 12px; border: 1px solid var(--border);">
+          <div style="font-size: 13px; font-weight: 800; color: var(--foreground); margin-bottom: 12px;">📈 솔루션 적용 시 예상 승률 변화</div>
+          <div style="margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px;">
+              <span style="color: var(--muted-foreground);">현재 승률</span><span style="color: var(--foreground);">${currentWinRate}%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;">
+              <div style="width: ${currentWinRate}%; height: 100%; background: var(--muted-foreground); border-radius: 99px; transition: width 1s ease;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 4px;">
+              <span style="color: var(--pro-gold);">예상 승률</span><span style="color: var(--pro-gold);">${expectedWinRate}% <span style="font-size: 11px;">(+${diffPct}%p)</span></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: var(--pro-gold-bg); border-radius: 99px; overflow: hidden; border: 1px solid var(--pro-gold);">
+              <div style="width: ${expectedWinRate}%; height: 100%; background: var(--pro-gold); border-radius: 99px; transition: width 1s ease;"></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (isKb) {
+          strategy = `<b>[⌨️ 키보드 최적화 전술]</b><br>수비 시 <b>[E]키(달리기) 남발</b>을 줄여 역동작을 방지해야 합니다. [C]키를 누른 채 수비 라인을 맞춰 길목을 선점하세요. 공격 시 측면 윙어에게 '뒤에서 침투' 지시를 내리면 키보드 환경에서 훨씬 효과적인 침투가 나옵니다.`;
+      } else {
+          strategy = `<b>[🎮 패드 최적화 전술]</b><br>패드의 강점인 <b>360도 미세 아날로그 조작</b>을 극대화하세요. 페널티 박스 근처에서 <b>LT/L2(등지기) 후 C드리블</b>로 수비수 타이밍을 완벽히 뺏은 후, ZD(감아차기)나 컷백 공간을 창출하는 것을 적극 추천합니다.`;
+      }
+
+      document.getElementById('pro-ai-weakness').innerHTML = weakness;
+      document.getElementById('pro-ai-solution').innerHTML = solutionWithGraph;
+      document.getElementById('pro-ai-strategy').innerHTML = strategy;
+
+    }, 800); 
+  }
+
+  /* 🌟 PRO 리포트 블러 해제 함수 🌟 */
+  function unlockProAI() {
+      const overlay = document.getElementById('pro-overlay');
+      if (overlay) {
+          overlay.style.opacity = '0';
+          setTimeout(() => { overlay.style.display = 'none'; }, 400);
+      }
+      const blurTarget = document.getElementById('pro-blur-target');
+      if (blurTarget) {
+          blurTarget.classList.remove('pro-blur-content');
+      }
+  }
+
   function loadMoreMatches() {
     const btn = document.getElementById('btn-load-more'); const container = document.getElementById('match-list-container');
     if(!container) return;
@@ -1250,7 +1510,6 @@
         const chunk = allIds.slice(i, i + chunkSize);
         const resolvedDetails = await Promise.all(chunk.map(mId => fetchNexonApi(`https://open.api.nexon.com/fconline/v1/match-detail?matchid=${mId}`).catch(()=>null)));
         
-        /* 🌟 [패치] H2H 전적 결과도 한글(승리/패배)로 적용 🌟 */
         for (const mData of resolvedDetails) {
           if (mData?.matchInfo?.length === 2) {
             const p1 = mData.matchInfo[0], p2 = mData.matchInfo[1];
