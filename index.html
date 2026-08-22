@@ -63,7 +63,7 @@
     .logo span { color: var(--muted-foreground); font-weight: 700; }
     .top-right-actions { position: absolute; top: 0; right: 0; display: flex; align-items: center; gap: 12px; z-index: 50; }
     
-    /* 모든 탭 복구 */
+    /* 탭 메뉴 */
     .main-tabs { display: inline-flex; height: 48px; align-items: center; justify-content: flex-start; border-radius: 99px; background-color: var(--card); padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border); overflow-x: auto; flex-wrap: nowrap; max-width: 100%; }
     .main-tabs::-webkit-scrollbar { display: none; }
     .tab-btn { padding: 0 16px; height: 38px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--muted-foreground); background: transparent; border: none; cursor: pointer; transition: 0.3s ease; white-space: nowrap; flex-shrink: 0; }
@@ -80,7 +80,7 @@
 
     .shadcn-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
 
-    /* 🌟 검색창 (멘트 강조 반영) 🌟 */
+    /* 메인 검색창 */
     .hero-search-section { text-align: center; margin-bottom: 24px; animation: fadeIn 0.4s ease; margin-top: 40px;}
     .pill-search-box { max-width: 600px; margin: 0 auto; background: var(--card); border-radius: 99px; padding: 8px 8px 8px 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); display: flex; gap: 8px; border: 1px solid var(--border); align-items: center; transition: box-shadow 0.3s; }
     .pill-search-box:focus-within { box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: var(--foreground); }
@@ -89,13 +89,13 @@
     .pill-search-btn { background: var(--primary); color: var(--primary-foreground); height: 40px; padding: 0 24px; border-radius: 99px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .pill-search-btn:hover { opacity: 0.9; transform: scale(0.98); }
 
-    /* 🌟 항시 포커스 테두리가 유지되는 H2H 🌟 */
+    /* H2H 포커스 박스 */
     .h2h-focus-box { display: flex; align-items: center; gap: 12px; width: 100%; background: var(--card); border: 2px solid var(--foreground); border-radius: 99px; padding: 6px 6px 6px 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
     .h2h-focus-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; color: var(--foreground); font-weight: 700; text-align: center; }
     .h2h-focus-box input::placeholder { color: var(--muted-foreground); font-weight: 500; }
     .h2h-vs-badge { font-size: 14px; font-weight: 900; color: var(--background); background: var(--foreground); padding: 8px 16px; border-radius: 99px; }
 
-    /* 🌟 에러 상태 (이모티콘 고정) 🌟 */
+    /* 에러 상태 (이모티콘) */
     .error-state { text-align: center; padding: 60px 20px; animation: fadeIn 0.3s; margin-top: 20px;}
     .error-state .emoji { font-size: 60px; margin-bottom: 20px; animation: float 2s infinite ease-in-out alternate; }
     .error-state h3 { font-size: 20px; font-weight: 800; color: var(--foreground); margin-bottom: 12px; }
@@ -122,11 +122,11 @@
     .pie-inner-circle { width: 110px; height: 110px; background: var(--card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 24px; color: var(--foreground); }
     .pie-subtext { font-size: 12px; color: var(--muted-foreground); font-weight: 600; margin-top: 2px; }
     
-    /* 🌟 심층 경기 통계 글자 크기 및 간격 최적화 🌟 */
-    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    /* 🌟 심층 경기 통계 패치 (가독성 상향) 🌟 */
+    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
     .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .stat-row span { font-weight: 600; color: var(--muted-foreground); }
-    .stat-row b { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;}
+    .stat-row span { font-weight: 700; color: var(--muted-foreground); }
+    .stat-row b { font-size: 22px; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;}
 
     .btn-detail-more { width: 100%; margin-top: 24px; height: 48px; background: var(--foreground); color: var(--background); font-weight: 800; font-size: 15px; border-radius: 12px; border: none; cursor: pointer; transition: 0.2s; }
     .btn-detail-more:hover { opacity: 0.9; }
@@ -190,10 +190,10 @@
     .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; background: #FFFFFF; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .toggle-switch:checked::after { transform: translateX(20px); }
 
-    /* 🌟 특성 레이아웃 (초록색 배경 + 흑백 대비 텍스트 적용) 🌟 */
+    /* 특성 레이아웃 (초록색 배경 + 시인성 유지) */
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
-    .trait-left-panel { flex: 0 0 380px; background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; }
+    .trait-left-panel { flex: 0 0 380px; background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
     .trait-right-panel { flex: 1; display: flex; flex-direction: column; }
     .trait-pitch-board { position: relative; width: 100%; height: 460px; background: #064e3b; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 10px; }
     .trait-pitch-board::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: rgba(255,255,255,0.2); }
@@ -238,7 +238,7 @@
     .notice-modal-overlay, .sub-modal-overlay { align-items: center; z-index: 10001; }
     .modal-content, .notice-modal-content, .sub-modal-content { background: var(--card); width: 100%; border-radius: var(--radius); border: 1px solid var(--border); padding: 32px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
     .modal-content { max-width: 1060px; }
-    .notice-modal-content, .sub-modal-content { max-width: 500px; }
+    .notice-modal-content, .sub-modal-content { max-width: 600px; } /* 공지사항 좀 더 넓게 */
     .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 100; }
     .modal-close-btn:hover { background: var(--muted-foreground); color: var(--card); transform: rotate(90deg); }
 
@@ -288,7 +288,7 @@
     </div>
   </header>
 
-  <!-- 1️⃣ 메인 검색 (검색 시 5경기 바로 표시) -->
+  <!-- 1️⃣ 메인 검색 (검색 시 요약 5경기) -->
   <div id="tab-search" class="tab-content active">
     
     <div class="hero-search-section" id="hero-section">
@@ -309,7 +309,7 @@
       <div style="font-weight:700; font-size:15px; color:var(--foreground);">데이터를 불러오는 중입니다...</div>
     </div>
 
-    <!-- 🌟 바로 5경기가 뜨는 요약 창 (자세히 보기로 팝업 호출) 🌟 -->
+    <!-- 🌟 요약 결과 (자세히 보기로 팝업 호출) 🌟 -->
     <div id="detailed-result-area" style="display: none;"></div>
   </div>
 
@@ -345,7 +345,7 @@
     <div id="sub-gk" class="sub-content"><div class="coming-soon-card"><div class="coming-soon-icon">🧤</div><div class="coming-soon-title">GK 포지션 티어리스트 준비 중</div></div></div>
   </div>
 
-  <!-- 4️⃣ 팀컬러 티어리스트 -->
+  <!-- 4️⃣ 팀컬러 티어리스트 (21위 풀버전) -->
   <div id="tab-teamcolor" class="tab-content">
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
@@ -413,7 +413,7 @@
     </div>
   </div>
 
-  <!-- 🌟 8️⃣ 내 허브 (작동하는 환경설정만 둠) 🌟 -->
+  <!-- 🌟 8️⃣ 내 허브 -->
   <div id="tab-hub" class="tab-content">
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
       <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">내 허브</h2><p style="color:var(--muted-foreground); font-weight:500;">개인 설정 및 검색 기록을 관리합니다.</p></div>
@@ -461,13 +461,21 @@
     <div style="text-align: center; margin-bottom: 24px;">
       <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
       <h2 style="font-size:32px; font-weight:900; color:var(--win-color); letter-spacing:-1px;">대규모 업데이트</h2>
-      <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px;">FCO.GG V2.0 릴리즈 노트</p>
+      <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px;">8월 최신 데이터 및 기능 최적화 패치</p>
     </div>
     
     <div style="font-size:14px; color:var(--muted-foreground); line-height:1.6; background:var(--background); padding:24px; border-radius:16px; display:flex; flex-direction:column; gap:16px;">
-      <div>🔥 <b style="color:var(--foreground);">즉시 요약 화면 + 클래식 상세 뷰</b><br>- 검색 즉시 5경기 요약이 보이고, 클래식한 와이드 레이아웃으로 상세 분석을 볼 수 있습니다.</div>
-      <div>👑 <b style="color:var(--foreground);">최우수 선수(MVP) 프로필 자동 적용</b><br>- 스쿼드 내에서 평점이 가장 높은 선수가 구단주 아바타로 적용됩니다.</div>
-      <div>⚙️ <b style="color:var(--foreground);">심층 경기 분석 UI 개선 및 버그 수정</b><br>- 더 크고 시원한 폰트와 간격으로 분석표를 개선했으며, 무한 더보기가 가능하도록 수정했습니다.</div>
+      <div>🔥 <b style="color:var(--foreground);">팀컬러 티어리스트 최신화 및 순위 변동</b><br>
+        <span style="font-size:13px; font-weight:600; color:var(--draw-color);">📈 리버풀 2위 등극 (뮌헨 추월) | 🚀 유벤투스 4계단 급상승 (13위)</span><br>
+        <span style="font-size:13px; font-weight:600; color:var(--win-color);">✨ 토트넘 홋스퍼 21위 신규 진입 (이탈리아 OUT)</span><br>
+        <span style="color:var(--muted-foreground); font-size:13px;">- 가장 최신 픽률 데이터(21위까지)로 팀컬러 리스트를 완벽하게 업데이트했습니다.</span>
+      </div>
+      <div>👑 <b style="color:var(--foreground);">심층 경기 분석 가독성 상향</b><br>
+        <span style="color:var(--muted-foreground); font-size:13px;">- 상세 전적 요약의 글자 크기와 간격을 키워 모바일/PC 모두에서 시원하게 보이도록 개선했습니다.</span>
+      </div>
+      <div>⚙️ <b style="color:var(--foreground);">기존 인기 패치 유지</b><br>
+        <span style="color:var(--muted-foreground); font-size:13px;">- 다이렉트 검색, 최우수 선수(MVP) 프로필 자동 적용, 다크모드는 계속 지원됩니다.</span>
+      </div>
     </div>
   </div>
 </div>
@@ -484,13 +492,14 @@
     
     <div id="profile-result-area" style="display: none;">
       
-      <!-- 상단 프로필 영역 (MVP 아바타 및 칭호 복구) -->
+      <!-- 상단 프로필 영역 -->
       <div class="profile-top-card">
         <div class="profile-name-area">
           <img id="mvp-avatar-img" src="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--border); display:none; background:var(--muted); box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
           <div>
             <h2 id="profile-nickname">
               <span id="nickname-text">구단주명</span>
+              <!-- 칭호 원래 위치 -->
               <span id="player-style-badge" class="style-badge" style="display:none; margin-left: 8px;">분석 중</span>
             </h2>
             <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
@@ -547,7 +556,7 @@
         </div>
       </div>
 
-      <!-- 가장 하단 전적 (크게) 및 리뷰 -->
+      <!-- 가장 하단 전적 & 리뷰 -->
       <div class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr;">
         <div class="shadcn-card">
           <div class="card-title">최근 전적 기록</div>
@@ -574,35 +583,35 @@
   <div class="sub-modal-content">
     <button class="modal-close-btn" onclick="closeSubDetailModal()">✕</button>
     <div style="font-size:24px; font-weight:900; color:var(--foreground); margin-bottom:24px; text-align:center;">📈 플레이 스타일 상세 분석</div>
-    <div style="font-size:15px; color:var(--muted-foreground); display:flex; flex-direction:column; gap:20px; background:var(--background); padding:32px; border-radius:20px;">
+    <div style="font-size:15px; color:var(--muted-foreground); display:flex; flex-direction:column; gap:24px; background:var(--background); padding:32px; border-radius:20px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">평균 실점</span> <b id="stat-avg-concede-modal" style="color:var(--lose-color); font-size:18px;">-</b>
+        <span style="font-weight:700;">평균 실점</span> <b id="stat-avg-concede-modal" style="color:var(--lose-color); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">점유율</span> <b id="stat-avg-possess-modal" style="color:var(--foreground); font-size:18px;">-</b>
+        <span style="font-weight:700;">점유율</span> <b id="stat-avg-possess-modal" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">패스 성공률 (스루패스)</span> <b id="sub-stat-penetration" style="color:var(--foreground); font-size:18px;">-</b>
+        <span style="font-weight:700;">패스 성공률 (스루패스)</span> <b id="sub-stat-penetration" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:700;">슈팅 / 유효슈팅</span> 
-        <b style="color:var(--foreground); font-size:18px;"><span id="stat-avg-shoot-modal">-</span> <span style="font-size:15px; font-weight:500; color:var(--muted-foreground);">/</span> <span id="stat-avg-eff-shoot-modal">-</span></b>
+        <b style="color:var(--foreground); font-size:20px;"><span id="stat-avg-shoot-modal">-</span> <span style="font-size:15px; font-weight:500; color:var(--muted-foreground); margin:0 4px;">/</span> <span id="stat-avg-eff-shoot-modal">-</span></b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">태클 / 블록 성공</span> <b id="sub-stat-defend" style="color:var(--foreground); font-size:18px;">-</b>
+        <span style="font-weight:700;">태클 / 블록 성공</span> <b id="sub-stat-defend" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">코너킥 골 비율</span> <b id="sub-stat-corner-ratio" style="color:var(--foreground); font-size:18px;">-</b>
+        <span style="font-weight:700;">코너킥 골 비율</span> <b id="sub-stat-corner-ratio" style="color:var(--foreground); font-size:20px;">-</b>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:700;">경고 / 파울</span> <b id="sub-stat-yellow" style="color:var(--lose-color); font-size:18px;">-</b>
+        <span style="font-weight:700;">경고 / 파울</span> <b id="sub-stat-yellow" style="color:var(--lose-color); font-size:20px;">-</b>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  /* 🌟 다크 모드 🌟 */
+  /* 🌟 다크 모드 연동 🌟 */
   const themeToggle = document.getElementById('theme-toggle');
   if(themeToggle) {
     if (localStorage.getItem('fco_theme') === 'dark') {
@@ -620,7 +629,7 @@
     });
   }
 
-  /* 🌟 검색 기록 🌟 */
+  /* 🌟 검색 기록 연동 🌟 */
   function renderSearchHistory() {
     const container = document.getElementById('history-container');
     if(!container) return;
@@ -662,10 +671,10 @@
   }
 
   const matchTypeMap = { 50: "공식경기", 60: "공식 친선", 40: "클래식 1on1" };
-  const LATEST_NOTICE_VERSION = "20260822_v42_auto_popup";
+  const LATEST_NOTICE_VERSION = "20260822_v43_teamcolor";
   
   window.addEventListener('DOMContentLoaded', () => {
-    // 🌟 접속하자마자 업데이트 창 바로 띄우기 🌟
+    // 🌟 접속하자마자 업데이트 창 띄우기 🌟
     if (localStorage.getItem("fco_read_notice_version") !== LATEST_NOTICE_VERSION) { 
         openNoticeModal(); 
     }
@@ -772,18 +781,50 @@
   fetch("https://open.api.nexon.com/static/fconline/meta/division.json").then(r => r.json()).then(data => { if(Array.isArray(data)) { data.forEach(i => { divisionMetaCache[String(i.divisionId)] = i.divisionName; }); } }).catch(() => {});
   function getTierBadge(divId) { if(!divId) return ""; return tierBadgeMap[String(divId)] || "ico_rank0.png"; }
 
+  // 🌟 스크린샷 기반 최신 팀컬러 데이터 (21위까지 확장) 🌟
   const teamColorData = [
-    { name: "레알 마드리드", rate: 7.5, count: 381, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "바이에른 뮌헨", rate: 5.9, count: 300, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "리버풀", rate: 5.8, count: 295, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "FC 바르셀로나", rate: 5.6, count: 283, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "첼시", rate: 5.5, count: 278, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" }
+    { name: "레알 마드리드", rate: 7.0, count: 305, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "리버풀", rate: 6.1, count: 263, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "바이에른 뮌헨", rate: 6.0, count: 259, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "FC 바르셀로나", rate: 6.0, count: 258, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "아스널", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "롬바르디아 FC", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
+    { name: "첼시", rate: 5.0, count: 215, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "맨체스터 유나이티드", rate: 4.6, count: 200, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "브라질", rate: 4.1, count: 179, logo: "https://flagcdn.com/w160/br.png" },
+    { name: "맨체스터 시티", rate: 3.6, count: 157, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "대한민국", rate: 3.6, count: 155, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "스페인", rate: 3.4, count: 146, logo: "https://flagcdn.com/w160/es.png" },
+    { name: "유벤투스", rate: 3.1, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "독일", rate: 3.0, count: 132, logo: "https://flagcdn.com/w160/de.png" },
+    { name: "밀라노 FC", rate: 3.0, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
+    { name: "프랑스", rate: 2.9, count: 127, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "파리 생제르맹", rate: 2.8, count: 122, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "잉글랜드", rate: 2.6, count: 114, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "아틀레티코 마드리드", rate: 1.9, count: 84, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png" },
+    { name: "포르투갈", rate: 1.5, count: 67, logo: "https://flagcdn.com/w160/pt.png" },
+    { name: "토트넘 홋스퍼", rate: 1.5, count: 66, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" }
   ];
+  
   function renderTeamColorTierList() {
     const container = document.getElementById("teamcolor-list-container"); if(!container) return;
-    container.innerHTML = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 5)</div>` + teamColorData.map((tc, i) => {
-      let badgeClass = "t1"; let badgeLabel = "1 Tier"; if(i < 3) { badgeClass = "op"; badgeLabel = "OP"; }
-      return `<div class="player-row"><div class="td-badge ${badgeClass}">${badgeLabel}</div><div class="td-season"><img src="${tc.logo}" style="width:32px; height:32px; object-fit:contain;"></div><div class="td-info"><span style="font-size:14px; font-weight:700;">${tc.name}</span></div><div class="td-stats"><div style="font-weight:800;">${tc.rate}%</div></div></div>`;
+    container.innerHTML = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP 21)</div>` + teamColorData.map((tc, i) => {
+      let badgeClass = "t1"; let badgeLabel = "1 Tier"; 
+      if(i < 3) { badgeClass = "op"; badgeLabel = "OP"; } 
+      else if(i < 8) { badgeClass = "t1"; badgeLabel = "1 Tier"; } 
+      else if(i < 15) { badgeClass = "t2"; badgeLabel = "2 Tier"; } 
+      else { badgeClass = "t3"; badgeLabel = "3 Tier"; }
+      
+      return `
+        <div class="player-row">
+          <div class="td-badge ${badgeClass}">${badgeLabel}</div>
+          <div class="td-season"><img src="${tc.logo}" style="width:32px; height:32px; object-fit:contain;"></div>
+          <div class="td-info" style="flex-direction:column; align-items:flex-start; gap:2px;">
+            <span style="font-size:14px; font-weight:800;">${tc.name}</span>
+            <span style="font-size:11px; color:var(--muted-foreground); font-weight:600;">${tc.count}명 (${tc.rate}%)</span>
+          </div>
+          <div class="td-stats"><div style="font-size:15px; font-weight:900;">${tc.rate}%</div></div>
+        </div>`;
     }).join('');
   }
 
@@ -841,7 +882,7 @@
   let globalOuid = "", globalNickname = "", globalMaxTier = "", globalMaxTierId = null, globalLevel = "";
   let globalMatchDetails = []; let currentMatchLoadIndex = 0;
 
-  // 🌟 1단계: 검색 완료 후 5경기 먼저 뜨는 화면 🌟
+  // 🌟 원클릭 다이렉트 검색 🌟
   async function searchDirectData() {
     const inputEl = document.getElementById('user-search-input');
     const nickname = inputEl.value.trim();
@@ -883,7 +924,6 @@
         if (offMax && offMax.division !== undefined) { globalMaxTier = divisionMetaCache[String(offMax.division)] || `등급: ${offMax.division}`; globalMaxTierId = offMax.division; }
       }
 
-      // 5경기만 먼저 가져오기
       const matchIds = await fetchNexonApi(`https://open.api.nexon.com/fconline/v1/user/match?ouid=${globalOuid}&matchtype=50&offset=0&limit=5`);
       document.getElementById('global-loading').style.display = 'none';
 
@@ -973,7 +1013,7 @@
     }
   }
 
-  // 🌟 2단계: '자세히 보기' 클릭 시 뜨는 클래식 와이드 모달 🌟
+  // 🌟 자세히 보기 팝업 🌟
   async function openDetailedProfile() {
     const modal = document.getElementById('profile-modal'); modal.style.display = 'flex';
     document.getElementById('profile-result-area').style.display = 'none'; 
