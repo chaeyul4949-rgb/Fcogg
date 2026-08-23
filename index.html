@@ -893,19 +893,33 @@
     });
   }
 
+// 🌟 파이어베이스 설정 및 실제 서버 연동 🌟
+  const firebaseConfig = {
+    apiKey: "AIzaSyD_8kN03PyBQjOuW6cxMLHaUxMi6cciOlM",
+    authDomain: "fcogg-d209a.firebaseapp.com",
+    projectId: "fcogg-d209a",
+    storageBucket: "fcogg-d209a.firebasestorage.app",
+    messagingSenderId: "753291819052",
+    appId: "1:753291819052:web:25bd154da2c5d993823989",
+    measurementId: "G-XXT30E1JW9"
+  };
+
   let auth;
   let googleProvider;
   let db;
+  
   try {
+      // 파이어베이스 엔진 시동 (진짜 서버랑 연결!)
+      if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+      }
       auth = firebase.auth();
       googleProvider = new firebase.auth.GoogleAuthProvider();
       db = firebase.firestore();
-  } catch(e) {}
-
-  function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
-  function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
-  function openMinigameModal() { document.getElementById('minigame-modal').style.display = 'flex'; }
-  function closeMinigameModal() { document.getElementById('minigame-modal').style.display = 'none'; }
+      console.log("파이어베이스 서버 연결 성공! 🚀");
+  } catch(e) {
+      console.error("파이어베이스 연결 실패 ㅠㅠ:", e);
+  }
 
   function handleRegister() {
     const id = document.getElementById('auth-id').value.trim().toLowerCase();
