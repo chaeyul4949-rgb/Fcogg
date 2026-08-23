@@ -1334,27 +1334,20 @@
   // 🌟 [버그 수정] 넥슨 API 404 예외 처리 완벽 방어 🌟
   // 🌟 전적검색 CORS 에러 철벽 방어 및 실제 데이터 우회 호출 로직 🌟
   async function fetchNexonApi(url) {
-    // 💡 해결 핵심: 브라우저 직접 호출을 막는 넥슨 CORS 방어벽을 우회하기 위해 프록시 서버를 경유합니다.
-    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-
+    // 넥슨 API 직접 호출 시 브라우저 차단(CORS)이 발생하므로 프록시 서버를 우회하여 직빵으로 가져옵니다.
+    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
     const response = await fetch(proxyUrl, {
       headers: {
         'x-nxopen-api-key': NEXON_API_KEY
       }
     });
-
     if (!response.ok) {
-      // 넥슨 API는 닉네임이 없거나 전적이 0판일 때 404 에러를 던집니다.
-      // 여기서 에러를 내뿜으면 사이트가 멈추므로, null을 반환해 정상적으로 "기록 없음" UI가 뜨게 합니다.
-      if (response.status === 404) return null; 
-      
+      if (response.status === 404) return null; // 유저나 기록이 없을 때 멈추지 않고 404를 정상 처리
       if (response.status === 401 || response.status === 403) throw new Error("API_KEY_ERROR");
       throw new Error(`API error: ${response.status}`);
     }
-    
     return await response.json();
   }
-
   window.addEventListener('DOMContentLoaded', () => {
     enableDragScroll('.main-tabs');
     enableDragScroll('.sub-tabs');
