@@ -1334,18 +1334,21 @@
   // 🌟 [버그 수정] 넥슨 API 404 예외 처리 완벽 방어 🌟
   // 🌟 전적검색 CORS 에러 철벽 방어 및 실제 데이터 우회 호출 로직 🌟
   async function fetchNexonApi(url) {
-    // 넥슨 API 직접 호출 시 브라우저 차단(CORS)이 발생하므로 프록시 서버를 우회하여 직빵으로 가져옵니다.
-    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-    const response = await fetch(proxyUrl, {
+    // 💡 프록시 서버 싹 빼고 넥슨 서버 직빵 연결 + 실시간 업데이트(캐시 무효화)
+    const noCacheUrl = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+    
+    const response = await fetch(noCacheUrl, {
       headers: {
         'x-nxopen-api-key': NEXON_API_KEY
       }
     });
+    
     if (!response.ok) {
-      if (response.status === 404) return null; // 유저나 기록이 없을 때 멈추지 않고 404를 정상 처리
+      if (response.status === 404) return null; // 404 에러 뜰 때 사이트 안 멈추게 방어
       if (response.status === 401 || response.status === 403) throw new Error("API_KEY_ERROR");
       throw new Error(`API error: ${response.status}`);
     }
+    
     return await response.json();
   }
   window.addEventListener('DOMContentLoaded', () => {
@@ -1428,8 +1431,12 @@
     }
   }
 
-  async function renderTop10() {
+ async function renderTop10() {
     let listEl = document.getElementById('top10-list-container'); if(!listEl) return;
+    
+    // 💡 하얀색 둥근 배경 껍데기 강제 적용
+    listEl.className = "tier-board";
+    
     let arr = [];
     if (db) { 
         try {
@@ -1453,7 +1460,7 @@
     }
     
     let htmlString = `
-      <div style="background: var(--muted); border-radius: 12px; padding: 16px 20px; font-weight: 800; font-size: 15px; color: var(--foreground); display: flex; align-items: center; margin-bottom: 16px; border-left: 6px solid var(--tier-op);">
+      <div style="background: var(--muted); border-radius: 12px; padding: 12px 20px; font-weight: 800; font-size: 15px; color: var(--foreground); margin-bottom: 16px; border-left: 4px solid var(--tier-op); display: flex; align-items: center; gap: 8px;">
           👑 최다 추천 구단주 TOP 10
       </div>
     `;
@@ -1463,13 +1470,12 @@
       let medal = "";
       if(index === 0) { rankColor = "#3B82F6"; medal = "🥇"; } 
       else if(index === 1) { rankColor = "#84CC16"; medal = "🥈"; } 
-      else if(index === 2) { rankColor = "#D97706"; medal = "🥉"; } // 3위 동메달 주황색 변경
+      else if(index === 2) { rankColor = "#F59E0B"; medal = "🥉"; } // 동메달 주황색
       
-      // 하얀 배경, 테두리, 둥근 모서리 등 스크린샷과 동일하게 스타일 적용
       return `
-        <div class="player-row" style="background: var(--card); border: 1px solid var(--border); padding: 16px 24px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; transition: 0.2s;" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0]); document.getElementById('user-search-input').value='${escapeHtml(u.nickname)}'; searchDirectData()">
-          <div style="display: flex; align-items: center; gap: 24px; flex: 1;">
-            <div style="width: 50px; font-weight: 900; font-style: italic; font-size: 15px; color: ${rankColor}; text-align: left;">
+        <div class="player-row" style="background: var(--card); border: 1px solid var(--border); padding: 16px 24px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: 0.2s;" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0]); document.getElementById('user-search-input').value='${escapeHtml(u.nickname)}'; searchDirectData()">
+          <div style="display: flex; align-items: center; gap: 24px;">
+            <div style="width: 60px; font-weight: 900; font-style: italic; font-size: 15px; color: ${rankColor}; text-align: left;">
               ${index + 1}위 ${medal}
             </div>
             <div style="font-weight: 800; font-size: 15px; color: var(--foreground);">
