@@ -1336,84 +1336,18 @@
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   // 🌟 전적검색 에러 100% 철벽 방어 (404 예외 처리, CORS 무시) 🌟
-  // 🌟 전적검색 CORS 에러 철벽 방어 및 가상 데이터 출력 로직 🌟
   async function fetchNexonApi(url) {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          'x-nxopen-api-key': NEXON_API_KEY
-        }
-      });
-      if (!response.ok) {
-        if (response.status === 404) return null;
-        throw new Error(`API error: ${response.status}`);
+    const response = await fetch(url, {
+      headers: {
+        'x-nxopen-api-key': NEXON_API_KEY
       }
-      return await response.json();
-    } catch (e) {
-      // 🚨 CORS 에러나 네트워크 차단 시, 사이트가 뻗지 않도록 가상 전적 데이터를 쏴줍니다.
-      if (url.includes('/v1/id?nickname=')) {
-        return { ouid: "mock_ouid_" + Math.floor(Math.random() * 10000) };
-      }
-      if (url.includes('/v1/user/basic')) {
-        return { level: Math.floor(Math.random() * 50) + 50 };
-      }
-      if (url.includes('/v1/user/maxdivision')) {
-        return [{ matchType: 50, division: 1100, achievementDate: "2023-01-01" }];
-      }
-      if (url.includes('/v1/user/match')) {
-        let arr = [];
-        const count = url.includes('limit=5') ? 5 : 25;
-        for(let i=0; i<count; i++) arr.push("mock_match_" + Math.random());
-        return arr;
-      }
-      if (url.includes('/v1/match-detail')) {
-        const isWin = Math.random() > 0.4;
-        return {
-          matchDate: new Date().toISOString(),
-          matchInfo: [
-            {
-              ouid: globalOuid,
-              nickname: globalNickname,
-              matchDetail: {
-                matchResult: isWin ? "승" : "패",
-                controller: Math.random() > 0.5 ? "keyboard" : "pad",
-                possession: Math.floor(Math.random() * 20 + 40),
-                yellowCards: Math.floor(Math.random() * 2),
-                dribbleTry: 15,
-                dribbleSuccess: 8
-              },
-              shoot: {
-                goalTotal: isWin ? Math.floor(Math.random() * 3 + 1) : Math.floor(Math.random() * 2),
-                shootTotal: 10,
-                effectiveShootTotal: 6,
-                goalHeading: Math.floor(Math.random() * 2),
-                goalFreekick: 0
-              },
-              pass: {
-                passTry: 120,
-                passSuccess: 105,
-                throughPassTry: 12,
-                throughPassSuccess: 6
-              },
-              player: [
-                { spId: 101000250, spPosition: 25, spGrade: 5, status: { spRating: (Math.random()*3 + 6), tackle: 1, block: 0 } },
-                { spId: 101000251, spPosition: 14, spGrade: 8, status: { spRating: (Math.random()*3 + 5), tackle: 3, block: 1 } },
-                { spId: 101000252, spPosition: 5, spGrade: 8, status: { spRating: (Math.random()*3 + 5), tackle: 5, block: 2 } },
-                { spId: 101000253, spPosition: 0, spGrade: 5, status: { spRating: (Math.random()*3 + 6), tackle: 0, block: 0 } }
-              ]
-            },
-            {
-              ouid: "enemy_mock",
-              nickname: "상대구단주" + Math.floor(Math.random()*100),
-              matchDetail: { matchResult: isWin ? "패" : "승" },
-              shoot: { goalTotal: isWin ? Math.floor(Math.random() * 2) : Math.floor(Math.random() * 3 + 1) },
-              pass: { crossTry: Math.floor(Math.random() * 5), throughPassTry: Math.floor(Math.random() * 5) }
-            }
-          ]
-        };
-      }
-      return null;
+    });
+    if (!response.ok) {
+      if (response.status === 404) return null; // 빈 기록일 때 에러 안 띄움
+      if (response.status === 401 || response.status === 403) throw new Error("API_KEY_ERROR");
+      throw new Error(`API error: ${response.status}`);
     }
+    return await response.json();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
