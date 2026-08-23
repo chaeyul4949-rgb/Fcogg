@@ -9,7 +9,7 @@
   <title>FCO.GG | FC 온라인 & 피파 온라인 4 전적 검색, 티어리스트</title>
   <meta name="description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 한눈에! FCO.GG에서 간편하게 내 전적과 실시간 정보를 확인하세요.">
 
-  <!-- 🌟 Firebase SDK (Auth 인증 모듈 포함) 🌟 -->
+  <!-- 🌟 Firebase SDK 🌟 -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -17,7 +17,6 @@
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-    /* 🌟 테마 변수 🌟 */
     :root {
       --background: #F5F5F7; 
       --foreground: #1D1D1F; 
@@ -31,7 +30,7 @@
       --win-color: #34C759; 
       --lose-color: #FF3B30; 
       --draw-color: #FF9500; 
-      --tier-op: #5856D6; /* 보라색 (관리자 컬러) */
+      --tier-op: #5856D6; 
       
       --ai-blue: #3B82F6;
       --ai-blue-bg: #EFF6FF;
@@ -65,14 +64,7 @@
     .logo span { color: var(--muted-foreground); font-weight: 700; }
     .top-right-actions { position: absolute; top: 0; right: 0; display: flex; align-items: center; gap: 12px; z-index: 50; }
     
-    /* 🌟 메뉴 바 부드러운 가로 스크롤 및 얇은 스크롤바 적용 🌟 */
-    .main-tabs { 
-      display: flex; width: 100%; align-items: center; justify-content: flex-start; 
-      border-radius: 99px; background-color: var(--card); padding: 4px; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border); 
-      overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; 
-      cursor: grab; 
-    }
+    .main-tabs { display: flex; width: 100%; align-items: center; justify-content: flex-start; border-radius: 99px; background-color: var(--card); padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; cursor: grab; }
     .main-tabs:active { cursor: grabbing; }
     .main-tabs::-webkit-scrollbar { height: 6px; }
     .main-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
@@ -278,11 +270,6 @@
     .td-stats { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
     .stat-pick { font-size: 13px; font-weight: 800; color: var(--foreground); }
 
-    .coming-soon-card { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 80px 20px; text-align: center; }
-    .coming-soon-icon { font-size: 48px; margin-bottom: 16px; }
-    .coming-soon-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--foreground); }
-    .coming-soon-desc { font-size: 14px; color: var(--muted-foreground); }
-
     @media (max-width: 1024px) {
       .ai-grid { grid-template-columns: 1fr; }
       .dashboard-grid { grid-template-columns: 1fr; }
@@ -313,6 +300,8 @@
     
     .shake-anim { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both infinite; }
     @keyframes shake { 0%, 100% { transform: translate3d(0, 0, 0); } 10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, 0, 0); } 20%, 40%, 60%, 80% { transform: translate3d(6px, 0, 0); } }
+    
+    .mbti-result-box { text-align: center; padding: 40px; border-radius: var(--radius); background: var(--card); border: 2px solid var(--tier-op); box-shadow: 0 10px 30px rgba(88,86,214,0.1); margin-top: 24px; animation: fadeIn 0.5s ease; }
   </style>
 </head>
 <body>
@@ -394,6 +383,7 @@
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
+  <!-- 🌟 특성 티어 (5강 삭제, 11강 이모지 변환, 8강 완벽 매핑 적용) 🌟 -->
   <div id="tab-trait" class="tab-content">
     <div class="trait-layout-container">
       <div class="trait-left-panel">
@@ -450,6 +440,7 @@
     <div class="tier-board" id="top10-list-container" style="max-width: 800px; margin: 0 auto;"></div>
   </div>
 
+  <!-- 🌟 PRO 멤버십 탭 (관리자 승인 필수 안내문구 변경) 🌟 -->
   <div id="tab-pro" class="tab-content">
     <div class="hero-search-section">
       <h3 style="font-size:28px; font-weight:900; color:var(--pro-gold);">💎 FCO PRO 멤버십</h3>
@@ -458,8 +449,9 @@
     <div class="shadcn-card" style="padding: 32px; max-width: 660px; margin: 0 auto;">
       <div style="background:var(--background); padding:24px; border-radius:16px; text-align:center; border:1px solid var(--border);">
         <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🔒 현재 PRO 상태: <span id="pro-status-text" style="color:var(--muted-foreground);">비활성</span></h3>
-        <p style="font-size:14px; color:var(--muted-foreground); margin-bottom:16px;">토스(990원) 송금 시, 로그인하신 아이디를 함께 적어주시면 관리자가 확인 후 승인해 드립니다.</p>
-        <button class="donate-btn" style="height:44px; padding: 0 24px; font-size:15px;" onclick="alert('토스 1002 5837 0089 김*율\n가입하신 아이디를 꼭 메모에 적어주세요!')">💳 PRO 멤버십 신청하기 (990원)</button>
+        <p style="font-size:14px; color:var(--lose-color); font-weight:700; margin-bottom:4px;">🎉 1+1 이벤트로 990원에 30일+30일(총 60일) 이벤트 하고 있습니다! 🎉</p>
+        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px; line-height: 1.5;">PRO 멤버십은 자동결제가 불가능하며, <b>최고 관리자의 수동 승인</b>을 통해서만 부여됩니다.<br>아래 버튼을 눌러 토스(990원) 송금 후 가입하신 아이디를 메모에 남겨주시면,<br>관리자가 직접 확인 후 1+1 (60일) 혜택을 즉시 부여해 드립니다.</p>
+        <button class="donate-btn" style="height:44px; padding: 0 24px; font-size:15px; background:var(--foreground); color:var(--background);" onclick="alert('토스 1002 5837 0089 김*율\n가입하신 아이디를 꼭 메모에 적어주세요!\n입금 확인 시 최고 관리자가 직접 30+30일 권한을 부여해 드립니다.')">💳 1+1 이벤트 신청하기 (990원)</button>
       </div>
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
@@ -497,12 +489,19 @@
       <div class="hub-content">
         <div class="shadcn-card" style="padding: 24px;" id="hub-auth-container"></div>
         
+        <!-- 🌟 관리자 전용 패널 🌟 -->
         <div id="admin-panel" class="admin-panel">
           <h3 style="font-size:18px; font-weight:900; margin-bottom:8px; color:var(--tier-op);">👑 최고 관리자 패널</h3>
-          <p style="font-size:13px; color:var(--foreground); margin-bottom:16px;">아래에 유저 아이디를 적고 버튼을 누르면 해당 유저의 PRO 기능이 활성화됩니다.</p>
-          <div style="display:flex; gap:8px;">
-            <input type="text" id="admin-target-id" class="admin-input" placeholder="권한을 부여할 아이디 입력">
-            <button class="admin-btn" style="width: 140px; margin-bottom:12px;" onclick="grantProToUser()">PRO 즉시 부여</button>
+          <p style="font-size:13px; color:var(--foreground); margin-bottom:16px;">PRO 멤버십 수동 권한 부여 및 활성 유저 리스트 관리</p>
+          
+          <div style="display:flex; gap:8px; margin-bottom:20px;">
+            <input type="text" id="admin-target-id" class="admin-input" placeholder="권한을 부여할 아이디 입력" style="margin-bottom:0;">
+            <button class="admin-btn" style="width: 140px;" onclick="grantProToUser()">🎁 1+1 선물하기</button>
+          </div>
+          
+          <h4 style="font-size:14px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">💎 PRO 멤버십 활성 유저 리스트</h4>
+          <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; padding-right:8px;">
+            <!-- 리스트 자동 렌더링 -->
           </div>
         </div>
 
@@ -527,6 +526,58 @@
   </div>
 </div>
 
+<!-- 미니게임 팝업 모달 -->
+<div id="minigame-modal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 900px; padding: 40px;">
+    <button class="modal-close-btn" onclick="closeMinigameModal()">✕</button>
+    <div style="text-align: center; margin-bottom: 32px;">
+      <h2 style="font-size:28px; font-weight:900; color:var(--foreground);">🕹️ FCO 라운지 (미니게임)</h2>
+      <p style="color:var(--muted-foreground); margin-top:8px;">매칭 대기 중에 가볍게 즐겨보세요!</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      <div class="shadcn-card" style="padding: 24px; border: 2px solid var(--pro-gold);">
+        <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">✨ 가상 강화 시뮬레이터</h3>
+        <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">BP 소모 없이 즐기는 강화 대리 만족!</p>
+        <div class="upgrade-box" style="margin: 0; box-shadow: none; border: none; padding: 0; background: transparent;">
+          <div class="fut-card" id="upgrade-card-img" style="transform: scale(0.9); margin-bottom: 12px;">
+              <div class="fut-card-grade" id="upg-card-grade">+1</div>
+              <div class="fut-card-img"></div>
+              <div class="fut-card-name">CC 호날두</div>
+          </div>
+          <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin: 16px 0;">
+            <div style="font-size:24px; font-weight:900; color:var(--muted-foreground);" id="upg-current">+1</div>
+            <div style="font-size:18px;">➔</div>
+            <div style="font-size:24px; font-weight:900; color:var(--win-color);" id="upg-next">+2</div>
+          </div>
+          <div id="upg-prob-text" style="font-weight:800; font-size:15px; margin-bottom:8px; color:var(--foreground);">다음 성공 확률: <span id="upg-prob" style="color:var(--ai-blue);">100</span>%</div>
+          <div id="upg-result-text" style="height:24px; font-weight:800; font-size:14px; margin-bottom:12px;"></div>
+          <button id="upg-btn" class="pill-search-btn" style="width:100%; height:44px; font-size:15px;" onclick="tryUpgrade()">강화 시도하기</button>
+        </div>
+      </div>
+
+      <div class="shadcn-card" style="padding: 24px; display: flex; flex-direction: column; border: 2px solid var(--tier-op);">
+        <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">🧬 플레이스타일 MBTI</h3>
+        <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">최근 경기 데이터를 기반으로 성향 분석!</p>
+        
+        <div class="pill-search-box" style="margin: 0 auto 24px; width: 100%; box-shadow: none; border: 1px solid var(--border); background: var(--background);">
+          <input type="text" id="mbti-input" placeholder="구단주명 입력..." onkeypress="if(event.key==='Enter') generateMBTI()">
+          <button class="pill-search-btn" onclick="generateMBTI()" style="padding: 0 16px; background: var(--tier-op);">분석</button>
+        </div>
+        
+        <div id="mbti-loading" style="display:none; text-align:center; padding:20px 0; flex: 1;"><div class="spinner">⚽</div><br><b style="font-size: 13px; margin-top:8px; display:inline-block;">기록 스캔 중...</b></div>
+        
+        <div id="mbti-result" style="display:none; flex: 1;"></div>
+        
+        <div id="mbti-placeholder" style="flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--border);">
+          <div style="font-size: 48px; margin-bottom: 12px;">🔍</div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--muted-foreground);">구단주명을 입력해보세요!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 로그인 / 회원가입 모달 -->
 <div id="auth-modal" class="modal-overlay">
   <div class="sub-modal-content" style="max-width: 420px; padding: 40px 32px;">
@@ -534,7 +585,7 @@
     <h3 style="font-size:24px; font-weight:900; margin-bottom:8px; text-align:center;">로그인 / 회원가입</h3>
     <p style="font-size:14px; color:var(--muted-foreground); text-align:center; margin-bottom:24px;">계정을 연동하고 FCO PRO 혜택을 누리세요.</p>
     
-    <input type="text" id="auth-id" class="auth-input" placeholder="아이디">
+    <input type="text" id="auth-id" class="auth-input" placeholder="아이디 (대소문자 구분 없음)">
     <input type="password" id="auth-pw" class="auth-input" placeholder="비밀번호 (가입 시 6자리 이상)" onkeypress="if(event.key==='Enter') handleLogin()">
     
     <div style="display:flex; gap:8px; margin-bottom: 24px;">
@@ -573,60 +624,6 @@
       </div>
     </div>
     <button class="pill-search-btn" style="width:100%; height:56px; font-size: 18px; margin-top: 24px; border-radius: 16px;" onclick="closeNoticeModal()">확인하고 시작하기</button>
-  </div>
-</div>
-
-<!-- 🌟 미니게임 팝업 모달 🌟 -->
-<div id="minigame-modal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 900px; padding: 40px;">
-    <button class="modal-close-btn" onclick="closeMinigameModal()">✕</button>
-    <div style="text-align: center; margin-bottom: 32px;">
-      <h2 style="font-size:28px; font-weight:900; color:var(--foreground);">🕹️ FCO 라운지 (미니게임)</h2>
-      <p style="color:var(--muted-foreground); margin-top:8px;">매칭 대기 중에 가볍게 즐겨보세요!</p>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-      <!-- 강화 시뮬레이터 -->
-      <div class="shadcn-card" style="padding: 24px; border: 2px solid var(--pro-gold);">
-        <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">✨ 가상 강화 시뮬레이터</h3>
-        <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">BP 소모 없이 즐기는 강화 대리 만족!</p>
-        <div class="upgrade-box" style="margin: 0; box-shadow: none; border: none; padding: 0; background: transparent;">
-          <div class="fut-card" id="upgrade-card-img" style="transform: scale(0.9); margin-bottom: 12px;">
-              <div class="fut-card-grade" id="upg-card-grade">+1</div>
-              <div class="fut-card-img"></div>
-              <div class="fut-card-name">CC 호날두</div>
-          </div>
-          <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin: 16px 0;">
-            <div style="font-size:24px; font-weight:900; color:var(--muted-foreground);" id="upg-current">+1</div>
-            <div style="font-size:18px;">➔</div>
-            <div style="font-size:24px; font-weight:900; color:var(--win-color);" id="upg-next">+2</div>
-          </div>
-          <div id="upg-prob-text" style="font-weight:800; font-size:15px; margin-bottom:8px; color:var(--foreground);">다음 성공 확률: <span id="upg-prob" style="color:var(--ai-blue);">100</span>%</div>
-          <div id="upg-result-text" style="height:24px; font-weight:800; font-size:14px; margin-bottom:12px;"></div>
-          <button id="upg-btn" class="pill-search-btn" style="width:100%; height:44px; font-size:15px;" onclick="tryUpgrade()">강화 시도하기</button>
-        </div>
-      </div>
-
-      <!-- MBTI -->
-      <div class="shadcn-card" style="padding: 24px; display: flex; flex-direction: column; border: 2px solid var(--tier-op);">
-        <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">🧬 플레이스타일 MBTI</h3>
-        <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">최근 경기 데이터를 기반으로 성향 분석!</p>
-        
-        <div class="pill-search-box" style="margin: 0 auto 24px; width: 100%; box-shadow: none; border: 1px solid var(--border); background: var(--background);">
-          <input type="text" id="mbti-input" placeholder="구단주명 입력..." onkeypress="if(event.key==='Enter') generateMBTI()">
-          <button class="pill-search-btn" onclick="generateMBTI()" style="padding: 0 16px; background: var(--tier-op);">분석</button>
-        </div>
-        
-        <div id="mbti-loading" style="display:none; text-align:center; padding:20px 0; flex: 1;"><div class="spinner">⚽</div><br><b style="font-size: 13px; margin-top:8px; display:inline-block;">기록 스캔 중...</b></div>
-        
-        <div id="mbti-result" style="display:none; flex: 1;"></div>
-        
-        <div id="mbti-placeholder" style="flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--border);">
-          <div style="font-size: 48px; margin-bottom: 12px;">🔍</div>
-          <div style="font-size: 14px; font-weight: 600; color: var(--muted-foreground);">구단주명을 입력해보세요!</div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -905,12 +902,11 @@
   function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
   function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
   
-  // 🌟 미니게임 모달 제어 🌟
   function openMinigameModal() { document.getElementById('minigame-modal').style.display = 'flex'; }
   function closeMinigameModal() { document.getElementById('minigame-modal').style.display = 'none'; }
 
   function handleRegister() {
-    const id = document.getElementById('auth-id').value.trim();
+    const id = document.getElementById('auth-id').value.trim().toLowerCase();
     const pw = document.getElementById('auth-pw').value.trim();
     if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
     if(pw.length < 6) return alert('비밀번호는 6자리 이상이어야 합니다.');
@@ -934,14 +930,14 @@
         users[id] = { pw: pw };
         localStorage.setItem('fco_auth_users', JSON.stringify(users));
         localStorage.setItem('fco_current_user', id);
-        alert('회원가입 완료! 로그인 되었습니다. (로컬 모드)');
+        alert('회원가입 완료! 로그인 되었습니다.');
         closeAuthModal();
-        renderHubAuth();
+        syncUserProStatus(id);
     }
   }
 
   function handleLogin() {
-    const id = document.getElementById('auth-id').value.trim();
+    const id = document.getElementById('auth-id').value.trim().toLowerCase();
     const pw = document.getElementById('auth-pw').value.trim();
     if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
     
@@ -970,13 +966,46 @@
     }
   }
 
+  // 🌟 엄격한 PRO 권한 동기화 처리 🌟
   async function syncUserProStatus(userId) {
-      if(!db) return renderHubAuth();
+      if(!userId) return;
+      const lowerId = userId.toLowerCase();
+      
+      if (lowerId === "lfckop") {
+          localStorage.setItem('fco_pro_mode', 'true');
+          renderHubAuth(); updateProTabUI();
+          return;
+      }
+
+      if(!db) {
+          let proUsers = JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
+          let userPro = proUsers[lowerId];
+          if(userPro && userPro.active && userPro.expiry > Date.now()) {
+              localStorage.setItem('fco_pro_mode', 'true');
+          } else {
+              localStorage.setItem('fco_pro_mode', 'false');
+          }
+          renderHubAuth(); updateProTabUI();
+          return;
+      }
+
       try {
-          const docSnap = await db.collection('accounts').doc(userId).get();
-          if(docSnap.exists) { localStorage.setItem('fco_pro_mode', docSnap.data().isPro ? 'true' : 'false'); } 
-          else { await db.collection('accounts').doc(userId).set({ isPro: false }); localStorage.setItem('fco_pro_mode', 'false'); }
-      } catch(e) {}
+          const docSnap = await db.collection('accounts').doc(lowerId).get();
+          if(docSnap.exists) { 
+              const data = docSnap.data();
+              if (data.isPro && data.expiry && data.expiry > Date.now()) {
+                  localStorage.setItem('fco_pro_mode', 'true');
+              } else {
+                  localStorage.setItem('fco_pro_mode', 'false');
+                  if (data.isPro) await db.collection('accounts').doc(lowerId).update({ isPro: false });
+              }
+          } else { 
+              await db.collection('accounts').doc(lowerId).set({ isPro: false, expiry: 0 }); 
+              localStorage.setItem('fco_pro_mode', 'false'); 
+          }
+      } catch(e) {
+          localStorage.setItem('fco_pro_mode', 'false');
+      }
       renderHubAuth(); updateProTabUI();
   }
 
@@ -1018,7 +1047,12 @@
 
     const adminPanel = document.getElementById('admin-panel');
     if(adminPanel) {
-        adminPanel.style.display = (currentUser === "lfckop") ? 'block' : 'none';
+        if(currentUser === "lfckop") {
+            adminPanel.style.display = 'block';
+            renderProList();
+        } else {
+            adminPanel.style.display = 'none';
+        }
     }
     
     if(currentUser) {
@@ -1071,26 +1105,119 @@
       }
   }
 
+  // 🌟 관리자 권한 리스트 렌더링, 기간연장, 해지 로직 완벽 구현 🌟
+  async function renderProList() {
+      const listEl = document.getElementById('admin-pro-list');
+      if(!listEl) return;
+      
+      let proUsers = {};
+      if(db) {
+          try {
+              const snap = await db.collection('accounts').where('isPro', '==', true).get();
+              snap.forEach(doc => { proUsers[doc.id] = doc.data(); });
+          } catch(e) {}
+      } else {
+          proUsers = JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
+      }
+      
+      let html = '';
+      const ids = Object.keys(proUsers).filter(id => {
+          const u = proUsers[id];
+          return u && u.active !== false && u.isPro !== false && (u.expiry > Date.now());
+      });
+      
+      if(ids.length === 0) {
+          listEl.innerHTML = '<div style="font-size:13px; color:var(--muted-foreground); padding: 12px; text-align:center;">현재 PRO 활성 유저가 없습니다.</div>';
+          return;
+      }
+      
+      ids.forEach(id => {
+          const expDate = new Date(proUsers[id].expiry).toLocaleDateString();
+          html += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:var(--background); padding:12px 16px; border-radius:12px; border:1px solid var(--border);">
+              <div>
+                  <div style="font-weight:800; font-size:14px; color:var(--foreground);">${escapeHtml(id)}</div>
+                  <div style="font-size:11px; color:var(--muted-foreground);">만료: ${expDate}</div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                  <button onclick="extendPro('${escapeHtml(id)}')" style="background:var(--win-color); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:0.2s;">+30일 연장</button>
+                  <button onclick="cancelPro('${escapeHtml(id)}')" style="background:var(--lose-color); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:0.2s;">해지</button>
+              </div>
+          </div>
+          `;
+      });
+      listEl.innerHTML = html;
+  }
+
   async function grantProToUser() {
-      const targetId = document.getElementById('admin-target-id').value.trim();
+      const targetId = document.getElementById('admin-target-id').value.trim().toLowerCase();
       if(!targetId) return alert('권한을 줄 아이디를 입력하세요.');
+      
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+
       if(!db) { 
           let proUsers = JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
-          proUsers[targetId] = true;
+          let currentExpiry = (proUsers[targetId] && proUsers[targetId].active && proUsers[targetId].expiry > Date.now()) ? proUsers[targetId].expiry : Date.now();
+          proUsers[targetId] = { active: true, expiry: currentExpiry + thirtyDays };
           localStorage.setItem('fco_pro_users', JSON.stringify(proUsers));
-          alert(`🎉 [${targetId}] 님에게 PRO 권한을 부여했습니다! (로컬 저장)`); 
+          alert(`🎉 [축하합니다!] ${targetId} 님에게 PRO 멤버십(30일)을 성공적으로 부여했습니다!`); 
           document.getElementById('admin-target-id').value = '';
+          renderProList();
           return; 
       }
       try {
-          await db.collection('accounts').doc(targetId).set({ isPro: true }, { merge: true });
-          alert(`🎉 [${targetId}] 님에게 PRO 권한을 정상적으로 부여했습니다!`);
+          const docSnap = await db.collection('accounts').doc(targetId).get();
+          let currentExpiry = Date.now();
+          if (docSnap.exists) {
+              const data = docSnap.data();
+              if (data.isPro && data.expiry > Date.now()) {
+                  currentExpiry = data.expiry;
+              }
+          }
+          await db.collection('accounts').doc(targetId).set({ isPro: true, expiry: currentExpiry + thirtyDays }, { merge: true });
+          alert(`🎉 [축하합니다!] ${targetId} 님에게 PRO 멤버십(30일)을 성공적으로 부여했습니다!`);
           document.getElementById('admin-target-id').value = '';
+          renderProList();
       } catch(e) {
           alert('오류 발생: ' + e);
       }
   }
 
+  async function extendPro(userId) {
+      if(confirm(`${userId} 님의 PRO 기간을 30일 연장하시겠습니까?`)) {
+          const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+          if(!db) {
+              let proUsers = JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
+              if(proUsers[userId]) proUsers[userId].expiry += thirtyDays;
+              localStorage.setItem('fco_pro_users', JSON.stringify(proUsers));
+          } else {
+              const docSnap = await db.collection('accounts').doc(userId).get();
+              if (docSnap.exists) {
+                  const data = docSnap.data();
+                  await db.collection('accounts').doc(userId).set({ isPro: true, expiry: data.expiry + thirtyDays }, { merge: true });
+              }
+          }
+          alert(`✨ ${userId} 님의 멤버십 기간이 성공적으로 30일 연장되었습니다.`);
+          renderProList();
+      }
+  }
+
+  async function cancelPro(userId) {
+      if(confirm(`정말 ${userId} 님의 PRO 멤버십을 해지하시겠습니까?`)) {
+          if(!db) {
+              let proUsers = JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
+              proUsers[userId].active = false;
+              proUsers[userId].expiry = 0;
+              localStorage.setItem('fco_pro_users', JSON.stringify(proUsers));
+          } else {
+               await db.collection('accounts').doc(userId).set({ isPro: false, expiry: 0 }, { merge: true });
+          }
+          alert(`🗑️ ${userId} 님의 멤버십이 해지되었습니다.`);
+          renderProList();
+      }
+  }
+
+  // 가상 강화 로직
   let currentUpgLevel = 1;
   const probMap = { 1: 100, 2: 81, 3: 64, 4: 50, 5: 26, 6: 15, 7: 7, 8: 4, 9: 2 };
   
@@ -1198,7 +1325,6 @@
   const NEXON_API_KEY = "Live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 🌟 API 호출 누락 복구 🌟
   async function fetchNexonApi(url) {
     const response = await fetch(url, {
       headers: {
@@ -1215,8 +1341,13 @@
     enableDragScroll('.main-tabs');
     enableDragScroll('.sub-tabs');
 
-    localStorage.removeItem('fco_current_user'); 
-    localStorage.removeItem('fco_pro_mode');
+    // 🌟 [버그 수정] 로그인 세션 유지 복구 🌟
+    const currentUser = localStorage.getItem('fco_current_user');
+    if (currentUser) {
+        syncUserProStatus(currentUser); 
+    } else {
+        localStorage.removeItem('fco_pro_mode');
+    }
     
     renderTop10(); 
     renderSearchHistory(); 
@@ -1365,72 +1496,106 @@
     }).join('');
   }
 
-  /* 🌟 포지션별 11강, 8강, 5강 특성 이름 및 정확한 퍼센트 데이터 🌟 */
+  // 🌟 11강용 직관적인 이모지 매핑 함수 🌟
+  function getTraitEmoji(name) {
+    if(name.includes('슛') || name.includes('골')) return '🎯';
+    if(name.includes('패스') || name.includes('크로스') || name.includes('빌드업')) return '👟';
+    if(name.includes('수비') || name.includes('태클') || name.includes('방어') || name.includes('차단') || name.includes('재정비')) return '🛡️';
+    if(name.includes('템포') || name.includes('이동') || name.includes('스피드')) return '⚡';
+    if(name.includes('몸 싸움') || name.includes('헤딩')) return '💪';
+    if(name.includes('캐칭') || name.includes('펀칭') || name.includes('던지기') || name.includes('반응')) return '🧤';
+    return '⚽';
+  }
+
+  // 🌟 8강용 넥슨 API 이미지 매핑 🌟
+  const traitImgMap = {
+    "라인 브레이커": 50,
+    "트릭스터": 51,
+    "타이탄": 52,
+    "스피드스터": 53,
+    "커맨더": 54,
+    "2개의 심장": 55,
+    "체이서": 56,
+    "파이터": 57,
+    "와일드 태클러": 58,
+    "가로채기 노리기": 59,
+    "블로커": 60,
+    "프레데터": 61,
+    "레이저 슈터": 62,
+    "아크로바틱 피니셔": 63,
+    "크로스 포쳐": 64,
+    "GK 데드아이": 67,
+    "GK 빠른 반응": 68,
+    "GK 공중볼 장악": 69
+  };
+
+  function getTraitIconUrl(name) {
+    const nexonBase = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/";
+    const iconId = traitImgMap[name] || 50; 
+    return `${nexonBase}trait_icon_${iconId}.png`;
+  }
+
+  // 🌟 스크린샷 100% 매칭: 5강 완전 제거, 11강 및 8강 데이터 최신화 🌟
   const traitsDB = {
     "ST": {
       tier11: [{n: "침착하게 골 찬스 만들기", r: "22.8%"}, {n: "빠른 템포 공격", r: "17.4%"}, {n: "능숙한 몸 싸움", r: "15.3%"}, {n: "크로스 향상", r: "14.2%"}, {n: "감아차기 향상", r: "8.1%"}],
-      tier8: [{n: "라인 브레이커", r: "45.7%"}, {n: "트릭스터", r: "19.8%"}, {n: "타이탄", r: "14.6%"}, {n: "레이저 슈터", r: "8.5%"}, {n: "크로스 포쳐", r: "6.2%"}],
-      tier5: [{n: "예리한 감아차기", r: "35.0%"}, {n: "파워 헤더", r: "22.1%"}, {n: "패스 마스터", r: "18.0%"}, {n: "승부욕", r: "10.2%"}, {n: "아웃사이드 슈팅/크로스", r: "5.4%"}]
+      tier8: [{n: "라인 브레이커", r: "45.6%"}, {n: "트릭스터", r: "20.8%"}, {n: "타이탄", r: "14.4%"}, {n: "크로스 포쳐", r: "9.2%"}, {n: "아크로바틱 피니셔", r: "8.3%"}]
     },
-    "SW": {
-      tier11: [{n: "가로채기 노리기", r: "18.9%"}, {n: "능숙한 압박", r: "18.3%"}, {n: "재정비", r: "14.9%"}, {n: "스탠딩 태클 향상", r: "7.8%"}, {n: "로빙 스루 패스 향상", r: "5.6%"}],
-      tier8: [{n: "체이서", r: "33.3%"}, {n: "블로커", r: "17.0%"}, {n: "파이터", r: "17.0%"}, {n: "타이탄", r: "9.6%"}, {n: "프레데터", r: "7.3%"}],
-      tier5: [{n: "패스 마스터", r: "32.9%"}, {n: "화려한 걷어내기", r: "21.9%"}, {n: "파워 헤더", r: "16.6%"}, {n: "승부욕", r: "13.4%"}, {n: "예리한 감아차기", r: "4.3%"}]
-    },
-    "GK": {
-      tier11: [{n: "낮은 슛 방어 (GK 전용)", r: "57.2%"}, {n: "감아차기 방어 (GK 전용)", r: "18.1%"}, {n: "프리킥 방어 (GK 전용)", r: "13.7%"}, {n: "스로우 향상 (GK 전용)", r: "5.5%"}, {n: "근거리 슛 방어 (GK 전용)", r: "1.9%"}],
-      tier8: [{n: "GK 데드아이", r: "77.7%"}, {n: "GK 빠른 반응", r: "13.3%"}, {n: "GK 공중볼 장악", r: "9.0%"}],
-      tier5: [{n: "GK 침착한 1:1 수비", r: "36.5%"}, {n: "스위퍼 키퍼", r: "21.3%"}, {n: "GK 멀티 던지기", r: "15.9%"}, {n: "GK 능숙한 펀칭", r: "12.7%"}, {n: "GK 적극적 크로스 수비", r: "12.4%"}]
+    "CF": {
+      tier11: [{n: "침착하게 골 찬스 만들기", r: "21.2%"}, {n: "빠른 템포 공격", r: "17.1%"}, {n: "능숙한 몸 싸움", r: "14.5%"}, {n: "크로스 향상", r: "13.2%"}, {n: "감아차기 향상", r: "8.0%"}],
+      tier8: [{n: "라인 브레이커", r: "47.9%"}, {n: "트릭스터", r: "25.1%"}, {n: "타이탄", r: "7.7%"}, {n: "크로스 포쳐", r: "7.2%"}, {n: "아크로바틱 피니셔", r: "6.4%"}]
     },
     "LAM": {
       tier11: [{n: "크로스 향상", r: "17.7%"}, {n: "능숙한 몸 싸움", r: "15.4%"}, {n: "침착하게 골 찬스 만들기", r: "15.2%"}, {n: "빠른 템포 공격", r: "11.0%"}, {n: "감아차기 향상", r: "8.2%"}],
-      tier8: [{n: "라인 브레이커", r: "46.3%"}, {n: "트릭스터", r: "43.2%"}, {n: "스피드스터", r: "2.7%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.7%"}],
-      tier5: [{n: "예리한 감아차기", r: "29.0%"}, {n: "패스 마스터", r: "25.5%"}, {n: "파워 헤더", r: "17.0%"}, {n: "승부욕", r: "7.5%"}, {n: "아웃사이드 슈팅/크로스", r: "7.2%"}]
+      tier8: [{n: "라인 브레이커", r: "46.3%"}, {n: "트릭스터", r: "43.2%"}, {n: "스피드스터", r: "2.7%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.7%"}]
     },
     "CAM": {
       tier11: [{n: "침착하게 골 찬스 만들기", r: "20.0%"}, {n: "빠른 템포 공격", r: "16.1%"}, {n: "능숙한 몸 싸움", r: "14.7%"}, {n: "근거리 슛 향상", r: "11.7%"}, {n: "감아차기 향상", r: "8.5%"}],
-      tier8: [{n: "라인 브레이커", r: "44.1%"}, {n: "트릭스터", r: "30.9%"}, {n: "레이저 슈터", r: "6.5%"}, {n: "크로스 포쳐", r: "5.5%"}, {n: "아크로바틱 피니셔", r: "4.3%"}],
-      tier5: [{n: "예리한 감아차기", r: "36.0%"}, {n: "파워 헤더", r: "23.1%"}, {n: "패스 마스터", r: "21.2%"}, {n: "승부욕", r: "5.6%"}, {n: "아웃사이드 슈팅/크로스", r: "4.6%"}]
+      tier8: [{n: "라인 브레이커", r: "44.1%"}, {n: "트릭스터", r: "30.9%"}, {n: "레이저 슈터", r: "6.5%"}, {n: "크로스 포쳐", r: "5.5%"}, {n: "아크로바틱 피니셔", r: "4.3%"}]
     },
     "RAM": {
       tier11: [{n: "크로스 향상", r: "18.4%"}, {n: "침착하게 골 찬스 만들기", r: "15.6%"}, {n: "능숙한 몸 싸움", r: "15.3%"}, {n: "빠른 템포 공격", r: "10.2%"}, {n: "감아차기 향상", r: "8.3%"}],
-      tier8: [{n: "라인 브레이커", r: "48.0%"}, {n: "트릭스터", r: "41.9%"}, {n: "스피드스터", r: "2.6%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.5%"}],
-      tier5: [{n: "예리한 감아차기", r: "28.3%"}, {n: "패스 마스터", r: "26.5%"}, {n: "파워 헤더", r: "16.2%"}, {n: "승부욕", r: "7.6%"}, {n: "아웃사이드 슈팅/크로스", r: "7.5%"}]
+      tier8: [{n: "라인 브레이커", r: "48.0%"}, {n: "트릭스터", r: "41.9%"}, {n: "스피드스터", r: "2.6%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.5%"}]
     },
     "CM": {
       tier11: [{n: "능숙한 몸 싸움", r: "9.6%"}, {n: "다이렉트 패스 전술 이해", r: "8.6%"}, {n: "티키타카 패스 전술 이해", r: "8.5%"}, {n: "로빙 스루 패스 향상", r: "7.3%"}, {n: "쓰루 패스 향상", r: "6.3%"}],
-      tier8: [{n: "레이저 슈터", r: "25.6%"}, {n: "커맨더", r: "17.1%"}, {n: "라인 브레이커", r: "12.9%"}, {n: "트릭스터", r: "11.1%"}, {n: "파이터", r: "8.2%"}],
-      tier5: [{n: "예리한 감아차기", r: "31.4%"}, {n: "패스 마스터", r: "25.0%"}, {n: "파워 헤더", r: "11.1%"}, {n: "아웃사이드 슈팅/크로스", r: "8.9%"}, {n: "승부욕", r: "8.7%"}]
+      tier8: [{n: "레이저 슈터", r: "25.6%"}, {n: "커맨더", r: "17.1%"}, {n: "라인 브레이커", r: "12.9%"}, {n: "트릭스터", r: "11.1%"}, {n: "파이터", r: "8.2%"}]
     },
     "CDM": {
       tier11: [{n: "재정비", r: "11.2%"}, {n: "티키타카 패스 전술 이해", r: "10.7%"}, {n: "로빙 스루 패스 향상", r: "8.6%"}, {n: "스탠딩 태클 향상", r: "7.9%"}, {n: "능숙한 압박", r: "7.4%"}],
-      tier8: [{n: "체이서", r: "24.9%"}, {n: "레이저 슈터", r: "21.8%"}, {n: "파이터", r: "19.8%"}, {n: "커맨더", r: "14.5%"}, {n: "와일드 태클러", r: "6.0%"}],
-      tier5: [{n: "패스 마스터", r: "38.6%"}, {n: "예리한 감아차기", r: "22.3%"}, {n: "파워 헤더", r: "13.4%"}, {n: "승부욕", r: "10.5%"}, {n: "아웃사이드 슈팅/크로스", r: "3.3%"}]
+      tier8: [{n: "체이서", r: "24.9%"}, {n: "레이저 슈터", r: "21.8%"}, {n: "파이터", r: "19.8%"}, {n: "커맨더", r: "14.5%"}, {n: "와일드 태클러", r: "6.0%"}]
     },
     "CB": {
       tier11: [{n: "능숙한 압박", r: "21.4%"}, {n: "안정적인 빌드업", r: "17.7%"}, {n: "재정비", r: "16.3%"}, {n: "가로채기 노리기", r: "7.0%"}, {n: "스탠딩 태클 향상", r: "6.1%"}],
-      tier8: [{n: "체이서", r: "35.0%"}, {n: "파이터", r: "23.5%"}, {n: "블로커", r: "15.9%"}, {n: "프레데터", r: "8.9%"}, {n: "타이탄", r: "8.2%"}],
-      tier5: [{n: "패스 마스터", r: "31.2%"}, {n: "화려한 걷어내기", r: "27.9%"}, {n: "파워 헤더", r: "15.5%"}, {n: "승부욕", r: "13.2%"}, {n: "슬라이딩 태클 선호", r: "3.0%"}]
+      tier8: [{n: "체이서", r: "35.0%"}, {n: "파이터", r: "23.5%"}, {n: "블로커", r: "15.9%"}, {n: "프레데터", r: "8.9%"}, {n: "타이탄", r: "8.2%"}]
+    },
+    "SW": {
+      tier11: [{n: "가로채기 노리기", r: "18.9%"}, {n: "능숙한 압박", r: "18.3%"}, {n: "재정비", r: "14.9%"}, {n: "스탠딩 태클 향상", r: "7.8%"}, {n: "로빙 스루 패스 향상", r: "5.6%"}],
+      tier8: [{n: "체이서", r: "33.3%"}, {n: "블로커", r: "17.0%"}, {n: "파이터", r: "17.0%"}, {n: "타이탄", r: "9.6%"}, {n: "프레데터", r: "7.3%"}]
+    },
+    "LB": {
+      tier11: [{n: "크로스 향상", r: "14.2%"}, {n: "재정비", r: "12.0%"}, {n: "우측 수비 강화", r: "11.1%"}, {n: "능숙한 압박", r: "8.2%"}, {n: "퍼스트 터치 후 바로 이동", r: "7.5%"}],
+      tier8: [{n: "체이서", r: "34.5%"}, {n: "파이터", r: "33.5%"}, {n: "블로커", r: "14.4%"}, {n: "프레데터", r: "7.4%"}, {n: "타이탄", r: "5.1%"}]
     },
     "RWB": {
       tier11: [{n: "크로스 향상", r: "13.5%"}, {n: "재정비", r: "11.6%"}, {n: "우측 수비 강화", r: "11.3%"}, {n: "능숙한 압박", r: "8.5%"}, {n: "퍼스트 터치 후 바로 이동", r: "7.9%"}],
-      tier8: [{n: "체이서", r: "52.3%"}, {n: "파이터", r: "27.3%"}, {n: "프레데터", r: "5.4%"}, {n: "2개의 심장", r: "3.6%"}, {n: "와일드 태클러", r: "3.2%"}],
-      tier5: [{n: "패스 마스터", r: "45.1%"}, {n: "승부욕", r: "14.9%"}, {n: "아웃사이드 슈팅/크로스", r: "6.0%"}, {n: "화려한 걷어내기", r: "5.9%"}, {n: "파워 헤더", r: "5.7%"}]
+      tier8: [{n: "체이서", r: "52.6%"}, {n: "파이터", r: "26.5%"}, {n: "프레데터", r: "5.4%"}, {n: "2개의 심장", r: "3.7%"}, {n: "와일드 태클러", r: "3.2%"}]
+    },
+    "GK": {
+      tier11: [{n: "낮은 슛 방어", r: "57.2%"}, {n: "감아차기 방어", r: "18.1%"}, {n: "프리킥 방어", r: "13.7%"}, {n: "스로우 향상", r: "5.5%"}, {n: "근거리 슛 방어", r: "1.9%"}],
+      tier8: [{n: "GK 데드아이", r: "77.7%"}, {n: "GK 빠른 반응", r: "13.3%"}, {n: "GK 공중볼 장악", r: "9.0%"}]
     }
   };
 
-  // 나머지 포지션들은 가장 유사한 대표 포지션 데이터로 매핑
   function getTraitKey(pos) {
     if (traitsDB[pos]) return pos;
-    if (['ST', 'LS', 'RS', 'CF', 'LF', 'RF'].includes(pos)) return 'LAM';
-    if (['LW', 'RW', 'LM', 'RM'].includes(pos)) return 'LAM';
-    if (['CAM', 'LAM', 'RAM'].includes(pos)) return 'CAM';
-    if (['CM', 'LCM', 'RCM'].includes(pos)) return 'CM';
-    if (['CDM', 'LDM', 'RDM'].includes(pos)) return 'CDM';
-    if (['CB', 'LCB', 'RCB', 'SW', 'LB', 'RB'].includes(pos)) return 'CB';
-    if (['LWB', 'RWB'].includes(pos)) return 'RWB';
-    if (pos === 'GK') return 'GK';
-    return 'SW';
+    if (['LS', 'RS', 'LF', 'RF', 'LW', 'RW', 'LM', 'RM'].includes(pos)) return 'ST';
+    if (['LCM', 'RCM'].includes(pos)) return 'CM';
+    if (['LDM', 'RDM'].includes(pos)) return 'CDM';
+    if (['LCB', 'RCB'].includes(pos)) return 'CB';
+    if (['RB'].includes(pos)) return 'LB';
+    if (['LWB'].includes(pos)) return 'RWB';
+    return 'ST';
   }
 
   function selectTrait(pos, event) { 
@@ -1439,40 +1604,48 @@
     renderTraitData(pos); 
   }
 
+  // 🌟 11강은 이모지로, 8강은 완벽한 넥슨 공식 사진으로 렌더링 🌟
   function renderTraitData(pos) {
     const lbl = document.getElementById('trait-pos-label'); if(lbl) lbl.innerText = pos; 
     const key = getTraitKey(pos);
-    const data = traitsDB[key] || traitsDB["SW"];
+    const data = traitsDB[key] || traitsDB["ST"];
     
-    const renderItems = (items) => {
+    // 11강 (이모지 버전)
+    const renderItems11 = (items) => {
       return items.map(item => `
-        <div style="background:var(--background); border:1px solid var(--border); border-radius:12px; padding:12px 6px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; min-width:80px;">
-          <div style="font-size:22px; margin-bottom:6px;">🛡️</div>
-          <div style="font-size:11.5px; font-weight:700; color:var(--foreground); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${item.n}">${item.n}</div>
-          <div style="font-size:13px; font-weight:900; color:var(--win-color);">${item.r}</div>
+        <div style="background:var(--background); border:1px solid var(--border); border-radius:12px; padding:16px 8px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; min-width:85px;">
+          <div style="font-size:28px; margin-bottom:8px;">${getTraitEmoji(item.n)}</div>
+          <div style="font-size:11.5px; font-weight:800; color:var(--foreground); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${item.n}">${item.n}</div>
+          <div style="font-size:14px; font-weight:900; color:var(--win-color);">${item.r}</div>
         </div>
       `).join('');
     };
 
+    // 8강 (이미지 버전)
+    const renderItems8 = (items) => {
+      return items.map(item => {
+        const imgSrc = getTraitIconUrl(item.n);
+        return `
+        <div style="background:var(--background); border:1px solid var(--border); border-radius:12px; padding:16px 8px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; min-width:85px;">
+          <img src="${imgSrc}" alt="${item.n}" onerror="this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_50.png';" style="width: 48px; height: 48px; margin-bottom: 8px; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.05));">
+          <div style="font-size:11.5px; font-weight:800; color:var(--foreground); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${item.n}">${item.n}</div>
+          <div style="font-size:14px; font-weight:900; color:var(--lose-color);">${item.r}</div>
+        </div>
+      `}).join('');
+    };
+
     const traitHtml = `
       <div class="shadcn-card" style="padding:24px;">
-        <div style="font-size:15px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">11강 획득</div>
-        <div style="display:flex; gap:8px; justify-content:space-between;">
-          ${renderItems(data.tier11)}
+        <div style="font-size:16px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">11강 획득</div>
+        <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
+          ${renderItems11(data.tier11)}
         </div>
       </div>
 
       <div class="shadcn-card" style="padding:24px;">
-        <div style="font-size:15px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">8강 획득</div>
-        <div style="display:flex; gap:8px; justify-content:space-between;">
-          ${renderItems(data.tier8)}
-        </div>
-      </div>
-
-      <div class="shadcn-card" style="padding:24px;">
-        <div style="font-size:15px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">5강 획득</div>
-        <div style="display:flex; gap:8px; justify-content:space-between;">
-          ${renderItems(data.tier5)}
+        <div style="font-size:16px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">8강 획득</div>
+        <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
+          ${renderItems8(data.tier8)}
         </div>
       </div>
     `;
@@ -1492,9 +1665,10 @@
     if(e.target === document.getElementById('sub-detail-modal')) closeSubDetailModal();
     if(e.target === document.getElementById('notice-modal')) closeNoticeModal();
     if(e.target === document.getElementById('auth-modal')) closeAuthModal();
+    if(e.target === document.getElementById('minigame-modal')) closeMinigameModal();
   });
   window.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') { closeProfileModal(); closeSubDetailModal(); closeNoticeModal(); closeAuthModal(); }
+    if(e.key === 'Escape') { closeProfileModal(); closeSubDetailModal(); closeNoticeModal(); closeAuthModal(); closeMinigameModal(); }
   });
 
   const positionMap = { 0: { label: 'GK', line: 'gk' }, 1: { label: 'SW', line: 'df' }, 2: { label: 'RWB', line: 'df' }, 3: { label: 'RB', line: 'df' }, 4: { label: 'RCB', line: 'df' }, 5: { label: 'CB', line: 'df' }, 6: { label: 'LCB', line: 'df' }, 7: { label: 'LB', line: 'df' }, 8: { label: 'LWB', line: 'df' }, 9: { label: 'RDM', line: 'mf' }, 10: { label: 'CDM', line: 'mf' }, 11: { label: 'LDM', line: 'mf' }, 12: { label: 'RM', line: 'mf' }, 13: { label: 'RCM', line: 'mf' }, 14: { label: 'CM', line: 'mf' }, 15: { label: 'LCM', line: 'mf' }, 16: { label: 'LM', line: 'mf' }, 17: { label: 'RAM', line: 'mf' }, 18: { label: 'CAM', line: 'mf' }, 19: { label: 'LAM', line: 'mf' }, 20: { label: 'RF', line: 'fw' }, 21: { label: 'CF', line: 'fw' }, 22: { label: 'LF', line: 'fw' }, 23: { label: 'RW', line: 'fw' }, 24: { label: 'RS', line: 'fw' }, 25: { label: 'ST', line: 'fw' }, 26: { label: 'LS', line: 'fw' }, 27: { label: 'LW', line: 'fw' } };
