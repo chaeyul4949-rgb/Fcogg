@@ -1463,10 +1463,11 @@
       let medal = "";
       if(index === 0) { rankColor = "#3B82F6"; medal = "🥇"; } 
       else if(index === 1) { rankColor = "#84CC16"; medal = "🥈"; } 
-      else if(index === 2) { rankColor = "#22C55E"; medal = "🥉"; }
+      else if(index === 2) { rankColor = "#D97706"; medal = "🥉"; } // 3위 동메달 주황색 변경
       
+      // 하얀 배경, 테두리, 둥근 모서리 등 스크린샷과 동일하게 스타일 적용
       return `
-        <div class="player-row" style="padding: 16px 24px; margin-bottom: 8px; cursor: pointer;" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0]); document.getElementById('user-search-input').value='${escapeHtml(u.nickname)}'; searchDirectData()">
+        <div class="player-row" style="background: var(--card); border: 1px solid var(--border); padding: 16px 24px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; transition: 0.2s;" onclick="switchTab('search', document.querySelectorAll('.tab-btn')[0]); document.getElementById('user-search-input').value='${escapeHtml(u.nickname)}'; searchDirectData()">
           <div style="display: flex; align-items: center; gap: 24px; flex: 1;">
             <div style="width: 50px; font-weight: 900; font-style: italic; font-size: 15px; color: ${rankColor}; text-align: left;">
               ${index + 1}위 ${medal}
@@ -1475,7 +1476,7 @@
               ${escapeHtml(u.nickname)}
             </div>
           </div>
-          <div style="font-weight: 900; font-size: 15px; color: var(--foreground);">
+          <div style="font-weight: 900; font-size: 15px; color: #F59E0B;">
             👍 ${u.rec}
           </div>
         </div>
