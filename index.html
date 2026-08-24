@@ -1344,26 +1344,40 @@
 
   const NEXON_API_KEY = "live_d06fb08ceb057166fe0968ad4cadfd9a10b0ec3512f1ec77686a09a04e6963bbefe8d04e6d233bd35cf2fabdeb93fb0d"; 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+// --- 🌟 누락되었던 필수 변수 및 백그라운드 데이터 복구 🌟 ---
+  let globalOuid = null, globalNickname = "", globalLevel = "", globalMaxTier = "", globalMaxTierId = null, globalMatchDetails = [], currentMatchLoadIndex = 0;
 
-  // 🌟 [버그 수정] 넥슨 API 404 예외 처리 완벽 방어 🌟
-  // 🌟 전적검색 CORS 에러 철벽 방어 및 실제 데이터 우회 호출 로직 🌟
- async function fetchNexonApi(url) {
-    // 💡 무조건 실시간 최신 데이터를 가져오기 위해 시간값(_t)을 붙여 캐시를 강제 삭제
-    const tsUrl = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
-    
-    // 프록시 다 빼고 넥슨 서버 다이렉트 연결
-    const response = await fetch(tsUrl, {
-      headers: {
-        'x-nxopen-api-key': NEXON_API_KEY
-      }
-    });
-    
-    if (!response.ok) {
-      if (response.status === 404) return null; // 빈 전적일 때 사이트 안 뻗게 방어
-      throw new Error(`API error: ${response.status}`);
-    }
-    
-    return await response.json();
+  // 1. 선수 이름 데이터 실시간 연동
+  let spidMetaCache = {};
+  fetch('https://open.api.nexon.com/static/fconline/meta/spid.json')
+    .then(r=>r.json()).then(d=>d.forEach(p=>spidMetaCache[p.id]=p.name)).catch(()=>{});
+
+  // 2. 공식경기 티어 데이터 실시간 연동
+  let divisionMetaCache = {};
+  fetch('https://open.api.nexon.com/static/fconline/meta/division.json')
+    .then(r=>r.json()).then(d=>d.forEach(item=>divisionMetaCache[String(item.divisionId)]=item.divisionName)).catch(()=>{});
+
+  // 3. 포지션 맵 복구
+  const positionMap = {
+    0: {label:'GK', line:'gk'}, 1: {label:'SW', line:'df'}, 2: {label:'RWB', line:'df'}, 3: {label:'RB', line:'df'}, 4: {label:'RCB', line:'df'}, 5: {label:'CB', line:'df'}, 6: {label:'LCB', line:'df'}, 7: {label:'LB', line:'df'}, 8: {label:'LWB', line:'df'}, 9: {label:'RDM', line:'mf'}, 10: {label:'CDM', line:'mf'}, 11: {label:'LDM', line:'mf'}, 12: {label:'RM', line:'mf'}, 13: {label:'RCM', line:'mf'}, 14: {label:'CM', line:'mf'}, 15: {label:'LCM', line:'mf'}, 16: {label:'LM', line:'mf'}, 17: {label:'RAM', line:'mf'}, 18: {label:'CAM', line:'mf'}, 19: {label:'LAM', line:'mf'}, 20: {label:'RF', line:'fw'}, 21: {label:'CF', line:'fw'}, 22: {label:'LF', line:'fw'}, 23: {label:'RW', line:'fw'}, 24: {label:'RS', line:'fw'}, 25: {label:'ST', line:'fw'}, 26: {label:'LS', line:'fw'}, 27: {label:'LW', line:'fw'}, 28: {label:'SUB', line:'df'}
+  };
+
+  // 4. 시간 계산기 & 티어 뱃지 생성기 복구
+  function getTimeAgo(dateString) {
+    const diffMin = Math.floor((Date.now() - new Date(dateString)) / 60000);
+    if (diffMin < 60) return `${diffMin}분 전`;
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) return `${diffHour}시간 전`;
+    return `${Math.floor(diffHour / 24)}일 전`;
+  }
+
+  function getTierBadge(divisionId) {
+    return `https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/division/ico_division_${divisionId}.png`;
+  }
+
+  function safeSetText(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = text;
   }
   window.addEventListener('DOMContentLoaded', () => {
     enableDragScroll('.main-tabs');
