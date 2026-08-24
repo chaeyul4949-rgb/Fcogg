@@ -815,7 +815,68 @@
     if(!unsafe) return "";
     return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
+// 1. 모달창(X버튼) 및 미니게임 열고 닫기 함수
+  function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+  function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+  function openMinigameModal() { document.getElementById('minigame-modal').style.display = 'flex'; }
+  function closeMinigameModal() { document.getElementById('minigame-modal').style.display = 'none'; }
+  function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; }
+  function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
+  function closeProfileModal() { document.getElementById('profile-modal').style.display = 'none'; }
+  function openSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'flex'; }
+  function closeSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'none'; }
 
+  // 2. 로그인 및 회원가입 버그 수정 로직
+  function handleRegister() {
+    const id = document.getElementById('auth-id').value.trim().toLowerCase();
+    const pw = document.getElementById('auth-pw').value.trim();
+    if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
+    if(pw.length < 6) return alert('비밀번호는 6자리 이상이어야 합니다.');
+    if(id === "lfckop") return alert('사용할 수 없는 아이디입니다.');
+    
+    let users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+    if(users[id]) return alert('이미 존재하는 아이디입니다.');
+    users[id] = { pw: pw };
+    localStorage.setItem('fco_auth_users', JSON.stringify(users));
+    localStorage.setItem('fco_current_user', id);
+    alert('회원가입 완료! 자동 로그인 되었습니다.');
+    closeAuthModal();
+    if(typeof renderHubAuth === 'function') renderHubAuth();
+  }
+
+  function handleLogin() {
+    const id = document.getElementById('auth-id').value.trim().toLowerCase();
+    const pw = document.getElementById('auth-pw').value.trim();
+    if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요.');
+    
+    if (id === "lfckop" && pw === "kim5708!") {
+        localStorage.setItem('fco_current_user', "lfckop");
+        localStorage.setItem('fco_pro_mode', 'true');
+        alert('👑 최고 관리자님 환영합니다.');
+        closeAuthModal(); 
+        if(typeof renderHubAuth === 'function') renderHubAuth();
+        if(typeof updateProTabUI === 'function') updateProTabUI();
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+    if(!users[id] || users[id].pw !== pw) return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+    localStorage.setItem('fco_current_user', id);
+    closeAuthModal();
+    if(typeof renderHubAuth === 'function') renderHubAuth();
+  }
+
+  function handleLogout() {
+      localStorage.removeItem('fco_current_user');
+      localStorage.removeItem('fco_pro_mode');
+      if(typeof renderHubAuth === 'function') renderHubAuth();
+      if(typeof updateProTabUI === 'function') updateProTabUI();
+      alert('로그아웃 되었습니다.');
+  }
+
+  function handleGoogleLogin() {
+      alert("현재 구글 연동은 서버 설정 중입니다. 간편 가입을 이용해주세요.");
+  }
   function switchTab(tabId, btnElement) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
