@@ -2183,11 +2183,42 @@
       }
 
       if (stats.gameCount > 0 && (stats.enTotalCross > 0 || stats.enTotalThrough > 0)) {
-          if (stats.enTotalCross > stats.enTotalThrough * 1.5) matchup = `⚠️ 이 상대는 전체 공격의 60% 이상을 <b style="color:var(--lose-color);">측면 크로스와 헤딩(뚝배기)</b>에 의존합니다. 사이드 돌파를 허용하지 말고 풀백을 수동으로 내려 수비하세요.`;
-          else if (stats.enTotalThrough > stats.enTotalCross * 1.5) matchup = `⚠️ 이 상대는 <b style="color:var(--lose-color);">중앙 스루패스와 침투</b> 위주의 공격을 선호합니다. 수비 라인을 무리하게 올리지 말고 센터백 사이 간격을 좁히세요.`;
-          else matchup = `💡 이 상대는 측면과 중앙을 고르게 활용하는 <b>밸런스형 유저</b>입니다. 상대의 1차 빌드업 경로를 예측하여 차단하는 압박 수비가 필요합니다.`;
-      } else { matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 기본 수비 포메이션을 유지하세요.`; }
+          const cross = stats.enTotalCross;
+          const through = stats.enTotalThrough;
+          const totalAtt = cross + through;
+          // 크로스 의존도 비율 (0 ~ 1)
+          const crossRate = cross / totalAtt;
+          const attPerGame = totalAtt / stats.gameCount;
 
+          if (crossRate >= 0.8) {
+              matchup = `🚨 <b>[극단적 크로스 주의]</b> 전체 공격의 80% 이상을 <b style="color:var(--lose-color);">측면 돌파와 뚝배기(헤딩)</b>에 의존합니다. 사이드 풀백을 직접 잡고 크로스 각을 원천 봉쇄하세요.`;
+          } else if (crossRate >= 0.6) {
+              matchup = `⚠️ <b>[측면 공격 선호]</b> 주로 <b style="color:var(--lose-color);">측면 돌파 후 크로스나 컷백</b>을 노립니다. 수비 시 센터백을 끌어내지 말고 윙백의 수비 가담을 늘리세요.`;
+          } else if (crossRate <= 0.2) {
+              matchup = `🚨 <b>[극단적 중앙 침투 주의]</b> 크로스는 거의 안 하고 <b style="color:var(--lose-color);">중앙 스루패스(ZW/QW) 찔러넣기</b>만 노립니다. 수비 라인을 무리하게 올리지 말고 커서를 내려서 수비하세요.`;
+          } else if (crossRate <= 0.4) {
+              matchup = `⚠️ <b>[중앙 전개 선호]</b> 사이드보다는 <b style="color:var(--lose-color);">중앙 미드필더를 통한 킬패스</b>를 즐깁니다. 수비형 미드필더(CDM)로 중앙 패스 길목을 미리 차단하세요.`;
+          } else {
+              if (attPerGame > 8) {
+                  matchup = `💡 <b>[다양한 공격 루트]</b> 측면과 중앙을 자유자재로 섞어 쓰는 <b style="color:var(--win-color);">다재다능한 랭커형 유저</b>입니다. 상대의 1차 빌드업을 강하게 압박해 템포를 끊으세요.`;
+              } else {
+                  matchup = `💡 <b>[완벽한 밸런스형]</b> 스루패스와 크로스 비율이 5:5인 <b>정석적인 밸런스 유저</b>입니다. 섣부른 태클보다는 포메이션을 유지하는 지연 수비가 효과적입니다.`;
+              }
+          }
+          
+          // AI 랜덤 조언 덧붙이기 (디테일 추가)
+          const tips = [
+              "상대 윙어의 주발(약발)을 미리 확인해두면 크로스 수비가 편해집니다.",
+              "코너킥 수비 시 커서를 키 큰 센터백에 두는 것을 잊지 마세요.",
+              "전반전 15분까지는 무리한 압박보단 상대의 플레이 템포를 관찰해보세요.",
+              "상대가 킥오프 직후 롱패스를 찌를 수 있으니 미니맵을 주시하세요."
+          ];
+          const randomTip = tips[Math.floor(Math.random() * tips.length)];
+          matchup += `<br><span style="font-size:12px; color:var(--muted-foreground); display:inline-block; margin-top:6px;">📌 <b>AI 꿀팁:</b> ${randomTip}</span>`;
+          
+      } else { 
+          matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 우선 기본 수비 포메이션을 유지하며 탐색전을 펼치세요.`; 
+      }
       const expectedWinRate = Math.min(100, currentWinRate + 14); const diffPct = expectedWinRate - currentWinRate;
       let solutionWithGraph = `
         <div style="margin-bottom: 12px; line-height: 1.6;">${solutionText}</div>
