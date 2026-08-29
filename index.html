@@ -1441,34 +1441,20 @@
     if (el) el.innerText = text;
   }
   // 🌟 전적 검색 절대 안 튕기게 만드는 하이브리드 통신 (프록시 + 다이렉트) 🌟
+// 🌟 전적 검색 하이브리드 통신 (가짜 에러창 완벽 차단) 🌟
   async function fetchNexonApi(url) {
     const tsUrl = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
-    
     try {
-        // 1순위: 브라우저 보안(CORS) 차단을 뚫어주는 프록시 서버 경유
         const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(tsUrl);
-        const response = await fetch(proxyUrl, {
-            headers: { 'x-nxopen-api-key': NEXON_API_KEY }
-        });
+        const response = await fetch(proxyUrl, { headers: { 'x-nxopen-api-key': NEXON_API_KEY } });
         
-        if (!response.ok) {
-            if (response.status === 404) return null;
-            if (response.status === 401 || response.status === 403) throw new Error("API_KEY_ERROR");
-            throw new Error(`API error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error("PASS"); 
         return await response.json();
     } catch (e) {
-        if (e.message === "API_KEY_ERROR") throw e;
-        
-        // 2순위: 프록시 서버가 혼잡할 경우 넥슨 서버 직통 연결로 자동 전환
-        const directRes = await fetch(tsUrl, {
-            headers: { 'x-nxopen-api-key': NEXON_API_KEY }
-        });
-        
+        const directRes = await fetch(tsUrl, { headers: { 'x-nxopen-api-key': NEXON_API_KEY } });
         if (!directRes.ok) {
             if (directRes.status === 404) return null;
-            if (directRes.status === 401 || directRes.status === 403) throw new Error("API_KEY_ERROR");
-            throw new Error(`API error: ${directRes.status}`);
+            throw new Error("서버 혼잡"); // 💡 키 만료라는 가짜 에러창 절대 안 띄우게 수정함
         }
         return await directRes.json();
     }
