@@ -159,7 +159,17 @@
     .btn-detail-more:hover { opacity: 0.9; }
 
     .squad-section-wrapper { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
-    .pro-squad-advisor { flex: 0 0 280px; position: relative; }
+    .pro-squad-advisor { flex: 0 0 330px; position: relative; }
+    .sq-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .sq-rank { width: 20px; height: 20px; border-radius: 6px; background: var(--lose-color); color: #FFF; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sq-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sq-note { font-size: 11px; color: var(--muted-foreground); font-weight: 600; margin-top: 4px; }
+    .sq-tip { font-size: 12.5px; line-height: 1.55; padding: 4px 0; }
+    .sq-line { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12.5px; }
+    .sq-line span { width: 56px; flex-shrink: 0; }
+    .sq-line b { width: 36px; text-align: right; }
+    .sq-bar { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .sq-bar div { height: 100%; border-radius: 99px; }
     
 
     .match-list-container { display: flex; flex-direction: column; gap: 12px; }
@@ -311,8 +321,6 @@
     .hero-sub { font-size: 28px; color: var(--muted-foreground); }
     .hero-main { font-size: 48px; color: var(--foreground); letter-spacing: -2px; }
     .hero-desc { color: var(--muted-foreground); margin-bottom: 32px; font-size: 15px; font-weight: 500; word-break: keep-all; }
-    .hero-search-section.compact { margin-top: 8px; }
-    .hero-search-section.compact .hero-title, .hero-search-section.compact .hero-desc { display: none; }
     .mt-filter { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
     .mt-chip { height: 32px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--card); color: var(--muted-foreground); font-size: 13px; font-weight: 700; cursor: pointer; }
     .mt-chip:hover { color: var(--foreground); }
@@ -320,9 +328,14 @@
     .mt-chip.static { cursor: default; height: 28px; display: inline-flex; align-items: center; font-size: 12px; }
     .recent-chips { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 10px; align-items: center; }
     .recent-label { font-size: 12px; color: var(--muted-foreground); font-weight: 700; margin-right: 2px; }
-    .recent-chip { height: 28px; padding: 0 12px; border-radius: 99px; border: none; background: var(--muted); color: var(--foreground); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .recent-chip { display: inline-flex; align-items: center; height: 28px; border-radius: 99px; background: var(--muted); overflow: hidden; }
+    .recent-name { height: 100%; padding: 0 4px 0 12px; border: none; background: none; color: var(--foreground); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .recent-del { height: 100%; width: 24px; padding: 0 8px 0 2px; border: none; background: none; color: var(--muted-foreground); font-size: 11px; cursor: pointer; }
     .recent-chip:hover { background: var(--border); }
-    .history-row { display: flex; justify-content: space-between; align-items: center; width: 100%; background: var(--background); padding: 16px 20px; border-radius: 12px; cursor: pointer; border: 1px solid var(--border); color: var(--foreground); text-align: left; }
+    .recent-del:hover, .history-del:hover { color: var(--lose-color); }
+    .history-row { display: flex; align-items: center; gap: 8px; width: 100%; background: var(--background); padding: 6px 8px 6px 20px; border-radius: 12px; border: 1px solid var(--border); }
+    .history-name { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border: none; background: none; color: var(--foreground); font-weight: 700; font-size: 15px; cursor: pointer; text-align: left; }
+    .history-del { width: 36px; height: 36px; border: none; border-radius: 10px; background: none; color: var(--muted-foreground); font-size: 14px; cursor: pointer; flex-shrink: 0; }
 
     /* ===== 검색 결과 ===== */
     .result-card { padding: 28px; max-width: 720px; margin: 0 auto; text-align: left; animation: fadeIn 0.4s ease; }
@@ -477,7 +490,7 @@
     .fee-row { border: 1px solid var(--border); border-radius: 14px; padding: 12px; background: var(--background); }
     .fee-row .auth-input { margin: 0; background: var(--card); }
     .fee-name { margin-bottom: 8px !important; height: 38px; }
-    .fee-row-inputs { display: flex; gap: 8px; margin-top: 8px; }
+    .fee-row-inputs { display: flex; gap: 8px; }
     .fee-row-inputs input { flex: 1; min-width: 0; }
     .fee-row-inputs .tool-select { background: var(--card); flex-shrink: 0; }
     .fee-del { width: 44px; flex-shrink: 0; border: 1px solid var(--border); background: var(--card); color: var(--muted-foreground); border-radius: 12px; cursor: pointer; font-size: 14px; }
@@ -611,7 +624,6 @@
   <div id="tab-h2h" class="tab-content">
     <div class="hero-search-section">
       <h3 class="page-title">⚔️ 1:1 라이벌 전적 스캔</h3>
-      <p class="page-desc">공식경기 · 감독모드 · 친선 · 클래식 1on1 기록을 모두 뒤져서 두 구단주의 맞대결을 찾아드려요.</p>
       <div style="display:flex; flex-direction:column; gap:16px; max-width:600px; width:100%; margin:0 auto;">
         <div class="h2h-focus-box">
           <input type="text" id="h2h-user1" placeholder="첫 번째 구단주" onkeydown="if(event.key==='Enter') searchH2HData()">
@@ -638,7 +650,7 @@
   </div>
 
   <div id="tab-teamcolor" class="tab-content">
-    <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3><p class="page-desc">상위 랭커들이 많이 쓰는 팀컬러 순위예요. (넥슨 데이터센터 · 2026.10.17 기준)</p></div>
+    <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3></div>
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
@@ -646,7 +658,6 @@
     <div class="trait-layout-container">
       <div class="trait-left-panel">
         <h4 style="font-size:18px; font-weight:800; margin-bottom:6px; color:var(--foreground);">포지션을 선택하세요.</h4>
-        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">통계 기반 꿀조합 및 추천 특성 안내</p>
         <div class="trait-pitch-board">
           <div class="t-node active" style="top:12%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
           <div class="t-node" style="top:12%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
@@ -695,7 +706,6 @@
   <div id="tab-ranking" class="tab-content">
     <div class="hero-search-section">
       <h3 class="page-title">🏆 명예의 전당</h3>
-      <p class="page-desc">추천을 가장 많이 받은 구단주예요. 누르면 전적을 볼 수 있어요.</p>
     </div>
     <div id="top10-list-container" class="tier-board" style="max-width:800px; margin:0 auto;"></div>
   </div>
@@ -703,7 +713,6 @@
   <div id="tab-pro" class="tab-content">
     <div class="hero-search-section">
       <h3 class="page-title" style="color:var(--pro-gold);">💎 FCO PRO 멤버십</h3>
-      <p style="color:var(--muted-foreground); margin-top:8px;">프리미엄 1:1 전술 AI 기능을 60일 동안 무제한으로 사용하세요.</p>
     </div>
     <div class="shadcn-card" style="padding: 32px; max-width: 660px; margin: 0 auto;">
       <div style="background:var(--background); padding:24px; border-radius:16px; text-align:center; border:1px solid var(--border);">
@@ -772,7 +781,6 @@
   <div id="tab-tools" class="tab-content">
     <div class="hero-search-section">
       <h3 class="page-title">🧰 이적시장 수수료 계산기</h3>
-      <p class="page-desc">판매할 선수를 여러 명 추가해서 한 번에 계산할 수 있어요.</p>
     </div>
     <div class="shadcn-card tool-card fee-card">
       <div class="tool-label">공통 할인</div>
@@ -795,7 +803,7 @@
 
   <div id="tab-hub" class="tab-content">
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
-      <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">⚙️ 내 허브</h2><p style="color:var(--muted-foreground); font-weight:500;">개인 설정 및 권한을 관리합니다.</p></div>
+      <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">⚙️ 내 허브</h2></div>
     </div>
     <div class="hub-container">
       <div class="hub-sidebar">
@@ -999,10 +1007,14 @@
               <button class="btn-unlock-pro" style="font-size:12px; padding:8px 16px; margin-top:12px;" onclick="goToProTab()">알아보기</button>
             </div>
             <div id="squad-pro-blur" class="pro-blur-content" style="display: flex; flex-direction: column; height: 100%;">
-              <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:12px;">🚨 스쿼드 워스트(구멍)</div>
+              <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:10px;">🚨 스쿼드 워스트 TOP 3</div>
               <div id="worst-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
-              <div style="margin-top:24px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:12px;">💡 교체 추천</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:10px;">💡 교체 추천</div>
               <div id="replace-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:#16A34A; margin-bottom:10px;">📊 라인별 평균 평점</div>
+              <div id="squad-lines-info" style="font-size:13px; font-weight:600;">분석 중...</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--pro-gold); margin-bottom:10px;">⭐ 스쿼드 MVP</div>
+              <div id="squad-mvp-info" style="font-size:13px; font-weight:600;">분석 중...</div>
             </div>
           </div>
 
@@ -1504,15 +1516,15 @@
       container.innerHTML = history.length === 0
         ? `<div style="text-align:center; padding:30px; color:var(--muted-foreground); font-size:13px; background:var(--background); border-radius:12px;">최근 검색한 기록이 없습니다.</div>`
         : history.map(name => `
-          <button class="history-row" data-nick="${escapeHtml(name)}">
-            <span style="font-weight:700; font-size:15px;">${escapeHtml(name)}</span>
-            <span style="color:var(--muted-foreground); font-size:12px; font-weight:600;">다시 검색 ➔</span>
-          </button>`).join('');
+          <div class="history-row">
+            <button class="history-name" data-nick="${escapeHtml(name)}">${escapeHtml(name)} <span style="color:var(--muted-foreground); font-size:12px; font-weight:600;">다시 검색 ➔</span></button>
+            <button class="history-del" data-del="${escapeHtml(name)}" aria-label="${escapeHtml(name)} 기록 삭제" title="삭제">✕</button>
+          </div>`).join('');
     }
     const chips = document.getElementById('recent-chips');
     if (chips) {
       chips.innerHTML = history.length === 0 ? '' :
-        `<span class="recent-label">최근 검색</span>` + history.map(name => `<button class="recent-chip" data-nick="${escapeHtml(name)}">${escapeHtml(name)}</button>`).join('');
+        `<span class="recent-label">최근 검색</span>` + history.map(name => `<span class="recent-chip"><button class="recent-name" data-nick="${escapeHtml(name)}">${escapeHtml(name)}</button><button class="recent-del" data-del="${escapeHtml(name)}" aria-label="${escapeHtml(name)} 기록 삭제" title="삭제">✕</button></span>`).join('');
     }
   }
   function addSearchHistory(name) {
@@ -1522,10 +1534,16 @@
     renderSearchHistory();
   }
   function clearSearchHistory() { localStorage.removeItem('fco_history'); renderSearchHistory(); }
+  function removeSearchHistory(name) {
+    localStorage.setItem('fco_history', JSON.stringify(getSearchHistory().filter(h => h !== name)));
+    renderSearchHistory();
+  }
   function searchFromHistory(name) { searchNickname(name); }
 
   // 닉네임 버튼(data-nick), 경기 줄(data-mid) 클릭을 한 곳에서 처리
   document.addEventListener('click', (e) => {
+    const delEl = e.target.closest('[data-del]');
+    if (delEl) { e.stopPropagation(); removeSearchHistory(delEl.dataset.del); return; }
     const nickEl = e.target.closest('[data-nick]');
     if (nickEl) { e.stopPropagation(); closeProfileModal(); closeMatchModal(); searchNickname(nickEl.dataset.nick); return; }
     const matchEl = e.target.closest('[data-mid]');
@@ -2047,13 +2065,8 @@
         <div class="trait-items">${items.map(it => card(it, icon(it))).join('')}</div>
       </div>` : '';
 
-    let note = `데이터 기준: ${DATA_AS_OF} · 1:1 공식경기 슈퍼챔피언스 ~ 월드클래스3`;
-    if (key !== pos) note += ` · ${pos}는 가장 가까운 ${key} 기준 데이터예요`;
-    if (data.old) note = 'GK는 아직 최신 데이터가 없어 이전 데이터를 보여드려요';
-
     const area = document.getElementById('trait-content-area');
     if (area) area.innerHTML = `
-      <div class="trait-note">${note}</div>
       ${section('11강 획득', data.t11, emojiIcon)}
       ${section('8강 획득', data.t8, imgIcon)}`;
   }
@@ -2104,7 +2117,6 @@
 
     const resultArea = document.getElementById('detailed-result-area');
     const loading = document.getElementById('global-loading');
-    document.getElementById('hero-section').classList.add('compact');
     resultArea.style.display = 'none';
     loading.style.display = 'block';
 
@@ -2153,7 +2165,6 @@
           <div class="result-head">
             <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}</span></b>
             <div style="display:flex; gap:8px; align-items:center;">
-              <span style="font-size:11px; font-weight:700; color:var(--win-color); background:rgba(52,199,89,0.1); padding:4px 10px; border-radius:99px;">API 연동됨</span>
               <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
             </div>
           </div>
@@ -2262,6 +2273,8 @@
               if (p.spPosition !== 28) {
                 if (!playerStats[p.spId]) { playerStats[p.spId] = { count: 0, ratingSum: 0 }; }
                 playerStats[p.spId].count += 1; playerStats[p.spId].ratingSum += (p.status?.spRating || 0);
+                playerStats[p.spId].goals = (playerStats[p.spId].goals || 0) + (+p.status?.goal || 0);
+                playerStats[p.spId].assists = (playerStats[p.spId].assists || 0) + (+p.status?.assist || 0);
                 const pl = positionMap[p.spPosition]?.label;
                 if (pl) { const u = ((posUsage[pl] = posUsage[pl] || {})[p.spId] = posUsage[pl][p.spId] || { count: 0, ratingSum: 0 }); u.count += 1; u.ratingSum += (p.status?.spRating || 0); }
               }
@@ -2346,22 +2359,31 @@
       }).join('') : '<div class="lu-empty">데이터 없음</div>';
     }
 
-    // ----- 스쿼드 구멍 & 교체 추천: 내 기록 안에서만 찾음 -----
-    let worst = null;
-    starters.forEach(p => {
-      const avg = avgRatingOf(p.spId, p.status?.spRating);
+    // ----- 스쿼드 구멍 · 교체 추천 · 라인별 평점 · MVP (내 기록 안에서만 계산) -----
+    const squadPlayers = starters.map(p => {
       const pos = positionMap[p.spPosition]?.label || 'SUB';
-      if (avg > 0 && (!worst || avg < worst.avg)) worst = { spId: p.spId, avg, pos, games: playerStats[p.spId]?.count || 1 };
-    });
-    let replacement = null;
-    if (worst) {
-      // 같은 포지션에 내가 다른 경기에서 기용한 선수 중 평점이 더 좋았던 선수
-      Object.entries(posUsage[worst.pos] || {}).forEach(([spId, s]) => {
+      const s = playerStats[p.spId] || {};
+      return { spId: p.spId, pos, line: positionMap[p.spPosition]?.line || 'df', avg: avgRatingOf(p.spId, p.status?.spRating),
+               games: s.count || 1, goals: s.goals || 0, assists: s.assists || 0 };
+    }).filter(p => p.avg > 0);
+    // 같은 자리에 내가 다른 경기에서 기용한 선수 중 평점이 더 좋았던 선수
+    const findReplacement = (w) => {
+      let best = null;
+      Object.entries(posUsage[w.pos] || {}).forEach(([spId, s]) => {
         const avg = s.ratingSum / s.count;
-        if (Number(spId) !== worst.spId && avg > worst.avg + 0.2 && (!replacement || avg > replacement.avg)) replacement = { spId: Number(spId), avg, games: s.count };
+        if (Number(spId) !== w.spId && avg > w.avg + 0.2 && (!best || avg > best.avg)) best = { spId: Number(spId), avg, games: s.count };
       });
-    }
-    if (window.currentProAIStats) window.currentProAIStats.squad = { worst, replacement };
+      return best;
+    };
+    const worstList = [...squadPlayers].sort((a, b) => a.avg - b.avg).slice(0, 3).map(w => ({ ...w, replacement: findReplacement(w) }));
+    const lineAvg = {};
+    ['fw', 'mf', 'df', 'gk'].forEach(l => {
+      const list = squadPlayers.filter(p => p.line === l);
+      lineAvg[l] = list.length ? list.reduce((s, p) => s + p.avg, 0) / list.length : null;
+    });
+    const mvp = [...squadPlayers].sort((a, b) => b.avg - a.avg)[0] || null;
+    const scorer = [...squadPlayers].sort((a, b) => (b.goals + b.assists) - (a.goals + a.assists))[0] || null;
+    if (window.currentProAIStats) window.currentProAIStats.squad = { worstList, lineAvg, mvp, scorer, gameCount };
 
     generateAIReports();
   }
@@ -2785,28 +2807,43 @@
       }
       setHtml('pro-ai-matchup', matchup);
 
-      // 3) 스쿼드 구멍 & 교체 추천
+      // 3) 스쿼드 구멍 · 교체 추천 · 라인별 평점 · MVP
       const sq = stats.squad || {};
-      if (sq.worst) {
-        const w = sq.worst;
-        setHtml('worst-player-info', `<span style="color:var(--lose-color); font-weight:900;">${w.pos} ${escapeHtml(spidMetaCache[w.spId] || '선수')}</span><br>최근 ${w.games}경기 평균 평점 <b>${w.avg.toFixed(1)}점</b>으로 선발 중 가장 낮아요.`);
-        if (sq.replacement) {
-          const r = sq.replacement;
-          setHtml('replace-player-info', `같은 ${w.pos} 자리에 썼던 <b style="color:var(--ai-blue); font-size:15px;">${escapeHtml(spidMetaCache[r.spId] || '선수')}</b>의 평균 평점이 <b>${r.avg.toFixed(1)}점</b>(${r.games}경기)으로 더 좋았어요. 다시 기용해보세요.`);
-        } else {
-          const line = positionMap[Object.keys(positionMap).find(k => positionMap[k].label === w.pos)]?.line;
-          const need = w.pos === 'GK' ? '반응속도·다이빙·핸들링이 높은 골키퍼'
-            : ['LB', 'RB', 'LWB', 'RWB'].includes(w.pos) ? '속력·크로스·스태미나가 좋은 풀백'
-            : line === 'df' ? '속력·대인 수비·몸싸움이 좋은 수비수'
-            : ['CDM', 'LDM', 'RDM'].includes(w.pos) ? '가로채기·태클·짧은 패스가 좋은 수비형 미드필더'
-            : line === 'mf' ? '시야·짧은 패스·드리블이 좋은 미드필더'
-            : '골 결정력·침착성·속력이 좋은 공격수';
-          setHtml('replace-player-info', `최근 기록에는 이 자리에서 더 잘한 선수가 없어요. <b style="color:var(--ai-blue);">${need}</b>로 교체를 고려해보세요.`);
-        }
+      const pname = (id) => escapeHtml(spidMetaCache[id] || '선수');
+      const needFor = (pos) => {
+        const line = positionMap[Object.keys(positionMap).find(k => positionMap[k].label === pos)]?.line;
+        return pos === 'GK' ? '반응속도·다이빙·핸들링이 높은 골키퍼'
+          : ['LB', 'RB', 'LWB', 'RWB'].includes(pos) ? '속력·크로스·스태미나가 좋은 풀백'
+          : line === 'df' ? '속력·대인 수비·몸싸움이 좋은 수비수'
+          : ['CDM', 'LDM', 'RDM'].includes(pos) ? '가로채기·태클·짧은 패스가 좋은 수비형 미드필더'
+          : line === 'mf' ? '시야·짧은 패스·드리블이 좋은 미드필더'
+          : '골 결정력·침착성·속력이 좋은 공격수';
+      };
+      const rateColor = (v) => v >= 7.5 ? 'var(--win-color)' : v < 6.3 ? 'var(--lose-color)' : 'var(--foreground)';
+      if (sq.worstList?.length) {
+        setHtml('worst-player-info', sq.worstList.map((w, i) => `
+          <div class="sq-row"><span class="sq-rank">${i + 1}</span><span class="sq-name">${w.pos} ${pname(w.spId)}</span><b style="color:${rateColor(w.avg)}">${w.avg.toFixed(2)}</b></div>`).join('')
+          + `<div class="sq-note">최근 ${sq.gameCount}경기 평균 평점 기준, 선발 중 낮은 순</div>`);
+        setHtml('replace-player-info', sq.worstList.map(w => w.replacement
+          ? `<div class="sq-tip">🔁 <b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${pname(w.replacement.spId)}</b> <span class="sq-note">(같은 자리 평균 ${w.replacement.avg.toFixed(2)}, ${w.replacement.games}경기)</span></div>`
+          : `<div class="sq-tip">🔎 <b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${needFor(w.pos)}</b> 추천</div>`).join(''));
       } else {
         setHtml('worst-player-info', "선발 라인업 내에서 뚜렷한 부진 선수가 없습니다.");
         setHtml('replace-player-info', "현재 스쿼드의 밸런스가 매우 안정적입니다.");
       }
+      const LINE_NAMES = { fw: '공격', mf: '미드필드', df: '수비', gk: '골키퍼' };
+      const lineEntries = Object.entries(sq.lineAvg || {}).filter(([, v]) => v !== null);
+      if (lineEntries.length) {
+        const weakest = [...lineEntries].sort((a, b) => a[1] - b[1])[0];
+        const lineTip = { fw: '마무리가 약해요. 결정력 좋은 공격수나 침투 특성을 고려하세요.', mf: '중원 장악이 약해요. 패스·체력 좋은 미드필더로 허리를 보강하세요.',
+                          df: '수비 라인이 흔들려요. 속력과 대인 수비가 좋은 수비수가 필요해요.', gk: '골키퍼 선방이 아쉬워요. 반응속도 높은 골키퍼를 고려하세요.' }[weakest[0]];
+        setHtml('squad-lines-info', lineEntries.map(([l, v]) => `
+          <div class="sq-line"><span>${LINE_NAMES[l]}</span><div class="sq-bar"><div style="width:${Math.max(0, Math.min(100, (v - 5) / 4 * 100))}%; background:${l === weakest[0] ? 'var(--lose-color)' : 'var(--win-color)'};"></div></div><b>${v.toFixed(2)}</b></div>`).join('')
+          + `<div class="sq-tip" style="margin-top:8px;">⚠️ 가장 약한 라인은 <b>${LINE_NAMES[weakest[0]]}</b>${weakest[0] === 'fw' ? '이에요' : '예요'}. ${lineTip}</div>`);
+      } else setHtml('squad-lines-info', '데이터가 부족해요.');
+      setHtml('squad-mvp-info', sq.mvp ? `
+        <div class="sq-tip">⭐ <b>MVP</b> ${sq.mvp.pos} <b style="color:var(--pro-gold)">${pname(sq.mvp.spId)}</b> · 평균 ${sq.mvp.avg.toFixed(2)}</div>
+        ${sq.scorer && (sq.scorer.goals + sq.scorer.assists) > 0 ? `<div class="sq-tip">⚽ <b>공격 포인트 1위</b> ${pname(sq.scorer.spId)} · ${sq.scorer.goals}골 ${sq.scorer.assists}도움</div>` : ''}` : '데이터가 부족해요.');
     }, 600);
   }
 
@@ -3093,7 +3130,6 @@
     const coupons = [0, 10, 20, 30, 40, 50];
     return `
       <div class="fee-row" data-id="${r.id}">
-        <input type="text" class="auth-input fee-name" placeholder="선수 이름 (선택)" value="${escapeHtml(r.name)}" data-field="name" maxlength="30">
         <div class="fee-row-inputs">
           <input type="number" class="auth-input" placeholder="금액" min="0" step="any" inputmode="decimal" value="${r.amount}" data-field="amount">
           <select class="tool-select" data-field="unit">${units.map(([v, l]) => `<option value="${v}" ${String(r.unit) === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
