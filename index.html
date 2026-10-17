@@ -1908,6 +1908,7 @@ service cloud.firestore {
     renderTop10();
     renderSearchHistory();
     renderTeamColorTierList();
+    loadLiveTeamColors();
     renderTraitData('ST');
     renderHubAuth();
     updateProTabUI();
@@ -2097,6 +2098,21 @@ service cloud.firestore {
     { name: "토트넘 홋스퍼", rate: 1.7, count: 78, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
     { name: "바이엘 04 레버쿠젠", rate: 1.4, count: 62, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
   ];
+
+  // 매일 낮 12시 넥슨 갱신분을 서버(/api/teamcolor)에서 받아와 목록을 바꾼다. 실패하면 위 기본 데이터 유지
+  async function loadLiveTeamColors() {
+    try {
+      const res = await fetch('/api/teamcolor');
+      if (!res.ok) return;
+      const { teamColors } = await res.json();
+      if (!Array.isArray(teamColors) || teamColors.length < 5) return;
+      const oldLogo = Object.fromEntries(teamColorData.map(t => [t.name, t.logo]));
+      teamColorData.splice(0, teamColorData.length, ...teamColors.map(t => ({
+        name: t.name, rate: t.rate, count: t.count, logo: oldLogo[t.name] || t.logo
+      })));
+      renderTeamColorTierList();
+    } catch (e) {}
+  }
 
   function renderTeamColorTierList() {
     const container = document.getElementById("teamcolor-list-container");
