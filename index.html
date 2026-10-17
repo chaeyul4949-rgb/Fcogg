@@ -286,6 +286,13 @@
       .pro-squad-advisor { flex: 1; }
     }
 
+    .admin-grant { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .admin-grant .admin-input { flex: 1 1 160px; }
+    .admin-grant .tool-select { flex: 0 0 auto; height: 44px; }
+    .admin-grant .admin-btn { width: auto; padding: 0 18px; flex: 0 0 auto; }
+    .admin-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--background); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); }
+    .admin-fb-help { background: var(--card); border: 1px solid var(--lose-color); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-size: 13px; line-height: 1.6; }
+    .admin-fb-help ol { margin: 6px 0 10px 18px; }
     .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; margin-top: 24px; }
     [data-theme="dark"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
     .admin-input { flex: 1; height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--tier-op); font-size: 14px; outline: none; width: 100%; margin-bottom:12px; }
@@ -467,6 +474,11 @@
     /* ===== 베스트 11 · PRO 리포트 ===== */
     .squad-field { flex: 1; min-width: 280px; max-width: 460px; margin: 0 auto; }
     .ai-line { background: var(--background); padding: 16px; border-radius: 12px; border-left: 4px solid var(--ai-blue); font-size: 14px; }
+    .wk-sub { font-size: 12.5px; font-weight: 800; margin: 12px 0 4px; color: var(--win-color); }
+    .wk-mini { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+    .wk-mini span:first-child { font-weight: 700; }
+    .wk-mini span:last-child { color: var(--muted-foreground); white-space: nowrap; }
+    .wk-foot { margin-top: 12px; font-size: 13px; line-height: 1.55; background: var(--pro-gold-bg); border-radius: 10px; padding: 10px 12px; }
     .wk-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
     .wk-row:last-child { border-bottom: none; }
     .wk-rank { width: 22px; height: 22px; border-radius: 6px; background: #EA580C; color: #FFF; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
@@ -506,6 +518,17 @@
     /* ===== PRO 심층 피드백 ===== */
     .ai-pro .ai-grid { grid-template-columns: 1fr 1fr; }
     @media (max-width: 1024px) { .ai-pro .ai-grid { grid-template-columns: 1fr; } }
+    .pro-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    .pro-plan { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px 14px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .pro-plan.best { border: 2px solid var(--pro-gold); background: var(--pro-gold-bg); }
+    .pro-plan-badge { font-size: 11px; font-weight: 800; color: var(--lose-color); background: rgba(255,59,48,0.1); padding: 2px 8px; border-radius: 99px; }
+    .pro-plan-badge.gold { color: #B45309; background: rgba(245,158,11,0.18); }
+    .pro-plan-name { font-size: 15px; font-weight: 900; margin-top: 4px; }
+    .pro-plan-price { font-size: 30px; font-weight: 900; }
+    .pro-plan-price span { font-size: 15px; margin-left: 2px; }
+    .pro-plan-desc { font-size: 12px; color: var(--muted-foreground); font-weight: 600; margin-bottom: 8px; }
+    .pro-plan .pill-search-btn { width: 100%; height: 42px; }
+    @media (max-width: 480px) { .pro-plans { grid-template-columns: 1fr; } }
     .pro-benefits { display: flex; flex-direction: column; gap: 12px; }
     .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
     .pro-benefit b { font-size: 15px; }
@@ -730,9 +753,23 @@
     <div class="shadcn-card" style="padding: 32px; max-width: 660px; margin: 0 auto;">
       <div style="background:var(--background); padding:24px; border-radius:16px; text-align:center; border:1px solid var(--border);">
         <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🔒 현재 PRO 상태: <span id="pro-status-text" style="color:var(--muted-foreground);">비활성</span></h3>
-        <p style="font-size:14px; color:var(--lose-color); font-weight:700; margin-bottom:4px;">🎉 [가을 한정 이벤트] 30일 + 30일 (총 60일) 1+1 적용 중! 🎉</p>
-        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px; line-height: 1.6; word-break:keep-all;">PRO 멤버십은 자동결제가 아니라 관리자가 직접 확인 후 부여합니다. 990원을 송금하면서 가입한 아이디를 메모에 남겨주시면 확인 후 60일(30+30) 혜택을 드려요.</p>
-        <button class="pill-search-btn" style="height:44px; padding:0 24px; font-size:15px;" onclick="openDonateModal('pro')">💳 1+1 이벤트 신청하기 (990원)</button>
+        <div class="pro-plans">
+          <div class="pro-plan">
+            <div class="pro-plan-badge">🎉 가을 한정 1+1</div>
+            <div class="pro-plan-name">60일 이용권</div>
+            <div class="pro-plan-price">990<span>원</span></div>
+            <div class="pro-plan-desc">30일 + 30일 (총 60일)</div>
+            <button class="pill-search-btn" onclick="openDonateModal('pro')">💳 60일 신청하기</button>
+          </div>
+          <div class="pro-plan best">
+            <div class="pro-plan-badge gold">👑 추천</div>
+            <div class="pro-plan-name">무제한 이용권</div>
+            <div class="pro-plan-price">3,000<span>원</span></div>
+            <div class="pro-plan-desc">기간 제한 없이 평생 이용</div>
+            <button class="pill-search-btn" style="background:var(--pro-gold); color:#FFF;" onclick="openDonateModal('pro-unlimited')">💎 무제한 신청하기</button>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted-foreground); margin-top:14px; line-height:1.6; word-break:keep-all;">PRO는 자동결제가 아니라 관리자가 입금을 확인한 뒤 직접 부여해요. 송금할 때 <b style="color:var(--foreground);">가입한 아이디를 메모에 꼭</b> 적어주세요.</p>
       </div>
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
@@ -827,15 +864,34 @@
         
         <div id="admin-panel" class="admin-panel">
           <h3 style="font-size:18px; font-weight:900; margin-bottom:8px; color:var(--tier-op);">👑 최고 관리자 패널</h3>
-          <p style="font-size:13px; color:var(--foreground); margin-bottom:16px;">PRO 멤버십 권한 부여 및 활성 유저 리스트 관리</p>
+          <p style="font-size:13px; color:var(--foreground); margin-bottom:16px;">아이디와 기간을 골라 PRO를 부여하거나 해지할 수 있어요.</p>
           
-          <div style="display:flex; gap:8px; margin-bottom:16px;">
-            <input type="text" id="admin-target-id" class="admin-input" placeholder="권한을 부여할 아이디 입력" style="margin-bottom:0;">
-            <button class="admin-btn" style="width: 140px;" onclick="grantProToUser()">🎁 선물하기</button>
+          <div class="admin-grant">
+            <input type="text" id="admin-target-id" class="admin-input" placeholder="아이디 입력" style="margin-bottom:0;">
+            <select id="admin-duration" class="tool-select" aria-label="기간">
+              <option value="7">7일</option>
+              <option value="30">30일</option>
+              <option value="60" selected>60일 (990원 · 1+1)</option>
+              <option value="90">90일</option>
+              <option value="180">180일</option>
+              <option value="365">365일</option>
+              <option value="unlimited">무제한 (3,000원)</option>
+            </select>
+            <button class="admin-btn" onclick="grantProToUser()">🎁 부여</button>
+            <button class="admin-btn" style="background:var(--lose-color);" onclick="revokeProFromInput()">해지</button>
+          </div>
+          <div id="admin-fb-help" class="admin-fb-help" hidden>
+            <b>🔧 Firebase 규칙 바꾸는 법 (한 번만 하면 돼요)</b>
+            <ol>
+              <li>Firebase 콘솔(console.firebase.google.com) → <b>fcogg</b> 프로젝트 열기</li>
+              <li>왼쪽 메뉴 <b>Firestore Database</b> → 위쪽 <b>규칙</b> 탭</li>
+              <li>안에 있는 내용을 전부 지우고 아래 "규칙 복사" 내용을 붙여넣은 뒤 <b>게시</b></li>
+            </ol>
+            <button class="bg-btn" onclick="copyText(FIRESTORE_OPEN_RULES, '규칙이 복사되었습니다. Firebase 규칙 탭에 붙여넣고 게시하세요.')">📋 규칙 복사</button>
           </div>
           
           <h4 style="font-size:15px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">💎 PRO 멤버십 활성 유저</h4>
-          <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; padding-right:8px;">
+          <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; padding-right:8px;">
           </div>
         </div>
 
@@ -1264,6 +1320,13 @@
       localStorage.setItem('fco_pro_mode', 'true');
       showToast('👑 최고 관리자님 환영합니다.');
       closeAuthModal(); renderHubAuth(); updateProTabUI();
+      // PRO 권한 저장이 Firebase에서 막히지 않도록 관리자 계정으로 Firebase에도 로그인
+      if (auth) {
+        const email = `${ADMIN_ID}@fcogg.dummy.com`;
+        auth.signInWithEmailAndPassword(email, pw)
+          .catch(() => auth.createUserWithEmailAndPassword(email, pw))
+          .catch(() => {});
+      }
       return;
     }
     if (!auth) {
@@ -1296,9 +1359,10 @@
         if (docSnap.exists) {
           const data = docSnap.data();
           isPro = !!(data.isPro && data.expiry > Date.now());
-          if (data.isPro && !isPro) await ref.update({ isPro: false });
+          localStorage.setItem('fco_pro_expiry', isPro ? (data.unlimited ? 'unlimited' : String(data.expiry)) : '');
+          if (data.isPro && !isPro) await ref.update({ isPro: false }).catch(() => {});
         } else {
-          await ref.set({ isPro: false, expiry: 0 });
+          await ref.set({ isPro: false, expiry: 0 }).catch(() => {});
         }
       } catch (e) { isPro = false; }
     }
@@ -1366,7 +1430,9 @@
       statusHtml = '👑 시스템 최고 권한'; statusColor = 'var(--tier-op)';
     } else if (isPro) {
       badgeHtml = '<span class="role-badge" style="background:var(--pro-gold);">PRO</span>';
-      statusHtml = '💎 PRO 구독 중'; statusColor = 'var(--pro-gold)';
+      const exp = localStorage.getItem('fco_pro_expiry');
+      statusHtml = exp === 'unlimited' ? '💎 PRO 무제한' : exp ? `💎 PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : '💎 PRO 구독 중';
+      statusColor = 'var(--pro-gold)';
     }
 
     authContainer.innerHTML = `
@@ -1384,7 +1450,8 @@
     const isPro = localStorage.getItem('fco_pro_mode') === 'true';
     const statusText = document.getElementById('pro-status-text');
     if (!statusText) return;
-    statusText.innerText = isPro ? "💎 PRO 구독 중 (활성화됨)" : "비활성";
+    const exp = localStorage.getItem('fco_pro_expiry');
+    statusText.innerText = !isPro ? "비활성" : exp === 'unlimited' ? "💎 PRO 무제한" : exp ? `💎 PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : "💎 PRO 구독 중 (활성화됨)";
     statusText.style.color = isPro ? "var(--pro-gold)" : "var(--muted-foreground)";
   }
 
@@ -1392,85 +1459,138 @@
   const getLocalPro = () => JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
   const setLocalPro = (data) => localStorage.setItem('fco_pro_users', JSON.stringify(data));
 
+  const PRO_UNLIMITED_TS = 4102444800000;   // 2100-01-01 (무제한)
+  const isUnlimitedPro = (d) => !!(d && (d.unlimited || d.expiry >= PRO_UNLIMITED_TS));
+
+  // Firebase 오류를 알아보기 쉬운 말로
+  function proErrorMessage(e) {
+    const code = e?.code || '';
+    if (code === 'permission-denied' || /permission/i.test(e?.message || '')) {
+      const help = document.getElementById('admin-fb-help');
+      if (help) help.hidden = false;
+      return 'Firebase 보안 규칙 때문에 저장이 막혔어요. 아래 안내대로 규칙을 한 번만 바꿔주세요.';
+    }
+    if (code === 'unavailable') return '인터넷 연결이 불안정해요. 잠시 후 다시 시도해주세요.';
+    return '저장 중 오류가 발생했어요: ' + (e?.message || e);
+  }
+
+  async function readProUser(userId) {
+    if (db) { const snap = await db.collection('accounts').doc(userId).get(); return snap.exists ? snap.data() : null; }
+    const u = getLocalPro()[userId]; return u ? { isPro: u.active, expiry: u.expiry, unlimited: u.unlimited } : null;
+  }
+  async function writeProUser(userId, data) {
+    if (db) return db.collection('accounts').doc(userId).set(data, { merge: true });
+    const pro = getLocalPro();
+    pro[userId] = { active: data.isPro, expiry: data.expiry, unlimited: !!data.unlimited };
+    setLocalPro(pro);
+  }
+
   async function renderProList() {
     const listEl = document.getElementById('admin-pro-list');
     if (!listEl) return;
 
     let rows = [];
-    if (db) {
-      try {
+    try {
+      if (db) {
         const snap = await db.collection('accounts').where('isPro', '==', true).get();
-        snap.forEach(doc => { const d = doc.data(); if (d.expiry > Date.now()) rows.push({ id: doc.id, expiry: d.expiry }); });
-      } catch (e) {}
-    } else {
-      Object.entries(getLocalPro()).forEach(([id, u]) => { if (u && u.active && u.expiry > Date.now()) rows.push({ id, expiry: u.expiry }); });
+        snap.forEach(doc => { const d = doc.data(); if (d.expiry > Date.now()) rows.push({ id: doc.id, ...d }); });
+      } else {
+        Object.entries(getLocalPro()).forEach(([id, u]) => { if (u && u.active && u.expiry > Date.now()) rows.push({ id, expiry: u.expiry, unlimited: u.unlimited }); });
+      }
+    } catch (e) {
+      listEl.innerHTML = `<div style="font-size:13px; color:var(--lose-color); padding:12px; text-align:center;">${proErrorMessage(e)}</div>`;
+      return;
     }
 
     if (rows.length === 0) {
       listEl.innerHTML = '<div style="font-size:13px; color:var(--muted-foreground); padding:12px; text-align:center;">현재 PRO 활성 유저가 없습니다.</div>';
       return;
     }
-    listEl.innerHTML = rows.map(r => `
-      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--background); padding:12px 16px; border-radius:12px; border:1px solid var(--border);">
-        <div>
-          <div style="font-weight:800; font-size:14px;">${escapeHtml(r.id)}</div>
-          <div style="font-size:11px; color:var(--muted-foreground);">만료: ${new Date(r.expiry).toLocaleDateString('ko-KR')}</div>
+    rows.sort((a, b) => a.expiry - b.expiry);
+    listEl.innerHTML = rows.map(r => {
+      const unlimited = isUnlimitedPro(r);
+      return `
+      <div class="admin-row">
+        <div style="min-width:0;">
+          <div style="font-weight:800; font-size:14px;">${escapeHtml(r.id)} ${unlimited ? '<span class="role-badge" style="background:var(--pro-gold);">무제한</span>' : ''}</div>
+          <div style="font-size:11px; color:var(--muted-foreground);">${unlimited ? '기간 제한 없음' : '만료: ' + new Date(r.expiry).toLocaleDateString('ko-KR')}</div>
         </div>
-        <div style="display:flex; gap:8px;">
-          <button data-user="${escapeHtml(r.id)}" onclick="extendPro(this.dataset.user)" class="mini-btn" style="background:var(--win-color);">+30일</button>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+          ${unlimited ? '' : `<button data-user="${escapeHtml(r.id)}" onclick="extendPro(this.dataset.user)" class="mini-btn" style="background:var(--win-color);">+30일</button>
+          <button data-user="${escapeHtml(r.id)}" onclick="setProUnlimited(this.dataset.user)" class="mini-btn" style="background:var(--pro-gold);">무제한</button>`}
           <button data-user="${escapeHtml(r.id)}" onclick="cancelPro(this.dataset.user)" class="mini-btn" style="background:var(--lose-color);">해지</button>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
+  // 아이디 + 기간(일 수 또는 무제한)을 골라서 PRO 부여
   async function grantProToUser() {
     const input = document.getElementById('admin-target-id');
     const targetId = input.value.trim().toLowerCase();
+    const duration = document.getElementById('admin-duration').value;
     if (!targetId) return showToast('권한을 줄 아이디를 입력하세요.');
     try {
-      if (db) {
-        const ref = db.collection('accounts').doc(targetId);
-        const docSnap = await ref.get();
-        let base = Date.now();
-        if (docSnap.exists) { const d = docSnap.data(); if (d.isPro && d.expiry > base) base = d.expiry; }
-        await ref.set({ isPro: true, expiry: base + 60 * DAY_MS }, { merge: true });
+      if (duration === 'unlimited') {
+        await writeProUser(targetId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
+        showToast(`🎉 ${targetId} 님에게 PRO 무제한을 부여했습니다!`);
       } else {
-        const pro = getLocalPro(); const cur = pro[targetId];
-        const base = (cur && cur.active && cur.expiry > Date.now()) ? cur.expiry : Date.now();
-        pro[targetId] = { active: true, expiry: base + 60 * DAY_MS };
-        setLocalPro(pro);
+        const days = parseInt(duration, 10);
+        const cur = await readProUser(targetId);
+        if (isUnlimitedPro(cur) && cur.isPro) return showToast(`${targetId} 님은 이미 무제한이에요.`);
+        const base = (cur && cur.isPro && cur.expiry > Date.now()) ? cur.expiry : Date.now();
+        const expiry = base + days * DAY_MS;
+        await writeProUser(targetId, { isPro: true, unlimited: false, expiry });
+        showToast(`🎉 ${targetId} 님에게 PRO ${days}일을 부여했습니다! (~${new Date(expiry).toLocaleDateString('ko-KR')})`);
       }
-      showToast(`🎉 [축하합니다!] ${targetId} 님에게 PRO 멤버십(1+1 이벤트 60일)을 성공적으로 부여했습니다!`);
       input.value = '';
       renderProList();
-    } catch (e) { showToast('오류 발생: ' + e); }
+    } catch (e) { showToast(proErrorMessage(e)); }
+  }
+
+  async function revokeProFromInput() {
+    const targetId = document.getElementById('admin-target-id').value.trim().toLowerCase();
+    if (!targetId) return showToast('해지할 아이디를 입력하세요.');
+    cancelPro(targetId);
   }
 
   async function extendPro(userId) {
     if (!confirm(`${userId} 님의 PRO 기간을 30일 연장하시겠습니까?`)) return;
-    if (db) {
-      const ref = db.collection('accounts').doc(userId);
-      const docSnap = await ref.get();
-      if (docSnap.exists) await ref.set({ isPro: true, expiry: docSnap.data().expiry + 30 * DAY_MS }, { merge: true });
-    } else {
-      const pro = getLocalPro();
-      if (pro[userId]) { pro[userId].expiry += 30 * DAY_MS; setLocalPro(pro); }
-    }
-    showToast(`✨ ${userId} 님의 멤버십 기간이 성공적으로 30일 연장되었습니다.`);
-    renderProList();
+    try {
+      const cur = await readProUser(userId);
+      const base = (cur && cur.expiry > Date.now()) ? cur.expiry : Date.now();
+      await writeProUser(userId, { isPro: true, unlimited: false, expiry: base + 30 * DAY_MS });
+      showToast(`✨ ${userId} 님의 멤버십 기간이 30일 연장되었습니다.`);
+      renderProList();
+    } catch (e) { showToast(proErrorMessage(e)); }
+  }
+
+  async function setProUnlimited(userId) {
+    if (!confirm(`${userId} 님을 PRO 무제한으로 바꾸시겠습니까?`)) return;
+    try {
+      await writeProUser(userId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
+      showToast(`💎 ${userId} 님이 PRO 무제한이 되었습니다.`);
+      renderProList();
+    } catch (e) { showToast(proErrorMessage(e)); }
   }
 
   async function cancelPro(userId) {
     if (!confirm(`정말 ${userId} 님의 PRO 멤버십을 해지하시겠습니까?`)) return;
-    if (db) {
-      await db.collection('accounts').doc(userId).set({ isPro: false, expiry: 0 }, { merge: true });
-    } else {
-      const pro = getLocalPro();
-      if (pro[userId]) { pro[userId].active = false; pro[userId].expiry = 0; setLocalPro(pro); }
-    }
-    showToast(`🗑️ ${userId} 님의 멤버십이 해지되었습니다.`);
-    renderProList();
+    try {
+      await writeProUser(userId, { isPro: false, unlimited: false, expiry: 0 });
+      showToast(`🗑️ ${userId} 님의 멤버십이 해지되었습니다.`);
+      renderProList();
+    } catch (e) { showToast(proErrorMessage(e)); }
   }
+
+  const FIRESTORE_OPEN_RULES = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}`;
 
   // ----- 미니게임: 플레이스타일 MBTI (실제 최근 공식경기 기록 기반) -----
   const MBTI_TYPES = {
@@ -2449,7 +2569,7 @@
       });
     });
     results.sort((a, b) => b.impact - a.impact);
-    return { overall, games: rows.length, factors: results.filter(r => r.impact >= 5).slice(0, 5) };
+    return { overall, games: rows.length, factors: results.filter(r => r.impact >= 5).slice(0, 5), all: results };
   }
 
   // ===== PRO 심층 피드백 (최근 경기 기록만으로 계산) =====
@@ -2838,7 +2958,15 @@
                 <b>${f.label}</b> <span style="color:var(--muted-foreground); font-size:12px;">평균 ${fmt(f.myAvg, f.unit)}</span>
                 <div style="font-size:12.5px; margin-top:2px;">잘한 경기 승률 <b style="color:var(--win-color);">${Math.round(f.wrGood)}%</b> vs 못한 경기 <b style="color:var(--lose-color);">${Math.round(f.wrBad)}%</b></div>
               </div>
-            </div>`).join('')}`);
+            </div>`).join('')}
+          ${(() => {
+            const rest = a.all.filter(f => !a.factors.includes(f));
+            const best = a.factors[0];
+            return (rest.length ? `
+            <div class="wk-sub">✅ 승패에 영향이 적은 항목 (잘하고 있어요)</div>
+            ${rest.map(f => `<div class="wk-mini"><span>${f.label}</span><span>평균 ${fmt(f.myAvg, f.unit)} · <b style="color:var(--win-color);">${Math.round(f.wrGood)}%</b> / <b style="color:var(--lose-color);">${Math.round(f.wrBad)}%</b></span></div>`).join('')}` : '')
+            + (best ? `<div class="wk-foot">💡 <b>${best.label}</b> 하나만 보완해도 승률이 약 <b style="color:var(--pro-gold);">+${Math.max(0, Math.round(best.gain))}%p</b> 오를 수 있어요.</div>` : '');
+          })()}`);
 
         const cur = Math.round(a.overall);
         const bar = (label, val, color) => `
@@ -3290,8 +3418,14 @@
   }
 
   function openDonateModal(mode) {
-    document.getElementById('donate-pro-note').style.display = mode === 'pro' ? 'block' : 'none';
-    safeSetText('donate-title', mode === 'pro' ? '💎 PRO 1+1 이벤트 신청' : '💛 FCO.GG 후원하기');
+    const isPro = mode === 'pro' || mode === 'pro-unlimited';
+    const note = document.getElementById('donate-pro-note');
+    note.style.display = isPro ? 'block' : 'none';
+    if (isPro) {
+      const unlimited = mode === 'pro-unlimited';
+      note.innerHTML = `<b style="color:var(--foreground); font-size:16px;">${unlimited ? '3,000원' : '990원'}</b> 송금 시 <b style="color:var(--foreground);">가입하신 아이디를 메모에 꼭 적어주세요!</b><br>입금이 확인되면 관리자가 ${unlimited ? '<b>무제한</b>' : '60일(30+30)'} 권한을 직접 부여해 드려요.`;
+    }
+    safeSetText('donate-title', mode === 'pro-unlimited' ? '💎 PRO 무제한 신청 (3,000원)' : mode === 'pro' ? '💎 PRO 60일 신청 (990원)' : '💛 FCO.GG 후원하기');
     document.getElementById('donate-modal').style.display = 'flex';
   }
   function closeDonateModal() { document.getElementById('donate-modal').style.display = 'none'; }
