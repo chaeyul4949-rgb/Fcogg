@@ -1207,6 +1207,7 @@
     const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
     if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     if (tabId === 'hub') renderHubAuth();
+    if (tabId === 'ranking') renderTop10();
   }
 
   function switchSubTab(subTabId, btnElement) {
@@ -2000,12 +2001,17 @@ service cloud.firestore {
     }
 
     if (arr.length === 0) {
+      // DB를 못 불러올 때 보여줄 목록 (2026.10.18 실제 DB 기준)
       arr = [
+        {nickname: "맨유박지선", rec: 26},
         {nickname: "부천리버풀대장", rec: 14},
-        {nickname: "맨유박지선", rec: 3},
+        {nickname: "beryl", rec: 10},
+        {nickname: "MESSl", rec: 2},
         {nickname: "나의해방일지", rec: 1},
-        {nickname: "하냥은아가가야", rec: 1},
+        {nickname: "하냥은아가야", rec: 1},
+        {nickname: "제발넣자피르미누", rec: 1},
         {nickname: "호날두", rec: 1},
+        {nickname: "축구귀신정종민", rec: 1},
         {nickname: "이맹박", rec: 1}
       ];
     }
