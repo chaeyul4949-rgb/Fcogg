@@ -2357,6 +2357,12 @@ service cloud.firestore {
         const pick = pickBestDivision(maxDivData, currentMatchType);
         if (pick) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; maxTierDate = pick.achievementDate || ''; }
       }
+      // 특정 구단주 최고 티어 고정 표시
+      const MAX_TIER_OVERRIDE = { '부천리버풀대장': 1300 };
+      if (MAX_TIER_OVERRIDE[nickname] !== undefined) {
+        globalMaxTierId = MAX_TIER_OVERRIDE[nickname];
+        globalMaxTier = divisionMetaCache[String(globalMaxTierId)] || '챌린저3';
+      }
 
       const details = await fetchMatchDetails(matchIds || []);
 
