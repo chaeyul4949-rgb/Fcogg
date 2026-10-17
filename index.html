@@ -2366,17 +2366,22 @@ service cloud.firestore {
 
       const details = await fetchMatchDetails(matchIds || []);
 
-      // 현재 티어: 가장 최근 공식경기(감독모드 검색 중이면 감독모드)에 기록된 내 등급
+      // 현재 티어: 최근 공식경기(감독모드 검색 중이면 감독모드)에 기록된 내 등급 중 가장 높은 것
+      // 넥슨 경기 기록의 등급은 상대에 따라 실제보다 한 단계 낮게 찍히는 경우가 있어서 한 경기만 보면 틀린다
       const tierType = currentMatchType === 52 ? 52 : 50;
       let tierMatches = currentMatchType === tierType ? details : [];
       if (!tierMatches.length) {
-        const ids = await fetchNexonApi(`/fconline/v1/user/match?ouid=${ouid}&matchtype=${tierType}&offset=0&limit=1`).catch(() => []);
+        const ids = await fetchNexonApi(`/fconline/v1/user/match?ouid=${ouid}&matchtype=${tierType}&offset=0&limit=10`).catch(() => []);
         tierMatches = await fetchMatchDetails(ids || []);
       }
-      const tierMe = tierMatches.map(m => ({ m, me: m.matchInfo?.find(i => i.ouid === ouid) })).find(x => x.me?.division);
-      const curTierId = tierMe ? tierMe.me.division : null;
+      const latestSeason = tierMatches.map(m => m.matchInfo?.find(i => i.ouid === ouid)?.matchDetail?.seasonId).find(Boolean);
+      const tierDivs = tierMatches
+        .map(m => m.matchInfo?.find(i => i.ouid === ouid))
+        .filter(me => me?.division && (!latestSeason || me.matchDetail?.seasonId === latestSeason))
+        .map(me => Number(me.division));
+      const curTierId = tierDivs.length ? Math.min(...tierDivs) : null;
       const curTierName = curTierId !== null ? (divisionMetaCache[String(curTierId)] || `등급 ${curTierId}`) : null;
-      const curTierWhen = tierMe ? getTimeAgo(tierMe.m.matchDate) : '';
+      const curTierWhen = tierDivs.length ? `최근 ${tierDivs.length}경기` : '';
       const lastPlayed = details[0]?.matchDate ? getTimeAgo(details[0].matchDate) : '';
       let wins = 0, draws = 0, losses = 0, goals = 0, conceded = 0;
       const rows = [];
@@ -2392,7 +2397,7 @@ service cloud.firestore {
       const winRate = total ? Math.round(wins / total * 100) : 0;
       const tierImgOf = (id, size) => { const src = id !== null ? getTierBadge(id) : ''; return src ? `<img src="${src}" alt="" onerror="this.remove()" style="width:${size}px; height:${size}px; object-fit:contain;">` : ''; };
       const tierStatHTML = curTierName ? `
-        <div class="result-stat-label">현재 티어 <span style="font-weight:600;">· ${curTierWhen} 경기 기준</span></div>
+        <div class="result-stat-label">현재 티어 <span style="font-weight:600;">· ${curTierWhen} 기준</span></div>
         <div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImgOf(curTierId, 32)}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${escapeHtml(curTierName)}</div></div>
         <div class="result-stat-sub" style="display:flex; align-items:center; justify-content:center; gap:4px; white-space:nowrap; margin-top:6px;">역대 최고 ${tierImgOf(globalMaxTierId, 16)}<b>${escapeHtml(globalMaxTier)}</b></div>` : `
         <div class="result-stat-label">역대 최고 티어</div>
