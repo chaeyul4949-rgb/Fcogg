@@ -70,7 +70,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; letter-spacing: -0.015em; }
     
     body { background-color: var(--background); color: var(--foreground); display: flex; justify-content: center; padding: 24px 16px; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; -webkit-font-smoothing: antialiased; }
-    .container { width: 100%; max-width: 1060px; position: relative; }
+    .container { width: 100%; max-width: 1060px; position: relative; min-height: calc(100vh - 48px); padding-bottom: 190px; }
+    .site-footer { position: absolute; left: 0; right: 0; bottom: 0; }
 
     .header-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; margin-top: 10px; width: 100%; }
     .logo { font-size: 32px; font-weight: 900; cursor: pointer; margin-bottom: 20px; letter-spacing: -1px; }
@@ -927,7 +928,7 @@
       </div>
     </div>
   </div>
-<footer style="margin-top:40px; padding:24px 0 16px; border-top:1px solid var(--border); text-align:center; font-size:13px; color:var(--muted-foreground); line-height:1.8;">
+<footer class="site-footer" style="padding:24px 0 16px; border-top:1px solid var(--border); text-align:center; font-size:13px; color:var(--muted-foreground); line-height:1.8;">
   <div><a href="/about.html" style="color:inherit;">사이트 소개</a> · <a href="/privacy.html" style="color:inherit; font-weight:700;">개인정보처리방침</a></div>
   <div>Data based on NEXON Open API · FCO.GG는 넥슨코리아·EA와 무관한 개인 운영 팬 사이트입니다.</div>
   <div>문의 · 제휴: <a href="mailto:yulckh@gmail.com" style="color:inherit;">yulckh@gmail.com</a></div>
