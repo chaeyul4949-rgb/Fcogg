@@ -20,8 +20,17 @@ async function summary(nick, type) {
     api('/static/fconline/meta/division.json').catch(() => []),
     api(`/fconline/v1/user/match?ouid=${ouid}&matchtype=${type}&offset=0&limit=10`).catch(() => []),
   ]);
-  const best = (maxDiv || []).find((d) => d.matchType === type) || (maxDiv || [])[0];
-  const tier = best ? (divisions.find((d) => d.divisionId === best.division) || {}).divisionName : null;
+  const nameOf = (id) => (divisions.find((d) => d.divisionId === id) || {}).divisionName;
+  const ORDER = ['슈퍼챔피언스', '챔피언스', '슈퍼챌린지', '챌린지', '마스터', '월드클래스', '프로', '세미프로', '유망주'];
+  const rank = (d) => {
+    const n = String(nameOf(d.division) || '').replace(/\s/g, '');
+    const g = ORDER.findIndex((k) => n.startsWith(k) && !(k === '챔피언스' && n.startsWith('슈퍼')) && !(k === '챌린지' && n.startsWith('슈퍼')) && !(k === '프로' && n.startsWith('세미')));
+    return g < 0 ? 999 : g * 10 + (parseInt(n.replace(/\D/g, ''), 10) || 0);
+  };
+  const list = (maxDiv || []).filter((d) => d.matchType === type);
+  const cands = list.length ? list : (maxDiv || []).filter((d) => d.matchType === 50);
+  const best = cands.reduce((a, d) => (!a || rank(d) < rank(a) ? d : a), null);
+  const tier = best ? nameOf(best.division) : null;
   const details = await Promise.all((ids || []).map((id) => api(`/fconline/v1/match-detail?matchid=${id}`).catch(() => null)));
   let w = 0, d = 0, l = 0, form = '';
   for (const m of details) {

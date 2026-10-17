@@ -1734,7 +1734,7 @@ service cloud.firestore {
   async function timedFetch(url, timeoutMs = 12000) {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-    try { return await fetch(url, { headers: { 'x-nxopen-api-key': NEXON_API_KEY }, signal: ctrl.signal }); }
+    try { return await fetch(url, { headers: { 'x-nxopen-api-key': NEXON_API_KEY }, signal: ctrl.signal, cache: 'no-store' }); }
     finally { clearTimeout(timer); }
   }
 
@@ -1817,8 +1817,18 @@ service cloud.firestore {
 
   fetch(`${API_BASE}/static/fconline/meta/spid.json`).then(r => r.json())
     .then(d => d.forEach(p => spidMetaCache[p.id] = p.name)).catch(() => {});
-  fetch(`${API_BASE}/static/fconline/meta/division.json`).then(r => r.json())
+  const divisionMetaReady = fetch(`${API_BASE}/static/fconline/meta/division.json`).then(r => r.json())
     .then(d => d.forEach(item => divisionMetaCache[String(item.divisionId)] = item.divisionName)).catch(() => {});
+
+  // 같은 모드 기록이 여러 개 오면 가장 높은 티어를 고른다
+  function pickBestDivision(list, matchType) {
+    if (!Array.isArray(list)) return null;
+    const ofType = (t) => list.filter(d => +(d.matchType ?? d.matchtype) === t && d.division !== undefined);
+    const cands = ofType(matchType).length ? ofType(matchType) : ofType(50);
+    if (!cands.length) return null;
+    const rank = (d) => { const i = tierIconIndex(divisionMetaCache[String(d.division)]); return i >= 0 ? i : 100 + Number(d.division) / 100000; };
+    return cands.reduce((best, d) => rank(d) < rank(best) || (rank(d) === rank(best) && String(d.achievementDate || '') > String(best.achievementDate || '')) ? d : best);
+  }
   fetch(`${API_BASE}/static/fconline/meta/seasonid.json`).then(r => r.json())
     .then(d => d.forEach(s => seasonMetaCache[s.seasonId] = s)).catch(() => {});
 
@@ -2321,9 +2331,10 @@ service cloud.firestore {
 
       globalLevel = basicData?.level ? `Lv.${basicData.level}` : "Lv.-";
       globalMaxTier = "기록 없음"; globalMaxTierId = null;
-      if (Array.isArray(maxDivData)) {
-        const pick = maxDivData.find(d => +(d.matchType ?? d.matchtype) === currentMatchType) || maxDivData.find(d => +(d.matchType ?? d.matchtype) === 50);
-        if (pick?.division !== undefined) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; }
+      await Promise.race([divisionMetaReady, delay(3000)]);
+      {
+        const pick = pickBestDivision(maxDivData, currentMatchType);
+        if (pick) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; }
       }
 
       const details = await fetchMatchDetails(matchIds || []);
