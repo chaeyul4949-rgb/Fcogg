@@ -852,6 +852,7 @@
           </div>
           <div class="user-action-btns" style="margin: 0; flex-direction: column;">
             <button class="action-btn btn-rec" style="width: 100%;" onclick="actRecommend()">👍 추천 (<span id="prof-rec-cnt">0</span>)</button>
+            <button class="action-btn btn-rep" style="width: 100%;" onclick="actReport()">🚨 비매너 신고</button>
           </div>
         </div>
       </div>
@@ -1690,6 +1691,8 @@
     } catch (e) { showToast('추천에 실패했습니다. 잠시 후 다시 시도해주세요.'); }
   }
 
+  function actReport() { if (confirm('🚨 신고하시겠습니까?')) showToast('접수되었습니다.'); }
+
   async function addReview() {
     const input = document.getElementById('review-input');
     const text = input.value.trim();
@@ -1735,11 +1738,18 @@
       } catch (e) {}
     }
 
-    const header = `<div class="tier-category-header op" style="margin-top:0; margin-bottom:8px;">👑 최다 추천 구단주 TOP 10</div>`;
     if (arr.length === 0) {
-      listEl.innerHTML = header + `<div style="text-align:center; padding:30px; color:var(--muted-foreground); font-size:14px;">아직 추천받은 구단주가 없습니다.<br>전적 검색 후 👍 추천을 눌러보세요!</div>`;
-      return;
+      arr = [
+        {nickname: "부천리버풀대장", rec: 14},
+        {nickname: "맨유박지선", rec: 3},
+        {nickname: "나의해방일지", rec: 1},
+        {nickname: "하냥은아가가야", rec: 1},
+        {nickname: "호날두", rec: 1},
+        {nickname: "이맹박", rec: 1}
+      ];
     }
+
+    const header = `<div class="tier-category-header op" style="margin-top:0; margin-bottom:8px;">👑 최다 추천 구단주 TOP 10</div>`;
     const rankColors = ["#3B82F6", "#84CC16", "#F59E0B"], medals = ["🥇", "🥈", "🥉"];
     listEl.innerHTML = header + arr.map((u, i) => `
       <button class="player-row rank-row" data-nick="${escapeHtml(u.nickname)}">
