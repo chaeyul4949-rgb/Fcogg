@@ -159,15 +159,7 @@
 
     .squad-section-wrapper { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
     .pro-squad-advisor { flex: 0 0 280px; position: relative; }
-    .squad-field { flex: 1; min-width: 300px; height: 400px; background: #0C3823; border-radius: 16px; border: 1px solid var(--border); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 20px 10px; overflow: hidden; }
-    .squad-field::before { content: ''; position: absolute; width: 100%; height: 1px; background: rgba(255,255,255,0.2); top: 50%; }
-    .squad-field::after { content: ''; position: absolute; width: 80px; height: 80px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; top: calc(50% - 40px); }
-    .squad-row { display: flex; justify-content: space-around; width: 100%; z-index: 2; }
     
-    .player-node { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
-    .player-node img { width: 50px; height: 50px; border-radius: 50%; object-fit: contain; margin-bottom: 4px; background: #111; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .rating-badge { font-size: 10px; font-weight: 800; background: var(--card); padding: 2px 8px; border-radius: 99px; margin-bottom: 4px; color: var(--foreground); border: 1px solid var(--border); }
-    .player-name-tag { font-size: 12px; font-weight: 600; color: #FFF; max-width: 64px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; }
 
     .match-list-container { display: flex; flex-direction: column; gap: 12px; }
     .match-item { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
@@ -288,21 +280,8 @@
     .admin-input { flex: 1; height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--tier-op); font-size: 14px; outline: none; width: 100%; margin-bottom:12px; }
     .admin-btn { width: 100%; height: 44px; background: var(--tier-op); color: #FFF; font-weight: 800; border-radius: 12px; border: none; cursor: pointer; transition: 0.2s; }
     
-    .upgrade-box { text-align: center; padding: 40px 20px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.03); max-width: 500px; margin: 40px auto; }
     
-    .fut-card { 
-        width: 150px; height: 210px; 
-        background: linear-gradient(135deg, #1e1e1e 0%, #333 100%); 
-        clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 50% 100%, 0% 90%, 0% 10%); 
-        border: 2px solid #555; margin: 0 auto 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; color: #fff; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.4); 
-    }
-    .fut-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent); pointer-events: none; }
-    .fut-card-grade { margin-top: 15px; font-size: 22px; font-weight: 900; color: #F59E0B; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-    .fut-card-img { width: 80px; height: 80px; margin-top: 10px; background: url('https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p101000250.png') no-repeat center/contain; }
-    .fut-card-name { font-size: 15px; font-weight: 800; margin-top: auto; padding-bottom: 25px; letter-spacing: -0.5px; }
     
-    .shake-anim { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both infinite; }
-    @keyframes shake { 0%, 100% { transform: translate3d(0, 0, 0); } 10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, 0, 0); } 20%, 40%, 60%, 80% { transform: translate3d(6px, 0, 0); } }
     
     .mbti-result-box { text-align: center; padding: 40px; border-radius: var(--radius); background: var(--card); border: 2px solid var(--tier-op); box-shadow: 0 10px 30px rgba(88,86,214,0.1); margin-top: 24px; animation: fadeIn 0.5s ease; }
 
@@ -411,15 +390,6 @@
     .check-row input { width: 18px; height: 18px; accent-color: var(--win-color); }
     .fee-result { background: var(--background); border-radius: 16px; padding: 8px 16px 14px; margin-top: 16px; }
     .tool-note { font-size: 12px; color: var(--muted-foreground); margin-top: 12px; line-height: 1.6; word-break: keep-all; }
-    .squad-pitch { max-width: 420px; margin: 0 auto; }
-    .sq-slot { background: none; border: none; cursor: pointer; padding: 0; font-family: inherit; }
-    .sq-slot:hover > img:first-child, .sq-slot:hover .sq-empty { transform: scale(1.08); }
-    .sq-empty { width: 40px; height: 40px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.7); color: #FFF; font-size: 20px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); transition: 0.15s; }
-    .picker-results { max-height: 50vh; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-    .picker-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); cursor: pointer; text-align: left; font-size: 14px; }
-    .picker-item:hover { border-color: var(--foreground); }
-    .picker-season { width: 24px; height: 18px; object-fit: contain; }
-    .picker-hint { text-align: center; color: var(--muted-foreground); font-size: 13px; padding: 24px 0; }
 
     /* ===== 알림 (토스트) ===== */
     #toast-box { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 20000; display: flex; flex-direction: column; gap: 8px; align-items: center; width: max-content; max-width: calc(100vw - 32px); pointer-events: none; }
@@ -471,10 +441,45 @@
       .md-goals { font-size: 26px; }
       .md-team { font-size: 14px; }
       .lu-node { width: 60px; }
-      .lu-node > img:first-child, .sq-empty { width: 34px; height: 34px; }
+      .lu-node > img:first-child { width: 34px; height: 34px; }
       .lu-name { max-width: 60px; font-size: 9.5px; }
       .profile-top-card { padding: 18px; }
       .trait-pitch-board { height: 400px; }
+    }
+
+    /* ===== 베스트 11 · PRO 리포트 ===== */
+    .squad-field { flex: 1; min-width: 280px; max-width: 460px; margin: 0 auto; }
+    .ai-line { background: var(--background); padding: 16px; border-radius: 12px; border-left: 4px solid var(--ai-blue); font-size: 14px; }
+    .wk-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .wk-row:last-child { border-bottom: none; }
+    .wk-rank { width: 22px; height: 22px; border-radius: 6px; background: #EA580C; color: #FFF; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .sol-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .sol-card { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 14px; font-size: 14px; }
+
+    /* ===== 특성 티어 ===== */
+    .trait-note { font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-align: center; margin-top: -8px; }
+    .trait-items { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; }
+    .trait-item { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 16px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; min-width: 85px; }
+    .trait-name { font-size: 11.5px; font-weight: 800; margin-bottom: 4px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .trait-rate { font-size: 14px; font-weight: 900; }
+
+    /* ===== 수수료 계산기 ===== */
+    .fee-card { max-width: 720px; margin: 0 auto; }
+    .fee-rows { display: flex; flex-direction: column; gap: 10px; }
+    .fee-row { border: 1px solid var(--border); border-radius: 14px; padding: 12px; background: var(--background); }
+    .fee-row .auth-input { margin: 0; background: var(--card); }
+    .fee-name { margin-bottom: 8px !important; height: 38px; }
+    .fee-row-inputs { display: flex; gap: 8px; margin-top: 8px; }
+    .fee-row-inputs input { flex: 1; min-width: 0; }
+    .fee-row-inputs .tool-select { background: var(--card); flex-shrink: 0; }
+    .fee-del { width: 44px; flex-shrink: 0; border: 1px solid var(--border); background: var(--card); color: var(--muted-foreground); border-radius: 12px; cursor: pointer; font-size: 14px; }
+    .fee-del:hover { color: var(--lose-color); border-color: var(--lose-color); }
+    .fee-row-result { font-size: 12.5px; margin-top: 8px; line-height: 1.6; }
+    .fee-add { width: 100%; margin-top: 10px; height: 42px; border-style: dashed; }
+    @media (max-width: 640px) {
+      .fee-row-inputs { flex-wrap: wrap; }
+      .fee-row-inputs input { flex-basis: 100%; }
+      .fee-row-inputs .tool-select { flex: 1; }
     }
   </style>
 </head>
@@ -496,7 +501,7 @@
       <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
       <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
       <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
-      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료·스쿼드</button>
+      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 계산기</button>
       <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
       <button class="tab-btn" onclick="openMinigameModal()">🕹️ 미니게임</button>
       <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">⚙️ 내 허브</button>
@@ -554,7 +559,7 @@
   </div>
 
   <div id="tab-teamcolor" class="tab-content">
-    <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3><p class="page-desc">상위 랭커들이 많이 쓰는 팀컬러 순위예요.</p></div>
+    <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3><p class="page-desc">상위 랭커들이 많이 쓰는 팀컬러 순위예요. (넥슨 데이터센터 · 2026.10.17 기준)</p></div>
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
@@ -655,53 +660,25 @@
 
   <div id="tab-tools" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title">🧰 수수료 계산기 · 스쿼드 메이커</h3>
+      <h3 class="page-title">🧰 이적시장 수수료 계산기</h3>
+      <p class="page-desc">판매할 선수를 여러 명 추가해서 한 번에 계산할 수 있어요.</p>
     </div>
-    <div class="tools-grid">
-      <div class="shadcn-card tool-card">
-        <h4 class="tool-title">💰 이적시장 수수료 계산기</h4>
-        <label class="tool-label" for="fee-amount">판매 금액</label>
-        <div class="fee-input-row">
-          <input type="number" id="fee-amount" class="auth-input" style="margin:0;" min="0" step="any" value="10" inputmode="decimal">
-          <select id="fee-unit" class="tool-select">
-            <option value="1000000000000">조</option>
-            <option value="100000000" selected>억</option>
-            <option value="10000">만</option>
-            <option value="1">BP</option>
-          </select>
-        </div>
-        <div class="tool-label" style="margin-top:16px;">할인 적용</div>
-        <label class="check-row"><input type="checkbox" id="fee-pcbang"> 프리미엄 PC방 <b>30%</b></label>
-        <label class="check-row"><input type="checkbox" id="fee-topclass"> TOP CLASS <b>20%</b></label>
-        <label class="check-row" style="justify-content:space-between;">수수료 할인 쿠폰
-          <select id="fee-coupon" class="tool-select">
-            <option value="0">없음</option><option value="10">10%</option><option value="20">20%</option>
-            <option value="30">30%</option><option value="40">40%</option><option value="50">50%</option>
-          </select>
-        </label>
-        <div class="fee-result">
-          <div class="stat-row"><span>판매 금액</span><b id="fee-price">-</b></div>
-          <div class="stat-row"><span>총 할인율</span><b id="fee-discount">-</b></div>
-          <div class="stat-row"><span>최종 수수료율</span><b id="fee-rate">-</b></div>
-          <div class="stat-row"><span>수수료</span><b id="fee-value" style="color:var(--lose-color);">-</b></div>
-          <div class="stat-row"><span>실수령액</span><b id="fee-receive" style="color:var(--win-color); font-size:20px;">-</b></div>
-        </div>
-        <p class="tool-note">기본 수수료 40%에서 할인율을 합산해 적용한 비공식 계산이에요. 실제 금액은 게임 안 표시를 꼭 확인하세요.</p>
-      </div>
+    <div class="shadcn-card tool-card fee-card">
+      <div class="tool-label">공통 할인</div>
+      <label class="check-row"><input type="checkbox" id="fee-pcbang"> 프리미엄 PC방 <b>30%</b></label>
+      <label class="check-row"><input type="checkbox" id="fee-topclass"> TOP CLASS <b>20%</b></label>
 
-      <div class="shadcn-card tool-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-          <h4 class="tool-title" style="margin:0;">⚽ 스쿼드 메이커</h4>
-          <span id="squad-count" class="style-badge">0 / 11명</span>
-        </div>
-        <div style="display:flex; gap:8px; margin:14px 0; flex-wrap:wrap;">
-          <select id="squad-formation" class="tool-select" aria-label="포메이션"></select>
-          <button class="bg-btn" onclick="shareSquad()">🔗 링크 복사</button>
-          <button class="bg-btn" onclick="resetSquad()">초기화</button>
-        </div>
-        <div class="lineup-pitch squad-pitch" id="squad-pitch"></div>
-        <p class="tool-note">포지션을 눌러 선수를 넣어보세요. 만든 스쿼드는 이 브라우저에 저장되고, 링크로 친구에게 보여줄 수 있어요.</p>
+      <div class="tool-label" style="margin-top:20px;">판매할 선수</div>
+      <div id="fee-rows" class="fee-rows"></div>
+      <button class="bg-btn fee-add" onclick="addFeeRow()">＋ 선수 추가</button>
+
+      <div class="fee-result">
+        <div class="stat-row"><span>선수 수</span><b id="fee-count">-</b></div>
+        <div class="stat-row"><span>총 판매 금액</span><b id="fee-price">-</b></div>
+        <div class="stat-row"><span>총 수수료</span><b id="fee-value" style="color:var(--lose-color);">-</b></div>
+        <div class="stat-row"><span>총 실수령액</span><b id="fee-receive" style="color:var(--win-color); font-size:20px;">-</b></div>
       </div>
+      <p class="tool-note">기본 수수료 40%에서 할인율(PC방 · TOP CLASS · 쿠폰)을 합산해 적용한 비공식 계산이에요. 쿠폰은 선수마다 따로 고를 수 있어요. 실제 금액은 게임 안 표시를 꼭 확인하세요.</p>
     </div>
   </div>
 
@@ -752,47 +729,14 @@
 </div>
 
 <div id="minigame-modal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 900px; padding: 40px;">
+  <div class="modal-content" style="max-width: 520px; padding: 40px;">
     <button class="modal-close-btn" onclick="closeMinigameModal()">✕</button>
     <div style="text-align: center; margin-bottom: 32px;">
       <h2 style="font-size:28px; font-weight:900; color:var(--foreground);">🕹️ FCO 라운지 (미니게임)</h2>
       <p style="color:var(--muted-foreground); margin-top:8px;">매칭 대기 중에 가볍게 즐겨보세요!</p>
     </div>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-      <div class="shadcn-card" style="padding: 24px; border: 2px solid var(--pro-gold);">
-        <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">✨ 가상 강화 시뮬레이터</h3>
-        <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">BP 소모 없이 즐기는 강화 대리 만족!</p>
-        <div class="upgrade-box" style="margin: 0; box-shadow: none; border: none; padding: 0; background: transparent;">
-          <div style="margin-bottom: 16px;">
-            <select id="upg-level-select" onchange="changeUpgLevel()" style="padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); font-weight: 700; outline: none; font-size: 14px;">
-              <option value="1">1강 ➔ 2강 (100%)</option>
-              <option value="2">2강 ➔ 3강 (81%)</option>
-              <option value="3">3강 ➔ 4강 (64%)</option>
-              <option value="4">4강 ➔ 5강 (50%)</option>
-              <option value="5">5강 ➔ 6강 (26%)</option>
-              <option value="6">6강 ➔ 7강 (15%)</option>
-              <option value="7">7강 ➔ 8강 (7%)</option>
-              <option value="8">8강 ➔ 9강 (4%)</option>
-              <option value="9">9강 ➔ 10강 (2%)</option>
-            </select>
-          </div>
-          <div class="fut-card" id="upgrade-card-img" style="transform: scale(0.9); margin-bottom: 12px;">
-              <div class="fut-card-grade" id="upg-card-grade">+1</div>
-              <div class="fut-card-img"></div>
-              <div class="fut-card-name">CC 호날두</div>
-          </div>
-          <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin: 16px 0;">
-            <div style="font-size:24px; font-weight:900; color:var(--muted-foreground);" id="upg-current">+1</div>
-            <div style="font-size:18px;">➔</div>
-            <div style="font-size:24px; font-weight:900; color:var(--win-color);" id="upg-next">+2</div>
-          </div>
-          <div id="upg-prob-text" style="font-weight:800; font-size:15px; margin-bottom:8px; color:var(--foreground);">다음 성공 확률: <span id="upg-prob" style="color:var(--ai-blue);">100</span>%</div>
-          <div id="upg-result-text" style="height:24px; font-weight:800; font-size:14px; margin-bottom:12px;"></div>
-          <button id="upg-btn" class="pill-search-btn" style="width:100%; height:44px; font-size:15px;" onclick="tryUpgrade()">강화 시도하기</button>
-        </div>
-      </div>
-
+    <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
       <div class="shadcn-card" style="padding: 24px; display: flex; flex-direction: column; border: 2px solid var(--tier-op);">
         <h3 style="font-size:20px; font-weight:800; margin-bottom: 8px; text-align:center;">🧬 플레이스타일 MBTI</h3>
         <p style="color:var(--muted-foreground); text-align:center; font-size:13px; margin-bottom: 24px;">최근 경기 데이터를 기반으로 성향 분석!</p>
@@ -850,10 +794,12 @@
       <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px; font-size: 16px;">새 기능 추가 및 검색 안정화</p>
     </div>
     <div class="notice-body">
+      <div>📊 <b>팀컬러 · 특성 티어 최신화</b><br><span>2026.10.17 넥슨 데이터센터 기준으로 업데이트했어요. 특성은 11강 · 8강 · 5강까지 보여줘요.</span></div>
+      <div>👑 <b>PRO 리포트 개인 맞춤 분석</b><br><span>내 최근 경기에서 승패를 가른 항목을 찾아, 보완하면 승률이 얼마나 오를지 보여줘요. 베스트 11도 실제 포지션 자리에 나와요.</span></div>
       <div>🔍 <b>전적 검색 안정화</b><br><span>검색이 실패하던 문제를 고쳤고, 공식경기 · 감독모드 · 클래식 1on1 · 친선 기록을 골라 볼 수 있어요.</span></div>
       <div>📋 <b>경기 상세</b><br><span>경기를 누르면 양 팀 라인업, 슈팅 맵, 득점 기록, 스탯 비교를 볼 수 있어요.</span></div>
       <div>⚔️ <b>1:1 상대전적 강화</b><br><span>공식 · 감독 · 친선 · 클래식 1on1 맞대결을 모두 찾아줘요.</span></div>
-      <div>🧰 <b>수수료 계산기 · 스쿼드 메이커</b><br><span>PC방 · TOP CLASS · 쿠폰 할인을 넣어 실수령액을 계산하고, 스쿼드를 짜서 링크로 공유해보세요.</span></div>
+      <div>🧰 <b>수수료 계산기</b><br><span>선수 여러 명을 한 번에 넣고 PC방 · TOP CLASS · 쿠폰 할인을 적용해 실수령액을 계산해보세요.</span></div>
       <div>🔗 <b>전적 링크 공유</b><br><span>검색 결과의 '링크 복사'로 친구에게 바로 보여줄 수 있어요.</span></div>
       <div>🔥 <b>[NEW] FCO PRO 전용 프리미엄 기능</b><br>
         <span style="font-weight:600; color:var(--draw-color);">1️⃣ PRO 실시간 매치업 상대 프리뷰 기능 추가</span><br>
@@ -964,7 +910,7 @@
       </div>
 
       <div class="shadcn-card" style="padding: 24px; margin-bottom: 24px;">
-        <div class="card-title">베스트 11 스쿼드 & <span style="color:var(--pro-gold); margin-left:4px;">PRO 교체 솔루션</span></div>
+        <div class="card-title">베스트 11 스쿼드 <span style="font-size:11px; color:var(--muted-foreground); font-weight:600; text-transform:none; letter-spacing:0;">(최근 경기 선발 · 평점은 평균)</span> & <span style="color:var(--pro-gold); margin-left:4px;">PRO 교체 솔루션</span></div>
         <div class="squad-section-wrapper">
           <div class="ai-pro pro-squad-advisor" style="padding: 20px; border-radius: 12px; margin-bottom: 0;">
             <div class="pro-overlay" id="squad-pro-overlay" style="border-radius: 12px; background: rgba(255,255,255,0.7);">
@@ -974,17 +920,12 @@
             <div id="squad-pro-blur" class="pro-blur-content" style="display: flex; flex-direction: column; height: 100%;">
               <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:12px;">🚨 스쿼드 워스트(구멍)</div>
               <div id="worst-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
-              <div style="margin-top:24px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:12px;">💡 상위 랭커 대체 추천</div>
+              <div style="margin-top:24px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:12px;">💡 교체 추천</div>
               <div id="replace-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
             </div>
           </div>
 
-          <div class="squad-field">
-            <div class="squad-row" id="squad-row-fw"><div style="color:rgba(255,255,255,0.5); font-size:13px;">분석 중...</div></div>
-            <div class="squad-row" id="squad-row-mf"></div>
-            <div class="squad-row" id="squad-row-df"></div>
-            <div class="squad-row" id="squad-row-gk"></div>
-          </div>
+          <div class="squad-field lineup-pitch" id="best11-pitch"><div class="lu-empty">분석 중...</div></div>
         </div>
       </div>
 
@@ -1049,23 +990,6 @@
   <div class="sub-modal-content" style="max-width:960px;">
     <button class="modal-close-btn" onclick="closeMatchModal()" aria-label="닫기">✕</button>
     <div id="match-modal-body"></div>
-  </div>
-</div>
-
-<div id="picker-modal" class="sub-modal-overlay" style="align-items:flex-start;">
-  <div class="sub-modal-content" style="max-width:480px;">
-    <button class="modal-close-btn" onclick="closePicker()" aria-label="닫기">✕</button>
-    <h3 style="font-size:20px; font-weight:900; margin-bottom:16px;"><span id="picker-pos">ST</span> 선수 선택</h3>
-    <div style="display:flex; gap:8px; margin-bottom:12px;">
-      <input type="text" id="squad-search" class="auth-input" style="margin:0;" placeholder="선수 이름 검색 (예: 호날두)">
-      <select id="squad-grade" class="tool-select" aria-label="강화 단계">
-        <option value="1">+1</option><option value="2">+2</option><option value="3">+3</option><option value="4">+4</option><option value="5">+5</option>
-        <option value="6">+6</option><option value="7">+7</option><option value="8">+8</option><option value="9">+9</option><option value="10">+10</option>
-        <option value="11">+11</option><option value="12">+12</option><option value="13">+13</option>
-      </select>
-    </div>
-    <div id="squad-results" class="picker-results"></div>
-    <button id="squad-remove" class="bg-btn" style="width:100%; margin-top:12px; color:var(--lose-color);" onclick="removePlayer()">이 포지션 비우기</button>
   </div>
 </div>
 
@@ -1444,49 +1368,6 @@
     renderProList();
   }
 
-  let currentUpgLevel = 1;
-  const probMap = { 1: 100, 2: 81, 3: 64, 4: 50, 5: 26, 6: 15, 7: 7, 8: 4, 9: 2 };
-
-  function changeUpgLevel() {
-      const select = document.getElementById('upg-level-select');
-      currentUpgLevel = parseInt(select.value);
-      
-      document.getElementById('upg-current').innerText = `+${currentUpgLevel}`; 
-      document.getElementById('upg-next').innerText = `+${currentUpgLevel + 1}`;
-      document.getElementById('upg-card-grade').innerText = `+${currentUpgLevel}`;
-      
-      const probText = document.getElementById('upg-prob');
-      if(probText) probText.innerText = probMap[currentUpgLevel] || 1;
-      
-      document.getElementById('upg-result-text').innerHTML = '';
-  }
-  
-  function tryUpgrade() {
-      const btn = document.getElementById('upg-btn'); 
-      const resText = document.getElementById('upg-result-text'); 
-      const cardImg = document.getElementById('upgrade-card-img');
-      const probText = document.getElementById('upg-prob');
-      
-      btn.disabled = true; btn.innerText = "강화 진행 중..."; btn.style.background = "var(--muted-foreground)";
-      resText.innerHTML = '<span class="spinner" style="font-size:20px;">⏳</span>'; 
-      
-      cardImg.classList.add('shake-anim');
-
-      setTimeout(() => {
-          cardImg.classList.remove('shake-anim');
-          const successRate = probMap[currentUpgLevel] || 1;
-          const isSuccess = Math.random() * 100 <= successRate;
-          
-          if (isSuccess) {
-              resText.innerHTML = `<span style="color:var(--win-color);">🎉 강화 성공! (+${currentUpgLevel + 1}) 붙었습니다!</span>`;
-          } else {
-              resText.innerHTML = `<span style="color:var(--lose-color);">💥 펑! 터졌습니다...</span>`;
-          }
-          
-          btn.disabled = false; btn.innerText = "다시 시도하기"; btn.style.background = "var(--primary)";
-      }, 1500); 
-  }
-
   // ----- 미니게임: 플레이스타일 MBTI (실제 최근 공식경기 기록 기반) -----
   const MBTI_TYPES = {
     PT: { t: "마에스트로형", d: "점유율을 쥐고 짧은 패스로 풀어가며 결정적인 순간에 스루패스를 찌릅니다. 펩 과르디올라 스타일!" },
@@ -1694,10 +1575,9 @@
   // ===== 메타데이터 (선수 이름, 티어, 시즌, 경기 종류) =====
   let globalOuid = null, globalNickname = "", globalLevel = "", globalMaxTier = "", globalMaxTierId = null, globalMatchDetails = [], currentMatchLoadIndex = 0;
   let spidMetaCache = {}, divisionMetaCache = {}, seasonMetaCache = {};
-  let spidList = [];
 
-  const spidReady = fetch(`${API_BASE}/static/fconline/meta/spid.json`).then(r => r.json())
-    .then(d => { spidList = d; d.forEach(p => spidMetaCache[p.id] = p.name); }).catch(() => {});
+  fetch(`${API_BASE}/static/fconline/meta/spid.json`).then(r => r.json())
+    .then(d => d.forEach(p => spidMetaCache[p.id] = p.name)).catch(() => {});
   fetch(`${API_BASE}/static/fconline/meta/division.json`).then(r => r.json())
     .then(d => d.forEach(item => divisionMetaCache[String(item.divisionId)] = item.divisionName)).catch(() => {});
   fetch(`${API_BASE}/static/fconline/meta/seasonid.json`).then(r => r.json())
@@ -1754,14 +1634,12 @@
     renderHubAuth();
     updateProTabUI();
     initFeeCalculator();
-    initSquadMaker();
 
     // 공유 링크로 들어오면 바로 검색 (예: fcogg.xyz/?nick=닉네임)
     const params = new URLSearchParams(location.search);
     const type = parseInt(params.get('type'), 10);
     if (SEARCH_MATCH_TYPES.includes(type)) { currentMatchType = type; renderMatchTypeFilter(); }
     if (params.get('nick')) searchNickname(params.get('nick'));
-    else if (params.get('squad')) switchTab('tools');
   });
 
   // ===== 추천 · 신고 · 방명록 (Firebase, 연결 안 되면 이 브라우저에 저장) =====
@@ -1881,30 +1759,6 @@
       </button>`).join('');
   }
 
-  const teamColorData = [
-    { name: "레알 마드리드", rate: 7.0, count: 305, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "리버풀", rate: 6.1, count: 263, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "바이에른 뮌헨", rate: 6.0, count: 259, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "FC 바르셀로나", rate: 6.0, count: 258, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "아스널", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
-    { name: "롬바르디아 FC", rate: 5.3, count: 230, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
-    { name: "첼시", rate: 5.0, count: 215, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "맨체스터 유나이티드", rate: 4.6, count: 200, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "브라질", rate: 4.1, count: 179, logo: "https://flagcdn.com/w160/br.png" },
-    { name: "맨체스터 시티", rate: 3.6, count: 157, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
-    { name: "대한민국", rate: 3.6, count: 155, logo: "https://flagcdn.com/w160/kr.png" },
-    { name: "스페인", rate: 3.4, count: 146, logo: "https://flagcdn.com/w160/es.png" },
-    { name: "유벤투스", rate: 3.1, count: 133, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
-    { name: "독일", rate: 3.0, count: 132, logo: "https://flagcdn.com/w160/de.png" },
-    { name: "밀라노 FC", rate: 3.0, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
-    { name: "프랑스", rate: 2.9, count: 127, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "파리 생제르맹", rate: 2.8, count: 122, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
-    { name: "잉글랜드", rate: 2.6, count: 114, logo: "https://flagcdn.com/w160/gb.png" },
-    { name: "아틀레티코 마드리드", rate: 1.9, count: 84, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png" },
-    { name: "포르투갈", rate: 1.5, count: 67, logo: "https://flagcdn.com/w160/pt.png" },
-    { name: "토트넘 홋스퍼", rate: 1.5, count: 66, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" }
-  ];
-
   // 로고가 안 뜨면 팀 이름 첫 글자로 대신 표시
   function logoFallback(img) {
     const span = document.createElement('span');
@@ -1912,6 +1766,32 @@
     span.textContent = (img.alt || '?').charAt(0);
     img.replaceWith(span);
   }
+
+  // ===== 팀컬러 이용률 (넥슨 데이터센터 · 2026.10.17 기준) =====
+  const DATA_AS_OF = "2026.10.17(토) 10:00";
+  const teamColorData = [
+    { name: "FC 바르셀로나", rate: 6.9, count: 314, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "레알 마드리드", rate: 6.8, count: 307, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "바이에른 뮌헨", rate: 6.7, count: 306, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "첼시", rate: 6.2, count: 280, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "리버풀", rate: 5.9, count: 267, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "롬바르디아 FC", rate: 5.4, count: 244, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
+    { name: "아스널", rate: 5.0, count: 227, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "브라질", rate: 4.3, count: 197, logo: "https://flagcdn.com/w160/br.png" },
+    { name: "맨체스터 유나이티드", rate: 4.1, count: 188, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "대한민국", rate: 3.6, count: 163, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "맨체스터 시티", rate: 3.3, count: 151, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "프랑스", rate: 3.3, count: 150, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "파리 생제르맹", rate: 3.1, count: 139, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "밀라노 FC", rate: 3.0, count: 134, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
+    { name: "스페인", rate: 2.9, count: 130, logo: "https://flagcdn.com/w160/es.png" },
+    { name: "유벤투스", rate: 2.8, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "독일", rate: 2.5, count: 114, logo: "https://flagcdn.com/w160/de.png" },
+    { name: "잉글랜드", rate: 2.4, count: 111, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "아틀레티코 마드리드", rate: 2.4, count: 110, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png" },
+    { name: "토트넘 홋스퍼", rate: 1.7, count: 78, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
+    { name: "바이엘 04 레버쿠젠", rate: 1.4, count: 62, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
+  ];
 
   function renderTeamColorTierList() {
     const container = document.getElementById("teamcolor-list-container");
@@ -1924,7 +1804,7 @@
           <div class="td-badge ${badgeClass}">${badgeLabel}</div>
           <div class="td-season"><img src="${tc.logo}" alt="${tc.name}" onerror="logoFallback(this)" style="width:32px; height:32px; object-fit:contain;"></div>
           <div class="td-info" style="flex-direction:column; align-items:flex-start; gap:2px;">
-            <span style="font-size:14px; font-weight:800;">${tc.name}</span>
+            <span style="font-size:14px; font-weight:800;">${i + 1}. ${tc.name}</span>
             <span style="font-size:11px; color:var(--muted-foreground); font-weight:600;">${tc.count}명 (${tc.rate}%)</span>
           </div>
           <div class="td-stats"><div class="stat-pick" style="font-size:15px; font-weight:900;">${tc.rate}%</div></div>
@@ -1933,181 +1813,142 @@
   }
 
   function getTraitEmoji(name) {
-    if(name.includes('슛') || name.includes('골')) return '🎯';
-    if(name.includes('패스') || name.includes('크로스') || name.includes('빌드업')) return '👟';
-    if(name.includes('수비') || name.includes('태클') || name.includes('방어') || name.includes('차단') || name.includes('재정비') || name.includes('압박')) return '🛡️';
-    if(name.includes('템포') || name.includes('이동') || name.includes('스피드')) return '⚡';
-    if(name.includes('몸 싸움') || name.includes('헤딩')) return '💪';
-    if(name.includes('캐칭') || name.includes('펀칭') || name.includes('던지기') || name.includes('반응')) return '🧤';
+    if (name.includes('슛') || name.includes('슈팅') || name.includes('골') || name.includes('감아차기')) return '🎯';
+    if (name.includes('패스') || name.includes('크로스') || name.includes('빌드업')) return '👟';
+    if (name.includes('수비') || name.includes('태클') || name.includes('방어') || name.includes('차단') || name.includes('재정비') || name.includes('압박') || name.includes('가로채기') || name.includes('걷어내기')) return '🛡️';
+    if (name.includes('템포') || name.includes('이동') || name.includes('스피드') || name.includes('드리블') || name.includes('침투')) return '⚡';
+    if (name.includes('몸 싸움') || name.includes('헤딩') || name.includes('헤더') || name.includes('강철')) return '💪';
+    if (name.includes('승부욕')) return '🔥';
+    if (name.includes('캐칭') || name.includes('펀칭') || name.includes('던지기') || name.includes('반응')) return '🧤';
     return '⚽';
   }
 
   const traitImgMap = {
-    "라인 브레이커": 52,
-    "트릭스터": 65,
-    "타이탄": 64,
-    "스피드스터": 63,
-    "커맨더": 59,
-    "2개의 심장": 55,
-    "체이서": 54,
-    "파이터": 56,
-    "와일드 태클러": 53,
-    "블로커": 62,
-    "프레데터": 67,
-    "레이저 슈터": 66,
-    "아크로바틱 피니셔": 50,
-    "크로스 포쳐": 51,
-    "GK 데드아이": 68,
-    "GK 빠른 반응": 60,
-    "GK 공중볼 장악": 69
+    "라인 브레이커": 52, "트릭스터": 65, "타이탄": 64, "스피드스터": 63, "커맨더": 59, "2개의 심장": 55,
+    "체이서": 54, "파이터": 56, "와일드 태클러": 53, "블로커": 62, "프레데터": 67, "레이저 슈터": 66,
+    "아크로바틱 피니셔": 50, "크로스 포쳐": 51, "GK 데드아이": 68, "GK 빠른 반응": 60, "GK 공중볼 장악": 69
   };
 
   function getTraitIconUrl(name) {
-    const nexonBase = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/";
-    const iconId = traitImgMap[name] || 50; 
-    return `${nexonBase}trait_icon_${iconId}.png`;
+    return `https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_${traitImgMap[name] || 50}.png`;
   }
 
+  // ===== 포지션별 인기 획득 특성 (넥슨 데이터센터 · 2026.10.17 기준, 1:1 공식경기 슈퍼챔피언스~월드클래스3) =====
+  // 표기: "이름:비율" — 비율이 없으면(캡처에서 잘린 값) 이름만 표시
+  const T = (s) => s.split('|').map(x => { const [n, r] = x.split(':'); return { n, r: r ? r + '%' : '' }; });
   const traitsDB = {
-    "ST": {
-      combos: ["라인 브레이커 + 침착하게 골 찬스 만들기", "라인 브레이커 + 빠른 템포 공격", "타이탄 + 능숙한 몸 싸움"],
-      tier11: [{n: "침착하게 골 찬스 만들기", r: "22.8%"}, {n: "빠른 템포 공격", r: "17.4%"}, {n: "능숙한 몸 싸움", r: "15.3%"}, {n: "크로스 향상", r: "14.2%"}, {n: "감아차기 향상", r: "8.1%"}],
-      tier8: [{n: "라인 브레이커", r: "45.6%"}, {n: "트릭스터", r: "20.8%"}, {n: "타이탄", r: "14.4%"}, {n: "크로스 포쳐", r: "9.2%"}, {n: "아크로바틱 피니셔", r: "8.3%"}]
-    },
-    "CF": {
-      combos: ["라인 브레이커 + 침착하게 골 찬스 만들기", "라인 브레이커 + 빠른 템포 공격", "예리한 감아차기 + 감아차기 향상"],
-      tier11: [{n: "침착하게 골 찬스 만들기", r: "21.2%"}, {n: "빠른 템포 공격", r: "17.1%"}, {n: "능숙한 몸 싸움", r: "14.5%"}, {n: "크로스 향상", r: "13.2%"}, {n: "감아차기 향상", r: "8.0%"}],
-      tier8: [{n: "라인 브레이커", r: "47.9%"}, {n: "트릭스터", r: "25.1%"}, {n: "타이탄", r: "7.7%"}, {n: "크로스 포쳐", r: "7.2%"}, {n: "아크로바틱 피니셔", r: "6.4%"}]
-    },
-    "LAM": {
-      combos: ["크로스 향상 + 크로스 포쳐", "라인 브레이커 + 침착하게 골 찬스 만들기", "예리한 감아차기 + 감아차기 향상"],
-      tier11: [{n: "크로스 향상", r: "17.7%"}, {n: "능숙한 몸 싸움", r: "15.4%"}, {n: "침착하게 골 찬스 만들기", r: "15.2%"}, {n: "빠른 템포 공격", r: "11.0%"}, {n: "감아차기 향상", r: "8.2%"}],
-      tier8: [{n: "라인 브레이커", r: "46.3%"}, {n: "트릭스터", r: "43.2%"}, {n: "스피드스터", r: "2.7%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.7%"}]
-    },
-    "CAM": {
-      combos: ["침착하게 골 찬스 만들기 + 예리한 감아차기", "빠른 템포 공격 + 라인 브레이커", "능숙한 몸 싸움 + 패스 마스터"],
-      tier11: [{n: "침착하게 골 찬스 만들기", r: "20.0%"}, {n: "빠른 템포 공격", r: "16.1%"}, {n: "능숙한 몸 싸움", r: "14.7%"}, {n: "근거리 슛 향상", r: "11.7%"}, {n: "감아차기 향상", r: "8.5%"}],
-      tier8: [{n: "라인 브레이커", r: "44.1%"}, {n: "트릭스터", r: "30.9%"}, {n: "레이저 슈터", r: "6.5%"}, {n: "크로스 포쳐", r: "5.5%"}, {n: "아크로바틱 피니셔", r: "4.3%"}]
-    },
-    "RAM": {
-      combos: ["크로스 향상 + 크로스 포쳐", "라인 브레이커 + 침착하게 골 찬스 만들기", "예리한 감아차기 + 감아차기 향상"],
-      tier11: [{n: "크로스 향상", r: "18.4%"}, {n: "침착하게 골 찬스 만들기", r: "15.6%"}, {n: "능숙한 몸 싸움", r: "15.3%"}, {n: "빠른 템포 공격", r: "10.2%"}, {n: "감아차기 향상", r: "8.3%"}],
-      tier8: [{n: "라인 브레이커", r: "48.0%"}, {n: "트릭스터", r: "41.9%"}, {n: "스피드스터", r: "2.6%"}, {n: "레이저 슈터", r: "1.9%"}, {n: "크로스 포쳐", r: "1.5%"}]
-    },
-    "CM": {
-      combos: ["능숙한 몸 싸움 + 커맨더", "다이렉트 패스 전술 이해 + 쓰루 패스 향상", "레이저 슈터 + 패스 마스터"],
-      tier11: [{n: "능숙한 몸 싸움", r: "9.6%"}, {n: "다이렉트 패스 전술 이해", r: "8.6%"}, {n: "티키타카 패스 전술 이해", r: "8.5%"}, {n: "로빙 스루 패스 향상", r: "7.3%"}, {n: "쓰루 패스 향상", r: "6.3%"}],
-      tier8: [{n: "레이저 슈터", r: "25.6%"}, {n: "커맨더", r: "17.1%"}, {n: "라인 브레이커", r: "12.9%"}, {n: "트릭스터", r: "11.1%"}, {n: "파이터", r: "8.2%"}]
-    },
-    "CDM": {
-      combos: ["재정비 + 체이서", "능숙한 압박 + 파이터", "스탠딩 태클 향상 + 와일드 태클러"],
-      tier11: [{n: "재정비", r: "11.2%"}, {n: "티키타카 패스 전술 이해", r: "10.7%"}, {n: "로빙 스루 패스 향상", r: "8.6%"}, {n: "스탠딩 태클 향상", r: "7.9%"}, {n: "능숙한 압박", r: "7.4%"}],
-      tier8: [{n: "체이서", r: "24.9%"}, {n: "레이저 슈터", r: "21.8%"}, {n: "파이터", r: "19.8%"}, {n: "커맨더", r: "14.5%"}, {n: "와일드 태클러", r: "6.0%"}]
-    },
-    "CB": {
-      combos: ["능숙한 압박 + 체이서", "재정비 + 블로커", "스탠딩 태클 향상 + 파이터"],
-      tier11: [{n: "능숙한 압박", r: "21.4%"}, {n: "안정적인 빌드업", r: "17.7%"}, {n: "재정비", r: "16.3%"}, {n: "가로채기 노리기", r: "7.0%"}, {n: "스탠딩 태클 향상", r: "6.1%"}],
-      tier8: [{n: "체이서", r: "35.0%"}, {n: "파이터", r: "23.5%"}, {n: "블로커", r: "15.9%"}, {n: "프레데터", r: "8.9%"}, {n: "타이탄", r: "8.2%"}]
-    },
-    "SW": {
-      combos: ["가로채기 노리기 + 체이서", "재정비 + 블로커", "능숙한 압박 + 파이터"],
-      tier11: [{n: "가로채기 노리기", r: "18.9%"}, {n: "능숙한 압박", r: "18.3%"}, {n: "재정비", r: "14.9%"}, {n: "스탠딩 태클 향상", r: "7.8%"}, {n: "로빙 스루 패스 향상", r: "5.6%"}],
-      tier8: [{n: "체이서", r: "33.3%"}, {n: "블로커", r: "17.0%"}, {n: "파이터", r: "17.0%"}, {n: "타이탄", r: "9.6%"}, {n: "프레데터", r: "7.3%"}]
-    },
-    "LB": {
-      combos: ["재정비 + 체이서", "크로스 향상 + 2개의 심장", "좌측 수비 강화 + 능숙한 압박"],
-      tier11: [{n: "크로스 향상", r: "14.2%"}, {n: "재정비", r: "12.0%"}, {n: "좌측 수비 강화", r: "11.1%"}, {n: "능숙한 압박", r: "8.2%"}, {n: "퍼스트 터치 후 바로 이동", r: "7.5%"}],
-      tier8: [{n: "체이서", r: "34.5%"}, {n: "파이터", r: "33.5%"}, {n: "블로커", r: "14.4%"}, {n: "프레데터", r: "7.4%"}, {n: "타이탄", r: "5.1%"}]
-    },
-    "RWB": {
-      combos: ["재정비 + 체이서", "크로스 향상 + 2개의 심장", "우측 수비 강화 + 능숙한 압박"],
-      tier11: [{n: "크로스 향상", r: "13.5%"}, {n: "재정비", r: "11.6%"}, {n: "우측 수비 강화", r: "11.3%"}, {n: "능숙한 압박", r: "8.5%"}, {n: "퍼스트 터치 후 바로 이동", r: "7.9%"}],
-      tier8: [{n: "체이서", r: "52.6%"}, {n: "파이터", r: "26.5%"}, {n: "프레데터", r: "5.4%"}, {n: "2개의 심장", r: "3.7%"}, {n: "와일드 태클러", r: "3.2%"}]
-    },
-    "GK": {
-      combos: ["낮은 슛 방어 + GK 데드아이", "감아차기 방어 + GK 빠른 반응", "근거리 슛 방어 + GK 공중볼 장악"],
-      tier11: [{n: "낮은 슛 방어 (GK 전용)", r: "57.2%"}, {n: "감아차기 방어 (GK 전용)", r: "18.1%"}, {n: "프리킥 방어 (GK 전용)", r: "13.7%"}, {n: "스로우 향상 (GK 전용)", r: "5.5%"}, {n: "근거리 슛 방어 (GK 전용)", r: "1.9%"}],
-      tier8: [{n: "GK 데드아이", r: "77.7%"}, {n: "GK 빠른 반응", r: "13.3%"}, {n: "GK 공중볼 장악", r: "9.0%"}]
-    }
+    ST:  { t11: T("근거리 슛 향상:36.1|빠른 템포 공격:17.8|능숙한 몸 싸움:12.0|침착하게 골 찬스 만들기:10.5|침투 요청에 즉각 반응:5.3"),
+           t8:  T("라인 브레이커:24.1|아크로바틱 피니셔:21.4|크로스 포쳐:20.5|트릭스터:19.8|타이탄:8.5"),
+           t5:  T("예리한 감아차기|파워 헤더|패스 마스터|승부욕|아웃사이드 슈팅/크로스") },
+    RS:  { t11: T("근거리 슛 향상:38.6|빠른 템포 공격:17.1|능숙한 몸 싸움:12.8|침착하게 골 찬스 만들기:9.2|침투 요청에 즉각 반응:4.8"),
+           t8:  T("아크로바틱 피니셔:23.1|크로스 포쳐:22.4|트릭스터:21.7|라인 브레이커:17.3|타이탄:9.4"),
+           t5:  T("예리한 감아차기:42.7|파워 헤더:27.0|패스 마스터:8.5|승부욕:7.3|아웃사이드 슈팅/크로스:5.0") },
+    CF:  { t11: T("근거리 슛 향상:26.4|빠른 템포 공격:15.5|능숙한 몸 싸움:12.8|침착하게 골 찬스 만들기:9.9|감아차기 향상:5.9"),
+           t8:  T("라인 브레이커:27.6|트릭스터:24.4|크로스 포쳐:17.5|아크로바틱 피니셔:13.2|스피드스터:8.4"),
+           t5:  T("예리한 감아차기:31.2|파워 헤더:28.3|패스 마스터:15.2|승부욕:6.9|아웃사이드 슈팅/크로스:6.2") },
+    RW:  { t11: T("크로스 향상:18.9|감아차기 향상:10.6|능숙한 몸 싸움:9.6|근거리 슛 향상:8.3|높은 크로스 향상:8.0"),
+           t8:  T("트릭스터:39.4|라인 브레이커:33.1|스피드스터:19.3|2개의 심장:2.9|크로스 포쳐:1.8"),
+           t5:  T("패스 마스터:28.3|예리한 감아차기:20.3|파워 헤더:11.8|아웃사이드 슈팅/크로스:10.8|승부욕:6.7") },
+    LW:  { t11: T("크로스 향상:19.0|감아차기 향상:10.8|능숙한 몸 싸움:8.8|근거리 슛 향상:8.0|높은 크로스 향상:7.5"),
+           t8:  T("트릭스터:40.7|라인 브레이커:31.9|스피드스터:19.1|2개의 심장:2.8|크로스 포쳐:1.9"),
+           t5:  T("패스 마스터:26.4|예리한 감아차기:22.0|파워 헤더:12.2|아웃사이드 슈팅/크로스:10.9|승부욕:6.9") },
+    CAM: { t11: T("근거리 슛 향상:28.8|빠른 템포 공격:13.5|능숙한 몸 싸움:11.4|침착하게 골 찬스 만들기:10.7|감아차기 향상:7.9"),
+           t8:  T("트릭스터:32.9|라인 브레이커:25.2|크로스 포쳐:14.7|스피드스터:9.4|아크로바틱 피니셔:8.6"),
+           t5:  T("예리한 감아차기:34.4|파워 헤더:26.5|패스 마스터:17.7|승부욕:6.9|아웃사이드 슈팅/크로스:5.1") },
+    RAM: { t11: T("크로스 향상:28.8|페이스 업 드리블 향상:11.1|능숙한 몸 싸움:9.5|근거리 슛 향상:8.0|침착하게 골 찬스 만들기:7.4"),
+           t8:  T("트릭스터:45.8|라인 브레이커:28.3|스피드스터:19.5|레이저 슈터:1.4|크로스 포쳐:1.4"),
+           t5:  T("예리한 감아차기:27.9|패스 마스터:25.1|파워 헤더:16.2|승부욕:9.4|아웃사이드 슈팅/크로스:8.4") },
+    LAM: { t11: T("크로스 향상:28.3|페이스 업 드리블 향상:11.1|능숙한 몸 싸움:9.3|근거리 슛 향상:7.9|감아차기 향상:7.3"),
+           t8:  T("트릭스터:46.2|라인 브레이커:26.8|스피드스터:20.4|크로스 포쳐:1.5|레이저 슈터:1.4"),
+           t5:  T("예리한 감아차기:26.1|패스 마스터:25.1|파워 헤더:17.8|승부욕:9.7|아웃사이드 슈팅/크로스:8.3") },
+    LM:  { t11: T("크로스 향상:36.1|페이스 업 드리블 향상:11.9|능숙한 몸 싸움:9.4|높은 크로스 향상:6.4|침착하게 골 찬스 만들기:5.4"),
+           t8:  T("트릭스터:46.1|라인 브레이커:25.3|스피드스터:23.5|2개의 심장:1.9|크로스 포쳐:1.0"),
+           t5:  T("패스 마스터:25.3|예리한 감아차기:22.9|파워 헤더:18.1|승부욕:11.4|아웃사이드 슈팅/크로스:8.2") },
+    RM:  { t11: T("크로스 향상:36.4|페이스 업 드리블 향상:11.3|능숙한 몸 싸움:9.2|높은 크로스 향상:6.8|침착하게 골 찬스 만들기:5.4"),
+           t8:  T("트릭스터:45.6|라인 브레이커:27.4|스피드스터:22.1|2개의 심장:1.9|크로스 포쳐:0.8"),
+           t5:  T("예리한 감아차기:27.1|패스 마스터:24.4|파워 헤더:16.5|승부욕:10.5|아웃사이드 슈팅/크로스:8.1") },
+    CM:  { t11: T("가로채기 노리기:8.5|감아차기 향상:7.5|쓰루 패스 향상:7.3|능숙한 몸 싸움:7.1|티키타카 패스 전술 이해:7.0"),
+           t8:  T("레이저 슈터:28.3|트릭스터:13.9|커맨더:12.1|라인 브레이커:9.7|스피드스터:8.0"),
+           t5:  T("예리한 감아차기:30.9|패스 마스터:23.5|파워 헤더:12.0|아웃사이드 슈팅/크로스:9.3|승부욕:9.3") },
+    CDM: { t11: T("가로채기 노리기:19.4|재정비:8.4|티키타카 패스 전술 이해:7.8|쓰루 패스 향상:7.8|스탠딩 태클 향상:7.1"),
+           t8:  T("레이저 슈터:33.0|파이터:21.6|체이서:14.2|커맨더:10.3|2개의 심장:5.8"),
+           t5:  T("패스 마스터:36.2|예리한 감아차기:21.3|파워 헤더:14.2|승부욕:12.9|아웃사이드 슈팅/크로스:3.9") },
+    CB:  { t11: T("가로채기 노리기:29.5|능숙한 압박:16.1|안정적인 빌드업:14.7|재정비:10.1|스탠딩 태클 향상:4.9"),
+           t8:  T("파이터:34.8|체이서:25.9|블로커:12.5|타이탄:9.9|프레데터:6.7"),
+           t5:  T("패스 마스터:31.0|화려한 걷어내기:24.4|파워 헤더:18.2|승부욕:14.7|슬라이딩 태클 선호:2.8") },
+    LCB: { t11: T("안정적인 빌드업:25.6|능숙한 압박:22.8|가로채기 노리기:13.9|재정비:13.1|좌측 수비 강화:4.8"),
+           t8:  T("파이터:53.8|체이서:22.3|블로커:8.0|타이탄:6.3|와일드 태클러:4.7"),
+           t5:  T("화려한 걷어내기:30.5|패스 마스터:25.4|승부욕:18.6|파워 헤더:16.6|강철몸:3.7") },
+    RCB: { t11: T("안정적인 빌드업:26.1|능숙한 압박:22.6|가로채기 노리기:13.9|재정비:13.1|우측 수비 강화:4.7"),
+           t8:  T("파이터:54.1|체이서:21.9|블로커:8.0|타이탄:6.3|와일드 태클러:4.7"),
+           t5:  T("화려한 걷어내기:31.9|패스 마스터:26.3|승부욕:18.9|파워 헤더:13.9|강철몸:3.6") },
+    SW:  { t11: T("가로채기 노리기:41.3|능숙한 압박:11.5|재정비:8.7|안정적인 빌드업:6.6|스탠딩 태클 향상:6.4"),
+           t8:  T("파이터:32.2|체이서:24.4|블로커:11.2|타이탄:7.2|프레데터:6.6"),
+           t5:  T("패스 마스터:36.0|화려한 걷어내기:18.4|파워 헤더:18.0|승부욕:11.5|예리한 감아차기:5.8") },
+    LB:  { t11: T("크로스 향상:18.2|좌측 수비 강화:14.9|스탠딩 태클 향상:12.3|재정비:9.6|가로채기 노리기:7.0"),
+           t8:  T("파이터:57.8|체이서:32.3|2개의 심장:3.0|프레데터:2.7|와일드 태클러:1.8"),
+           t5:  T("패스 마스터:46.6|승부욕:24.5|파워 헤더:5.5|화려한 걷어내기:5.2|얼리 크로스 선호:3.9") },
+    RB:  { t11: T("크로스 향상:17.9|우측 수비 강화:15.1|스탠딩 태클 향상:12.4|재정비:9.6|가로채기 노리기:6.7"),
+           t8:  T("파이터:59.1|체이서:30.9|2개의 심장:3.1|프레데터:2.7|와일드 태클러:1.7"),
+           t5:  T("패스 마스터:46.4|승부욕:24.0|파워 헤더:6.2|화려한 걷어내기:5.7|얼리 크로스 선호:4.0") },
+    LWB: { t11: T("크로스 향상:18.6|좌측 수비 강화:11.4|가로채기 노리기:11.0|재정비:8.3|스탠딩 태클 향상:7.7"),
+           t8:  T("파이터:43.0|체이서:38.8|2개의 심장:5.4|프레데터:3.4|와일드 태클러:2.4"),
+           t5:  T("패스 마스터:46.6|승부욕:17.9|아웃사이드 슈팅/크로스:6.0|화려한 걷어내기:5.5|파워 헤더:5.2") },
+    RWB: { t11: T("크로스 향상:18.4|가로채기 노리기:11.2|우측 수비 강화:10.8|스탠딩 태클 향상:8.0|재정비:7.8"),
+           t8:  T("파이터:43.6|체이서:38.2|2개의 심장:5.5|프레데터:3.6|와일드 태클러:2.4"),
+           t5:  T("패스 마스터:45.7|승부욕:17.8|화려한 걷어내기:5.8|파워 헤더:5.7|아웃사이드 슈팅/크로스:5.5") },
+    // GK는 이번 캡처에 없어서 이전 데이터 유지
+    GK:  { old: true,
+           t11: T("낮은 슛 방어 (GK 전용):57.2|감아차기 방어 (GK 전용):18.1|프리킥 방어 (GK 전용):13.7|스로우 향상 (GK 전용):5.5|근거리 슛 방어 (GK 전용):1.9"),
+           t8:  T("GK 데드아이:77.7|GK 빠른 반응:13.3|GK 공중볼 장악:9.0"),
+           t5:  [] }
   };
 
-  function getTraitKey(pos) {
-    if (traitsDB[pos]) return pos;
-    if (['LS', 'RS', 'LF', 'RF', 'LW', 'RW', 'LM', 'RM'].includes(pos)) return 'ST';
-    if (['LCM', 'RCM'].includes(pos)) return 'CM';
-    if (['LDM', 'RDM'].includes(pos)) return 'CDM';
-    if (['CB', 'LCB', 'RCB'].includes(pos)) return 'CB';
-    if (['RB'].includes(pos)) return 'LB';
-    if (['LWB'].includes(pos)) return 'RWB';
-    return 'ST';
+  // 캡처에 없는 포지션은 가장 비슷한 포지션 데이터로 보여줌
+  const TRAIT_FALLBACK = { LS: 'RS', LF: 'CF', RF: 'CF', LCM: 'CM', RCM: 'CM', LDM: 'CDM', RDM: 'CDM' };
+  function getTraitKey(pos) { return traitsDB[pos] ? pos : (TRAIT_FALLBACK[pos] || 'ST'); }
+
+  function selectTrait(pos, event) {
+    document.querySelectorAll('.t-node').forEach(n => n.classList.remove('active'));
+    event.target.classList.add('active');
+    renderTraitData(pos);
   }
 
-  function selectTrait(pos, event) { 
-    document.querySelectorAll('.t-node').forEach(n => n.classList.remove('active')); 
-    event.target.classList.add('active'); 
-    renderTraitData(pos); 
+  function traitRateColor(r) {
+    const v = parseFloat(r);
+    if (isNaN(v)) return 'var(--muted-foreground)';
+    return v >= 30 ? 'var(--lose-color)' : v >= 10 ? 'var(--win-color)' : 'var(--foreground)';
   }
 
   function renderTraitData(pos) {
-    const lbl = document.getElementById('trait-pos-label'); if(lbl) lbl.innerText = pos; 
+    const lbl = document.getElementById('trait-pos-label'); if (lbl) lbl.innerText = pos;
     const key = getTraitKey(pos);
-    const data = traitsDB[key] || traitsDB["ST"];
-    
-    const combosHTML = `
-      <div class="shadcn-card" style="padding: 24px;">
-        <div style="font-size: 14px; font-weight: 800; color: var(--foreground); margin-bottom: 16px;">💡 신규 추천 조합 TOP 3</div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          ${data.combos.map((c, i) => `
-            <div style="background: var(--background); padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
-              <span style="background: var(--ai-blue); color: #FFF; width: 22px; height: 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px;">${i+1}</span>
-              <span>${c}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
+    const data = traitsDB[key];
 
-    const renderItems11 = (items) => {
-      return items.map(item => `
-        <div style="background:var(--background); border:1px solid var(--border); border-radius:12px; padding:16px 8px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; min-width:85px;">
-          <div style="font-size:28px; margin-bottom:8px;">${getTraitEmoji(item.n)}</div>
-          <div style="font-size:11.5px; font-weight:800; color:var(--foreground); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${item.n}">${item.n}</div>
-          <div style="font-size:14px; font-weight:900; color:var(--win-color);">${item.r}</div>
-        </div>
-      `).join('');
-    };
-
-    const renderItems8 = (items) => {
-      return items.map(item => {
-        const imgSrc = getTraitIconUrl(item.n);
-        return `
-        <div style="background:var(--background); border:1px solid var(--border); border-radius:12px; padding:16px 8px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; min-width:85px;">
-          <img src="${imgSrc}" alt="${item.n}" onerror="this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_50.png';" style="width: 48px; height: 48px; margin-bottom: 8px; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.05));">
-          <div style="font-size:11.5px; font-weight:800; color:var(--foreground); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${item.n}">${item.n}</div>
-          <div style="font-size:14px; font-weight:900; color:var(--lose-color);">${item.r}</div>
-        </div>
-      `}).join('');
-    };
-
-    const traitHtml = `
-      ${combosHTML}
+    const card = (item, icon) => `
+      <div class="trait-item">
+        ${icon}
+        <div class="trait-name" title="${item.n}">${item.n}</div>
+        <div class="trait-rate" style="color:${traitRateColor(item.r)};">${item.r || '-'}</div>
+      </div>`;
+    const emojiIcon = (item) => `<div style="font-size:28px; margin-bottom:8px;">${getTraitEmoji(item.n)}</div>`;
+    const imgIcon = (item) => `<img src="${getTraitIconUrl(item.n)}" alt="${item.n}" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_50.png';" style="width:48px; height:48px; margin-bottom:8px; object-fit:contain;">`;
+    const section = (title, items, icon) => items.length ? `
       <div class="shadcn-card" style="padding:24px;">
-        <div style="font-size:16px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">11강 획득</div>
-        <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
-          ${renderItems11(data.tier11)}
-        </div>
-      </div>
+        <div style="font-size:16px; font-weight:900; margin-bottom:16px; text-align:center;">${title}</div>
+        <div class="trait-items">${items.map(it => card(it, icon(it))).join('')}</div>
+      </div>` : '';
 
-      <div class="shadcn-card" style="padding:24px;">
-        <div style="font-size:16px; font-weight:900; color:var(--foreground); margin-bottom:16px; text-align:center;">8강 획득</div>
-        <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
-          ${renderItems8(data.tier8)}
-        </div>
-      </div>
-    `;
-    
+    let note = `데이터 기준: ${DATA_AS_OF} · 1:1 공식경기 슈퍼챔피언스 ~ 월드클래스3`;
+    if (key !== pos) note += ` · ${pos}는 ${key} 기준 데이터예요`;
+    if (data.old) note = 'GK는 아직 최신 데이터가 없어 이전 데이터를 보여드려요';
+
     const area = document.getElementById('trait-content-area');
-    if(area) area.innerHTML = traitHtml;
+    if (area) area.innerHTML = `
+      <div class="trait-note">${note}</div>
+      ${section('11강 획득', data.t11, emojiIcon)}
+      ${section('8강 획득', data.t8, imgIcon)}
+      ${section('5강 획득', data.t5, emojiIcon)}`;
   }
 
   // ===== 전적 검색 =====
@@ -2281,7 +2122,7 @@
     let totalPassTry = 0, totalPassSuccess = 0;
     let totalDribbleTry = 0, totalDribbleSuccess = 0;
     let enTotalCross = 0, enTotalThrough = 0;
-    let playerStats = {}; let kbdCount = 0, padCount = 0; let latestMatchPlayers = null; 
+    let playerStats = {}; let posUsage = {}; let kbdCount = 0, padCount = 0; let latestMatchPlayers = null; 
 
     for (const mData of matchesData) {
       if (mData?.matchInfo) {
@@ -2308,7 +2149,12 @@
             if (!latestMatchPlayers && myInfo.player.length > 0) { latestMatchPlayers = myInfo.player.filter(p => p.spPosition !== 28); }
             myInfo.player.forEach(p => {
               m_tackle += parseInt(p.status?.tackle || 0); m_block += parseInt(p.status?.block || 0);
-              if (p.spPosition !== 28) { if (!playerStats[p.spId]) { playerStats[p.spId] = { count: 0, ratingSum: 0 }; } playerStats[p.spId].count += 1; playerStats[p.spId].ratingSum += (p.status?.spRating || 0); }
+              if (p.spPosition !== 28) {
+                if (!playerStats[p.spId]) { playerStats[p.spId] = { count: 0, ratingSum: 0 }; }
+                playerStats[p.spId].count += 1; playerStats[p.spId].ratingSum += (p.status?.spRating || 0);
+                const pl = positionMap[p.spPosition]?.label;
+                if (pl) { const u = ((posUsage[pl] = posUsage[pl] || {})[p.spId] = posUsage[pl][p.spId] || { count: 0, ratingSum: 0 }); u.count += 1; u.ratingSum += (p.status?.spRating || 0); }
+              }
             });
           }
           totalTackle += m_tackle; totalBlock += m_block;
@@ -2369,94 +2215,163 @@
       };
     }
 
-    let linesHTML = { fw: [], mf: [], df: [], gk: [] }; let highestRating = -1; let mvpSpId = null; let lowestRating = 999; let worstSpId = null; let worstPosLabel = "";
-
-    if (latestMatchPlayers && latestMatchPlayers.length > 0) {
-      latestMatchPlayers.forEach(p => {
-        let spId = p.spId; let grade = p.spGrade || 1; let posId = p.spPosition;
-        let avgRatingNum = 0; if (playerStats[spId] && playerStats[spId].count > 0) { avgRatingNum = playerStats[spId].ratingSum / playerStats[spId].count; } else { avgRatingNum = p.status?.spRating || 0; }
-        
-        let posData = positionMap[parseInt(posId)] || { label: 'SUB', line: 'df' }; 
-        if(avgRatingNum > highestRating) { highestRating = avgRatingNum; mvpSpId = spId; }
-        if(avgRatingNum > 0 && avgRatingNum < lowestRating) { lowestRating = avgRatingNum; worstSpId = spId; worstPosLabel = posData.label; }
-
-        let avgRating = avgRatingNum.toFixed(1); let pid = parseInt(String(spId).substring(3), 10); let seasonId = Math.floor(spId / 1000000);
-        let ratingColor = 'var(--foreground)'; if (avgRatingNum >= 7.5) ratingColor = 'var(--win-color)'; else if (avgRatingNum > 0 && avgRatingNum < 6.0) ratingColor = 'var(--lose-color)'; 
-        let playerNameStr = spidMetaCache[spId] || '선수';
-        let gradeStyle = ""; if (grade >= 8) gradeStyle = "background: #FDE68A; color: #D97706;"; else if (grade >= 5) gradeStyle = "background: #E5E5EA; color: #1D1D1F;"; else gradeStyle = "background: #D97706; color: #FFF;";
-
-        linesHTML[posData.line].push(`
-          <div class="player-node" style="position:relative;">
-            <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/classes/ico_tr${seasonId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/classes/ico_tr${seasonId}_sm.png'; this.onerror=function(){this.style.display='none';};" style="position:absolute; top:-12px; left:-16px; width:28px; height:24px; object-fit:contain; z-index:10; background:transparent !important; border:none !important; box-shadow:none !important;">
-            <div style="position:absolute; top:-6px; right:-6px; ${gradeStyle} font-size:10px; font-weight:800; padding:1px 6px; border-radius:6px; z-index:10; border:1px solid rgba(0,0,0,0.1);">+${grade}</div>
-            <img src="https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p${pid}.png';" style="border: 2px solid ${ratingColor};">
-            <div class="rating-badge" style="color:${ratingColor};">${posData.label} ${avgRating}</div>
-            <div class="player-name-tag">${playerNameStr}</div>
-          </div>
-        `);
-      });
+    // ----- 베스트 11: 가장 최근 경기 선발을 실제 포지션 자리에 배치 (평점은 최근 경기 평균) -----
+    const avgRatingOf = (spId, fallback) => playerStats[spId]?.count ? playerStats[spId].ratingSum / playerStats[spId].count : (+fallback || 0);
+    const starters = latestMatchPlayers || [];
+    const best11 = document.getElementById('best11-pitch');
+    if (best11) {
+      best11.innerHTML = starters.length ? starters.map(p => {
+        const pos = positionMap[p.spPosition]?.label || 'SUB';
+        const [x, y] = POS_COORD[pos] || [50, 50];
+        const avg = avgRatingOf(p.spId, p.status?.spRating);
+        const color = avg >= 7.5 ? 'var(--win-color)' : avg > 0 && avg < 6.0 ? 'var(--lose-color)' : '#fff';
+        return `
+          <div class="lu-node" style="left:${x}%; top:${y}%;">
+            <img src="${playerImg(p.spId)}" onerror="this.onerror=null; this.src='${playerImgFallback(p.spId)}';" alt="" style="border:2px solid ${color};">
+            ${seasonIcon(p.spId) ? `<img class="lu-season" src="${seasonIcon(p.spId)}" alt="">` : ''}
+            <span class="lu-grade">+${p.spGrade || 1}</span>
+            <span class="lu-name">${escapeHtml(spidMetaCache[p.spId] || pos)}</span>
+            <span class="lu-rating" style="color:${color}">${pos} ${avg ? avg.toFixed(1) : '-'}</span>
+          </div>`;
+      }).join('') : '<div class="lu-empty">데이터 없음</div>';
     }
 
-    if (worstSpId) { window.currentProAIStats.worstSpId = worstSpId; window.currentProAIStats.worstPosLabel = worstPosLabel; window.currentProAIStats.lowestRating = lowestRating.toFixed(1); }
-
-    const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
-    setHtml('squad-row-fw', linesHTML.fw.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
-    setHtml('squad-row-mf', linesHTML.mf.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
-    setHtml('squad-row-df', linesHTML.df.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
-    setHtml('squad-row-gk', linesHTML.gk.join('') || '<div style="color:rgba(255,255,255,0.5); font-size:12px;">데이터 없음</div>');
+    // ----- 스쿼드 구멍 & 교체 추천: 내 기록 안에서만 찾음 -----
+    let worst = null;
+    starters.forEach(p => {
+      const avg = avgRatingOf(p.spId, p.status?.spRating);
+      const pos = positionMap[p.spPosition]?.label || 'SUB';
+      if (avg > 0 && (!worst || avg < worst.avg)) worst = { spId: p.spId, avg, pos, games: playerStats[p.spId]?.count || 1 };
+    });
+    let replacement = null;
+    if (worst) {
+      // 같은 포지션에 내가 다른 경기에서 기용한 선수 중 평점이 더 좋았던 선수
+      Object.entries(posUsage[worst.pos] || {}).forEach(([spId, s]) => {
+        const avg = s.ratingSum / s.count;
+        if (Number(spId) !== worst.spId && avg > worst.avg + 0.2 && (!replacement || avg > replacement.avg)) replacement = { spId: Number(spId), avg, games: s.count };
+      });
+    }
+    if (window.currentProAIStats) window.currentProAIStats.squad = { worst, replacement };
 
     generateAIReports();
   }
 
+  // ===== PRO 리포트: 내 최근 경기에서 "이게 좋았던 경기 vs 나빴던 경기" 승률을 비교해 보완점 찾기 =====
+  const n0 = (v) => +v || 0;
+  const pct = (a, b, minTry) => n0(b) >= minTry ? n0(a) / n0(b) * 100 : null;
+  const WIN_FACTORS = [
+    { label: '유효슈팅 비율', unit: '%', higher: true, get: (me) => pct(me.shoot?.effectiveShootTotal, me.shoot?.shootTotal, 3),
+      tip: '무리한 중거리 대신 박스 안에서 각을 만든 뒤 마무리하세요. 슈팅 전에 한 번 접어서 수비를 벗겨내면 유효슈팅이 늘어요.' },
+    { label: '슈팅 수', unit: '개', higher: true, get: (me) => n0(me.shoot?.shootTotal),
+      tip: '공격 템포를 올려 슈팅 기회 자체를 늘리세요. 측면 돌파 후 컷백(QA/ZA), 박스 앞 2대1 패스(QS)로 진입을 시도해보세요.' },
+    { label: '패스 성공률', unit: '%', higher: true, get: (me) => pct(me.pass?.passSuccess, me.pass?.passTry, 20),
+      tip: '무리한 전진 패스보다 열린 동료에게 짧게 주고, 막히면 측면 전환이나 백패스로 다시 만들어가세요.' },
+    { label: '점유율', unit: '%', higher: true, get: (me) => n0(me.matchDetail?.possession),
+      tip: '리드할 때나 압박이 강할 때 볼을 오래 지키세요. 수비형 미드필더를 거쳐 천천히 빌드업하면 점유율이 올라가요.' },
+    { label: '스루패스 성공률', unit: '%', higher: true, get: (me) => pct(me.pass?.throughPassSuccess, me.pass?.throughPassTry, 2),
+      tip: '공격수가 수비 라인과 같은 선에 섰을 때만 스루패스를 넣으세요. 너무 이르거나 늦으면 끊겨요.' },
+    { label: '태클 성공률', unit: '%', higher: true, get: (me) => pct(me.defence?.tackleSuccess, me.defence?.tackleTry, 2),
+      tip: '무작정 달려들지 말고 C키(자세 낮추기)로 따라가다가 상대가 볼을 길게 칠 때만 태클하세요.' },
+    { label: '상대 유효슈팅 허용', unit: '개', higher: false, get: (me, en) => n0(en?.shoot?.effectiveShootTotal),
+      tip: '센터백이 튀어나가지 않게 하고, 수비형 미드필더로 박스 앞 공간을 먼저 막으세요. 슈팅 각만 줄여도 실점이 크게 줄어요.' },
+    { label: '파울', unit: '개', higher: false, get: (me) => n0(me.matchDetail?.foul),
+      tip: '뒤에서 들어가는 태클과 몸싸움을 줄이세요. 위험 지역 프리킥과 카드는 그대로 실점·수적 열세로 이어져요.' },
+    { label: '드리블 성공률', unit: '%', higher: true, get: (me) => pct(me.matchDetail?.dribbleSuccess, me.matchDetail?.dribbleTry, 3),
+      tip: '수비수 정면으로 돌파하기보다 공간이 있는 쪽으로 방향 전환 후 치고 나가세요. 막히면 바로 패스로 풀어주세요.' }
+  ];
+
+  function analyzeWinFactors(matches, ouid) {
+    const rows = [];
+    for (const m of matches) {
+      const me = m.matchInfo?.find(i => i.ouid === ouid); const en = m.matchInfo?.find(i => i.ouid !== ouid);
+      if (me?.matchDetail) rows.push({ me, en, win: me.matchDetail.matchResult === '승' ? 1 : 0 });
+    }
+    const overall = rows.length ? rows.reduce((s, r) => s + r.win, 0) / rows.length * 100 : 0;
+    const results = [];
+    WIN_FACTORS.forEach(f => {
+      const data = rows.map(r => ({ v: f.get(r.me, r.en), win: r.win })).filter(d => d.v !== null && isFinite(d.v));
+      if (data.length < 6) return;
+      data.sort((a, b) => f.higher ? b.v - a.v : a.v - b.v);       // 잘한 경기부터
+      const half = Math.floor(data.length / 2);
+      const good = data.slice(0, half), bad = data.slice(data.length - half);
+      const avg = (arr, k) => arr.reduce((s, d) => s + d[k], 0) / arr.length;
+      const wrGood = avg(good, 'win') * 100, wrBad = avg(bad, 'win') * 100;
+      const impact = wrGood - wrBad;
+      results.push({
+        ...f, n: data.length, wrGood, wrBad, impact,
+        myAvg: avg(data, 'v'), target: avg(good, 'v'),
+        gain: impact * (bad.length / data.length)   // 못한 경기를 잘한 경기처럼 했다면 늘었을 승률(대략)
+      });
+    });
+    results.sort((a, b) => b.impact - a.impact);
+    return { overall, games: rows.length, factors: results.filter(r => r.impact >= 5).slice(0, 3) };
+  }
+
   function generateAIReports() {
     setTimeout(() => {
-      document.getElementById('ai-loading').style.display = 'none'; document.getElementById('ai-content-basic').style.display = 'block'; document.getElementById('ai-content-pro').style.display = 'flex';
-      
-      const stats = window.currentProAIStats || {}; 
-      const concede = stats.avgConcede || 0; 
-      const goal = stats.avgGoal || 0; 
-      const pass = stats.penetrationRate || 0; 
-      const possess = stats.avgPossess || 0; 
-      const passRate = stats.overallPassRate || 0;
-      const tackle = stats.avgTackle || 0;
-      const isKb = stats.isKeyboard || false; 
-      const currentWinRate = stats.currentWinRate || 0;
+      document.getElementById('ai-loading').style.display = 'none';
+      document.getElementById('ai-content-basic').style.display = 'block';
+      document.getElementById('ai-content-pro').style.display = 'flex';
 
-      document.getElementById('ai-basic-text').innerHTML = `
+      const stats = window.currentProAIStats || {};
+      const concede = stats.avgConcede || 0, goal = stats.avgGoal || 0, isKb = stats.isKeyboard || false;
+      const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+      setHtml('ai-basic-text', `
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:var(--background); padding:16px; border-radius:12px; border-left:4px solid var(--ai-blue);"><b style="color:var(--foreground); font-size:15px; display:flex; align-items:center; gap:6px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b><div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div></div>
-          <div style="background:var(--background); padding:16px; border-radius:12px; border-left:4px solid var(--ai-blue);"><b style="color:var(--foreground); font-size:14px;">⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다. ${goal >= 1.5 ? '결정력이 매우 우수하여 득점 창출 능력이 뛰어납니다.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
-          <div style="background:var(--background); padding:16px; border-radius:12px; border-left:4px solid var(--ai-blue);"><b style="color:var(--foreground); font-size:14px;">🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다. ${concede <= 1.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
-        </div>`;
+          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b><div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div></div>
+          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다. ${goal >= 1.5 ? '결정력이 매우 우수하여 득점 창출 능력이 뛰어납니다.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
+          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다. ${concede <= 1.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
+        </div>`);
 
-      let weakness = ""; let solutionText = ""; let strategy = ""; let matchup = "";
-      
-      if (possess >= 60 && goal < 1.2) {
-          weakness = `점유율은 높으나 <b style="color:var(--lose-color);">박스 타격 작업(마무리)</b>이 매우 부족합니다. 의미 없는 U자형 볼 돌리기가 잦습니다.`;
-          solutionText = `상대 밀집 수비를 뚫기 위해 <b>과감한 중거리 슛(ZD/D)</b>으로 수비수를 끌어내고, 스트라이커의 침투(Q)를 적극적으로 활용하여 수비벽에 균열을 만드세요.`;
-      } else if (possess < 40 && concede >= 1.5) {
-          weakness = `수비 시 <b style="color:var(--lose-color);">라인 컨트롤 실패 및 공간 노출</b>이 심각합니다. 공격권을 쥐는 시간이 너무 짧습니다.`;
-          solutionText = `센터백이 튀어나가는 수비를 절대 금지하고, <b>수비형 미드필더(CDM)를 커서로 잡아 패스 길목을 차단(C 수비)</b>하며 템포를 늦추는 지연 수비를 연습하세요.`;
-      } else if (passRate > 0 && passRate < 83) {
-          weakness = `전개 과정에서 <b style="color:var(--lose-color);">불필요한 턴오버(패스 미스)</b>가 너무 잦아 공격 흐름이 번번이 끊깁니다.`;
-          solutionText = `무리한 전진 킬패스보다는, <b>측면 전환 패스나 백패스</b>를 섞어주며 확실하게 열린 공간으로만 볼을 배급하여 점유율을 먼저 회복하세요.`;
-      } else if (tackle >= 3.5 && concede >= 1.5) {
-          weakness = `수비 지표(태클)는 높으나 실점이 많습니다. <b style="color:var(--lose-color);">성급한 스탠딩 태클(Space) 남발</b>로 뒷공간이 자주 열립니다.`;
-          solutionText = `공을 무조건 뺏으려 달려들지 말고, <b>C키(자세 낮추기)를 누른 채 상대의 드리블 방향을 따라가며</b> 결정적인 실수가 나올 때만 정확히 태클하는 습관을 들이세요.`;
-      } else if (concede >= 1.5) {
-          weakness = `수비 전환 시 <b style="color:var(--lose-color);">하프스페이스 공간 노출</b>이 잦습니다. 상대 역습 시 풀백과 센터백 사이 간격이 벌어집니다.`;
-          solutionText = `수비 전술에서 '선수 간격'을 좁히고, 풀백 개인 전술을 '공격 시 후방 대기'로 설정하여 <b>포백 라인의 안정성을 최우선으로 확보</b>하세요.`;
-      } else if (goal < 1.0) {
-          weakness = `상대 페널티 박스 근처에서 <b style="color:var(--lose-color);">진입 패스 경로 창출</b>에 실패하고 있습니다. 공격 루트가 단조롭습니다.`;
-          solutionText = `측면 돌파 후 뻔한 크로스 대신, <b>컷백(QA/ZA)이나 박스 모서리 부근에서의 2대1 패스(QS)</b> 패턴을 하나 이상 확실히 장착하세요.`;
-      } else if (pass < 30) {
-          weakness = `결정적인 <b style="color:var(--lose-color);">전진 킬패스(스루패스) 타이밍</b>을 자주 놓쳐 공격 템포가 죽고 역습이 지연됩니다.`;
-          solutionText = `역습 찬스 시 볼을 오래 끌지 마세요. 최전방 공격수가 상대 수비수와 동일 선상에 섰을 때 <b>지체 없이 ZW(로빙 스루) 또는 W(스루패스)</b>를 찔러 넣는 과감함을 기르세요.`;
+      // 1) 약점 스캐너 + 승률 상승 솔루션 (내 경기 데이터 기반)
+      const a = analyzeWinFactors(globalMatchDetails, globalOuid);
+      const fmt = (v, unit) => unit === '%' ? `${v.toFixed(1)}%` : `${v.toFixed(1)}${unit}`;
+      if (a.factors.length === 0) {
+        setHtml('pro-ai-weakness', a.games < 6
+          ? `분석하려면 경기가 6판 이상 필요해요. (현재 ${a.games}경기)`
+          : `최근 ${a.games}경기에서는 승패를 크게 가르는 약점이 보이지 않아요. 지금 플레이 스타일을 유지하세요!`);
+        setHtml('pro-ai-solution', '');
       } else {
-          weakness = `전반적인 통계는 우수하나, 리드 상황에서 <b style="color:var(--lose-color);">무리한 전진으로 인한 턴오버</b>가 발생해 불필요한 동점을 허용합니다.`;
-          solutionText = `이기고 있는 후반전에는 템포를 늦추세요. <b>안전한 볼 소유를 바탕으로 상대가 압박하러 나올 때 뒷공간을 노리는</b> 영리한 굳히기 운영이 필요합니다.`;
+        setHtml('pro-ai-weakness', `
+          <div style="font-size:13px; color:var(--muted-foreground); margin-bottom:10px;">최근 ${a.games}경기를 반으로 나눠, 각 항목을 잘했던 경기와 못했던 경기의 승률을 비교했어요.</div>
+          ${a.factors.map((f, i) => `
+            <div class="wk-row">
+              <div class="wk-rank">${i + 1}</div>
+              <div style="flex:1;">
+                <b>${f.label}</b> <span style="color:var(--muted-foreground); font-size:12px;">평균 ${fmt(f.myAvg, f.unit)}</span>
+                <div style="font-size:12.5px; margin-top:2px;">잘한 경기 승률 <b style="color:var(--win-color);">${Math.round(f.wrGood)}%</b> vs 못한 경기 <b style="color:var(--lose-color);">${Math.round(f.wrBad)}%</b></div>
+              </div>
+            </div>`).join('')}`);
+
+        const cur = Math.round(a.overall);
+        const bar = (label, val, color) => `
+          <div style="margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; margin-bottom:4px;"><span style="color:${color};">${label}</span><span style="color:${color};">${val}%</span></div>
+            <div style="height:8px; background:var(--border); border-radius:99px; overflow:hidden;"><div style="width:${Math.min(100, val)}%; height:100%; background:${color}; border-radius:99px;"></div></div>
+          </div>`;
+        setHtml('pro-ai-solution', `
+          <div class="sol-grid">
+            ${a.factors.map(f => {
+              const after = Math.min(100, Math.round(a.overall + f.gain));
+              return `
+              <div class="sol-card">
+                <div style="font-weight:900; margin-bottom:6px;">${f.label} ${f.higher ? '올리기' : '줄이기'}</div>
+                <div style="font-size:12.5px; color:var(--muted-foreground); margin-bottom:10px;">지금 평균 <b style="color:var(--foreground);">${fmt(f.myAvg, f.unit)}</b> → 목표 <b style="color:var(--foreground);">${fmt(f.target, f.unit)}</b> ${f.higher ? '이상' : '이하'} <span style="font-size:11px;">(내가 잘했던 경기 평균)</span></div>
+                ${bar('현재 승률', cur, 'var(--muted-foreground)')}
+                ${bar(`보완 시 예상 승률 (+${Math.max(0, after - cur)}%p)`, after, 'var(--pro-gold)')}
+                <div style="font-size:12.5px; line-height:1.6; margin-top:8px;">💡 ${f.tip}</div>
+              </div>`;
+            }).join('')}
+          </div>
+          <div style="font-size:13px; line-height:1.6; margin-top:14px;">${isKb
+            ? `<b>[⌨️ 키보드 사용자 팁]</b> 수비 시 E키(달리기) 남발을 줄이고 C키로 길목을 먼저 막으세요. 윙어에게 '뒤에서 침투' 지시를 주면 키보드에서도 침투가 잘 나와요.`
+            : `<b>[🎮 패드 사용자 팁]</b> 아날로그 스틱의 세밀한 방향 조절을 살려, 박스 근처에서 등지기(LT/L2) 후 방향 전환으로 슈팅·컷백 공간을 만드세요.`}</div>
+          <div style="font-size:11.5px; color:var(--muted-foreground); margin-top:10px;">※ 예상 승률은 내 최근 ${a.games}경기 기록으로 계산한 대략적인 수치예요. 경기 수가 많을수록 정확해져요.</div>`);
       }
 
+      // 2) 상대 공격 패턴 (기존 매치업 프리뷰)
+      let matchup = '';
       if (stats.gameCount > 0 && (stats.enTotalCross > 0 || stats.enTotalThrough > 0)) {
           const cross = stats.enTotalCross;
           const through = stats.enTotalThrough;
@@ -2494,52 +2409,31 @@
       } else { 
           matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 우선 기본 수비 포메이션을 유지하며 탐색전을 펼치세요.`; 
       }
-      const expectedWinRate = Math.min(100, currentWinRate + 14); const diffPct = expectedWinRate - currentWinRate;
-      let solutionWithGraph = `
-        <div style="margin-bottom: 12px; line-height: 1.6;">${solutionText}</div>
-        <div style="margin-top: 16px; padding: 16px; background: var(--background); border-radius: 12px; border: 1px solid var(--border);">
-          <div style="font-size: 13px; font-weight: 800; color: var(--foreground); margin-bottom: 12px;">📈 솔루션 적용 시 예상 승률 변화</div>
-          <div style="margin-bottom: 10px;">
-            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px;">
-              <span style="color: var(--muted-foreground);">현재 승률</span><span style="color: var(--foreground);">${currentWinRate}%</span>
-            </div>
-            <div style="width: 100%; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden;">
-              <div style="width: ${currentWinRate}%; height: 100%; background: var(--muted-foreground); border-radius: 99px; transition: width 1s ease;"></div>
-            </div>
-          </div>
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 4px;">
-              <span style="color: var(--pro-gold);">예상 승률</span><span style="color: var(--pro-gold);">${expectedWinRate}% <span style="font-size: 11px;">(+${diffPct}%p)</span></span>
-            </div>
-            <div style="width: 100%; height: 8px; background: var(--pro-gold-bg); border-radius: 99px; overflow: hidden; border: 1px solid var(--pro-gold);">
-              <div style="width: ${expectedWinRate}%; height: 100%; background: var(--pro-gold); border-radius: 99px; transition: width 1s ease;"></div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      if (isKb) { strategy = `<b>[⌨️ 키보드 최적화 전술]</b><br>수비 시 <b>[E]키(달리기) 남발</b>을 줄여 역동작을 방지해야 합니다. [C]키를 누른 채 수비 라인을 맞춰 길목을 선점하세요. 공격 시 측면 윙어에게 '뒤에서 침투' 지시를 내리면 키보드 환경에서 훨씬 효과적인 침투가 나옵니다.`; } 
-      else { strategy = `<b>[🎮 패드 최적화 전술]</b><br>패드의 강점인 <b>360도 미세 아날로그 조작</b>을 극대화하세요. 페널티 박스 근처에서 <b>LT/L2(등지기) 후 C드리블</b>로 수비수 타이밍을 완벽히 뺏은 후, ZD(감아차기)나 컷백 공간을 창출하는 것을 적극 추천합니다.`; }
-
-      const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
-      setHtml('pro-ai-weakness', weakness + `<div style="margin-top:12px; font-size:13px;">${strategy}</div>`);
       setHtml('pro-ai-matchup', matchup);
-      setHtml('pro-ai-solution', solutionWithGraph);
 
-      if (stats.worstSpId) {
-          const worstName = spidMetaCache[stats.worstSpId] || '선수';
-          document.getElementById('worst-player-info').innerHTML = `<span style="color:var(--lose-color); font-weight:900;">${stats.worstPosLabel} ${worstName}</span><br>평균 평점 <b>${stats.lowestRating}점</b>으로 스쿼드 내 최하위입니다. 대인 마크 및 오프더볼 움직임 개선이 시급합니다.`;
-          
-          let replaceName = "23UCL 뤼디거";
-          if (["ST", "CF", "LS", "RS"].includes(stats.worstPosLabel)) replaceName = "CC 호날두";
-          else if (["LW", "RW", "LM", "RM"].includes(stats.worstPosLabel)) replaceName = "BWC 펠레";
-          else if (["CAM", "CM", "CDM"].includes(stats.worstPosLabel)) replaceName = "LN 굴리트";
-          else if (["GK"].includes(stats.worstPosLabel)) replaceName = "19UCL 쿠르투아";
-          document.getElementById('replace-player-info').innerHTML = `최상위 슈챔 랭커 픽률 데이터 기반, <br><b style="color:var(--ai-blue); font-size:15px;">${replaceName}</b> (으)로 교체 시 포지션 평균 평점이 약 1.2점 상승할 것으로 예측됩니다.`;
+      // 3) 스쿼드 구멍 & 교체 추천
+      const sq = stats.squad || {};
+      if (sq.worst) {
+        const w = sq.worst;
+        setHtml('worst-player-info', `<span style="color:var(--lose-color); font-weight:900;">${w.pos} ${escapeHtml(spidMetaCache[w.spId] || '선수')}</span><br>최근 ${w.games}경기 평균 평점 <b>${w.avg.toFixed(1)}점</b>으로 선발 중 가장 낮아요.`);
+        if (sq.replacement) {
+          const r = sq.replacement;
+          setHtml('replace-player-info', `같은 ${w.pos} 자리에 썼던 <b style="color:var(--ai-blue); font-size:15px;">${escapeHtml(spidMetaCache[r.spId] || '선수')}</b>의 평균 평점이 <b>${r.avg.toFixed(1)}점</b>(${r.games}경기)으로 더 좋았어요. 다시 기용해보세요.`);
+        } else {
+          const line = positionMap[Object.keys(positionMap).find(k => positionMap[k].label === w.pos)]?.line;
+          const need = w.pos === 'GK' ? '반응속도·다이빙·핸들링이 높은 골키퍼'
+            : ['LB', 'RB', 'LWB', 'RWB'].includes(w.pos) ? '속력·크로스·스태미나가 좋은 풀백'
+            : line === 'df' ? '속력·대인 수비·몸싸움이 좋은 수비수'
+            : ['CDM', 'LDM', 'RDM'].includes(w.pos) ? '가로채기·태클·짧은 패스가 좋은 수비형 미드필더'
+            : line === 'mf' ? '시야·짧은 패스·드리블이 좋은 미드필더'
+            : '골 결정력·침착성·속력이 좋은 공격수';
+          setHtml('replace-player-info', `최근 기록에는 이 자리에서 더 잘한 선수가 없어요. <b style="color:var(--ai-blue);">${need}</b>로 교체를 고려해보세요.`);
+        }
       } else {
-          document.getElementById('worst-player-info').innerHTML = "선발 라인업 내에서 뚜렷한 부진 선수가 없습니다."; document.getElementById('replace-player-info').innerHTML = "현재 스쿼드의 밸런스가 매우 안정적입니다.";
+        setHtml('worst-player-info', "선발 라인업 내에서 뚜렷한 부진 선수가 없습니다.");
+        setHtml('replace-player-info', "현재 스쿼드의 밸런스가 매우 안정적입니다.");
       }
-    }, 1200); 
+    }, 600);
   }
 
   function loadMoreMatches() {
@@ -2815,130 +2709,83 @@
     if (man) parts.push(`${man.toLocaleString()}만`);
     return (parts.join(' ') || n.toLocaleString()) + ' BP';
   }
-  function calcFee() {
-    const amount = parseFloat(document.getElementById('fee-amount').value) || 0;
-    const unit = parseFloat(document.getElementById('fee-unit').value);
-    const price = amount * unit;
-    const discount = (document.getElementById('fee-pcbang').checked ? 30 : 0)
-      + (document.getElementById('fee-topclass').checked ? 20 : 0)
-      + parseInt(document.getElementById('fee-coupon').value, 10);
-    const rate = 40 * Math.max(0, 100 - discount) / 100;
-    const fee = price * rate / 100;
-    safeSetText('fee-rate', `${rate.toFixed(1)}%`);
-    safeSetText('fee-discount', `${Math.min(discount, 100)}%`);
-    safeSetText('fee-value', formatBP(fee));
-    safeSetText('fee-receive', formatBP(price - fee));
-    safeSetText('fee-price', formatBP(price));
+  // 선수(판매 건)마다 금액 · 단위 · 쿠폰을 따로 넣고, PC방 · TOP CLASS는 공통으로 적용
+  const FEE_MAX_ROWS = 30;
+  let feeRows = [];
+  let feeRowSeq = 0;
+
+  function feeRowHTML(r) {
+    const units = [['1000000000000', '조'], ['100000000', '억'], ['10000', '만'], ['1', 'BP']];
+    const coupons = [0, 10, 20, 30, 40, 50];
+    return `
+      <div class="fee-row" data-id="${r.id}">
+        <input type="text" class="auth-input fee-name" placeholder="선수 이름 (선택)" value="${escapeHtml(r.name)}" data-field="name" maxlength="30">
+        <div class="fee-row-inputs">
+          <input type="number" class="auth-input" placeholder="금액" min="0" step="any" inputmode="decimal" value="${r.amount}" data-field="amount">
+          <select class="tool-select" data-field="unit">${units.map(([v, l]) => `<option value="${v}" ${String(r.unit) === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+          <select class="tool-select" data-field="coupon" title="수수료 할인 쿠폰">${coupons.map(c => `<option value="${c}" ${r.coupon === c ? 'selected' : ''}>${c ? '쿠폰 ' + c + '%' : '쿠폰 없음'}</option>`).join('')}</select>
+          <button class="fee-del" onclick="removeFeeRow(${r.id})" aria-label="이 선수 삭제" title="삭제">✕</button>
+        </div>
+        <div class="fee-row-result" id="fee-row-result-${r.id}"></div>
+      </div>`;
   }
-  function initFeeCalculator() {
-    ['fee-amount', 'fee-unit', 'fee-pcbang', 'fee-topclass', 'fee-coupon'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', calcFee);
-    });
+
+  function renderFeeRows() {
+    const box = document.getElementById('fee-rows');
+    if (!box) return;
+    box.innerHTML = feeRows.map(feeRowHTML).join('');
     calcFee();
   }
 
-  // ===== 도구: 스쿼드 메이커 =====
-  const FORMATIONS = {
-    '4-2-3-1': ['GK','LB','LCB','RCB','RB','LDM','RDM','LAM','CAM','RAM','ST'],
-    '4-3-3': ['GK','LB','LCB','RCB','RB','LCM','CM','RCM','LW','ST','RW'],
-    '4-4-2': ['GK','LB','LCB','RCB','RB','LM','LCM','RCM','RM','LS','RS'],
-    '4-1-2-1-2': ['GK','LB','LCB','RCB','RB','CDM','LCM','RCM','CAM','LS','RS'],
-    '4-2-2-2': ['GK','LB','LCB','RCB','RB','LDM','RDM','LAM','RAM','LS','RS'],
-    '3-4-3': ['GK','LCB','CB','RCB','LM','LCM','RCM','RM','LW','ST','RW'],
-    '5-3-2': ['GK','LWB','LCB','CB','RCB','RWB','LCM','CM','RCM','LS','RS']
-  };
-  let squad = { f: '4-2-3-1', p: {} };
-  let pickingSlot = null;
-
-  function squadToString() {
-    const slots = FORMATIONS[squad.f].map((_, i) => squad.p[i] ? `${squad.p[i].id}.${squad.p[i].g}` : '').join(',');
-    return `${squad.f}|${slots}`;
+  function addFeeRow() {
+    if (feeRows.length >= FEE_MAX_ROWS) return showToast(`최대 ${FEE_MAX_ROWS}명까지 추가할 수 있어요.`);
+    feeRows.push({ id: ++feeRowSeq, name: '', amount: '', unit: '100000000', coupon: 0 });
+    renderFeeRows();
+    const inputs = document.querySelectorAll('#fee-rows .fee-row:last-child input[data-field="amount"]');
+    if (inputs[0]) inputs[0].focus();
   }
-  function squadFromString(str) {
-    const [f, slots] = String(str).split('|');
-    if (!FORMATIONS[f]) return null;
-    const p = {};
-    (slots || '').split(',').forEach((s, i) => {
-      const [id, g] = s.split('.').map(Number);
-      if (id) p[i] = { id, g: Math.min(Math.max(g || 1, 1), 13) };
+
+  function removeFeeRow(id) {
+    feeRows = feeRows.filter(r => r.id !== id);
+    if (feeRows.length === 0) feeRows.push({ id: ++feeRowSeq, name: '', amount: '', unit: '100000000', coupon: 0 });
+    renderFeeRows();
+  }
+
+  function calcFee() {
+    const common = (document.getElementById('fee-pcbang')?.checked ? 30 : 0) + (document.getElementById('fee-topclass')?.checked ? 20 : 0);
+    let totalPrice = 0, totalFee = 0, count = 0;
+    feeRows.forEach(r => {
+      const price = (parseFloat(r.amount) || 0) * parseFloat(r.unit);
+      const discount = Math.min(100, common + r.coupon);
+      const rate = 40 * (100 - discount) / 100;
+      const fee = price * rate / 100;
+      if (price > 0) { count++; totalPrice += price; totalFee += fee; }
+      const el = document.getElementById(`fee-row-result-${r.id}`);
+      if (el) el.innerHTML = price > 0
+        ? `수수료율 <b>${rate.toFixed(1)}%</b> · 수수료 <b style="color:var(--lose-color);">${formatBP(fee)}</b> · 실수령 <b style="color:var(--win-color);">${formatBP(price - fee)}</b>`
+        : '<span style="color:var(--muted-foreground);">금액을 입력하세요</span>';
     });
-    return { f, p };
+    safeSetText('fee-count', `${count}명`);
+    safeSetText('fee-price', formatBP(totalPrice));
+    safeSetText('fee-value', formatBP(totalFee));
+    safeSetText('fee-receive', formatBP(totalPrice - totalFee));
   }
 
-  function initSquadMaker() {
-    const sel = document.getElementById('squad-formation');
-    if (!sel) return;
-    sel.innerHTML = Object.keys(FORMATIONS).map(f => `<option value="${f}">${f}</option>`).join('');
-    const fromUrl = new URLSearchParams(location.search).get('squad');
-    squad = squadFromString(fromUrl) || squadFromString(localStorage.getItem('fco_squad')) || squad;
-    sel.value = squad.f;
-    sel.addEventListener('change', () => { squad.f = sel.value; saveSquad(); renderSquad(); });
-    document.getElementById('squad-search').addEventListener('input', renderPickerResults);
-    renderSquad();
-    spidReady.then(renderSquad);
-  }
-  function saveSquad() { localStorage.setItem('fco_squad', squadToString()); }
-
-  function renderSquad() {
-    const pitch = document.getElementById('squad-pitch');
-    if (!pitch) return;
-    pitch.innerHTML = FORMATIONS[squad.f].map((pos, i) => {
-      const [x, y] = POS_COORD[pos];
-      const pl = squad.p[i];
-      const inner = pl ? `
-          <img src="${playerImg(pl.id)}" onerror="this.onerror=null; this.src='${playerImgFallback(pl.id)}';" alt="">
-          ${seasonIcon(pl.id) ? `<img class="lu-season" src="${seasonIcon(pl.id)}" alt="">` : ''}
-          <span class="lu-grade">+${pl.g}</span>
-          <span class="lu-name">${escapeHtml(spidMetaCache[pl.id] || '선수')}</span>
-          <span class="lu-rating">${pos}</span>`
-        : `<span class="sq-empty">+</span><span class="lu-rating">${pos}</span>`;
-      return `<button class="lu-node sq-slot" style="left:${x}%; top:${y}%;" onclick="openPicker(${i})" aria-label="${pos} 선수 선택">${inner}</button>`;
-    }).join('');
-    const filled = Object.keys(squad.p).filter(i => i < 11).length;
-    safeSetText('squad-count', `${filled} / 11명`);
-  }
-
-  function openPicker(slot) {
-    pickingSlot = slot;
-    safeSetText('picker-pos', FORMATIONS[squad.f][slot]);
-    const cur = squad.p[slot];
-    document.getElementById('squad-grade').value = cur ? cur.g : 1;
-    document.getElementById('squad-remove').style.display = cur ? '' : 'none';
-    const input = document.getElementById('squad-search');
-    input.value = '';
-    renderPickerResults();
-    document.getElementById('picker-modal').style.display = 'flex';
-    setTimeout(() => input.focus(), 50);
-  }
-  function closePicker() { document.getElementById('picker-modal').style.display = 'none'; }
-
-  function renderPickerResults() {
-    const box = document.getElementById('squad-results');
-    const q = document.getElementById('squad-search').value.trim().replace(/\s+/g, '');
-    if (!spidList.length) { box.innerHTML = '<div class="picker-hint">선수 목록을 불러오는 중입니다...</div>'; return; }
-    if (!q) { box.innerHTML = '<div class="picker-hint">선수 이름을 입력하세요. (예: 호날두)</div>'; return; }
-    const found = [];
-    for (const p of spidList) {
-      if (p.name.replace(/\s+/g, '').includes(q)) { found.push(p); if (found.length >= 60) break; }
-    }
-    box.innerHTML = found.length === 0 ? '<div class="picker-hint">검색 결과가 없습니다.</div>' : found.map(p => {
-      const s = seasonMetaCache[Math.floor(p.id / 1000000)];
-      return `<button class="picker-item" onclick="pickPlayer(${p.id})">
-        ${s?.seasonImg ? `<img src="${s.seasonImg}" alt="" class="picker-season">` : ''}
-        <span style="font-weight:800;">${escapeHtml(p.name)}</span>
-        <span style="margin-left:auto; font-size:12px; color:var(--muted-foreground);">${escapeHtml(s?.className?.split('(')[0] || '')}</span>
-      </button>`;
-    }).join('');
-  }
-  function pickPlayer(spId) {
-    squad.p[pickingSlot] = { id: spId, g: parseInt(document.getElementById('squad-grade').value, 10) || 1 };
-    saveSquad(); renderSquad(); closePicker();
-  }
-  function removePlayer() { delete squad.p[pickingSlot]; saveSquad(); renderSquad(); closePicker(); }
-  function resetSquad() { if (confirm('스쿼드를 모두 비울까요?')) { squad.p = {}; saveSquad(); renderSquad(); } }
-  function shareSquad() {
-    copyText(`${location.origin}${location.pathname}?squad=${encodeURIComponent(squadToString())}`, '🔗 스쿼드 링크가 복사되었습니다!');
+  function initFeeCalculator() {
+    const box = document.getElementById('fee-rows');
+    if (!box) return;
+    box.addEventListener('input', (e) => {
+      const rowEl = e.target.closest('.fee-row');
+      const field = e.target.dataset.field;
+      if (!rowEl || !field) return;
+      const row = feeRows.find(r => r.id === Number(rowEl.dataset.id));
+      if (!row) return;
+      row[field] = field === 'coupon' ? parseInt(e.target.value, 10) : e.target.value;
+      calcFee();
+    });
+    ['fee-pcbang', 'fee-topclass'].forEach(id => document.getElementById(id).addEventListener('change', calcFee));
+    feeRows = [{ id: ++feeRowSeq, name: '', amount: '10', unit: '100000000', coupon: 0 }];
+    renderFeeRows();
   }
 
   // ===== 공통: 알림 · 복사 · 후원 =====
