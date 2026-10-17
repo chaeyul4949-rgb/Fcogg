@@ -70,7 +70,7 @@
     .main-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
     .main-tabs::-webkit-scrollbar-track { background: transparent; }
     
-    .tab-btn { flex: 0 0 auto; padding: 0 16px; height: 38px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--muted-foreground); background: transparent; border: none; cursor: pointer; transition: 0.3s ease; user-select: none; }
+    .tab-btn { flex: 0 0 auto; padding: 0 10px; height: 38px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--muted-foreground); background: transparent; border: none; cursor: pointer; transition: 0.3s ease; user-select: none; }
     .tab-btn:hover { color: var(--foreground); }
     .tab-btn.active { background-color: var(--primary); color: var(--primary-foreground); }
 
@@ -201,6 +201,10 @@
     .review-text { color: var(--foreground); font-size: 14px; line-height: 1.5; word-break: break-all; }
 
     .hub-container { display: flex; gap: 32px; align-items: flex-start; margin-top: 20px; }
+    .hub-sidebar { width: 220px; background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); flex-shrink: 0; }
+    .hub-menu-item { padding: 14px 16px; border-radius: 12px; color: var(--muted-foreground); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 4px; }
+    .hub-menu-item:hover { background: var(--muted); color: var(--foreground); }
+    .hub-menu-item.active { background: var(--foreground); color: var(--background); }
     .hub-content { flex: 1; display: flex; flex-direction: column; gap: 24px; }
     
     .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
@@ -224,12 +228,22 @@
     .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000; }
     .modal-close-btn:hover { background: var(--muted-foreground); color: var(--card); transform: rotate(90deg); }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    .tab-content, .sub-content { display: none; }
+    .tab-content.active, .sub-content.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .spinner { display: inline-block; font-size: 30px; margin-bottom: 12px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+    .sub-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px; cursor: grab; }
+    .sub-tabs:active { cursor: grabbing; }
+    .sub-tabs::-webkit-scrollbar { height: 6px; }
+    .sub-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    .sub-tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted-foreground); font-size: 13px; padding: 0 16px; height: 36px; border-radius: 99px; flex-shrink: 0; cursor: pointer; user-select: none; }
+    .sub-tab-btn:hover { color: var(--foreground); }
+    .sub-tab-btn.active { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+    .coming-soon-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 60px 20px; text-align: center; }
+    .coming-soon-icon { font-size: 44px; margin-bottom: 12px; }
+    .coming-soon-title { font-weight: 800; color: var(--muted-foreground); }
     .trait-layout-container { display: flex; flex-direction: column; gap: 24px; }
     @media(min-width: 900px) { .trait-layout-container { flex-direction: row; align-items: stretch; } }
     .trait-left-panel { flex: 0 0 380px; background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
@@ -263,6 +277,8 @@
       .ai-grid { grid-template-columns: 1fr; }
       .dashboard-grid { grid-template-columns: 1fr; }
       .hub-container { flex-direction: column; }
+      .hub-sidebar { width: 100%; display: flex; overflow-x: auto; padding: 12px; }
+      .hub-menu-item { white-space: nowrap; margin-bottom: 0; }
       .squad-section-wrapper { flex-direction: column; }
       .pro-squad-advisor { flex: 1; }
     }
@@ -469,19 +485,21 @@
   <header class="header-container">
     <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈">FCO<span>.GG</span></button>
     <div class="top-right-actions">
-      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢</button>
-      <button class="notice-icon-btn" onclick="openMinigameModal()" title="미니게임" aria-label="미니게임">🕹️</button>
+      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢<span id="notice-dot" class="notice-red-dot"></span></button>
       <button class="donate-btn" onclick="openDonateModal()">💛 후원하기</button>
-      <button class="notice-icon-btn" onclick="switchTab('hub')" title="내 허브 (로그인 · 설정)" aria-label="내 허브">👤</button>
+      <button id="top-user-icon" class="notice-icon-btn" style="font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입" aria-label="로그인 / 회원가입">👤</button>
     </div>
     <nav class="main-tabs">
-      <button class="tab-btn active" data-tab="search" onclick="switchTab('search')">전적 검색</button>
+      <button class="tab-btn active" data-tab="search" onclick="switchTab('search')">전적 & 구단 분석</button>
       <button class="tab-btn" data-tab="h2h" onclick="switchTab('h2h')">1:1 상대전적</button>
-      <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어</button>
-      <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어</button>
+      <button class="tab-btn" data-tab="player" onclick="switchTab('player')">포지션별 선수 티어</button>
+      <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
+      <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
       <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
-      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 · 스쿼드</button>
-      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO</button>
+      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료·스쿼드</button>
+      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
+      <button class="tab-btn" onclick="openMinigameModal()">🕹️ 미니게임</button>
+      <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">⚙️ 내 허브</button>
     </nav>
   </header>
 
@@ -516,10 +534,23 @@
           <div class="h2h-vs-badge">VS</div>
           <input type="text" id="h2h-user2" placeholder="두 번째 구단주" onkeydown="if(event.key==='Enter') searchH2HData()">
         </div>
-        <button class="pill-search-btn" style="width:100%; height: 48px; font-size: 16px;" onclick="searchH2HData()">🔥 맞대결 찾기</button>
+        <button class="pill-search-btn" style="width:100%; height: 48px; font-size: 16px;" onclick="searchH2HData()">🔥 정밀 스캔하기</button>
       </div>
     </div>
     <div id="h2h-result"></div>
+  </div>
+
+  <div id="tab-player" class="tab-content">
+    <div class="sub-tabs" id="scrollable-menu-2">
+      <button class="sub-tab-btn active" onclick="switchSubTab('fw', this)">FW (공격수)</button>
+      <button class="sub-tab-btn" onclick="switchSubTab('mf', this)">MF (미드필더)</button>
+      <button class="sub-tab-btn" onclick="switchSubTab('df', this)">DF (수비수)</button>
+      <button class="sub-tab-btn" onclick="switchSubTab('gk', this)">GK (골키퍼)</button>
+    </div>
+    <div id="sub-fw" class="sub-content active"><div class="coming-soon-card"><div class="coming-soon-icon">⚽</div><div class="coming-soon-title">FW 포지션 티어리스트 준비 중</div></div></div>
+    <div id="sub-mf" class="sub-content"><div class="coming-soon-card"><div class="coming-soon-icon">🎯</div><div class="coming-soon-title">MF 포지션 티어리스트 준비 중</div></div></div>
+    <div id="sub-df" class="sub-content"><div class="coming-soon-card"><div class="coming-soon-icon">🛡️</div><div class="coming-soon-title">DF 포지션 티어리스트 준비 중</div></div></div>
+    <div id="sub-gk" class="sub-content"><div class="coming-soon-card"><div class="coming-soon-icon">🧤</div><div class="coming-soon-title">GK 포지션 티어리스트 준비 중</div></div></div>
   </div>
 
   <div id="tab-teamcolor" class="tab-content">
@@ -564,7 +595,13 @@
         </div>
       </div>
       <div class="trait-right-panel">
-        <h3 style="font-size:24px; font-weight:900; margin-bottom:20px; text-align:center;"><span id="trait-pos-label" style="color:var(--ai-blue);">ST</span> 포지션 추천 특성</h3>
+        <h3 style="font-size:24px; font-weight:900; color:var(--foreground); margin-bottom: 20px; text-align:center;"><span id="trait-pos-label" style="color:var(--ai-blue);">ST</span> 포지션 기준 입니다.</h3>
+        
+        <div style="display:flex; border-bottom:1px solid var(--border); margin-bottom:24px;">
+          <div style="flex:1; text-align:center; padding:12px; font-weight:800; font-size:14px; border-bottom:3px solid var(--foreground); cursor:pointer;">획득 특성 추천</div>
+          <div style="flex:1; text-align:center; padding:12px; font-weight:600; font-size:14px; color:var(--muted-foreground); cursor:pointer;" onclick="showToast('훈련 코치 특성 조합 탭 준비 중입니다.')">훈련 코치 특성 조합</div>
+        </div>
+
         
         <div id="trait-content-area" style="display:flex; flex-direction:column; gap:24px;"></div>
       </div>
@@ -673,6 +710,9 @@
       <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">⚙️ 내 허브</h2><p style="color:var(--muted-foreground); font-weight:500;">개인 설정 및 권한을 관리합니다.</p></div>
     </div>
     <div class="hub-container">
+      <div class="hub-sidebar">
+        <div class="hub-menu-item active">내 계정 정보</div>
+      </div>
       <div class="hub-content">
         <div class="shadcn-card" style="padding: 24px;" id="hub-auth-container"></div>
         
@@ -815,6 +855,13 @@
       <div>⚔️ <b>1:1 상대전적 강화</b><br><span>공식 · 감독 · 친선 · 클래식 1on1 맞대결을 모두 찾아줘요.</span></div>
       <div>🧰 <b>수수료 계산기 · 스쿼드 메이커</b><br><span>PC방 · TOP CLASS · 쿠폰 할인을 넣어 실수령액을 계산하고, 스쿼드를 짜서 링크로 공유해보세요.</span></div>
       <div>🔗 <b>전적 링크 공유</b><br><span>검색 결과의 '링크 복사'로 친구에게 바로 보여줄 수 있어요.</span></div>
+      <div>🔥 <b>[NEW] FCO PRO 전용 프리미엄 기능</b><br>
+        <span style="font-weight:600; color:var(--draw-color);">1️⃣ PRO 실시간 매치업 상대 프리뷰 기능 추가</span><br>
+        <span style="font-weight:600; color:var(--draw-color);">2️⃣ 스쿼드 내 '구멍 선수' 자동 색출 및 1티어 대체자 추천</span>
+      </div>
+      <div>👑 <b>칭호 시스템 완벽 복구</b><br>
+        <span>- 타이탄(헤딩골 기준), 드리블러(드리블 성공률 기준) 등 유저 맞춤형 칭호가 예전처럼 100% 정상 작동합니다.</span>
+      </div>
     </div>
     <button class="pill-search-btn" style="width:100%; height:56px; font-size: 18px; margin-top: 24px; border-radius: 16px;" onclick="closeNoticeModal()">확인하고 시작하기</button>
   </div>
@@ -831,6 +878,7 @@
     <div id="profile-result-area" style="display: none;">
       <div class="profile-top-card">
         <div class="profile-name-area">
+          <img id="mvp-avatar-img" src="" alt="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--border); display:none; background:var(--muted); box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                     <div>
             <h2 id="profile-nickname">
               <span id="nickname-text">구단주명</span>
@@ -950,7 +998,7 @@
         <div class="review-container" style="margin-top: 0; box-shadow: none;">
           <div class="card-title">구단주 방명록</div>
           <div class="review-input-box">
-            <input type="text" id="review-input" class="review-input" maxlength="200" placeholder="매너 평가를 남겨주세요..." onkeydown="if(event.key==='Enter') addReview()">
+            <input type="text" id="review-input" class="review-input" placeholder="매너 평가를 남겨주세요..." onkeydown="if(event.key==='Enter') addReview()">
             <button class="review-submit" onclick="addReview()">작성</button>
           </div>
           <div id="review-list" class="review-list"></div>
@@ -1057,6 +1105,14 @@
     if (tabId === 'hub') renderHubAuth();
   }
 
+  function switchSubTab(subTabId, btnElement) {
+    document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    const target = document.getElementById('sub-' + subTabId);
+    if (target) target.classList.add('active');
+  }
+
   function enableDragScroll(selector) {
     const slider = document.querySelector(selector);
     if (!slider) return;
@@ -1152,7 +1208,16 @@
     if (!id || !pw) return showToast('아이디와 비밀번호를 모두 입력해주세요.');
     if (pw.length < 6) return showToast('비밀번호는 6자리 이상이어야 합니다.');
     if (id === ADMIN_ID) return showToast('사용할 수 없는 아이디입니다.');
-    if (!auth) return showToast('로그인 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+    if (!auth) {
+      const users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+      if (users[id]) return showToast('이미 존재하는 아이디입니다.');
+      users[id] = { pw };
+      localStorage.setItem('fco_auth_users', JSON.stringify(users));
+      localStorage.setItem('fco_current_user', id);
+      showToast('회원가입 완료! 로그인 되었습니다.');
+      closeAuthModal(); syncUserProStatus(id);
+      return;
+    }
 
     auth.createUserWithEmailAndPassword(`${id}@fcogg.dummy.com`, pw)
       .then(() => { showToast('회원가입 완료! 자동 로그인되었습니다.'); closeAuthModal(); })
@@ -1173,7 +1238,13 @@
       closeAuthModal(); renderHubAuth(); updateProTabUI();
       return;
     }
-    if (!auth) return showToast('로그인 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+    if (!auth) {
+      const users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+      if (!users[id] || users[id].pw !== pw) return showToast('아이디 또는 비밀번호가 일치하지 않습니다.');
+      localStorage.setItem('fco_current_user', id);
+      closeAuthModal(); syncUserProStatus(id);
+      return;
+    }
 
     auth.signInWithEmailAndPassword(`${id}@fcogg.dummy.com`, pw)
       .then(() => closeAuthModal())
@@ -1187,7 +1258,10 @@
 
     if (lowerId === ADMIN_ID) {
       isPro = true;
-    } else if (db) {
+    } else if (!db) {
+      const userPro = JSON.parse(localStorage.getItem('fco_pro_users') || '{}')[lowerId];
+      isPro = !!(userPro && userPro.active && userPro.expiry > Date.now());
+    } else {
       try {
         const ref = db.collection('accounts').doc(lowerId);
         const docSnap = await ref.get();
@@ -1286,16 +1360,23 @@
     statusText.style.color = isPro ? "var(--pro-gold)" : "var(--muted-foreground)";
   }
 
-  // ----- 관리자: PRO 권한 관리 -----
+  // ----- 관리자: PRO 권한 관리 (Firebase가 안 되면 이 브라우저에 저장) -----
+  const getLocalPro = () => JSON.parse(localStorage.getItem('fco_pro_users') || '{}');
+  const setLocalPro = (data) => localStorage.setItem('fco_pro_users', JSON.stringify(data));
+
   async function renderProList() {
     const listEl = document.getElementById('admin-pro-list');
-    if (!listEl || !db) return;
+    if (!listEl) return;
 
     let rows = [];
-    try {
-      const snap = await db.collection('accounts').where('isPro', '==', true).get();
-      snap.forEach(doc => { const d = doc.data(); if (d.expiry > Date.now()) rows.push({ id: doc.id, expiry: d.expiry }); });
-    } catch (e) {}
+    if (db) {
+      try {
+        const snap = await db.collection('accounts').where('isPro', '==', true).get();
+        snap.forEach(doc => { const d = doc.data(); if (d.expiry > Date.now()) rows.push({ id: doc.id, expiry: d.expiry }); });
+      } catch (e) {}
+    } else {
+      Object.entries(getLocalPro()).forEach(([id, u]) => { if (u && u.active && u.expiry > Date.now()) rows.push({ id, expiry: u.expiry }); });
+    }
 
     if (rows.length === 0) {
       listEl.innerHTML = '<div style="font-size:13px; color:var(--muted-foreground); padding:12px; text-align:center;">현재 PRO 활성 유저가 없습니다.</div>';
@@ -1318,34 +1399,51 @@
     const input = document.getElementById('admin-target-id');
     const targetId = input.value.trim().toLowerCase();
     if (!targetId) return showToast('권한을 줄 아이디를 입력하세요.');
-    if (!db) return showToast('서버에 연결할 수 없습니다.');
     try {
-      const ref = db.collection('accounts').doc(targetId);
-      const docSnap = await ref.get();
-      let base = Date.now();
-      if (docSnap.exists) { const d = docSnap.data(); if (d.isPro && d.expiry > base) base = d.expiry; }
-      await ref.set({ isPro: true, expiry: base + 60 * DAY_MS }, { merge: true });
-      showToast(`🎉 ${targetId} 님에게 PRO 60일(1+1 이벤트)을 부여했습니다!`);
+      if (db) {
+        const ref = db.collection('accounts').doc(targetId);
+        const docSnap = await ref.get();
+        let base = Date.now();
+        if (docSnap.exists) { const d = docSnap.data(); if (d.isPro && d.expiry > base) base = d.expiry; }
+        await ref.set({ isPro: true, expiry: base + 60 * DAY_MS }, { merge: true });
+      } else {
+        const pro = getLocalPro(); const cur = pro[targetId];
+        const base = (cur && cur.active && cur.expiry > Date.now()) ? cur.expiry : Date.now();
+        pro[targetId] = { active: true, expiry: base + 60 * DAY_MS };
+        setLocalPro(pro);
+      }
+      showToast(`🎉 [축하합니다!] ${targetId} 님에게 PRO 멤버십(1+1 이벤트 60일)을 성공적으로 부여했습니다!`);
       input.value = '';
       renderProList();
     } catch (e) { showToast('오류 발생: ' + e); }
   }
 
   async function extendPro(userId) {
-    if (!db || !confirm(`${userId} 님의 PRO 기간을 30일 연장하시겠습니까?`)) return;
-    const ref = db.collection('accounts').doc(userId);
-    const docSnap = await ref.get();
-    if (docSnap.exists) await ref.set({ isPro: true, expiry: docSnap.data().expiry + 30 * DAY_MS }, { merge: true });
-    showToast(`✨ ${userId} 님의 멤버십이 30일 연장되었습니다.`);
+    if (!confirm(`${userId} 님의 PRO 기간을 30일 연장하시겠습니까?`)) return;
+    if (db) {
+      const ref = db.collection('accounts').doc(userId);
+      const docSnap = await ref.get();
+      if (docSnap.exists) await ref.set({ isPro: true, expiry: docSnap.data().expiry + 30 * DAY_MS }, { merge: true });
+    } else {
+      const pro = getLocalPro();
+      if (pro[userId]) { pro[userId].expiry += 30 * DAY_MS; setLocalPro(pro); }
+    }
+    showToast(`✨ ${userId} 님의 멤버십 기간이 성공적으로 30일 연장되었습니다.`);
     renderProList();
   }
 
   async function cancelPro(userId) {
-    if (!db || !confirm(`정말 ${userId} 님의 PRO 멤버십을 해지하시겠습니까?`)) return;
-    await db.collection('accounts').doc(userId).set({ isPro: false, expiry: 0 }, { merge: true });
+    if (!confirm(`정말 ${userId} 님의 PRO 멤버십을 해지하시겠습니까?`)) return;
+    if (db) {
+      await db.collection('accounts').doc(userId).set({ isPro: false, expiry: 0 }, { merge: true });
+    } else {
+      const pro = getLocalPro();
+      if (pro[userId]) { pro[userId].active = false; pro[userId].expiry = 0; setLocalPro(pro); }
+    }
     showToast(`🗑️ ${userId} 님의 멤버십이 해지되었습니다.`);
     renderProList();
   }
+
   let currentUpgLevel = 1;
   const probMap = { 1: 100, 2: 81, 3: 64, 4: 50, 5: 26, 6: 15, 7: 7, 8: 4, 9: 2 };
 
@@ -1432,7 +1530,7 @@
           <div style="font-size:20px; font-weight:900; color:var(--tier-op); margin-bottom:12px;">${type.t} (${code})</div>
           <p style="font-size:13px; line-height:1.5; font-weight:600;">${type.d}</p>
           <p style="font-size:12px; color:var(--muted-foreground); margin-top:10px; line-height:1.6;">P/C 점유·역습 · T/W 스루패스·크로스 · A/S 슈팅 많음·신중 · D/R 수비 안정·난타전</p>
-          <button class="bg-btn" style="margin-top:16px; width:100%; border-color:var(--tier-op); color:var(--tier-op);" data-copy="[FCO.GG] ${escapeHtml(nickname)} 님의 플레이스타일: ${type.t} (${code})" onclick="copyText(this.dataset.copy, '결과가 복사되었습니다! 커뮤니티에 공유해보세요.')">결과 복사하기</button>
+          <button class="bg-btn" style="margin-top:16px; width:100%; border-color:var(--tier-op); color:var(--tier-op);" data-copy="[FCO.GG] ${escapeHtml(nickname)} 님의 플레이스타일: ${type.t} (${code})" onclick="copyText(this.dataset.copy, '결과가 복사되었습니다! 커뮤니티에 공유해보세요.')">결과 공유하기</button>
         </div>`;
     } catch (e) {
       const msg = e.message === 'NOT_FOUND' ? '구단주를 찾을 수 없습니다.' : e.message === 'NO_GAMES' ? '최근 공식경기 기록이 없습니다.' : apiErrorMessage(e);
@@ -1477,6 +1575,7 @@
     renderSearchHistory();
   }
   function clearSearchHistory() { localStorage.removeItem('fco_history'); renderSearchHistory(); }
+  function searchFromHistory(name) { searchNickname(name); }
 
   // 닉네임 버튼(data-nick), 경기 줄(data-mid) 클릭을 한 곳에서 처리
   document.addEventListener('click', (e) => {
@@ -1641,6 +1740,7 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     enableDragScroll('.main-tabs');
+    enableDragScroll('.sub-tabs');
 
     const currentUser = localStorage.getItem('fco_current_user');
     if (currentUser) syncUserProStatus(currentUser);
@@ -1664,28 +1764,40 @@
     else if (params.get('squad')) switchTab('tools');
   });
 
-  // ===== 추천 · 방명록 (Firebase) =====
-  async function getOwnerData(ouid, nickname) {
-    if (!db) return { rec: 0 };
-    try {
-      const ref = db.collection('users').doc(ouid);
-      const doc = await ref.get();
-      if (!doc.exists) { await ref.set({ nickname, rec: 0, rep: 0 }, { merge: true }); return { rec: 0 }; }
-      if (doc.data().nickname !== nickname) ref.update({ nickname }).catch(() => {});
-      return doc.data();
-    } catch (e) { return { rec: 0 }; }
+  // ===== 추천 · 신고 · 방명록 (Firebase, 연결 안 되면 이 브라우저에 저장) =====
+  const getLocal = (key) => { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; } };
+
+  async function initMockDBUser(ouid, nickname) {
+    if (db) {
+      try {
+        const ref = db.collection('users').doc(ouid);
+        const doc = await ref.get();
+        if (!doc.exists) { await ref.set({ nickname, rec: 0, rep: 0 }, { merge: true }); return { nickname, rec: 0, rep: 0 }; }
+        if (doc.data().nickname !== nickname) ref.update({ nickname }).catch(() => {});
+        return doc.data();
+      } catch (e) { return { rec: 0 }; }
+    }
+    const users = getLocal('fco_users');
+    if (!users[ouid]) users[ouid] = { nickname, rec: 0, rep: 0 }; else users[ouid].nickname = nickname;
+    localStorage.setItem('fco_users', JSON.stringify(users));
+    return users[ouid];
   }
+  const getOwnerData = initMockDBUser;
 
   async function actRecommend() {
-    if (!db) return showToast('서버에 연결할 수 없습니다.');
-    const key = 'fco_rec_' + globalOuid;
-    if (localStorage.getItem(key)) return showToast('이미 추천한 구단주입니다.');
     try {
-      const ref = db.collection('users').doc(globalOuid);
-      await ref.set({ nickname: globalNickname, rec: firebase.firestore.FieldValue.increment(1) }, { merge: true });
-      const updated = await ref.get();
-      localStorage.setItem(key, '1');
-      document.getElementById('prof-rec-cnt').innerText = updated.data().rec || 0;
+      if (db) {
+        const ref = db.collection('users').doc(globalOuid);
+        await ref.set({ nickname: globalNickname, rec: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+        const updated = await ref.get();
+        document.getElementById('prof-rec-cnt').innerText = updated.data().rec || 0;
+      } else {
+        const users = getLocal('fco_users');
+        if (!users[globalOuid]) users[globalOuid] = { nickname: globalNickname, rec: 0, rep: 0 };
+        users[globalOuid].rec += 1;
+        localStorage.setItem('fco_users', JSON.stringify(users));
+        document.getElementById('prof-rec-cnt').innerText = users[globalOuid].rec;
+      }
       renderTop10();
       showToast('👍 추천 완료!');
     } catch (e) { showToast('추천에 실패했습니다. 잠시 후 다시 시도해주세요.'); }
@@ -1697,17 +1809,22 @@
     const input = document.getElementById('review-input');
     const text = input.value.trim();
     if (!text) return showToast("내용을 입력하세요.");
-    if (!db) return showToast('서버에 연결할 수 없습니다.');
 
     const last = parseInt(localStorage.getItem('fco_last_review_time') || '0', 10);
-    if (Date.now() - last < 60000) return showToast("도배 방지를 위해 1분에 한 번만 작성할 수 있습니다.");
+    if (Date.now() - last < 60000) return showToast("방명록 도배 방지를 위해 1분에 한 번만 작성 가능합니다.");
+    localStorage.setItem('fco_last_review_time', String(Date.now()));
 
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
     const dateStr = `${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
     try {
-      await db.collection('users').doc(globalOuid).collection('reviews').add({ text: text.slice(0, 200), date: dateStr, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-      localStorage.setItem('fco_last_review_time', String(Date.now()));
+      if (db) {
+        await db.collection('users').doc(globalOuid).collection('reviews').add({ text, date: dateStr, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      } else {
+        const reviews = getLocal('fco_reviews');
+        (reviews[globalOuid] = reviews[globalOuid] || []).push({ text, date: dateStr });
+        localStorage.setItem('fco_reviews', JSON.stringify(reviews));
+      }
       input.value = '';
       loadReviews();
     } catch (e) { showToast('방명록 작성에 실패했습니다.'); }
@@ -1716,14 +1833,17 @@
   async function loadReviews() {
     const listEl = document.getElementById('review-list');
     const empty = `<div style="text-align:center; padding:20px; color:var(--muted-foreground); font-size:13px;">방명록이 없습니다.</div>`;
-    if (!db) { listEl.innerHTML = empty; return; }
+    const item = (r) => `<div class="review-item"><div class="review-meta"><span>익명</span><span>${escapeHtml(r.date || '')}</span></div><div class="review-text">${escapeHtml(r.text)}</div></div>`;
+    let list = [];
     try {
-      const snap = await db.collection('users').doc(globalOuid).collection('reviews').orderBy('createdAt', 'desc').limit(30).get();
-      listEl.innerHTML = snap.empty ? empty : snap.docs.map(doc => {
-        const r = doc.data();
-        return `<div class="review-item"><div class="review-meta"><span>익명</span><span>${escapeHtml(r.date || '')}</span></div><div class="review-text">${escapeHtml(r.text)}</div></div>`;
-      }).join('');
-    } catch (e) { listEl.innerHTML = empty; }
+      if (db) {
+        const snap = await db.collection('users').doc(globalOuid).collection('reviews').orderBy('createdAt', 'desc').get();
+        list = snap.docs.map(d => d.data());
+      } else {
+        list = (getLocal('fco_reviews')[globalOuid] || []).slice().reverse();
+      }
+    } catch (e) {}
+    listEl.innerHTML = list.length ? list.map(item).join('') : empty;
   }
 
   async function renderTop10() {
@@ -1736,6 +1856,8 @@
         const snap = await db.collection('users').where('rec', '>', 0).orderBy('rec', 'desc').limit(10).get();
         arr = snap.docs.map(d => d.data());
       } catch (e) {}
+    } else {
+      arr = Object.values(getLocal('fco_users')).filter(u => u.rec > 0).sort((a, b) => b.rec - a.rec);
     }
 
     if (arr.length === 0) {
@@ -1803,7 +1925,7 @@
           <div class="td-season"><img src="${tc.logo}" alt="${tc.name}" onerror="logoFallback(this)" style="width:32px; height:32px; object-fit:contain;"></div>
           <div class="td-info" style="flex-direction:column; align-items:flex-start; gap:2px;">
             <span style="font-size:14px; font-weight:800;">${tc.name}</span>
-            <span style="font-size:11px; color:var(--muted-foreground); font-weight:600;">${tc.count}명 사용</span>
+            <span style="font-size:11px; color:var(--muted-foreground); font-weight:600;">${tc.count}명 (${tc.rate}%)</span>
           </div>
           <div class="td-stats"><div class="stat-pick" style="font-size:15px; font-weight:900;">${tc.rate}%</div></div>
         </div>`;
@@ -2081,7 +2203,10 @@
         <div class="shadcn-card result-card">
           <div class="result-head">
             <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}</span></b>
-            <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="font-size:11px; font-weight:700; color:var(--win-color); background:rgba(52,199,89,0.1); padding:4px 10px; border-radius:99px;">API 연동됨</span>
+              <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
+            </div>
           </div>
           <div class="result-stats">
             <div class="result-stat"><div class="result-stat-label">최근 ${total}경기 승률</div><div class="result-stat-value">${winRate}%</div><div class="result-stat-sub">${wins}승 ${draws}무 ${losses}패</div></div>
