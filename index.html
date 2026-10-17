@@ -457,6 +457,10 @@
     .sol-card { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 14px; font-size: 14px; }
 
     /* ===== 특성 티어 ===== */
+    .trait-hex { width: 54px; height: 60px; margin-bottom: 8px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); display: flex; align-items: center; justify-content: center; position: relative; }
+    .trait-hex.silver { background: linear-gradient(160deg, #f3f4f6 0%, #c7cbd1 55%, #9aa0a8 100%); color: #23262b; }
+    .trait-hex.silver::before { content: ''; position: absolute; inset: 3px; clip-path: inherit; background: linear-gradient(160deg, #e5e7eb, #b9bec6); }
+    .trait-hex svg { width: 30px; height: 30px; position: relative; }
     .trait-note { font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-align: center; margin-top: -8px; }
     .trait-items { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; }
     .trait-item { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 16px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; min-width: 85px; }
@@ -794,7 +798,7 @@
       <p style="color:var(--muted-foreground); font-weight:600; margin-top:8px; font-size: 16px;">새 기능 추가 및 검색 안정화</p>
     </div>
     <div class="notice-body">
-      <div>📊 <b>팀컬러 · 특성 티어 최신화</b><br><span>2026.10.17 넥슨 데이터센터 기준으로 업데이트했어요. 특성은 11강 · 8강 · 5강까지 보여줘요.</span></div>
+      <div>📊 <b>팀컬러 · 특성 티어 최신화</b><br><span>2026.10.17 넥슨 데이터센터 기준으로 업데이트했어요. 특성은 11강 · 8강 획득 기준이에요.</span></div>
       <div>👑 <b>PRO 리포트 개인 맞춤 분석</b><br><span>내 최근 경기에서 승패를 가른 항목을 찾아, 보완하면 승률이 얼마나 오를지 보여줘요. 베스트 11도 실제 포지션 자리에 나와요.</span></div>
       <div>🔍 <b>전적 검색 안정화</b><br><span>검색이 실패하던 문제를 고쳤고, 공식경기 · 감독모드 · 클래식 1on1 · 친선 기록을 골라 볼 수 있어요.</span></div>
       <div>📋 <b>경기 상세</b><br><span>경기를 누르면 양 팀 라인업, 슈팅 맵, 득점 기록, 스탯 비교를 볼 수 있어요.</span></div>
@@ -1812,6 +1816,40 @@
     }).join('');
   }
 
+  // 11강 획득 특성 아이콘 (넥슨 스타일 은색 육각형 배지 + 그림)
+  const TRAIT_SVG = {
+    target:   '<circle cx="12" cy="12" r="7"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/>',
+    bolt:     '<circle cx="12" cy="4.5" r="2"/><path d="M8 10h8M12 7v5M13 13l-4 4h4l-3 5"/>',
+    horns:    '<path d="M4 4c0 6 3 9 6 10l-1 6h6l-1-6c3-1 6-4 6-10-2 3-4 4-6 4h-4C8 8 6 7 4 4z" fill="currentColor"/>',
+    calm:     '<circle cx="12" cy="5" r="2.2" fill="currentColor"/><path d="M12 8v6M7 11l5 3 5-3M4 19c3-3 13-3 16 0" />',
+    alarm:    '<path d="M6 19h12M8 19v-6a4 4 0 0 1 8 0v6"/><path d="M12 11v4M10 13l2-2 2 2"/><path d="M12 2v2M4.5 5l1.5 1.5M19.5 5L18 6.5"/>',
+    curl:     '<path d="M4 20V5h16v15"/><path d="M4 9h3"/><circle cx="16" cy="9" r="2.4" fill="currentColor"/><path d="M7 18c2-6 5-8 7-8" stroke-dasharray="2 2"/>',
+    cross:    '<circle cx="8" cy="17" r="3.5" fill="currentColor"/><path d="M6 11c0-5 8-8 12-4"/><path d="M16 4l2.5 3-3.5 1"/>',
+    highcross:'<circle cx="7" cy="18" r="3" fill="currentColor"/><path d="M8 13C9 5 15 3 18 6"/><path d="M18 6v8M15.5 11.5L18 14l2.5-2.5"/>',
+    dribble:  '<path d="M3 13c2-5 4-5 6 0s4 5 6 0"/><path d="M15 13h6M18 10l3 3-3 3"/>',
+    scissors: '<circle cx="7" cy="17" r="3"/><circle cx="17" cy="17" r="3"/><path d="M9 15L17 3M15 15L7 3"/>',
+    through:  '<circle cx="12" cy="17" r="4" fill="currentColor"/><path d="M12 11V3M9 6l3-3 3 3"/><path d="M8 8h8"/>',
+    tikitaka: '<circle cx="6" cy="18" r="2.2"/><circle cx="12" cy="10" r="2.2"/><circle cx="18" cy="4" r="2.2" fill="currentColor"/><path d="M7.5 16.5l3-4.5M13.5 8.5l3-3"/>',
+    recover:  '<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="currentColor"/><circle cx="12" cy="11" r="4" stroke="#e5e7eb"/><path d="M12 9v2.5l1.5 1" stroke="#e5e7eb"/>',
+    snake:    '<path d="M6 20h9a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6"/><circle cx="17" cy="8" r="2.2" fill="currentColor"/>',
+    press:    '<circle cx="9" cy="13" r="5" fill="currentColor"/><path d="M14 11c2-1 3-3 6-3M14 15c3 0 4 2 6 2"/>',
+    buildup:  '<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="currentColor"/><path d="M12 16V8M9 11l3-3 3 3" stroke="#e5e7eb" stroke-width="2"/>',
+    sideL:    '<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="currentColor"/><path d="M8 7l-1 9M11 6l-1 12" stroke="#e5e7eb" stroke-width="1.6"/>',
+    sideR:    '<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="currentColor"/><path d="M16 7l1 9M13 6l1 12" stroke="#e5e7eb" stroke-width="1.6"/>',
+    glove:    '<path d="M7 21v-8L5 9.5a1.4 1.4 0 0 1 2.4-1.4L9 10V4a1.3 1.3 0 0 1 2.6 0v6-7a1.3 1.3 0 0 1 2.6 0v7-5a1.3 1.3 0 0 1 2.6 0v9c0 3-1.5 4.5-3 7z" fill="currentColor"/>',
+    ball:     '<circle cx="12" cy="12" r="8"/><path d="M12 8l3 2-1 3.5h-4L9 10z" fill="currentColor"/>'
+  };
+  const TRAIT_SVG_MAP = [
+    ['근거리 슛', 'target'], ['빠른 템포', 'bolt'], ['몸 싸움', 'horns'], ['침착하게', 'calm'], ['침투 요청', 'alarm'],
+    ['감아차기', 'curl'], ['높은 크로스', 'highcross'], ['크로스', 'cross'], ['드리블', 'dribble'], ['가로채기', 'scissors'],
+    ['쓰루 패스', 'through'], ['티키타카', 'tikitaka'], ['재정비', 'recover'], ['스탠딩 태클', 'snake'], ['압박', 'press'],
+    ['빌드업', 'buildup'], ['좌측 수비', 'sideL'], ['우측 수비', 'sideR'], ['GK', 'glove']
+  ];
+  function traitBadge(name) {
+    const key = (TRAIT_SVG_MAP.find(([k]) => name.includes(k)) || [null, 'ball'])[1];
+    return `<div class="trait-hex silver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TRAIT_SVG[key]}</svg></div>`;
+  }
+
   function getTraitEmoji(name) {
     if (name.includes('슛') || name.includes('슈팅') || name.includes('골') || name.includes('감아차기')) return '🎯';
     if (name.includes('패스') || name.includes('크로스') || name.includes('빌드업')) return '👟';
@@ -1829,8 +1867,12 @@
     "아크로바틱 피니셔": 50, "크로스 포쳐": 51, "GK 데드아이": 68, "GK 빠른 반응": 60, "GK 공중볼 장악": 69
   };
 
+  // 8강 아이콘은 저장소에 있는 이미지 사용 (없으면 넥슨 CDN)
+  const LOCAL_TRAIT_ICONS = { 50: 1, 51: 1, 52: 1, 53: 1, 54: 1, 55: 1, 56: 1, 57: 1, 59: 1, 60: 1, 62: 1, 63: 1, 64: 1, 65: 1, 66: 1, 67: 1 };
   function getTraitIconUrl(name) {
-    return `https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_${traitImgMap[name] || 50}.png`;
+    const id = traitImgMap[name] || 50;
+    if (id === 68) return 'trait_icon_68%20(1).png';
+    return LOCAL_TRAIT_ICONS[id] ? `trait_icon_${id}.png` : `https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_${id}.png`;
   }
 
   // ===== 포지션별 인기 획득 특성 (넥슨 데이터센터 · 2026.10.17 기준, 1:1 공식경기 슈퍼챔피언스~월드클래스3) =====
@@ -1838,74 +1880,54 @@
   const T = (s) => s.split('|').map(x => { const [n, r] = x.split(':'); return { n, r: r ? r + '%' : '' }; });
   const traitsDB = {
     ST:  { t11: T("근거리 슛 향상:36.1|빠른 템포 공격:17.8|능숙한 몸 싸움:12.0|침착하게 골 찬스 만들기:10.5|침투 요청에 즉각 반응:5.3"),
-           t8:  T("라인 브레이커:24.1|아크로바틱 피니셔:21.4|크로스 포쳐:20.5|트릭스터:19.8|타이탄:8.5"),
-           t5:  T("예리한 감아차기|파워 헤더|패스 마스터|승부욕|아웃사이드 슈팅/크로스") },
+           t8:  T("라인 브레이커:24.1|아크로바틱 피니셔:21.4|크로스 포쳐:20.5|트릭스터:19.8|타이탄:8.5") },
     RS:  { t11: T("근거리 슛 향상:38.6|빠른 템포 공격:17.1|능숙한 몸 싸움:12.8|침착하게 골 찬스 만들기:9.2|침투 요청에 즉각 반응:4.8"),
-           t8:  T("아크로바틱 피니셔:23.1|크로스 포쳐:22.4|트릭스터:21.7|라인 브레이커:17.3|타이탄:9.4"),
-           t5:  T("예리한 감아차기:42.7|파워 헤더:27.0|패스 마스터:8.5|승부욕:7.3|아웃사이드 슈팅/크로스:5.0") },
+           t8:  T("아크로바틱 피니셔:23.1|크로스 포쳐:22.4|트릭스터:21.7|라인 브레이커:17.3|타이탄:9.4") },
     CF:  { t11: T("근거리 슛 향상:26.4|빠른 템포 공격:15.5|능숙한 몸 싸움:12.8|침착하게 골 찬스 만들기:9.9|감아차기 향상:5.9"),
-           t8:  T("라인 브레이커:27.6|트릭스터:24.4|크로스 포쳐:17.5|아크로바틱 피니셔:13.2|스피드스터:8.4"),
-           t5:  T("예리한 감아차기:31.2|파워 헤더:28.3|패스 마스터:15.2|승부욕:6.9|아웃사이드 슈팅/크로스:6.2") },
+           t8:  T("라인 브레이커:27.6|트릭스터:24.4|크로스 포쳐:17.5|아크로바틱 피니셔:13.2|스피드스터:8.4") },
     RW:  { t11: T("크로스 향상:18.9|감아차기 향상:10.6|능숙한 몸 싸움:9.6|근거리 슛 향상:8.3|높은 크로스 향상:8.0"),
-           t8:  T("트릭스터:39.4|라인 브레이커:33.1|스피드스터:19.3|2개의 심장:2.9|크로스 포쳐:1.8"),
-           t5:  T("패스 마스터:28.3|예리한 감아차기:20.3|파워 헤더:11.8|아웃사이드 슈팅/크로스:10.8|승부욕:6.7") },
+           t8:  T("트릭스터:39.4|라인 브레이커:33.1|스피드스터:19.3|2개의 심장:2.9|크로스 포쳐:1.8") },
     LW:  { t11: T("크로스 향상:19.0|감아차기 향상:10.8|능숙한 몸 싸움:8.8|근거리 슛 향상:8.0|높은 크로스 향상:7.5"),
-           t8:  T("트릭스터:40.7|라인 브레이커:31.9|스피드스터:19.1|2개의 심장:2.8|크로스 포쳐:1.9"),
-           t5:  T("패스 마스터:26.4|예리한 감아차기:22.0|파워 헤더:12.2|아웃사이드 슈팅/크로스:10.9|승부욕:6.9") },
+           t8:  T("트릭스터:40.7|라인 브레이커:31.9|스피드스터:19.1|2개의 심장:2.8|크로스 포쳐:1.9") },
     CAM: { t11: T("근거리 슛 향상:28.8|빠른 템포 공격:13.5|능숙한 몸 싸움:11.4|침착하게 골 찬스 만들기:10.7|감아차기 향상:7.9"),
-           t8:  T("트릭스터:32.9|라인 브레이커:25.2|크로스 포쳐:14.7|스피드스터:9.4|아크로바틱 피니셔:8.6"),
-           t5:  T("예리한 감아차기:34.4|파워 헤더:26.5|패스 마스터:17.7|승부욕:6.9|아웃사이드 슈팅/크로스:5.1") },
+           t8:  T("트릭스터:32.9|라인 브레이커:25.2|크로스 포쳐:14.7|스피드스터:9.4|아크로바틱 피니셔:8.6") },
     RAM: { t11: T("크로스 향상:28.8|페이스 업 드리블 향상:11.1|능숙한 몸 싸움:9.5|근거리 슛 향상:8.0|침착하게 골 찬스 만들기:7.4"),
-           t8:  T("트릭스터:45.8|라인 브레이커:28.3|스피드스터:19.5|레이저 슈터:1.4|크로스 포쳐:1.4"),
-           t5:  T("예리한 감아차기:27.9|패스 마스터:25.1|파워 헤더:16.2|승부욕:9.4|아웃사이드 슈팅/크로스:8.4") },
+           t8:  T("트릭스터:45.8|라인 브레이커:28.3|스피드스터:19.5|레이저 슈터:1.4|크로스 포쳐:1.4") },
     LAM: { t11: T("크로스 향상:28.3|페이스 업 드리블 향상:11.1|능숙한 몸 싸움:9.3|근거리 슛 향상:7.9|감아차기 향상:7.3"),
-           t8:  T("트릭스터:46.2|라인 브레이커:26.8|스피드스터:20.4|크로스 포쳐:1.5|레이저 슈터:1.4"),
-           t5:  T("예리한 감아차기:26.1|패스 마스터:25.1|파워 헤더:17.8|승부욕:9.7|아웃사이드 슈팅/크로스:8.3") },
+           t8:  T("트릭스터:46.2|라인 브레이커:26.8|스피드스터:20.4|크로스 포쳐:1.5|레이저 슈터:1.4") },
     LM:  { t11: T("크로스 향상:36.1|페이스 업 드리블 향상:11.9|능숙한 몸 싸움:9.4|높은 크로스 향상:6.4|침착하게 골 찬스 만들기:5.4"),
-           t8:  T("트릭스터:46.1|라인 브레이커:25.3|스피드스터:23.5|2개의 심장:1.9|크로스 포쳐:1.0"),
-           t5:  T("패스 마스터:25.3|예리한 감아차기:22.9|파워 헤더:18.1|승부욕:11.4|아웃사이드 슈팅/크로스:8.2") },
+           t8:  T("트릭스터:46.1|라인 브레이커:25.3|스피드스터:23.5|2개의 심장:1.9|크로스 포쳐:1.0") },
     RM:  { t11: T("크로스 향상:36.4|페이스 업 드리블 향상:11.3|능숙한 몸 싸움:9.2|높은 크로스 향상:6.8|침착하게 골 찬스 만들기:5.4"),
-           t8:  T("트릭스터:45.6|라인 브레이커:27.4|스피드스터:22.1|2개의 심장:1.9|크로스 포쳐:0.8"),
-           t5:  T("예리한 감아차기:27.1|패스 마스터:24.4|파워 헤더:16.5|승부욕:10.5|아웃사이드 슈팅/크로스:8.1") },
+           t8:  T("트릭스터:45.6|라인 브레이커:27.4|스피드스터:22.1|2개의 심장:1.9|크로스 포쳐:0.8") },
     CM:  { t11: T("가로채기 노리기:8.5|감아차기 향상:7.5|쓰루 패스 향상:7.3|능숙한 몸 싸움:7.1|티키타카 패스 전술 이해:7.0"),
-           t8:  T("레이저 슈터:28.3|트릭스터:13.9|커맨더:12.1|라인 브레이커:9.7|스피드스터:8.0"),
-           t5:  T("예리한 감아차기:30.9|패스 마스터:23.5|파워 헤더:12.0|아웃사이드 슈팅/크로스:9.3|승부욕:9.3") },
+           t8:  T("레이저 슈터:28.3|트릭스터:13.9|커맨더:12.1|라인 브레이커:9.7|스피드스터:8.0") },
     CDM: { t11: T("가로채기 노리기:19.4|재정비:8.4|티키타카 패스 전술 이해:7.8|쓰루 패스 향상:7.8|스탠딩 태클 향상:7.1"),
-           t8:  T("레이저 슈터:33.0|파이터:21.6|체이서:14.2|커맨더:10.3|2개의 심장:5.8"),
-           t5:  T("패스 마스터:36.2|예리한 감아차기:21.3|파워 헤더:14.2|승부욕:12.9|아웃사이드 슈팅/크로스:3.9") },
+           t8:  T("레이저 슈터:33.0|파이터:21.6|체이서:14.2|커맨더:10.3|2개의 심장:5.8") },
     CB:  { t11: T("가로채기 노리기:29.5|능숙한 압박:16.1|안정적인 빌드업:14.7|재정비:10.1|스탠딩 태클 향상:4.9"),
-           t8:  T("파이터:34.8|체이서:25.9|블로커:12.5|타이탄:9.9|프레데터:6.7"),
-           t5:  T("패스 마스터:31.0|화려한 걷어내기:24.4|파워 헤더:18.2|승부욕:14.7|슬라이딩 태클 선호:2.8") },
+           t8:  T("파이터:34.8|체이서:25.9|블로커:12.5|타이탄:9.9|프레데터:6.7") },
     LCB: { t11: T("안정적인 빌드업:25.6|능숙한 압박:22.8|가로채기 노리기:13.9|재정비:13.1|좌측 수비 강화:4.8"),
-           t8:  T("파이터:53.8|체이서:22.3|블로커:8.0|타이탄:6.3|와일드 태클러:4.7"),
-           t5:  T("화려한 걷어내기:30.5|패스 마스터:25.4|승부욕:18.6|파워 헤더:16.6|강철몸:3.7") },
+           t8:  T("파이터:53.8|체이서:22.3|블로커:8.0|타이탄:6.3|와일드 태클러:4.7") },
     RCB: { t11: T("안정적인 빌드업:26.1|능숙한 압박:22.6|가로채기 노리기:13.9|재정비:13.1|우측 수비 강화:4.7"),
-           t8:  T("파이터:54.1|체이서:21.9|블로커:8.0|타이탄:6.3|와일드 태클러:4.7"),
-           t5:  T("화려한 걷어내기:31.9|패스 마스터:26.3|승부욕:18.9|파워 헤더:13.9|강철몸:3.6") },
+           t8:  T("파이터:54.1|체이서:21.9|블로커:8.0|타이탄:6.3|와일드 태클러:4.7") },
     SW:  { t11: T("가로채기 노리기:41.3|능숙한 압박:11.5|재정비:8.7|안정적인 빌드업:6.6|스탠딩 태클 향상:6.4"),
-           t8:  T("파이터:32.2|체이서:24.4|블로커:11.2|타이탄:7.2|프레데터:6.6"),
-           t5:  T("패스 마스터:36.0|화려한 걷어내기:18.4|파워 헤더:18.0|승부욕:11.5|예리한 감아차기:5.8") },
+           t8:  T("파이터:32.2|체이서:24.4|블로커:11.2|타이탄:7.2|프레데터:6.6") },
     LB:  { t11: T("크로스 향상:18.2|좌측 수비 강화:14.9|스탠딩 태클 향상:12.3|재정비:9.6|가로채기 노리기:7.0"),
-           t8:  T("파이터:57.8|체이서:32.3|2개의 심장:3.0|프레데터:2.7|와일드 태클러:1.8"),
-           t5:  T("패스 마스터:46.6|승부욕:24.5|파워 헤더:5.5|화려한 걷어내기:5.2|얼리 크로스 선호:3.9") },
+           t8:  T("파이터:57.8|체이서:32.3|2개의 심장:3.0|프레데터:2.7|와일드 태클러:1.8") },
     RB:  { t11: T("크로스 향상:17.9|우측 수비 강화:15.1|스탠딩 태클 향상:12.4|재정비:9.6|가로채기 노리기:6.7"),
-           t8:  T("파이터:59.1|체이서:30.9|2개의 심장:3.1|프레데터:2.7|와일드 태클러:1.7"),
-           t5:  T("패스 마스터:46.4|승부욕:24.0|파워 헤더:6.2|화려한 걷어내기:5.7|얼리 크로스 선호:4.0") },
+           t8:  T("파이터:59.1|체이서:30.9|2개의 심장:3.1|프레데터:2.7|와일드 태클러:1.7") },
     LWB: { t11: T("크로스 향상:18.6|좌측 수비 강화:11.4|가로채기 노리기:11.0|재정비:8.3|스탠딩 태클 향상:7.7"),
-           t8:  T("파이터:43.0|체이서:38.8|2개의 심장:5.4|프레데터:3.4|와일드 태클러:2.4"),
-           t5:  T("패스 마스터:46.6|승부욕:17.9|아웃사이드 슈팅/크로스:6.0|화려한 걷어내기:5.5|파워 헤더:5.2") },
+           t8:  T("파이터:43.0|체이서:38.8|2개의 심장:5.4|프레데터:3.4|와일드 태클러:2.4") },
     RWB: { t11: T("크로스 향상:18.4|가로채기 노리기:11.2|우측 수비 강화:10.8|스탠딩 태클 향상:8.0|재정비:7.8"),
-           t8:  T("파이터:43.6|체이서:38.2|2개의 심장:5.5|프레데터:3.6|와일드 태클러:2.4"),
-           t5:  T("패스 마스터:45.7|승부욕:17.8|화려한 걷어내기:5.8|파워 헤더:5.7|아웃사이드 슈팅/크로스:5.5") },
+           t8:  T("파이터:43.6|체이서:38.2|2개의 심장:5.5|프레데터:3.6|와일드 태클러:2.4") },
     // GK는 이번 캡처에 없어서 이전 데이터 유지
     GK:  { old: true,
            t11: T("낮은 슛 방어 (GK 전용):57.2|감아차기 방어 (GK 전용):18.1|프리킥 방어 (GK 전용):13.7|스로우 향상 (GK 전용):5.5|근거리 슛 방어 (GK 전용):1.9"),
-           t8:  T("GK 데드아이:77.7|GK 빠른 반응:13.3|GK 공중볼 장악:9.0"),
-           t5:  [] }
+           t8:  T("GK 데드아이:77.7|GK 빠른 반응:13.3|GK 공중볼 장악:9.0") }
   };
 
   // 캡처에 없는 포지션은 가장 비슷한 포지션 데이터로 보여줌
-  const TRAIT_FALLBACK = { LS: 'RS', LF: 'CF', RF: 'CF', LCM: 'CM', RCM: 'CM', LDM: 'CDM', RDM: 'CDM' };
+  // 캡처에 없는 포지션은 넥슨 경기장 판에서 가장 가까운 같은 색(공격/미드/수비) 포지션 데이터를 그대로 사용
+  const TRAIT_FALLBACK = { LS: 'ST', LF: 'CF', RF: 'CF', LCM: 'LAM', RCM: 'RAM', LDM: 'CDM', RDM: 'CDM' };
   function getTraitKey(pos) { return traitsDB[pos] ? pos : (TRAIT_FALLBACK[pos] || 'ST'); }
 
   function selectTrait(pos, event) {
@@ -1931,8 +1953,8 @@
         <div class="trait-name" title="${item.n}">${item.n}</div>
         <div class="trait-rate" style="color:${traitRateColor(item.r)};">${item.r || '-'}</div>
       </div>`;
-    const emojiIcon = (item) => `<div style="font-size:28px; margin-bottom:8px;">${getTraitEmoji(item.n)}</div>`;
-    const imgIcon = (item) => `<img src="${getTraitIconUrl(item.n)}" alt="${item.n}" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_50.png';" style="width:48px; height:48px; margin-bottom:8px; object-fit:contain;">`;
+    const emojiIcon = (item) => traitBadge(item.n);
+    const imgIcon = (item) => `<img src="${getTraitIconUrl(item.n)}" alt="${item.n}" onerror="this.onerror=null; this.src='https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/traits/trait_icon_${traitImgMap[item.n] || 50}.png';" style="width:56px; height:56px; margin-bottom:8px; object-fit:contain;">`;
     const section = (title, items, icon) => items.length ? `
       <div class="shadcn-card" style="padding:24px;">
         <div style="font-size:16px; font-weight:900; margin-bottom:16px; text-align:center;">${title}</div>
@@ -1940,15 +1962,14 @@
       </div>` : '';
 
     let note = `데이터 기준: ${DATA_AS_OF} · 1:1 공식경기 슈퍼챔피언스 ~ 월드클래스3`;
-    if (key !== pos) note += ` · ${pos}는 ${key} 기준 데이터예요`;
+    if (key !== pos) note += ` · ${pos}는 가장 가까운 ${key} 기준 데이터예요`;
     if (data.old) note = 'GK는 아직 최신 데이터가 없어 이전 데이터를 보여드려요';
 
     const area = document.getElementById('trait-content-area');
     if (area) area.innerHTML = `
       <div class="trait-note">${note}</div>
       ${section('11강 획득', data.t11, emojiIcon)}
-      ${section('8강 획득', data.t8, imgIcon)}
-      ${section('5강 획득', data.t5, emojiIcon)}`;
+      ${section('8강 획득', data.t8, imgIcon)}`;
   }
 
   // ===== 전적 검색 =====
