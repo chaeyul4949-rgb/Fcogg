@@ -57,7 +57,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; letter-spacing: -0.015em; }
     
     body { background-color: var(--background); color: var(--foreground); display: flex; justify-content: center; padding: 24px 16px; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; -webkit-font-smoothing: antialiased; }
-    .container { width: 100%; max-width: 1060px; position: relative; }
+    .container { width: 100%; max-width: 1600px; position: relative; }
 
     .header-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; margin-top: 10px; width: 100%; }
     .logo { font-size: 32px; font-weight: 900; cursor: pointer; margin-bottom: 20px; letter-spacing: -1px; }
@@ -81,7 +81,7 @@
     .shadcn-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
 
     .hero-search-section { text-align: center; margin-bottom: 24px; animation: fadeIn 0.4s ease; margin-top: 40px;}
-    .pill-search-box { max-width: 600px; margin: 0 auto; background: var(--card); border-radius: 99px; padding: 8px 8px 8px 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); display: flex; gap: 8px; border: 1px solid var(--border); align-items: center; transition: box-shadow 0.3s; }
+    .pill-search-box { max-width: 900px; margin: 0 auto; background: var(--card); border-radius: 99px; padding: 8px 8px 8px 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); display: flex; gap: 8px; border: 1px solid var(--border); align-items: center; transition: box-shadow 0.3s; }
     .pill-search-box:focus-within { box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: var(--foreground); }
     .pill-search-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; color: var(--foreground); font-weight: 500; height: 40px; }
     .pill-search-box input::placeholder { color: var(--muted-foreground); font-weight: 400; }
@@ -215,7 +215,7 @@
     .modal-overlay, .notice-modal-overlay, .sub-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; animation: fadeIn 0.3s ease; }
     .notice-modal-overlay, .sub-modal-overlay { align-items: center; z-index: 10001; }
     .modal-content, .notice-modal-content, .sub-modal-content { background: var(--card); width: 100%; border-radius: var(--radius); border: 1px solid var(--border); padding: 32px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .modal-content { max-width: 1060px; }
+    .modal-content { max-width: 1600px; }
     .notice-modal-content { max-width: 720px; padding: 48px 32px; } 
     .sub-modal-content { max-width: 600px; } 
     .modal-close-btn { position: absolute; top: 20px; right: 20px; background: var(--muted); border: none; color: var(--muted-foreground); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000; }
@@ -293,6 +293,9 @@
     .notice-icon-btn { padding: 0; }
     button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--ai-blue); outline-offset: 2px; }
     .main-tabs { scrollbar-width: none; }
+    /* 탭이 한 줄에 다 들어가면 가운데 정렬, 넘치면 그대로 스크롤 */
+    .main-tabs > .tab-btn:first-child { margin-left: auto; }
+    .main-tabs > .tab-btn:last-child { margin-right: auto; }
     .main-tabs::-webkit-scrollbar { display: none; }
     .pill-search-box input { min-width: 0; }
     .page-title { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
@@ -323,7 +326,7 @@
     .history-row { display: flex; justify-content: space-between; align-items: center; width: 100%; background: var(--background); padding: 16px 20px; border-radius: 12px; cursor: pointer; border: 1px solid var(--border); color: var(--foreground); text-align: left; }
 
     /* ===== 검색 결과 ===== */
-    .result-card { padding: 28px; max-width: 720px; margin: 0 auto; text-align: left; animation: fadeIn 0.4s ease; }
+    .result-card { padding: 28px; max-width: none; margin: 0 auto; text-align: left; animation: fadeIn 0.4s ease; }
     .result-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
     .result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
     .result-stat { background: var(--background); border: 1px solid var(--border); padding: 18px 12px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
@@ -470,7 +473,7 @@
     .trait-rate { font-size: 14px; font-weight: 900; }
 
     /* ===== 수수료 계산기 ===== */
-    .fee-card { max-width: 720px; margin: 0 auto; }
+    .fee-card { max-width: none; margin: 0 auto; }
     .fee-rows { display: flex; flex-direction: column; gap: 10px; }
     .fee-row { border: 1px solid var(--border); border-radius: 14px; padding: 12px; background: var(--background); }
     .fee-row .auth-input { margin: 0; background: var(--card); }
@@ -491,6 +494,7 @@
     /* ===== PRO 심층 피드백 ===== */
     .ai-pro .ai-grid { grid-template-columns: 1fr 1fr; }
     @media (max-width: 1024px) { .ai-pro .ai-grid { grid-template-columns: 1fr; } }
+    .pro-benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
     .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
     .pro-benefit b { font-size: 15px; }
     .pro-benefit div { font-size: 13px; color: var(--muted-foreground); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
@@ -601,7 +605,7 @@
     <div class="hero-search-section">
       <h3 class="page-title">⚔️ 1:1 라이벌 전적 스캔</h3>
       <p class="page-desc">공식경기 · 감독모드 · 친선 · 클래식 1on1 기록을 모두 뒤져서 두 구단주의 맞대결을 찾아드려요.</p>
-      <div style="display:flex; flex-direction:column; gap:16px; max-width:600px; width:100%; margin:0 auto;">
+      <div style="display:flex; flex-direction:column; gap:16px; max-width:900px; width:100%; margin:0 auto;">
         <div class="h2h-focus-box">
           <input type="text" id="h2h-user1" placeholder="첫 번째 구단주" onkeydown="if(event.key==='Enter') searchH2HData()">
           <div class="h2h-vs-badge">VS</div>
@@ -686,7 +690,7 @@
       <h3 class="page-title">🏆 명예의 전당</h3>
       <p class="page-desc">추천을 가장 많이 받은 구단주예요. 누르면 전적을 볼 수 있어요.</p>
     </div>
-    <div id="top10-list-container" class="tier-board" style="max-width:800px; margin:0 auto;"></div>
+    <div id="top10-list-container" class="tier-board"></div>
   </div>
 
   <div id="tab-pro" class="tab-content">
@@ -694,7 +698,7 @@
       <h3 class="page-title" style="color:var(--pro-gold);">💎 FCO PRO 멤버십</h3>
       <p style="color:var(--muted-foreground); margin-top:8px;">프리미엄 1:1 전술 AI 기능을 60일 동안 무제한으로 사용하세요.</p>
     </div>
-    <div class="shadcn-card" style="padding: 32px; max-width: 660px; margin: 0 auto;">
+    <div class="shadcn-card" style="padding: 32px;">
       <div style="background:var(--background); padding:24px; border-radius:16px; text-align:center; border:1px solid var(--border);">
         <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🔒 현재 PRO 상태: <span id="pro-status-text" style="color:var(--muted-foreground);">비활성</span></h3>
         <p style="font-size:14px; color:var(--lose-color); font-weight:700; margin-bottom:4px;">🎉 [가을 한정 이벤트] 30일 + 30일 (총 60일) 1+1 적용 중! 🎉</p>
@@ -704,7 +708,7 @@
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
         <h4 style="font-size:15px; font-weight:800; margin-bottom:16px; color:var(--foreground);">💡 제공되는 PRO 프리미엄 혜택 모아보기</h4>
-        <div style="display:flex; flex-direction:column; gap:12px;">
+        <div class="pro-benefits">
           <div class="pro-benefit" style="border-left-color:#EA580C;">
             <b style="color:#EA580C;">🚨 치명적 약점 스캐너 (TOP 5)</b>
             <div>최근 25경기를 잘한 경기 / 못한 경기로 나눠, 승패를 가장 크게 가른 약점 5가지를 찾아냅니다.</div>
@@ -1057,7 +1061,7 @@
 </div>
 
 <div id="match-modal" class="sub-modal-overlay" style="align-items:flex-start;">
-  <div class="sub-modal-content" style="max-width:960px;">
+  <div class="sub-modal-content" style="max-width:1200px;">
     <button class="modal-close-btn" onclick="closeMatchModal()" aria-label="닫기">✕</button>
     <div id="match-modal-body"></div>
   </div>
