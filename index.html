@@ -510,6 +510,19 @@
     .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
     .pro-benefit b { font-size: 15px; }
     .pro-benefit div { font-size: 13px; color: var(--muted-foreground); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
+    .mu-route { background: var(--background); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .mu-route-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 8px; }
+    .mu-route-head span { color: var(--muted-foreground); font-weight: 700; }
+    .mu-bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: var(--border); }
+    .mu-route-legend { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 800; margin-top: 4px; }
+    .mu-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+    .mu-stat { background: var(--background); border-radius: 10px; padding: 8px 10px; }
+    .mu-v { font-size: 17px; font-weight: 900; }
+    .mu-l { font-size: 11px; color: var(--muted-foreground); font-weight: 700; }
+    .mu-line { font-size: 13px; line-height: 1.55; margin-bottom: 8px; }
+    .mu-tips-title { font-size: 13px; font-weight: 900; margin-bottom: 4px; }
+    .mu-tips { margin: 0 0 6px 18px; font-size: 12.5px; line-height: 1.55; display: flex; flex-direction: column; gap: 3px; }
+    .mu-note { font-size: 11px; color: var(--muted-foreground); }
     .deep-toggle { grid-column: 1 / -1; height: 46px; border-radius: 12px; border: 1px dashed var(--pro-gold); background: var(--pro-gold-bg); color: var(--foreground); font-weight: 800; font-size: 14px; cursor: pointer; }
     .deep-toggle:hover { border-style: solid; }
     .deep-more { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -2700,6 +2713,96 @@
       + `</div>`;
   }
 
+  // ===== 실시간 매치업 프리뷰: 최근 경기에서 상대들이 나를 어떻게 공략했는지 =====
+  function buildMatchupHTML(matches, ouid) {
+    const N = (v) => +v || 0;
+    const rows = [];
+    for (const m of matches) {
+      const me = m.matchInfo?.find(i => i.ouid === ouid); const en = m.matchInfo?.find(i => i.ouid !== ouid);
+      if (me?.matchDetail && en) rows.push({ me, en, res: me.matchDetail.matchResult });
+    }
+    const G = rows.length;
+    if (G < 3) return `상대 패턴을 분석하려면 경기가 3판 이상 필요해요. (현재 ${G}경기)`;
+    const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+    const sum = (list, f) => list.reduce((s, r) => s + f(r), 0);
+    const tips = [];
+
+    // 1) 상대 공격 루트: 크로스 vs 스루패스
+    const cross = sum(rows, r => N(r.en.pass?.crossTry)), through = sum(rows, r => N(r.en.pass?.throughPassTry));
+    const crossRate = pct(cross, cross + through);
+    let route = '균형형';
+    if (cross + through > 0) {
+      if (crossRate >= 60) { route = '측면 크로스형'; tips.push('풀백이 크로스 각을 먼저 막고, 크로스가 올라오면 키 큰 센터백을 커서로 잡으세요.'); }
+      else if (crossRate <= 40) { route = '중앙 침투형'; tips.push('수비 라인을 무리하게 올리지 말고, CDM으로 중앙 스루패스 길목을 먼저 막으세요.'); }
+      else tips.push('측면과 중앙을 섞어 와요. 섣부른 태클보다 포메이션을 지키는 지연 수비가 효과적이에요.');
+    }
+
+    // 2) 상대 슈팅 위치 · 득점 방식
+    let oppIn = 0, oppOut = 0;
+    rows.forEach(r => (r.en.shootDetail || []).forEach(s => {
+      const inside = s.inPenalty ?? (s.x >= 0.83 && s.y >= 0.2 && s.y <= 0.8);
+      inside ? oppIn++ : oppOut++;
+    }));
+    const oppGoals = sum(rows, r => N(r.en.shoot?.goalTotal));
+    const oppHead = sum(rows, r => N(r.en.shoot?.goalHeading));
+    const oppOutGoals = sum(rows, r => N(r.en.shoot?.goalOutPenalty));
+    if (oppGoals >= 3 && pct(oppHead, oppGoals) >= 25) tips.push(`실점의 ${pct(oppHead, oppGoals)}%가 헤딩이에요. 코너킥·크로스 때 공중볼 수비에 집중하세요.`);
+    if (oppGoals >= 3 && pct(oppOutGoals, oppGoals) >= 30) tips.push(`중거리 실점이 ${pct(oppOutGoals, oppGoals)}%예요. 박스 앞에서 슈팅 각을 주지 않게 미드필더가 먼저 붙으세요.`);
+
+    // 3) 나를 이긴 상대 vs 진 상대 비교
+    const lost = rows.filter(r => r.res === '패'), won = rows.filter(r => r.res === '승');
+    const avgOf = (list, f) => list.length ? sum(list, f) / list.length : null;
+    const possLost = avgOf(lost, r => N(r.en.matchDetail.possession)), possWon = avgOf(won, r => N(r.en.matchDetail.possession));
+    const thrLost = avgOf(lost, r => N(r.en.pass?.throughPassTry)), thrWon = avgOf(won, r => N(r.en.pass?.throughPassTry));
+    let beatMe = '';
+    if (lost.length >= 2 && won.length >= 2) {
+      if (possLost - possWon >= 5) {
+        beatMe = `나를 이긴 상대는 점유율이 평균 <b>${Math.round(possLost)}%</b>로, 진 상대(${Math.round(possWon)}%)보다 볼을 오래 가졌어요.`;
+        tips.push('볼을 오래 소유하는 상대에게 약해요. 무리하게 뺏으러 나가지 말고 압박 타이밍을 기다리세요.');
+      } else if (possWon - possLost >= 5) {
+        beatMe = `나를 이긴 상대는 점유율이 평균 <b>${Math.round(possLost)}%</b>로 낮았어요. 역습형 상대에게 약해요.`;
+        tips.push('역습형 상대에게 약해요. 공격할 때도 수비형 미드필더 1명은 뒤에 남겨두세요.');
+      } else if (thrLost - thrWon >= 2) {
+        beatMe = `나를 이긴 상대는 스루패스를 경기당 <b>${thrLost.toFixed(1)}회</b>(진 상대 ${thrWon.toFixed(1)}회) 시도했어요.`;
+        tips.push('스루패스를 자주 찌르는 상대에게 약해요. 수비 라인을 한 칸 내리고 뒷공간을 먼저 지키세요.');
+      } else {
+        beatMe = '이긴 상대와 진 상대의 스타일 차이는 크지 않아요.';
+      }
+    }
+
+    // 4) 상대 조작 방식
+    const kbd = rows.filter(r => r.en.matchDetail.controller === 'keyboard').length;
+    const kbdRate = pct(kbd, G);
+
+    // 항상 나오는 데이터 기반 팁 (점유율 · 박스 안 슈팅 · 조작 방식)
+    const oppPoss = avgOf(rows, r => N(r.en.matchDetail.possession));
+    tips.push(oppPoss >= 52 ? `상대들이 평균 ${Math.round(oppPoss)}%로 볼을 오래 가져요. 라인을 내리고 패스 길목 차단 위주로 수비하세요.`
+      : oppPoss <= 48 ? `상대들 점유율이 평균 ${Math.round(oppPoss)}%로 낮은 역습형이 많아요. 공격할 때 뒷공간을 비우지 마세요.`
+      : '상대 점유율이 나와 비슷해요. 중원 싸움에서 이기는 쪽이 경기를 가져가요.');
+    tips.push(oppIn / G >= 5 ? `상대에게 박스 안 슈팅을 경기당 ${(oppIn / G).toFixed(1)}개 허용해요. 박스 앞 공간을 CDM으로 먼저 채우세요.`
+      : `박스 안 슈팅 허용이 경기당 ${(oppIn / G).toFixed(1)}개로 적어요. 지금 수비 위치 선정을 유지하세요.`);
+    if (kbdRate >= 60) tips.push(`상대 ${kbdRate}%가 키보드예요. 키보드 유저는 방향 전환이 각지니 몸을 붙여 진로를 막는 수비가 잘 통해요.`);
+    else if (kbdRate <= 40) tips.push(`상대 ${100 - kbdRate}%가 패드예요. 패드 유저는 세밀한 드리블에 강하니 성급한 태클보다 거리를 유지하세요.`);
+
+    const stat = (v, l) => `<div class="mu-stat"><div class="mu-v">${v}</div><div class="mu-l">${l}</div></div>`;
+    return `
+      <div class="mu-route">
+        <div class="mu-route-head"><span>상대 공격 루트</span><b>${route}</b></div>
+        <div class="mu-bar"><div style="width:${crossRate}%; background:#F59E0B;"></div><div style="width:${100 - crossRate}%; background:#3B82F6;"></div></div>
+        <div class="mu-route-legend"><span style="color:#D97706;">크로스 ${crossRate}%</span><span style="color:#3B82F6;">스루패스 ${100 - crossRate}%</span></div>
+      </div>
+      <div class="mu-stats">
+        ${stat(`${Math.round(avgOf(rows, r => N(r.en.matchDetail.possession)))}%`, '상대 평균 점유율')}
+        ${stat((oppIn / G).toFixed(1), '경기당 박스 안 슈팅 허용')}
+        ${stat((oppGoals / G).toFixed(1), '경기당 실점')}
+        ${stat(`${kbdRate}%`, '키보드 상대 비율')}
+      </div>
+      ${beatMe ? `<div class="mu-line">🎯 ${beatMe}</div>` : ''}
+      <div class="mu-tips-title">📌 상대 대응 팁</div>
+      <ul class="mu-tips">${tips.slice(0, 4).map(t => `<li>${t}</li>`).join('') || '<li>상대 패턴에 큰 쏠림이 없어요. 기본 포메이션을 지키며 탐색전을 펼치세요.</li>'}</ul>
+      <div class="mu-note">최근 ${G}경기에서 실제로 만난 상대들의 기록이에요.</div>`;
+  }
+
   function generateAIReports() {
     setTimeout(() => {
       document.getElementById('ai-loading').style.display = 'none';
@@ -2766,46 +2869,8 @@
       // 1-2) 심층 피드백
       setHtml('pro-ai-deep', buildProDeepHTML(globalMatchDetails, globalOuid, a));
 
-      // 2) 상대 공격 패턴 (기존 매치업 프리뷰)
-      let matchup = '';
-      if (stats.gameCount > 0 && (stats.enTotalCross > 0 || stats.enTotalThrough > 0)) {
-          const cross = stats.enTotalCross;
-          const through = stats.enTotalThrough;
-          const totalAtt = cross + through;
-          // 크로스 의존도 비율 (0 ~ 1)
-          const crossRate = cross / totalAtt;
-          const attPerGame = totalAtt / stats.gameCount;
-
-          if (crossRate >= 0.8) {
-              matchup = `🚨 <b>[극단적 크로스 주의]</b> 전체 공격의 80% 이상을 <b style="color:var(--lose-color);">측면 돌파와 뚝배기(헤딩)</b>에 의존합니다. 사이드 풀백을 직접 잡고 크로스 각을 원천 봉쇄하세요.`;
-          } else if (crossRate >= 0.6) {
-              matchup = `⚠️ <b>[측면 공격 선호]</b> 주로 <b style="color:var(--lose-color);">측면 돌파 후 크로스나 컷백</b>을 노립니다. 수비 시 센터백을 끌어내지 말고 윙백의 수비 가담을 늘리세요.`;
-          } else if (crossRate <= 0.2) {
-              matchup = `🚨 <b>[극단적 중앙 침투 주의]</b> 크로스는 거의 안 하고 <b style="color:var(--lose-color);">중앙 스루패스(ZW/QW) 찔러넣기</b>만 노립니다. 수비 라인을 무리하게 올리지 말고 커서를 내려서 수비하세요.`;
-          } else if (crossRate <= 0.4) {
-              matchup = `⚠️ <b>[중앙 전개 선호]</b> 사이드보다는 <b style="color:var(--lose-color);">중앙 미드필더를 통한 킬패스</b>를 즐깁니다. 수비형 미드필더(CDM)로 중앙 패스 길목을 미리 차단하세요.`;
-          } else {
-              if (attPerGame > 8) {
-                  matchup = `💡 <b>[다양한 공격 루트]</b> 측면과 중앙을 자유자재로 섞어 쓰는 <b style="color:var(--win-color);">다재다능한 랭커형 유저</b>입니다. 상대의 1차 빌드업을 강하게 압박해 템포를 끊으세요.`;
-              } else {
-                  matchup = `💡 <b>[완벽한 밸런스형]</b> 스루패스와 크로스 비율이 5:5인 <b>정석적인 밸런스 유저</b>입니다. 섣부른 태클보다는 포메이션을 유지하는 지연 수비가 효과적입니다.`;
-              }
-          }
-          
-          // AI 랜덤 조언 덧붙이기 (디테일 추가)
-          const tips = [
-              "상대 윙어의 주발(약발)을 미리 확인해두면 크로스 수비가 편해집니다.",
-              "코너킥 수비 시 커서를 키 큰 센터백에 두는 것을 잊지 마세요.",
-              "전반전 15분까지는 무리한 압박보단 상대의 플레이 템포를 관찰해보세요.",
-              "상대가 킥오프 직후 롱패스를 찌를 수 있으니 미니맵을 주시하세요."
-          ];
-          const randomTip = tips[Math.floor(Math.random() * tips.length)];
-          matchup += `<br><span style="font-size:12px; color:var(--muted-foreground); display:inline-block; margin-top:6px;">📌 <b>AI 꿀팁:</b> ${randomTip}</span>`;
-          
-      } else { 
-          matchup = `💡 상대방의 공격 루트 패턴 데이터가 부족하여 분석 중입니다. 우선 기본 수비 포메이션을 유지하며 탐색전을 펼치세요.`; 
-      }
-      setHtml('pro-ai-matchup', matchup);
+      // 2) 실시간 매치업 프리뷰
+      setHtml('pro-ai-matchup', buildMatchupHTML(globalMatchDetails, globalOuid));
 
       // 3) 스쿼드 구멍 · 교체 추천 · 라인별 평점 · MVP
       const sq = stats.squad || {};
