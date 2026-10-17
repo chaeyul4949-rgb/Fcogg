@@ -1840,8 +1840,13 @@ service cloud.firestore {
     0: {label:'GK', line:'gk'}, 1: {label:'SW', line:'df'}, 2: {label:'RWB', line:'df'}, 3: {label:'RB', line:'df'}, 4: {label:'RCB', line:'df'}, 5: {label:'CB', line:'df'}, 6: {label:'LCB', line:'df'}, 7: {label:'LB', line:'df'}, 8: {label:'LWB', line:'df'}, 9: {label:'RDM', line:'mf'}, 10: {label:'CDM', line:'mf'}, 11: {label:'LDM', line:'mf'}, 12: {label:'RM', line:'mf'}, 13: {label:'RCM', line:'mf'}, 14: {label:'CM', line:'mf'}, 15: {label:'LCM', line:'mf'}, 16: {label:'LM', line:'mf'}, 17: {label:'RAM', line:'mf'}, 18: {label:'CAM', line:'mf'}, 19: {label:'LAM', line:'mf'}, 20: {label:'RF', line:'fw'}, 21: {label:'CF', line:'fw'}, 22: {label:'LF', line:'fw'}, 23: {label:'RW', line:'fw'}, 24: {label:'RS', line:'fw'}, 25: {label:'ST', line:'fw'}, 26: {label:'LS', line:'fw'}, 27: {label:'LW', line:'fw'}, 28: {label:'SUB', line:'df'}
   };
 
+  // 넥슨 API 시간은 UTC인데 시간대 표시가 없어서 그대로 읽으면 9시간 늦게 나온다
+  function nexonDate(s) {
+    const str = String(s || '');
+    return new Date(/[zZ]$|[+-]\d\d:?\d\d$/.test(str) ? str : str + 'Z');
+  }
   function getTimeAgo(dateString) {
-    const diffMin = Math.max(0, Math.floor((Date.now() - new Date(dateString)) / 60000));
+    const diffMin = Math.max(0, Math.floor((Date.now() - nexonDate(dateString)) / 60000));
     if (diffMin < 60) return `${diffMin}분 전`;
     const diffHour = Math.floor(diffMin / 60);
     if (diffHour < 24) return `${diffHour}시간 전`;
@@ -2330,14 +2335,27 @@ service cloud.firestore {
       ]);
 
       globalLevel = basicData?.level ? `Lv.${basicData.level}` : "Lv.-";
-      globalMaxTier = "기록 없음"; globalMaxTierId = null;
+      globalMaxTier = "기록 없음"; globalMaxTierId = null; let maxTierDate = '';
       await Promise.race([divisionMetaReady, delay(3000)]);
       {
         const pick = pickBestDivision(maxDivData, currentMatchType);
-        if (pick) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; }
+        if (pick) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; maxTierDate = pick.achievementDate || ''; }
       }
 
       const details = await fetchMatchDetails(matchIds || []);
+
+      // 현재 티어: 가장 최근 공식경기(감독모드 검색 중이면 감독모드)에 기록된 내 등급
+      const tierType = currentMatchType === 52 ? 52 : 50;
+      let tierMatches = currentMatchType === tierType ? details : [];
+      if (!tierMatches.length) {
+        const ids = await fetchNexonApi(`/fconline/v1/user/match?ouid=${ouid}&matchtype=${tierType}&offset=0&limit=1`).catch(() => []);
+        tierMatches = await fetchMatchDetails(ids || []);
+      }
+      const tierMe = tierMatches.map(m => ({ m, me: m.matchInfo?.find(i => i.ouid === ouid) })).find(x => x.me?.division);
+      const curTierId = tierMe ? tierMe.me.division : null;
+      const curTierName = curTierId !== null ? (divisionMetaCache[String(curTierId)] || `등급 ${curTierId}`) : null;
+      const curTierWhen = tierMe ? getTimeAgo(tierMe.m.matchDate) : '';
+      const lastPlayed = details[0]?.matchDate ? getTimeAgo(details[0].matchDate) : '';
       let wins = 0, draws = 0, losses = 0, goals = 0, conceded = 0;
       const rows = [];
       for (const m of details) {
@@ -2350,13 +2368,20 @@ service cloud.firestore {
       }
       const total = wins + draws + losses;
       const winRate = total ? Math.round(wins / total * 100) : 0;
-      const tierSrc = globalMaxTierId !== null ? getTierBadge(globalMaxTierId) : '';
-      const tierImg = tierSrc ? `<img src="${tierSrc}" alt="" onerror="this.remove()" style="width:32px; height:32px; object-fit:contain;">` : '';
+      const tierImgOf = (id, size) => { const src = id !== null ? getTierBadge(id) : ''; return src ? `<img src="${src}" alt="" onerror="this.remove()" style="width:${size}px; height:${size}px; object-fit:contain;">` : ''; };
+      const maxDateTxt = maxTierDate ? (d => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`)(nexonDate(maxTierDate)) : '';
+      const tierStatHTML = curTierName ? `
+        <div class="result-stat-label">현재 티어 <span style="font-weight:600;">· ${curTierWhen} 경기 기준</span></div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImgOf(curTierId, 32)}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${escapeHtml(curTierName)}</div></div>
+        <div class="result-stat-sub" style="display:flex; align-items:center; justify-content:center; gap:4px; white-space:nowrap; margin-top:6px;">역대 최고 ${tierImgOf(globalMaxTierId, 16)}<b>${escapeHtml(globalMaxTier)}</b></div>
+        ${maxDateTxt ? `<div style="font-size:11px; color:var(--muted-foreground);">${maxDateTxt} 달성</div>` : ''}` : `
+        <div class="result-stat-label">역대 최고 티어${maxDateTxt ? ` <span style="font-weight:600;">· ${maxDateTxt} 달성</span>` : ''}</div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImgOf(globalMaxTierId, 32)}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${escapeHtml(globalMaxTier)}</div></div>`;
 
       showResult(`
         <div class="shadcn-card result-card">
           <div class="result-head">
-            <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}</span></b>
+            <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}${lastPlayed ? ` · 마지막 경기 ${lastPlayed}` : ''}</span></b>
             <div style="display:flex; gap:8px; align-items:center;">
               <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
             </div>
@@ -2364,7 +2389,7 @@ service cloud.firestore {
           <div class="result-stats">
             <div class="result-stat"><div class="result-stat-label">최근 ${total}경기 승률</div><div class="result-stat-value">${winRate}%</div><div class="result-stat-sub">${wins}승 ${draws}무 ${losses}패</div></div>
             <div class="result-stat"><div class="result-stat-label">평균 득점 / 실점</div><div class="result-stat-value">${total ? (goals / total).toFixed(1) : '-'} / ${total ? (conceded / total).toFixed(1) : '-'}</div></div>
-            <div class="result-stat"><div class="result-stat-label">최고 티어</div><div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImg}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${globalMaxTier}</div></div></div>
+            <div class="result-stat">${tierStatHTML}</div>
           </div>
           ${playstyleHTML(nickname, computePlaystyle(details, ouid))}
           <h4 class="section-title"><span style="color:var(--win-color);">●</span> 최근 ${typeName} (${total}경기) <span style="font-size:12px; color:var(--muted-foreground); font-weight:600;">· 경기를 누르면 라인업·슈팅맵</span></h4>
@@ -3179,7 +3204,7 @@ service cloud.firestore {
       // 2단계: 맞대결 경기만 상세 불러오기
       const details = await fetchMatchDetails(shared, (done, total) =>
         setProgress('맞대결 경기를 분석 중...', 60 + Math.round(done / total * 40), `${done} / ${total} 경기`));
-      details.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate));
+      details.sort((a, b) => nexonDate(b.matchDate) - nexonDate(a.matchDate));
 
       let w = 0, d = 0, l = 0, g1 = 0, g2 = 0;
       const byType = {};
@@ -3335,7 +3360,7 @@ service cloud.firestore {
           <span>⚽ <b>${escapeHtml(spidMetaCache[g.spId] || '선수')}</b>${g.assist && g.assistSpId ? ` <span style="color:var(--muted-foreground);">(도움 ${escapeHtml(spidMetaCache[g.assistSpId] || '선수')})</span>` : ''}</span>
         </div>`).join('') || '<div style="color:var(--muted-foreground); font-size:13px; text-align:center;">득점 없음</div>';
 
-      const d = new Date(m.matchDate);
+      const d = nexonDate(m.matchDate);
       body.innerHTML = `
         <div class="md-head">
           <div class="md-meta">${MATCH_TYPES[m.matchType] || '경기'} · ${d.toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>

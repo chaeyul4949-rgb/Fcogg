@@ -32,13 +32,14 @@ async function summary(nick, type) {
   const best = cands.reduce((a, d) => (!a || rank(d) < rank(a) ? d : a), null);
   const tier = best ? nameOf(best.division) : null;
   const details = await Promise.all((ids || []).map((id) => api(`/fconline/v1/match-detail?matchid=${id}`).catch(() => null)));
-  let w = 0, d = 0, l = 0, form = '';
+  let w = 0, d = 0, l = 0, form = '', curTier = null;
   for (const m of details) {
     const me = m && m.matchInfo && m.matchInfo.find((i) => i.ouid === ouid);
+    if (curTier === null && me && me.division && (type === 50 || type === 52)) curTier = nameOf(me.division) || null;
     const res = me && me.matchDetail && me.matchDetail.matchResult;
     if (res === '승') { w++; form += '승'; } else if (res === '무') { d++; form += '무'; } else if (res === '패') { l++; form += '패'; }
   }
-  return { nick: (basic && basic.nickname) || nick, level: basic && basic.level, tier, w, d, l, form };
+  return { nick: (basic && basic.nickname) || nick, level: basic && basic.level, tier, curTier, w, d, l, form };
 }
 
 module.exports = async (req, res) => {
@@ -54,6 +55,7 @@ module.exports = async (req, res) => {
       const games = s.w + s.d + s.l;
       title = `${s.nick}님의 FC 온라인 전적 | FCO.GG`;
       const parts = [];
+      if (s.curTier) parts.push(`현재 ${s.curTier}`);
       if (s.tier) parts.push(`최고 ${s.tier}`);
       if (s.level) parts.push(`Lv.${s.level}`);
       if (games) parts.push(`최근 ${games}경기 ${s.w}승 ${s.d}무 ${s.l}패 (승률 ${Math.round((s.w / games) * 100)}%)`);
