@@ -754,9 +754,9 @@
 
   <div id="tab-ranking" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title">🏆 명예의 전당</h3>
+      <h3 style="font-size:28px; font-weight:900; margin-bottom:8px;">🏆 명예의 전당</h3>
     </div>
-    <div id="top10-list-container" class="tier-board" style="max-width:800px; margin:0 auto;"></div>
+    <div id="top10-list-container" style="max-width: 800px; margin: 0 auto; padding: 24px;"></div>
   </div>
 
   <div id="tab-pro" class="tab-content">
@@ -2010,14 +2010,36 @@ service cloud.firestore {
       ];
     }
 
-    const header = `<div class="tier-category-header op" style="margin-top:0; margin-bottom:8px;">👑 최다 추천 구단주 TOP 10</div>`;
-    const rankColors = ["#3B82F6", "#84CC16", "#F59E0B"], medals = ["🥇", "🥈", "🥉"];
-    listEl.innerHTML = header + arr.map((u, i) => `
-      <button class="player-row rank-row" data-nick="${escapeHtml(u.nickname)}">
-        <span style="width:64px; font-weight:900; font-style:italic; font-size:15px; color:${rankColors[i] || 'var(--muted-foreground)'}; text-align:left;">${i + 1}위 ${medals[i] || ''}</span>
-        <span style="flex:1; font-weight:800; font-size:15px; text-align:left;">${escapeHtml(u.nickname)}</span>
-        <span style="font-weight:900; font-size:15px; color:#F59E0B;">👍 ${u.rec}</span>
-      </button>`).join('');
+    // 원래 디자인 그대로 (흰색 큰 박스 + 회색 제목 막대 + 카드형 줄)
+    listEl.style.cssText = "background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);";
+    let htmlString = `
+      <div style="background: var(--muted); border-radius: 12px; padding: 12px 20px; font-weight: 800; font-size: 15px; color: var(--foreground); margin-bottom: 16px; border-left: 4px solid var(--tier-op); display: flex; align-items: center; gap: 8px;">
+          👑 최다 추천 구단주 TOP 10
+      </div>
+    `;
+    htmlString += arr.slice(0, 10).map((u, index) => {
+      let rankColor = "var(--muted-foreground)";
+      let medal = "";
+      if (index === 0) { rankColor = "#3B82F6"; medal = "🥇"; }
+      else if (index === 1) { rankColor = "#84CC16"; medal = "🥈"; }
+      else if (index === 2) { rankColor = "#F59E0B"; medal = "🥉"; }
+      return `
+        <div class="player-row" data-nick="${escapeHtml(u.nickname)}" style="background: var(--card); border: 1px solid var(--border); padding: 16px 24px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: 0.2s;">
+          <div style="display: flex; align-items: center; gap: 24px;">
+            <div style="width: 50px; font-weight: 900; font-style: italic; font-size: 15px; color: ${rankColor}; text-align: left; white-space: nowrap;">
+              ${index + 1}위 ${medal}
+            </div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--foreground);">
+              ${escapeHtml(u.nickname)}
+            </div>
+          </div>
+          <div style="font-weight: 900; font-size: 15px; color: #F59E0B;">
+            👍 ${u.rec}
+          </div>
+        </div>
+      `;
+    }).join('');
+    listEl.innerHTML = htmlString;
   }
 
   // 로고가 안 뜨면 팀 이름 첫 글자로 대신 표시
