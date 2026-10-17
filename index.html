@@ -8,6 +8,19 @@
   
   <title>FCO.GG | FC 온라인 & 피파 온라인 4 전적 검색, 티어리스트</title>
   <meta name="description" content="FC 온라인 및 피파 온라인 4 전적 검색, 최신 티어리스트, 경기 분석을 한눈에! FCO.GG에서 간편하게 내 전적과 실시간 정보를 확인하세요.">
+  <!-- 공유 미리보기 (카카오톡·디스코드·트위터 등) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FCO.GG">
+  <meta property="og:url" content="https://fcogg.xyz/">
+  <meta property="og:title" content="FCO.GG | FC 온라인 전적 검색">
+  <meta property="og:description" content="구단의 모든 기록, 분석의 시작. FC 온라인 전적 검색 · AI 경기 분석 · 팀컬러/특성 티어리스트">
+  <meta property="og:image" content="https://fcogg.xyz/og-banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FCO.GG | FC 온라인 전적 검색">
+  <meta name="twitter:description" content="구단의 모든 기록, 분석의 시작. FC 온라인 전적 검색 · AI 경기 분석 · 팀컬러/특성 티어리스트">
+  <meta name="twitter:image" content="https://fcogg.xyz/og-banner.png">
 
   <!-- 🌟 Firebase SDK 🌟 -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -2317,7 +2330,12 @@ service cloud.firestore {
   }
 
   function shareResult() {
-    const url = `${location.origin}${location.pathname}?nick=${encodeURIComponent(globalNickname)}${currentMatchType !== 50 ? '&type=' + currentMatchType : ''}`;
+    // 실제 사이트에서는 /s/닉네임 (공유 시 닉네임·전적 카드가 뜸), 로컬에서는 일반 링크
+    const typeQ = currentMatchType !== 50 ? 'type=' + currentMatchType : '';
+    const local = location.protocol === 'file:' || /^(localhost|127\.)/.test(location.hostname);
+    const url = local
+      ? `${location.origin}${location.pathname}?nick=${encodeURIComponent(globalNickname)}${typeQ ? '&' + typeQ : ''}`
+      : `${location.origin}/s/${encodeURIComponent(globalNickname)}${typeQ ? '?' + typeQ : ''}`;
     copyText(url, '🔗 전적 링크가 복사되었습니다!');
   }
 

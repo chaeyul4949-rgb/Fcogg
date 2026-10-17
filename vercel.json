@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/s/:nick", "destination": "/api/share?nick=:nick" }
+  ]
+}
