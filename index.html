@@ -1015,6 +1015,13 @@
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 24px;">
+          <div class="profile-tier-badge" id="profile-cur-badge" style="display:none;">
+            <div style="font-size:12px; color:var(--muted-foreground); font-weight:500; margin-bottom:4px;">현재 티어</div>
+            <div style="display:flex; align-items:center; gap:8px; justify-content:center;">
+              <img id="profile-cur-tier-img" src="" alt="티어마크" onerror="this.style.display='none'" style="width:32px; height:32px; object-fit:contain;">
+              <div id="profile-cur-tier" style="font-size:16px; font-weight:700; color:var(--tier-op);">-</div>
+            </div>
+          </div>
           <div class="profile-tier-badge">
             <div style="font-size:12px; color:var(--muted-foreground); font-weight:500; margin-bottom:4px;">최고 티어</div>
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1812,6 +1819,7 @@ service cloud.firestore {
   }
 
   // ===== 메타데이터 (선수 이름, 티어, 시즌, 경기 종류) =====
+  let globalCurTier = null, globalCurTierId = null;
   let globalOuid = null, globalNickname = "", globalLevel = "", globalMaxTier = "", globalMaxTierId = null, globalMatchDetails = [], currentMatchLoadIndex = 0;
   let spidMetaCache = {}, divisionMetaCache = {}, seasonMetaCache = {};
 
@@ -2376,7 +2384,7 @@ service cloud.firestore {
       const tierMe = tierMatches.map(m => ({ m, me: m.matchInfo?.find(i => i.ouid === ouid) })).find(x => x.me?.division);
       const curTierId = tierMe ? tierMe.me.division : null;
       const curTierName = curTierId !== null ? (divisionMetaCache[String(curTierId)] || `등급 ${curTierId}`) : null;
-      const curTierWhen = tierMe ? getTimeAgo(tierMe.m.matchDate) : '';
+      globalCurTier = curTierName; globalCurTierId = curTierId;
       const lastPlayed = details[0]?.matchDate ? getTimeAgo(details[0].matchDate) : '';
       let wins = 0, draws = 0, losses = 0, goals = 0, conceded = 0;
       const rows = [];
@@ -2392,10 +2400,10 @@ service cloud.firestore {
       const winRate = total ? Math.round(wins / total * 100) : 0;
       const tierImgOf = (id, size) => { const src = id !== null ? getTierBadge(id) : ''; return src ? `<img src="${src}" alt="" onerror="this.remove()" style="width:${size}px; height:${size}px; object-fit:contain;">` : ''; };
       const tierStatHTML = curTierName ? `
-        <div class="result-stat-label">현재 티어 <span style="font-weight:600;">· ${curTierWhen} 경기 기준</span></div>
+        <div class="result-stat-label">현재 티어</div>
         <div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImgOf(curTierId, 32)}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${escapeHtml(curTierName)}</div></div>
-        <div class="result-stat-sub" style="display:flex; align-items:center; justify-content:center; gap:4px; white-space:nowrap; margin-top:6px;">역대 최고 ${tierImgOf(globalMaxTierId, 16)}<b>${escapeHtml(globalMaxTier)}</b></div>` : `
-        <div class="result-stat-label">역대 최고 티어</div>
+        <div class="result-stat-sub" style="display:flex; align-items:center; justify-content:center; gap:4px; white-space:nowrap; margin-top:6px;">최고 티어 ${tierImgOf(globalMaxTierId, 16)}<b>${escapeHtml(globalMaxTier)}</b></div>` : `
+        <div class="result-stat-label">최고 티어</div>
         <div style="display:flex; align-items:center; justify-content:center; gap:8px;">${tierImgOf(globalMaxTierId, 32)}<div style="font-size:17px; font-weight:800; color:var(--tier-op);">${escapeHtml(globalMaxTier)}</div></div>`;
 
       showResult(`
@@ -2456,6 +2464,15 @@ service cloud.firestore {
     const tierSrc = globalMaxTierId !== null ? getTierBadge(globalMaxTierId) : '';
     tierImg.style.display = tierSrc ? '' : 'none';
     if (tierSrc) tierImg.src = tierSrc;
+    const curBadge = document.getElementById('profile-cur-badge');
+    curBadge.style.display = globalCurTier ? '' : 'none';
+    if (globalCurTier) {
+      document.getElementById('profile-cur-tier').innerText = globalCurTier;
+      const curImg = document.getElementById('profile-cur-tier-img');
+      const curSrc = getTierBadge(globalCurTierId);
+      curImg.style.display = curSrc ? '' : 'none';
+      if (curSrc) curImg.src = curSrc;
+    }
     safeSetText('profile-type-label', MATCH_TYPES[currentMatchType]);
     getOwnerData(globalOuid, globalNickname).then(d => safeSetText('prof-rec-cnt', d.rec || 0));
 
