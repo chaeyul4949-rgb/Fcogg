@@ -498,6 +498,14 @@
     .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
     .pro-benefit b { font-size: 15px; }
     .pro-benefit div { font-size: 13px; color: var(--muted-foreground); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
+    .deep-toggle { grid-column: 1 / -1; height: 46px; border-radius: 12px; border: 1px dashed var(--pro-gold); background: var(--pro-gold-bg); color: var(--foreground); font-weight: 800; font-size: 14px; cursor: pointer; }
+    .deep-toggle:hover { border-style: solid; }
+    .deep-more { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .deep-more[hidden] { display: none; }
+    .vs-diff { font-size: 10.5px; font-weight: 800; margin-left: 2px; }
+    .vs-diff.up { color: var(--win-color); }
+    .vs-diff.down { color: var(--lose-color); }
+    @media (max-width: 760px) { .deep-more { grid-template-columns: 1fr; } }
     .deep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
     .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; font-size: 14px; min-width: 0; }
     .deep-title { font-size: 16px; font-weight: 900; margin-bottom: 12px; }
@@ -2385,6 +2393,16 @@
   }
 
   // ===== PRO 심층 피드백 (최근 경기 기록만으로 계산) =====
+  function toggleDeepMore(btn) {
+    const box = document.getElementById('deep-more');
+    if (!box) return;
+    const open = box.hidden;
+    box.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? '▲ 접기' : `▼ 심층 피드백 ${box.querySelectorAll('.deep-card').length}개 펼치기`;
+    if (!open) btn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
   function buildProDeepHTML(matches, ouid, winAnalysis) {
     const N = (v) => +v || 0;
     const rows = [];
@@ -2401,15 +2419,17 @@
     const strengths = [];
 
     // --- 1. 상대 대비 지표 ---
-    const passRate = (i) => N(i.pass?.passTry) ? N(i.pass.passSuccess) / N(i.pass.passTry) * 100 : 0;
-    const shotAcc = (i) => N(i.shoot?.shootTotal) ? N(i.shoot.effectiveShootTotal) / N(i.shoot.shootTotal) * 100 : 0;
-    const tackleRate = (i) => N(i.defence?.tackleTry) ? N(i.defence.tackleSuccess) / N(i.defence.tackleTry) * 100 : 0;
+    // 비율은 시도가 있었던 경기만 평균 (시도 0인 경기를 0%로 치면 평균이 낮게 왜곡됨)
+    const passRate = (i) => N(i.pass?.passTry) ? N(i.pass.passSuccess) / N(i.pass.passTry) * 100 : null;
+    const shotAcc = (i) => N(i.shoot?.shootTotal) ? N(i.shoot.effectiveShootTotal) / N(i.shoot.shootTotal) * 100 : null;
+    const tackleRate = (i) => N(i.defence?.tackleTry) ? N(i.defence.tackleSuccess) / N(i.defence.tackleTry) * 100 : null;
+    const avgN = (f) => { const v = rows.map(f).filter(x => x !== null && isFinite(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : 0; };
     const cmp = [
       { label: '점유율', unit: '%', me: avg(r => N(r.me.matchDetail.possession)), op: avg(r => N(r.en.matchDetail.possession)), good: true },
       { label: '슈팅', unit: '개', me: avg(r => N(r.me.shoot?.shootTotal)), op: avg(r => N(r.en.shoot?.shootTotal)), good: true },
-      { label: '유효슈팅 비율', unit: '%', me: avg(r => shotAcc(r.me)), op: avg(r => shotAcc(r.en)), good: true },
-      { label: '패스 성공률', unit: '%', me: avg(r => passRate(r.me)), op: avg(r => passRate(r.en)), good: true },
-      { label: '태클 성공률', unit: '%', me: avg(r => tackleRate(r.me)), op: avg(r => tackleRate(r.en)), good: true },
+      { label: '유효슈팅 비율', unit: '%', me: avgN(r => shotAcc(r.me)), op: avgN(r => shotAcc(r.en)), good: true },
+      { label: '패스 성공률', unit: '%', me: avgN(r => passRate(r.me)), op: avgN(r => passRate(r.en)), good: true },
+      { label: '태클 성공률', unit: '%', me: avgN(r => tackleRate(r.me)), op: avgN(r => tackleRate(r.en)), good: true },
       { label: '파울', unit: '개', me: avg(r => N(r.me.matchDetail.foul)), op: avg(r => N(r.en.matchDetail.foul)), good: false },
       { label: '평균 평점', unit: '', me: avg(r => N(r.me.matchDetail.averageRating)), op: avg(r => N(r.en.matchDetail.averageRating)), good: true }
     ];
@@ -2424,7 +2444,7 @@
       const tot = (c.me + c.op) || 1;
       const tag = c.verdict === 'up' ? '<span class="deep-tag up">우위</span>' : c.verdict === 'down' ? '<span class="deep-tag down">열세</span>' : '<span class="deep-tag">비슷</span>';
       return `<div class="vs-row"><span class="vs-val">${fmtV(c.me, c.unit)}</span>
-        <div class="vs-mid"><div class="vs-label">${c.label} ${tag}</div><div class="cmp-bars"><div class="cmp-bar me" style="width:${c.me / tot * 100}%"></div><div class="cmp-bar en" style="width:${c.op / tot * 100}%"></div></div></div>
+        <div class="vs-mid"><div class="vs-label">${c.label} ${tag} <span class="vs-diff ${c.verdict}">${Math.abs(c.me - c.op) < 0.05 ? '±0' : (c.me - c.op > 0 ? '+' : '') + fmtV(c.me - c.op, c.unit === '%' ? '%p' : c.unit)}</span></div><div class="cmp-bars"><div class="cmp-bar me" style="width:${c.me / tot * 100}%"></div><div class="cmp-bar en" style="width:${c.op / tot * 100}%"></div></div></div>
         <span class="vs-val">${fmtV(c.op, c.unit)}</span></div>`;
     }).join('');
     const worstCmp = cmp.filter(c => c.verdict === 'down')[0];
@@ -2617,8 +2637,11 @@
       </div>`;
 
     const card = (title, body, tip, full) => `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${tip ? `<div class="deep-tip">💡 ${tip}</div>` : ''}</div>`;
+    const moreCount = 9;
     return summary
-      + card('📊 상대 대비 지표 <small>(나 vs 상대 평균)</small>', cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요. 위 '승률 상승 솔루션'의 팁을 함께 참고하세요.` : '상대와 비교해 밀리는 지표가 없어요. 좋아요!')
+      + `<button class="deep-toggle" onclick="toggleDeepMore(this)" aria-expanded="false">▼ 심층 피드백 ${moreCount}개 펼치기</button>`
+      + `<div class="deep-more" id="deep-more" hidden>`
+      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요. 위 '승률 상승 솔루션'의 팁을 함께 참고하세요.` : '상대와 비교해 밀리는 지표가 없어요. 좋아요!')
       + card('⏱️ 시간대별 득점 / 실점', `<div class="tb-wrap">${timeHTML}</div><div class="tb-legend"><span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div>`, timeTip)
       + card('⚽ 선제골 · 역전 분석', flowHTML, flowTip)
       + card('🎯 슈팅 위치 · 결정력', shotHTML, shotTip)
@@ -2626,7 +2649,8 @@
       + card('📈 최근 흐름', `<div class="form-dots">${dots}</div>`, formTip)
       + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 경기에서 실수가 잦았다는 뜻이에요. 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
       + card('🔄 점유율 구간별 승률', `<div class="deep-stats">${possHTML}</div>`, possTip)
-      + card('🟨 카드 · 파울 관리', discHTML, discTip);
+      + card('🟨 카드 · 파울 관리', discHTML, discTip)
+      + `</div>`;
   }
 
   function generateAIReports() {
