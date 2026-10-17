@@ -32,15 +32,13 @@ async function summary(nick, type) {
   const best = cands.reduce((a, d) => (!a || rank(d) < rank(a) ? d : a), null);
   const tier = best ? nameOf(best.division) : null;
   const details = await Promise.all((ids || []).map((id) => api(`/fconline/v1/match-detail?matchid=${id}`).catch(() => null)));
-  let w = 0, d = 0, l = 0, form = '', bestDiv = null;
+  let w = 0, d = 0, l = 0, form = '', curTier = null;
   for (const m of details) {
     const me = m && m.matchInfo && m.matchInfo.find((i) => i.ouid === ouid);
-    // 경기 기록의 등급은 한 단계 낮게 찍히기도 해서 최근 경기 중 가장 높은 등급을 현재 티어로 본다
-    if (me && me.division && (type === 50 || type === 52) && (bestDiv === null || me.division < bestDiv)) bestDiv = me.division;
+    if (curTier === null && me && me.division && (type === 50 || type === 52)) curTier = nameOf(me.division) || null;
     const res = me && me.matchDetail && me.matchDetail.matchResult;
     if (res === '승') { w++; form += '승'; } else if (res === '무') { d++; form += '무'; } else if (res === '패') { l++; form += '패'; }
   }
-  const curTier = bestDiv !== null ? nameOf(bestDiv) || null : null;
   return { nick: (basic && basic.nickname) || nick, level: basic && basic.level, tier, curTier, w, d, l, form };
 }
 
