@@ -1260,14 +1260,10 @@
   function recordVisit() {
     if (!db) return;
     const { day, hour } = kstParts();
-    let firstToday = true;
-    try { firstToday = localStorage.getItem('fco_visit_day') !== day; localStorage.setItem('fco_visit_day', day); } catch (e) {}
+    // 들어올 때마다 1번씩 센다 (같은 사람이 여러 번 들어와도 모두 셈)
     const inc = firebase.firestore.FieldValue.increment(1);
-    const data = { views: inc, ['h' + hour]: inc };
-    if (firstToday) {
-      data.visitors = inc;
-      data[/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'pc'] = inc;
-    }
+    const data = { views: inc, visitors: inc, ['h' + hour]: inc };
+    data[/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'pc'] = inc;
     db.collection('stats').doc(day).set(data, { merge: true }).catch(() => {});
   }
 
@@ -1301,21 +1297,21 @@
           <span class="x">${it.x}</span>
         </div>`).join('')}</div>`;
     };
-    const dayBars = days.map(d => ({ v: g(d, 'visitors'), x: d.slice(5).replace('-', '/'), t: d, hi: d === today }));
+    const dayBars = days.map(d => ({ v: g(d, 'views'), x: d.slice(5).replace('-', '/'), t: d, hi: d === today }));
     const nowHour = kstParts().hour;
     const hourBars = Array.from({ length: 24 }, (_, h) => ({ v: g(today, 'h' + h), x: h % 3 === 0 ? `${h}시` : '', t: `${h}시`, hi: h === nowHour }));
     body.innerHTML = `
       <div class="visit-tiles">
-        ${tile(g(today, 'visitors'), '오늘 방문자')}
-        ${tile(g(today, 'views'), '오늘 조회수')}
-        ${tile(g(yesterday, 'visitors'), '어제 방문자')}
-        ${tile(sum(last7, 'visitors'), '최근 7일 방문자')}
+        ${tile(g(today, 'views'), '오늘 방문')}
+        ${tile(g(yesterday, 'views'), '어제 방문')}
+        ${tile(sum(last7, 'views'), '최근 7일 방문')}
+        ${tile(sum(days, 'views'), '최근 14일 방문')}
       </div>
-      <div class="visit-chart-title">최근 14일 방문자</div>
+      <div class="visit-chart-title">최근 14일 날짜별 방문</div>
       ${bars(dayBars)}
-      <div class="visit-chart-title">오늘 시간대별 조회수</div>
+      <div class="visit-chart-title">오늘 시간대별 방문</div>
       ${bars(hourBars)}
-      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
+      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기별 방문: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
   }
 
   function toggleNoticeOlder(btn) {
