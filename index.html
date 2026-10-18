@@ -146,6 +146,8 @@
     .tb-cat { font-size: 14px; font-weight: 900; margin: 14px 0 8px; }
     .tb-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .tb-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); opacity: 0.6; }
+    .tb-item.all { opacity: 1; }
+    .tb-legend { font-size: 12px; font-weight: 700; color: var(--muted-foreground); margin-bottom: 4px; }
     .tb-item.on { opacity: 1; border-color: var(--pro-gold, #F59E0B); background: var(--pro-gold-bg, rgba(245,158,11,0.08)); }
     .tb-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
     .tb-name { font-size: 14px; font-weight: 900; }
@@ -715,6 +717,7 @@
       <button class="tab-btn" data-tab="player" onclick="switchTab('player')" hidden>포지션별 선수 티어</button>
       <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
       <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
+      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">🏅 칭호 도감</button>
       <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
       <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 계산기</button>
       <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
@@ -774,6 +777,10 @@
   <div id="tab-teamcolor" class="tab-content">
     <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3></div>
     <div class="tier-board" id="teamcolor-list-container"></div>
+  </div>
+
+  <div id="tab-titles" class="tab-content">
+    <div class="shadcn-card" style="max-width:900px; margin:0 auto; padding:24px;" id="titles-tab-body"></div>
   </div>
 
   <div id="tab-trait" class="tab-content">
@@ -1400,6 +1407,7 @@
     if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     if (tabId === 'hub') renderHubAuth();
     if (tabId === 'ranking') renderTop10();
+    if (tabId === 'titles') renderTitlesTab();
   }
 
   function switchSubTab(subTabId, btnElement) {
@@ -2921,21 +2929,24 @@ service cloud.firestore {
     const m = computeTitleMetrics(matches, ouid);
     const earned = m.G >= TITLE_MIN_GAMES ? TITLES.filter(t => { try { return t.check(m); } catch (e) { return false; } }).sort((a, b) => b.tier - a.tier) : [];
     lastTitleResult = { earned, metrics: m };
+    renderTitlesTab();
     return lastTitleResult;
   }
 
   // 칭호 도감: 전체 칭호와 조건, 내가 받은 칭호 표시
-  function openTitleBook() {
+  function titleBookHTML(forTab) {
     const { earned, metrics: m } = lastTitleResult;
     const have = new Set(earned.map(t => t.name));
     const cats = [...new Set(TITLES.map(t => t.cat))];
-    document.getElementById('title-modal-body').innerHTML = `
-      <div class="tb-head">🏅 칭호 도감 <span>${have.size} / ${TITLES.length}개 획득</span></div>
-      <div class="tb-desc">최근 ${m?.G || 0}경기 기록으로 판정해요 (${TITLE_MIN_GAMES}경기 이상부터). 기준은 공식경기 유저 표본의 상위 10~15% 수준이에요.</div>
+    const who = m && globalNickname ? `<b>${escapeHtml(globalNickname)}</b>님은 ${have.size} / ${TITLES.length}개 획득` : `전체 ${TITLES.length}개`;
+    return `
+      <div class="tb-head">🏅 칭호 도감 <span>${who}</span></div>
+      <div class="tb-desc">구단주를 검색하고 '구단 스쿼드 및 상세 분석 보기'를 누르면 최근 25경기 기록으로 칭호를 받아요 (${TITLE_MIN_GAMES}경기 이상부터). 여러 개를 동시에 받을 수 있고, 등급이 가장 높은 칭호가 대표 칭호예요. 기준은 공식경기 유저 표본의 상위 10~15% 수준이에요.${m ? ' 금색 칸이 받은 칭호예요.' : ''}</div>
+      <div class="tb-legend">${[3, 2, 1].map(t => `<span class="tb-tier" style="background:${TITLE_TIER[t][1]}">${TITLE_TIER[t][0]}</span> ${TITLES.filter(x => x.tier === t).length}개`).join(' &nbsp; ')}</div>
       ${cats.map(c => `
         <div class="tb-cat">${c}</div>
         <div class="tb-list">${TITLES.filter(t => t.cat === c).map(t => `
-          <div class="tb-item ${have.has(t.name) ? 'on' : ''}">
+          <div class="tb-item ${have.has(t.name) ? 'on' : ''} ${m ? '' : 'all'}">
             <div class="tb-icon">${t.icon}</div>
             <div style="min-width:0;">
               <div class="tb-name">${have.has(t.name) ? titleLabel(t, m) : t.name} <span class="tb-tier" style="background:${TITLE_TIER[t.tier][1]}">${TITLE_TIER[t.tier][0]}</span>${have.has(t.name) ? ' <span class="tb-got">획득</span>' : ''}</div>
@@ -2943,6 +2954,10 @@ service cloud.firestore {
               ${have.has(t.name) && m ? `<div class="tb-why">${t.why(m)}</div>` : ''}
             </div>
           </div>`).join('')}</div>`).join('')}`;
+  }
+  function renderTitlesTab() { const el = document.getElementById('titles-tab-body'); if (el) el.innerHTML = titleBookHTML(true); }
+  function openTitleBook() {
+    document.getElementById('title-modal-body').innerHTML = titleBookHTML(false);
     document.getElementById('title-modal').style.display = 'flex';
   }
   function closeTitleBook() { document.getElementById('title-modal').style.display = 'none'; }
