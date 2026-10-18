@@ -433,6 +433,9 @@
     .goal-row.me { background: rgba(59,130,246,0.08); }
     .goal-row.en { background: rgba(239,68,68,0.08); flex-direction: row-reverse; text-align: right; }
     .goal-min { font-weight: 900; min-width: 34px; }
+    .shot-type { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px; white-space: nowrap; background: var(--muted, rgba(127,127,127,0.15)); color: var(--foreground); }
+    .shot-type.zd { background: rgba(168,85,247,0.16); color: #A855F7; }
+    .shot-type.dd { background: rgba(16,185,129,0.16); color: #10B981; }
     .lineup-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .lineup-title { font-weight: 900; text-align: center; margin-bottom: 8px; }
     .lineup-pitch { position: relative; width: 100%; aspect-ratio: 3 / 4; background: linear-gradient(#0b5d3b, #0a5034); border-radius: 12px; overflow: hidden; }
@@ -3551,6 +3554,21 @@ service cloud.firestore {
     LAM:[30,37], CAM:[50,37], RAM:[70,37], LF:[30,24], CF:[50,24], RF:[70,24], LW:[13,22], RW:[87,22], LS:[35,11], ST:[50,11], RS:[65,11]
   };
 
+  // 넥슨 API shootDetail.type → 슈팅 종류 (12 이상은 넥슨 문서에 설명이 없어 '기타'로 표시)
+  const SHOT_TYPES = {
+    1: ['일반 슛', 'D', ''], 2: ['감아차기', 'ZD', 'zd'], 3: ['헤더', '', ''], 4: ['로빙 슛', '', ''],
+    5: ['플레어 슛', '', ''], 6: ['낮은 슛', 'DD', 'dd'], 7: ['발리', '', ''], 8: ['프리킥', '', ''],
+    9: ['페널티킥', '', ''], 10: ['무회전 슛', '', ''], 11: ['바이시클', '', '']
+  };
+  function shotTypeText(type) {
+    const t = SHOT_TYPES[type];
+    return t ? (t[1] ? `${t[0]}(${t[1]})` : t[0]) : '기타 슛';
+  }
+  function shotTypeBadge(type) {
+    const t = SHOT_TYPES[type];
+    return `<span class="shot-type ${t?.[2] || ''}">${shotTypeText(type)}</span>`;
+  }
+
   function goalMinute(t) {
     const PERIOD = 16777216, offsets = [0, 2700, 5400, 6300, 7200];
     const period = Math.floor(t / PERIOD);
@@ -3591,9 +3609,10 @@ service cloud.firestore {
       const x = mine ? s.x * 100 : 100 - s.x * 100;
       const y = mine ? s.y * 64 : 64 - s.y * 64;
       const color = mine ? '#3B82F6' : '#EF4444';
-      if (s.result === 3) return `<circle cx="${x}" cy="${y}" r="1.8" fill="${color}" stroke="#fff" stroke-width="0.6"><title>골 ${goalMinute(s.goalTime)}'</title></circle>`;
-      if (s.result === 1) return `<circle cx="${x}" cy="${y}" r="1.1" fill="${color}" opacity="0.85"/>`;
-      return `<circle cx="${x}" cy="${y}" r="1.1" fill="none" stroke="${color}" stroke-width="0.45" opacity="0.8"/>`;
+      const kind = shotTypeText(s.type);
+      if (s.result === 3) return `<circle cx="${x}" cy="${y}" r="1.8" fill="${color}" stroke="#fff" stroke-width="0.6"><title>골 ${goalMinute(s.goalTime)}' · ${kind}</title></circle>`;
+      if (s.result === 1) return `<circle cx="${x}" cy="${y}" r="1.1" fill="${color}" opacity="0.85"><title>유효슈팅 · ${kind}</title></circle>`;
+      return `<circle cx="${x}" cy="${y}" r="1.1" fill="none" stroke="${color}" stroke-width="0.45" opacity="0.8"><title>빗나감 · ${kind}</title></circle>`;
     };
     const shots = [...(me.shootDetail || []).map(s => dot(s, true)), ...(en.shootDetail || []).map(s => dot(s, false))].join('');
     return `
@@ -3653,6 +3672,7 @@ service cloud.firestore {
       const goalList = goals.map(g => `
         <div class="goal-row ${g.side}">
           <span class="goal-min">${goalMinute(g.goalTime)}'</span>
+          ${shotTypeBadge(g.type)}
           <span>⚽ <b>${escapeHtml(spidMetaCache[g.spId] || '선수')}</b>${g.assist && g.assistSpId ? ` <span style="color:var(--muted-foreground);">(도움 ${escapeHtml(spidMetaCache[g.assistSpId] || '선수')})</span>` : ''}</span>
         </div>`).join('') || '<div style="color:var(--muted-foreground); font-size:13px; text-align:center;">득점 없음</div>';
 
