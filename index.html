@@ -1263,7 +1263,9 @@
     // 들어올 때마다 1번씩 센다 (같은 사람이 여러 번 들어와도 모두 셈)
     const inc = firebase.firestore.FieldValue.increment(1);
     const data = { views: inc, visitors: inc, ['h' + hour]: inc };
-    data[/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'pc'] = inc;
+    // 아이패드는 자기를 맥이라고 알려주므로 터치 화면 여부로 구분
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+    data[isMobile ? 'mobile' : 'pc'] = inc;
     db.collection('stats').doc(day).set(data, { merge: true }).catch(() => {});
   }
 
@@ -1311,7 +1313,7 @@
       ${bars(dayBars)}
       <div class="visit-chart-title">오늘 시간대별 방문</div>
       ${bars(hourBars)}
-      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기별 방문: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
+      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기별 방문: 📱 폰·태블릿 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
   }
 
   function toggleNoticeOlder(btn) {
