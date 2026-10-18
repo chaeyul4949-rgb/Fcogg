@@ -135,6 +135,25 @@
     .btn-rec:hover { background: rgba(52, 199, 89, 0.1); color: var(--win-color); border-color: var(--win-color); }
     .btn-rep:hover { background: rgba(255, 59, 48, 0.1); color: var(--lose-color); border-color: var(--lose-color); }
 
+    .badge-more { font-size: 11px; font-weight: 800; color: var(--muted-foreground); }
+    .title-book-btn { margin-left: 6px; font-size: 12px; font-weight: 800; color: var(--ai-blue, #3B82F6); background: none; border: none; cursor: pointer; padding: 0; }
+    .title-chips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .title-chip { font-size: 12.5px; background: var(--background); border-radius: 8px; padding: 6px 10px; line-height: 1.5; }
+    .title-chip span { color: var(--muted-foreground); }
+    .tb-head { font-size: 20px; font-weight: 900; margin-bottom: 4px; }
+    .tb-head span { font-size: 13px; font-weight: 700; color: var(--muted-foreground); margin-left: 6px; }
+    .tb-desc { font-size: 12.5px; color: var(--muted-foreground); margin-bottom: 14px; line-height: 1.5; }
+    .tb-cat { font-size: 14px; font-weight: 900; margin: 14px 0 8px; }
+    .tb-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tb-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); opacity: 0.6; }
+    .tb-item.on { opacity: 1; border-color: var(--pro-gold, #F59E0B); background: var(--pro-gold-bg, rgba(245,158,11,0.08)); }
+    .tb-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+    .tb-name { font-size: 14px; font-weight: 900; }
+    .tb-tier { font-size: 10px; font-weight: 800; color: #fff; padding: 1px 6px; border-radius: 5px; vertical-align: middle; }
+    .tb-got { font-size: 10px; font-weight: 800; color: var(--win-color); }
+    .tb-cond { font-size: 12px; color: var(--muted-foreground); margin-top: 2px; line-height: 1.45; word-break: keep-all; }
+    .tb-why { font-size: 12px; font-weight: 700; margin-top: 3px; }
+    @media (max-width: 640px) { .tb-list { grid-template-columns: 1fr; } }
     .style-badge { background: var(--muted); color: var(--foreground); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
     
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; animation: fadeIn 0.5s ease; }
@@ -1264,6 +1283,12 @@
   </div>
 </div>
 
+<div id="title-modal" class="sub-modal-overlay" style="align-items:flex-start;" onclick="if (event.target === this) closeTitleBook()">
+  <div class="sub-modal-content" style="max-width:760px;">
+    <button class="modal-close-btn" onclick="closeTitleBook()" aria-label="닫기">✕</button>
+    <div id="title-modal-body"></div>
+  </div>
+</div>
 <div id="match-modal" class="sub-modal-overlay" style="align-items:flex-start;">
   <div class="sub-modal-content" style="max-width:960px;">
     <button class="modal-close-btn" onclick="closeMatchModal()" aria-label="닫기">✕</button>
@@ -2776,6 +2801,152 @@ service cloud.firestore {
     }
   }
 
+  // ===== 칭호 =====
+  // 내 최근 경기 기록으로 지표를 계산 (경기당 평균, 비율 등)
+  function computeTitleMetrics(matches, ouid) {
+    const N = (v) => +v || 0;
+    const rows = [];
+    for (const m of matches || []) {
+      const me = m?.matchInfo?.find(i => i.ouid === ouid), en = m?.matchInfo?.find(i => i.ouid !== ouid);
+      if (me?.matchDetail && en) rows.push({ me, en, res: me.matchDetail.matchResult });
+    }
+    const G = rows.length;
+    const sum = (f) => rows.reduce((s, r) => s + f(r), 0);
+    const ratio = (a, b) => b ? a / b : 0;
+    const goals = sum(r => N(r.me.shoot?.goalTotal)), conc = sum(r => N(r.en.shoot?.goalTotal));
+    const shots = sum(r => N(r.me.shoot?.shootTotal)), eff = sum(r => N(r.me.shoot?.effectiveShootTotal));
+    const kinds = {}; rows.forEach(r => goalKindCounts(r.me, kinds));
+    const kindGoals = Object.values(kinds).reduce((a, b) => a + b, 0);
+    const myGoalShots = rows.flatMap(r => (r.me.shootDetail || []).filter(s => s.result === 3));
+    // 선발 선수 (교체 28번 제외)
+    const starts = {}, scorers = {}, points = {}; let subGoals = 0;
+    rows.forEach(r => (r.me.player || []).forEach(p => {
+      if (p.spPosition === 28) { subGoals += N(p.status?.goal); return; }
+      starts[p.spId] = (starts[p.spId] || 0) + 1;
+      scorers[p.spId] = (scorers[p.spId] || 0) + N(p.status?.goal);
+      points[p.spId] = (points[p.spId] || 0) + N(p.status?.goal) + N(p.status?.assist);
+    }));
+    // 가장 오래 쓴 선수: 선발 경기 수가 가장 많고, 같으면 공격 포인트가 많은 선수
+    const fav = Object.keys(starts).sort((a, b) => starts[b] - starts[a] || (points[b] || 0) - (points[a] || 0))[0];
+    const startCounts = Object.values(starts).sort((a, b) => b - a);
+    const coreXI = startCounts.slice(0, 11).reduce((a, b) => a + b, 0) / Math.max(1, G * 11); // 가장 많이 쓴 11명이 선발 자리를 채운 비율
+    const topStarter = Object.entries(starts).sort((a, b) => b[1] - a[1])[0];
+    const topScorer = Object.entries(scorers).sort((a, b) => b[1] - a[1])[0];
+    // 흐름: 역전승, 선제골, 연승
+    let comebacks = 0, firstGoals = 0, anyGoalGames = 0, lateGoals = 0, maxWin = 0, curWin = 0;
+    [...rows].reverse().forEach(r => { if (r.res === '승') { curWin++; maxWin = Math.max(maxWin, curWin); } else curWin = 0; });
+    rows.forEach(r => {
+      const ev = [...(r.me.shootDetail || []).filter(s => s.result === 3).map(s => ({ t: goalMinute(s.goalTime), m: 1 })),
+                  ...(r.en.shootDetail || []).filter(s => s.result === 3).map(s => ({ t: goalMinute(s.goalTime), m: 0 }))].sort((a, b) => a.t - b.t);
+      let d = 0, trailed = false;
+      ev.forEach(e => { d += e.m ? 1 : -1; if (d < 0) trailed = true; if (e.m && e.t >= 76) lateGoals++; });
+      if (ev.length) { anyGoalGames++; if (ev[0].m) firstGoals++; }
+      if (trailed && r.res === '승') comebacks++;
+    });
+    return {
+      G, wins: rows.filter(r => r.res === '승').length,
+      winRate: ratio(rows.filter(r => r.res === '승').length, G) * 100,
+      goalsPG: ratio(goals, G), concPG: ratio(conc, G), goals,
+      headPG: ratio(sum(r => N(r.me.shoot?.goalHeading)), G), headShare: ratio(sum(r => N(r.me.shoot?.goalHeading)), goals) * 100,
+      fkGoals: sum(r => N(r.me.shoot?.goalFreekick)), pkGoals: sum(r => N(r.me.shoot?.goalPenaltyKick)),
+      outShare: ratio(sum(r => N(r.me.shoot?.goalOutPenalty)), goals) * 100,
+      zdShare: ratio(kinds[2] || 0, kindGoals) * 100, ddShare: ratio(kinds[6] || 0, kindGoals) * 100,
+      volleyShare: ratio(kinds[7] || 0, kindGoals) * 100, kindGoals,
+      shotAcc: ratio(eff, shots) * 100, conversion: ratio(goals, shots) * 100, shotsPG: ratio(shots, G),
+      poss: ratio(sum(r => N(r.me.matchDetail.possession)), G),
+      passRate: ratio(sum(r => N(r.me.pass?.passSuccess)), sum(r => N(r.me.pass?.passTry))) * 100,
+      throughRate: ratio(sum(r => N(r.me.pass?.throughPassSuccess)), sum(r => N(r.me.pass?.throughPassTry))) * 100,
+      tacklePG: ratio(sum(r => N(r.me.defence?.tackleSuccess)), G),
+      foulPG: ratio(sum(r => N(r.me.matchDetail.foul)), G), yellowPG: ratio(sum(r => N(r.me.matchDetail.yellowCards)), G),
+      reds: sum(r => N(r.me.matchDetail.redCards)),
+      comebacks, firstGoalRate: ratio(firstGoals, anyGoalGames) * 100, lateShare: ratio(lateGoals, myGoalShots.length) * 100,
+      assistedShare: ratio(myGoalShots.filter(s => s.assist).length, myGoalShots.length) * 100,
+      subGoals, maxWin, coreXI: coreXI * 100,
+      favId: fav, favGames: starts[fav] || 0, favPoints: points[fav] || 0,
+      topStarterId: topStarter?.[0], topStarterGames: topStarter?.[1] || 0,
+      topScorerId: topScorer?.[0], topScorerGamesStarted: starts[topScorer?.[0]] || 0, topScorerShare: ratio(topScorer?.[1] || 0, goals) * 100,
+      cleanSheets: rows.filter(r => N(r.en.shoot?.goalTotal) === 0).length
+    };
+  }
+
+  // 칭호 목록: 기준값은 공식경기 유저 표본에서 상위 10~15% 안에 드는 수준으로 잡음
+  // tier: 3 전설 · 2 희귀 · 1 일반 (여러 개 받으면 높은 등급이 대표 칭호)
+  const TITLE_MIN_GAMES = 10;
+  const f1 = (v) => (+v).toFixed(1);
+  const TITLES = [
+    // ⚽ 득점
+    { cat: '득점', icon: '🔥', name: '폭격기', tier: 2, cond: '경기당 3.4골 이상', check: m => m.goalsPG >= 3.4, why: m => `경기당 ${f1(m.goalsPG)}골을 넣어요.` },
+    { cat: '득점', icon: '🎯', name: '스나이퍼', tier: 2, cond: '유효슈팅 비율 82.5% 이상 (슈팅 100개 이상)', check: m => m.shotAcc >= 82.5 && m.shotsPG * m.G >= 100, why: m => `슈팅의 ${Math.round(m.shotAcc)}%가 골문으로 가요.` },
+    { cat: '득점', icon: '🧊', name: '냉혈한', tier: 2, cond: '슈팅 대비 골 55% 이상', check: m => m.conversion >= 55, why: m => `슈팅 ${Math.round(m.conversion)}%를 골로 연결해요.` },
+    { cat: '득점', icon: '🌀', name: '감아차기 장인', tier: 1, cond: '득점의 50% 이상이 감아차기(ZD) (20골 이상)', check: m => m.kindGoals >= 20 && m.zdShare >= 50, why: m => `골의 ${Math.round(m.zdShare)}%를 ZD로 넣어요.` },
+    { cat: '득점', icon: '⚡', name: 'DD 마스터', tier: 1, cond: '득점의 25% 이상이 낮은 슛(DD) (20골 이상)', check: m => m.kindGoals >= 20 && m.ddShare >= 25, why: m => `골의 ${Math.round(m.ddShare)}%를 DD로 넣어요.` },
+    { cat: '득점', icon: '🦵', name: '발리 마스터', tier: 1, cond: '득점의 25% 이상이 발리 (20골 이상)', check: m => m.kindGoals >= 20 && m.volleyShare >= 25, why: m => `골의 ${Math.round(m.volleyShare)}%가 발리예요.` },
+    { cat: '득점', icon: '🗿', name: '타이탄', tier: 2, cond: '헤딩골이 득점의 25% 이상, 경기당 0.6골 이상', check: m => m.headShare >= 25 && m.headPG >= 0.6, why: m => `경기당 헤딩골 ${f1(m.headPG)}골, 득점의 ${Math.round(m.headShare)}%예요.` },
+    { cat: '득점', icon: '🚀', name: '중거리 포', tier: 1, cond: '득점의 16% 이상이 박스 밖 슈팅 (15골 이상)', check: m => m.goals >= 15 && m.outShare >= 16, why: m => `골의 ${Math.round(m.outShare)}%가 박스 밖에서 나왔어요.` },
+    { cat: '득점', icon: '🎩', name: '프리킥 장인', tier: 3, cond: '직접 프리킥 골 3골 이상', check: m => m.fkGoals >= 3, why: m => `프리킥으로 ${m.fkGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '🥅', name: 'PK 키커', tier: 1, cond: '페널티킥 골 3골 이상', check: m => m.pkGoals >= 3, why: m => `페널티킥으로 ${m.pkGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '🪄', name: '슈퍼서브', tier: 2, cond: '교체 선수가 3골 이상', check: m => m.subGoals >= 3, why: m => `교체로 들어간 선수가 ${m.subGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '👑', name: '원맨팀', tier: 1, cond: '한 선수가 팀 득점의 55% 이상', check: m => m.goals >= 15 && m.topScorerShare >= 55, why: m => `${titlePlayer(m.topScorerId)} 혼자 팀 골의 ${Math.round(m.topScorerShare)}%를 넣어요.` },
+    { cat: '득점', icon: '🤝', name: '팀플레이어', tier: 1, cond: '한 선수 득점 비중이 32% 이하 (20골 이상)', check: m => m.goals >= 20 && m.topScorerShare <= 32, why: m => `가장 많이 넣은 선수도 팀 골의 ${Math.round(m.topScorerShare)}%뿐이에요. 고르게 넣어요.` },
+    // 🧠 운영
+    { cat: '운영', icon: '🎼', name: '마에스트로', tier: 2, cond: '패스 성공률 90.5% 이상', check: m => m.passRate >= 90.5, why: m => `패스 성공률이 ${f1(m.passRate)}%예요.` },
+    { cat: '운영', icon: '🗝️', name: '라인 브레이커', tier: 1, cond: '스루패스 성공률 87% 이상', check: m => m.throughRate >= 87, why: m => `스루패스 성공률이 ${f1(m.throughRate)}%예요.` },
+    { cat: '운영', icon: '🕹️', name: '점유왕', tier: 1, cond: '평균 점유율 53% 이상', check: m => m.poss >= 53, why: m => `평균 점유율이 ${Math.round(m.poss)}%예요.` },
+    { cat: '운영', icon: '🏹', name: '역습 장인', tier: 2, cond: '평균 점유율 47% 이하인데 승률 55% 이상', check: m => m.poss <= 47 && m.winRate >= 55, why: m => `점유율 ${Math.round(m.poss)}%로도 ${Math.round(m.winRate)}%를 이겨요.` },
+    // 🛡️ 수비
+    { cat: '수비', icon: '🧱', name: '철벽', tier: 2, cond: '경기당 실점 1.9골 이하', check: m => m.concPG <= 1.9, why: m => `경기당 ${f1(m.concPG)}골만 내줘요.` },
+    { cat: '수비', icon: '🧤', name: '클린시트 마스터', tier: 2, cond: '무실점 경기 비율 20% 이상', check: m => m.cleanSheets / m.G >= 0.2, why: m => `${m.G}경기 중 ${m.cleanSheets}경기를 무실점으로 막았어요.` },
+    { cat: '수비', icon: '🛡️', name: '통곡의 벽', tier: 1, cond: '경기당 태클 성공 9회 이상', check: m => m.tacklePG >= 9, why: m => `경기당 태클 ${f1(m.tacklePG)}회를 성공해요.` },
+    { cat: '수비', icon: '🎩', name: '젠틀맨', tier: 1, cond: '경기당 파울 0.4개 이하, 경고·퇴장 없음', check: m => m.foulPG <= 0.4 && m.yellowPG === 0 && m.reds === 0, why: m => `경기당 파울 ${f1(m.foulPG)}개, 카드는 한 장도 없어요.` },
+    { cat: '수비', icon: '🟨', name: '카드 수집가', tier: 1, cond: '경기당 경고 0.3장 이상 또는 퇴장 2번 이상', check: m => m.yellowPG >= 0.3 || m.reds >= 2, why: m => `경기당 경고 ${f1(m.yellowPG)}장${m.reds ? `, 퇴장 ${m.reds}번` : ''}이에요.` },
+    // 💪 멘탈
+    { cat: '멘탈', icon: '🔄', name: '역전의 명수', tier: 2, cond: '지고 있다가 이긴 경기 6번 이상', check: m => m.comebacks >= 6, why: m => `역전승이 ${m.comebacks}번이에요.` },
+    { cat: '멘탈', icon: '🏃', name: '선제골 사냥꾼', tier: 1, cond: '골이 나온 경기의 70% 이상에서 먼저 득점', check: m => m.firstGoalRate >= 70, why: m => `${Math.round(m.firstGoalRate)}% 경기에서 먼저 골을 넣어요.` },
+    { cat: '멘탈', icon: '⏰', name: '극장골 장인', tier: 1, cond: '득점의 24% 이상이 76분 이후 (15골 이상)', check: m => m.goals >= 15 && m.lateShare >= 24, why: m => `골의 ${Math.round(m.lateShare)}%가 76분 이후에 나와요.` },
+    { cat: '멘탈', icon: '📈', name: '연승 머신', tier: 2, cond: '최근 경기 중 5연승 이상', check: m => m.maxWin >= 5, why: m => `최근 ${m.maxWin}연승을 했어요.` },
+    // 💙 충성
+    { cat: '충성', icon: '🏠', name: '원클럽맨', tier: 1, cond: '20경기 이상 선발 11명을 한 번도 안 바꿈', check: m => m.G >= 20 && m.coreXI >= 99.9, why: m => `최근 ${m.G}경기 내내 같은 선발 11명으로 뛰었어요.` },
+    { cat: '충성', icon: '💍', name: '원픽', label: m => `${titleShortName(m.favId)} 원픽`, tier: 1, cond: '가장 오래 쓴 선수 이름이 붙어요 (그 선수를 15경기 이상, 모든 경기 선발로 씀)', check: m => m.G >= 15 && m.favId && m.favGames >= m.G, why: m => `${titlePlayer(m.favId)} 선수를 최근 ${m.favGames}경기 모두 선발로 썼어요. (공격 포인트 ${m.favPoints})` },
+    { cat: '충성', icon: '🧪', name: '실험가', tier: 1, cond: '선발 라인업을 자주 바꿈 (주전 11명 비중 80% 이하)', check: m => m.coreXI <= 80, why: m => `주전 11명 비중이 ${Math.round(m.coreXI)}%예요. 여러 조합을 시험해요.` }
+  ];
+
+  const titlePlayer = (id) => escapeHtml(spidMetaCache[id] || '한 선수');
+  const titleShortName = (id) => escapeHtml(String(spidMetaCache[id] || '최애 선수').trim().split(/\s+/).pop());
+  const titleLabel = (t, m) => (t.label && m ? t.label(m) : t.name);
+  const TITLE_TIER = { 3: ['전설', '#F59E0B'], 2: ['희귀', '#8B5CF6'], 1: ['일반', '#3B82F6'] };
+  let lastTitleResult = { earned: [], metrics: null };
+
+  // 받은 칭호 전부 (등급 높은 순). 하나도 없으면 밸런스형
+  function evaluateTitles(matches, ouid) {
+    const m = computeTitleMetrics(matches, ouid);
+    const earned = m.G >= TITLE_MIN_GAMES ? TITLES.filter(t => { try { return t.check(m); } catch (e) { return false; } }).sort((a, b) => b.tier - a.tier) : [];
+    lastTitleResult = { earned, metrics: m };
+    return lastTitleResult;
+  }
+
+  // 칭호 도감: 전체 칭호와 조건, 내가 받은 칭호 표시
+  function openTitleBook() {
+    const { earned, metrics: m } = lastTitleResult;
+    const have = new Set(earned.map(t => t.name));
+    const cats = [...new Set(TITLES.map(t => t.cat))];
+    document.getElementById('title-modal-body').innerHTML = `
+      <div class="tb-head">🏅 칭호 도감 <span>${have.size} / ${TITLES.length}개 획득</span></div>
+      <div class="tb-desc">최근 ${m?.G || 0}경기 기록으로 판정해요 (${TITLE_MIN_GAMES}경기 이상부터). 기준은 공식경기 유저 표본의 상위 10~15% 수준이에요.</div>
+      ${cats.map(c => `
+        <div class="tb-cat">${c}</div>
+        <div class="tb-list">${TITLES.filter(t => t.cat === c).map(t => `
+          <div class="tb-item ${have.has(t.name) ? 'on' : ''}">
+            <div class="tb-icon">${t.icon}</div>
+            <div style="min-width:0;">
+              <div class="tb-name">${have.has(t.name) ? titleLabel(t, m) : t.name} <span class="tb-tier" style="background:${TITLE_TIER[t.tier][1]}">${TITLE_TIER[t.tier][0]}</span>${have.has(t.name) ? ' <span class="tb-got">획득</span>' : ''}</div>
+              <div class="tb-cond">${t.cond}</div>
+              ${have.has(t.name) && m ? `<div class="tb-why">${t.why(m)}</div>` : ''}
+            </div>
+          </div>`).join('')}</div>`).join('')}`;
+    document.getElementById('title-modal').style.display = 'flex';
+  }
+  function closeTitleBook() { document.getElementById('title-modal').style.display = 'none'; }
+
   function calculateDashboardData(matchesData) {
     let wins = 0, draws = 0, losses = 0, gameCount = 0;
     let totalGoals = 0, totalConceded = 0, totalPossess = 0, totalTackle = 0, totalBlock = 0;
@@ -2852,16 +3023,16 @@ service cloud.firestore {
       safeSetText('stat-avg-goal', avgGoal); safeSetText('stat-avg-concede', avgConcede); safeSetText('stat-avg-pass-rate', overallPassRate + "%"); safeSetText('stat-avg-possess', avgPossess + "%"); safeSetText('stat-avg-defend', `${avgTackle} / ${avgBlock}`);
       safeSetText('stat-avg-concede-modal', avgConcede); safeSetText('stat-avg-possess-modal', avgPossess + "%"); safeSetText('sub-stat-pass-rate', overallPassRate + "%"); safeSetText('sub-stat-penetration', penetrationRate + "%"); safeSetText('sub-stat-dribble', dribbleSuccessRate.toFixed(1) + "%"); safeSetText('stat-avg-shoot-modal', avgShoot); safeSetText('stat-avg-eff-shoot-modal', avgEffShoot); safeSetText('sub-stat-defend-modal', `${totalTackle}회 / ${totalBlock}회`); safeSetText('sub-stat-special-goal', `${totalHeadingGoal}골 / ${totalFreekickGoal}골`); safeSetText('sub-stat-yellow', avgYellow + "개");
 
-      let badgeText = "⚽ 밸런스형"; let titleReason = "전체적인 공수 밸런스가 매우 안정적입니다.";
-      if (dribbleSuccessRate >= 55 && totalDribbleTry >= 3) { badgeText = "🌪️ 드리블러"; titleReason = `평균 유저(50%) 대비 드리블 돌파 성공률이 <b style='color:var(--ai-blue);'>${dribbleSuccessRate.toFixed(1)}%</b>로 압도적입니다.`; } 
-      else if (headingPerGame >= 0.8 && totalGoals > 0 && totalHeadingGoal / totalGoals >= 0.3) { badgeText = "🗿 타이탄"; titleReason = `평균 유저(경기당 약 0.5골, 득점의 약 18%) 대비 헤딩 득점이 경기당 <b style='color:var(--ai-blue);'>${headingPerGame.toFixed(1)}골</b>(득점의 ${Math.round(totalHeadingGoal / totalGoals * 100)}%)로 매우 높습니다.`; } 
-      else if (freekickPerGame >= 0.1) { badgeText = "🎯 프리킥 장인"; titleReason = `평균 유저 대비 세트피스(프리킥) 득점 비율이 최상위권입니다.`; } 
-      else if (parseFloat(avgTackle) >= 3.0) { badgeText = "🛡️ 통곡의 벽"; titleReason = `평균 유저(2.0회) 대비 경기당 태클 성공이 <b style='color:var(--ai-blue);'>${avgTackle}회</b>로 월등히 높습니다.`; } 
-      else if (parseFloat(penetrationRate) >= 30.0) { badgeText = "🚀 라인 브레이커"; titleReason = `평균 유저(25%) 대비 스루패스 성공률이 <b style='color:var(--ai-blue);'>${penetrationRate}%</b>로 날카롭습니다.`; } 
-      else if (parseFloat(avgGoal) >= 2.0) { badgeText = "🔥 폭격기"; titleReason = `평균 유저(1.2골) 대비 평균 득점력이 <b style='color:var(--ai-blue);'>${avgGoal}골</b>로 파괴적입니다.`; } 
-      else if (parseFloat(overallPassRate) >= 90) { badgeText = "🎯 마에스트로"; titleReason = `평균 유저(85%) 대비 전체 패스 성공률이 <b style='color:var(--ai-blue);'>${overallPassRate}%</b>로 최상위권입니다.`; }
-
-      const badgeEl = document.getElementById('player-style-badge'); if(badgeEl) { badgeEl.innerText = badgeText; badgeEl.style.display = 'inline-flex'; }
+      const titleRes = evaluateTitles(matchesData, globalOuid);
+      const mainTitle = titleRes.earned[0];
+      const badgeText = mainTitle ? `${mainTitle.icon} ${titleLabel(mainTitle, titleRes.metrics)}` : '⚽ 밸런스형';
+      const titleReason = mainTitle ? mainTitle.why(titleRes.metrics) : '특정 지표로 쏠리지 않은 밸런스형이에요.';
+      const badgeEl = document.getElementById('player-style-badge');
+      if (badgeEl) {
+        const more = titleRes.earned.length > 1 ? ` <span class="badge-more">+${titleRes.earned.length - 1}</span>` : '';
+        badgeEl.innerHTML = `${badgeText}${more}`; badgeEl.style.display = 'inline-flex';
+        badgeEl.title = '눌러서 칭호 도감 보기'; badgeEl.style.cursor = 'pointer'; badgeEl.onclick = openTitleBook;
+      }
 
       window.currentProAIStats = { 
         avgConcede: parseFloat(avgConcede), 
@@ -3263,8 +3434,8 @@ service cloud.firestore {
   }
 
   // ===== 실시간 매치업 프리뷰: 최근 경기에서 상대들이 나를 어떻게 공략했는지 =====
-  // 기준값은 공식경기 100판(200명) 표본에서 잰 평균
-  const MU_BASE = { wide: 45, inBox: 4.9, late: 18, head: 18, outGoal: 6 };
+  // 기준값은 공식경기 유저 44명(약 900경기) 표본에서 잰 평균
+  const MU_BASE = { wide: 45, inBox: 4.9, late: 16, head: 11, outGoal: 7 };
   const KIND_DEFENSE_TIP = {
     2: '박스 모서리에서 슈팅 각을 열어주지 마세요. 감아차기는 먼 포스트로 오니, 슈터에게 미드필더가 먼저 붙어야 해요.',
     6: '1:1이나 컷백 상황에서 많이 먹혀요. 골키퍼를 너무 일찍 튀어나가게 하지 말고, 수비수가 슈팅 코스를 몸으로 막게 하세요.',
@@ -3382,7 +3553,7 @@ service cloud.firestore {
           <div class="mu-sig-detail">${sg.detail}</div>
           <div class="mu-sig-tip">→ ${sg.tip}</div>
         </div>`).join('') : '<div class="mu-signal mu-good"><div class="mu-sig-head"><span class="mu-lv">좋음</span><b>뚜렷한 약점이 없어요</b></div><div class="mu-sig-detail">상대들이 특정 방법으로 나를 공략한 흔적이 적어요. 지금 수비를 유지하세요.</div></div>'}
-      <div class="mu-note">최근 ${G}경기에서 만난 상대들의 기록이에요. 괄호 안 평균은 공식경기 100판 표본 기준이에요.</div>`;
+      <div class="mu-note">최근 ${G}경기에서 만난 상대들의 기록이에요. 괄호 안 평균은 공식경기 유저 표본 기준이에요.</div>`;
   }
 
   function generateAIReports() {
@@ -3397,9 +3568,12 @@ service cloud.firestore {
 
       setHtml('ai-basic-text', `
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b><div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div></div>
-          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다. ${goal >= 1.5 ? '결정력이 매우 우수하여 득점 창출 능력이 뛰어납니다.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
-          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다. ${concede <= 1.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
+          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b> <button class="title-book-btn" onclick="openTitleBook()">칭호 도감 보기 ›</button>
+            <div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div>
+            ${lastTitleResult.earned.length > 1 ? `<div class="title-chips">${lastTitleResult.earned.slice(1).map(t => `<div class="title-chip"><b>${t.icon} ${titleLabel(t, lastTitleResult.metrics)}</b> <span>${t.why(lastTitleResult.metrics)}</span></div>`).join('')}</div>` : ''}
+            <div style="font-size:12px; color:var(--muted-foreground); margin-top:8px;">전체 ${TITLES.length}개 중 ${lastTitleResult.earned.length}개 획득</div></div>
+          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다 (공식경기 평균 약 2.6골). ${goal >= 3.0 ? '평균보다 훨씬 많이 넣어요. 득점 창출 능력이 뛰어납니다.' : goal >= 2.3 ? '평균 수준의 득점력이에요.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
+          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다 (공식경기 평균 약 2.6실점). ${concede <= 2.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : concede <= 2.8 ? '평균 수준의 수비력이에요.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
         </div>`);
 
       // 1) 약점 스캐너 + 승률 상승 솔루션 (내 경기 데이터 기반)
