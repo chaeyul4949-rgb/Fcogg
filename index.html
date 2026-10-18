@@ -606,12 +606,16 @@
     .mu-good { border-left-color: #10B981; } .mu-good .mu-lv { background: #10B981; }
     .deep-toggle { grid-column: 1 / -1; height: 46px; border-radius: 12px; border: 1px dashed var(--pro-gold); background: var(--pro-gold-bg); color: var(--foreground); font-weight: 800; font-size: 14px; cursor: pointer; }
     .deep-toggle:hover { border-style: solid; }
-    .deep-more { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .deep-more { grid-column: 1 / -1; columns: 2; column-gap: 16px; }
+    .deep-more > .deep-card { break-inside: avoid; display: inline-block; width: 100%; margin-bottom: 16px; vertical-align: top; }
+    .deep-more > .deep-card[style*="grid-column"] { column-span: all; display: block; }
+    .kind-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .deep-tip > div + div { margin-top: 6px; }
     .deep-more[hidden] { display: none; }
     .vs-diff { font-size: 10.5px; font-weight: 800; margin-left: 2px; }
     .vs-diff.up { color: var(--win-color); }
     .vs-diff.down { color: var(--lose-color); }
-    @media (max-width: 760px) { .deep-more { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .deep-more { columns: 1; } .kind-cols { grid-template-columns: 1fr; } }
     .deep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
     .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; font-size: 14px; min-width: 0; }
     .deep-title { font-size: 16px; font-weight: 900; margin-bottom: 12px; }
@@ -3087,7 +3091,6 @@ service cloud.firestore {
         <div class="deep-stat"><div class="deep-stat-v">${wrBehind ?? '-'}${wrBehind !== null ? '%' : ''}</div><div class="deep-stat-l">선제골 먹혔을 때 승률<br><small>${firstAgainst.length}경기</small></div></div>
         <div class="deep-stat"><div class="deep-stat-v" style="color:var(--win-color)">${comebacks}</div><div class="deep-stat-l">역전승</div></div>
         <div class="deep-stat"><div class="deep-stat-v" style="color:var(--lose-color)">${blownLeads}</div><div class="deep-stat-l">앞서다 놓친 경기</div></div>
-        <div class="deep-stat"><div class="deep-stat-v">${lateGoals} / ${lateConceded}</div><div class="deep-stat-l">80분 이후 득점 / 실점</div></div>
       </div>`;
     let flowTip = '';
     if (firstAgainst.length >= 2 && wrBehind !== null && wrBehind <= 20) {
@@ -3134,10 +3137,6 @@ service cloud.firestore {
 
     // --- 5. 득점 · 실점 유형 ---
     const sumS = (side, k) => rows.reduce((s, r) => s + N(r[side].shoot?.[k]), 0);
-    const types = [['헤딩', 'goalHeading'], ['프리킥', 'goalFreekick'], ['페널티킥', 'goalPenaltyKick'], ['박스 안', 'goalInPenalty'], ['박스 밖', 'goalOutPenalty']];
-    const typeHTML = `<table class="deep-table"><tr><th></th>${types.map(t => `<th>${t[0]}</th>`).join('')}</tr>
-      <tr><td>득점</td>${types.map(t => `<td style="color:#3B82F6">${sumS('me', t[1])}</td>`).join('')}</tr>
-      <tr><td>실점</td>${types.map(t => `<td style="color:#EF4444">${sumS('en', t[1])}</td>`).join('')}</tr></table>`;
     const concHead = sumS('en', 'goalHeading'), concTotal = rows.reduce((s, r) => s + N(r.en.shoot?.goalTotal), 0);
     let typeTip = '';
     if (concTotal >= 4 && pct(concHead, concTotal) >= 30) {
@@ -3156,13 +3155,13 @@ service cloud.firestore {
     const kindBars = (counts, color) => {
       const total = Object.values(counts).reduce((a, b) => a + b, 0);
       if (!total) return '<div style="font-size:13px; color:var(--muted-foreground);">기록 없음</div>';
-      return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, n]) => `
+      return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `
         <div class="kind-row"><span class="kind-name">${shotTypeText(isNaN(k) ? k : +k)}</span>
           <div class="kind-bar"><div style="width:${n / total * 100}%; background:${color};"></div></div>
           <span class="kind-val">${n}골 · ${Math.round(n / total * 100)}%</span></div>`).join('');
     };
-    const kindHTML = `<div class="deep-sub" style="margin-bottom:6px;">내 득점</div>${kindBars(myKinds, '#3B82F6')}
-      <div class="deep-sub" style="margin:12px 0 6px;">내 실점</div>${kindBars(opKinds, '#EF4444')}`;
+    const kindHTML = `<div class="kind-cols"><div><div class="deep-sub" style="margin-bottom:6px;">내 득점 슈팅 종류</div>${kindBars(myKinds, '#3B82F6')}</div>
+      <div><div class="deep-sub" style="margin-bottom:6px;">내 실점 슈팅 종류</div>${kindBars(opKinds, '#EF4444')}</div></div>`;
     const myKindTotal = Object.values(myKinds).reduce((a, b) => a + b, 0);
     const topKind = Object.entries(myKinds).sort((a, b) => b[1] - a[1])[0];
     let kindTip = '';
@@ -3244,21 +3243,22 @@ service cloud.firestore {
         </div>
       </div>`;
 
-    const card = (title, body, tip, full) => `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${tip ? `<div class="deep-tip">💡 ${tip}</div>` : ''}</div>`;
-    const moreCount = 10;
+    // 비슷한 내용끼리 묶어서 카드 5개로 (팁은 카드마다 한 상자에)
+    const card = (title, body, tips, full) => {
+      const list = (Array.isArray(tips) ? tips : [tips]).filter(Boolean);
+      return `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${list.length ? `<div class="deep-tip">${list.map(t => `<div>💡 ${t}</div>`).join('')}</div>` : ''}</div>`;
+    };
+    const moreCount = 5;
     return summary
       + `<button class="deep-toggle" onclick="toggleDeepMore(this)" aria-expanded="false">▼ 심층 피드백 ${moreCount}개 펼치기</button>`
       + `<div class="deep-more" id="deep-more" hidden>`
-      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요. 위 '승률 상승 솔루션'의 팁을 함께 참고하세요.` : '상대와 비교해 밀리는 지표가 없어요. 좋아요!')
-      + card('⏱️ 시간대별 득점 / 실점', `<div class="tb-wrap">${timeHTML}</div><div class="tb-legend"><span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div>`, timeTip)
-      + card('⚽ 선제골 · 역전 분석', flowHTML, flowTip)
-      + card('🎯 슈팅 위치 · 결정력', shotHTML, shotTip)
-      + card('🥅 득점 · 실점 유형', typeHTML, typeTip)
-      + card('🦶 슈팅 종류별 득점 · 실점 <small>(감아차기 ZD · 낮은 슛 DD 등)</small>', kindHTML, kindTip)
-      + card('📈 최근 흐름', `<div class="form-dots">${dots}</div>`, formTip)
-      + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 경기에서 실수가 잦았다는 뜻이에요. 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
-      + card('🔄 점유율 구간별 승률', `<div class="deep-stats">${possHTML}</div>`, possTip)
-      + card('🟨 카드 · 파울 관리', discHTML, discTip)
+      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요.` : '상대와 비교해 밀리는 지표가 없어요.')
+      + card('⏱️ 경기 흐름', `<div class="deep-sub" style="margin-bottom:6px;">최근 경기 <span style="font-weight:600; color:var(--muted-foreground);">(왼쪽이 최신)</span></div><div class="form-dots" style="margin-bottom:14px;">${dots}</div>
+          <div class="deep-sub" style="margin-bottom:6px;">시간대별 득점 / 실점 <span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div><div class="tb-wrap">${timeHTML}</div>
+          <div style="margin-top:12px;">${flowHTML}</div>`, [formTip, timeTip, flowTip])
+      + card('🎯 슈팅 · 득점 방식', `${shotHTML}<div style="margin-top:14px;">${kindHTML}</div>`, [shotTip, kindTip, typeTip !== '득점·실점 유형에 큰 쏠림은 없어요.' ? typeTip : ''])
+      + card('🔄 경기 운영 <small>(점유율 · 카드 · 파울)</small>', `<div class="deep-sub" style="margin-bottom:6px;">점유율 구간별 승률</div><div class="deep-stats">${possHTML}</div><div class="deep-sub" style="margin:12px 0 6px;">카드 · 파울</div>${discHTML}`, [possTip, discTip])
+      + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
       + `</div>`;
   }
 
