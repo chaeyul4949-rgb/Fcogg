@@ -1259,7 +1259,6 @@
   }
   function recordVisit() {
     if (!db) return;
-    if (localStorage.getItem('fco_current_user') === ADMIN_ID) return; // 관리자 본인은 세지 않음
     const { day, hour } = kstParts();
     let firstToday = true;
     try { firstToday = localStorage.getItem('fco_visit_day') !== day; localStorage.setItem('fco_visit_day', day); } catch (e) {}
@@ -1316,7 +1315,7 @@
       ${bars(dayBars)}
       <div class="visit-chart-title">오늘 시간대별 조회수</div>
       ${bars(hourBars)}
-      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()} · 관리자 본인 방문은 세지 않아요.</div>`;
+      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
   }
 
   function toggleNoticeOlder(btn) {
