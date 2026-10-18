@@ -316,6 +316,14 @@
     .admin-fb-help ol { margin: 6px 0 10px 18px; }
     .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; margin-top: 24px; }
     [data-theme="dark"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
+    .pay-verify { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: left; }
+    .pay-verify .pv-title { font-size: 14px; font-weight: 900; margin-bottom: 8px; }
+    .pay-verify .pv-desc { font-size: 12px; color: var(--muted-foreground); line-height: 1.6; margin-bottom: 10px; word-break: keep-all; }
+    .pay-verify input { width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); font-size: 14px; font-family: inherit; margin-bottom: 8px; outline: none; }
+    .pay-status { font-size: 13px; font-weight: 700; padding: 12px; border-radius: 12px; background: var(--background); border: 1px solid var(--border); line-height: 1.6; word-break: keep-all; }
+    .pay-req { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
+    .pay-req .who { font-size: 14px; font-weight: 800; }
+    .pay-req .meta { font-size: 11px; color: var(--muted-foreground); }
     .visit-stats { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 16px 0 20px; }
     .visit-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
     .visit-head h4 { font-size: 15px; font-weight: 800; color: var(--foreground); }
@@ -928,6 +936,14 @@
           
           <div class="visit-stats">
             <div class="visit-head">
+              <h4>💳 입금 인증 요청</h4>
+              <button class="bg-btn" onclick="renderPaymentRequests()">새로고침</button>
+            </div>
+            <div id="pay-requests"><div class="visit-empty">불러오는 중...</div></div>
+          </div>
+
+          <div class="visit-stats">
+            <div class="visit-head">
               <h4>📈 방문자 통계</h4>
               <button class="bg-btn" onclick="renderVisitStats()">새로고침</button>
             </div>
@@ -1005,6 +1021,7 @@
         <li>방금 한 경기가 <b>9시간 전</b>으로 나오던 문제 수정 (기록은 1시간~1시간 30분 늦게 반영돼요)</li>
         <li><b>인기 구단주</b> 탭을 열 때마다 최신 순위로 갱신</li>
         <li>카카오톡 <b>공유 카드</b> 추가, 폰에서도 PC와 같은 화면</li>
+        <li>PRO 결제 후 <b>입금 인증</b>을 누르면 확인 즉시 PRO가 켜져요</li>
       </ul>
     </div>
 
@@ -1241,6 +1258,7 @@
     </div>
     <div id="donate-pro-note" style="display:none; font-size:13px; color:var(--muted-foreground); line-height:1.6; margin-bottom:16px; word-break:keep-all;">990원 송금 시 <b style="color:var(--foreground);">가입하신 아이디를 메모에 꼭 적어주세요!</b><br>입금이 확인되면 관리자가 60일(30+30) 권한을 직접 부여해 드려요.</div>
     <button class="pill-search-btn" style="width:100%; height:48px;" onclick="copyText('카카오뱅크 3333386607369', '계좌번호가 복사되었습니다. 감사합니다! 💛')">계좌번호 복사</button>
+    <div id="pay-verify" class="pay-verify" style="display:none;"></div>
   </div>
 </div>
 
@@ -1557,7 +1575,7 @@
     const adminPanel = document.getElementById('admin-panel');
     if (adminPanel) {
       adminPanel.style.display = isAdmin ? 'block' : 'none';
-      if (isAdmin) { renderProList(); renderVisitStats(); }
+      if (isAdmin) { renderProList(); renderVisitStats(); renderPaymentRequests(); }
     }
 
     if (!currentUser) {
@@ -1672,26 +1690,137 @@
   }
 
   // 아이디 + 기간(일 수 또는 무제한)을 골라서 PRO 부여
+  // PRO 부여 (duration: 일 수 또는 'unlimited'). 결과 안내 문구를 돌려준다
+  async function grantPro(targetId, duration) {
+    if (duration === 'unlimited') {
+      await writeProUser(targetId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
+      return `🎉 ${targetId} 님에게 PRO 무제한을 부여했습니다!`;
+    }
+    const days = parseInt(duration, 10);
+    const cur = await readProUser(targetId);
+    if (isUnlimitedPro(cur) && cur.isPro) return `${targetId} 님은 이미 무제한이에요.`;
+    const base = (cur && cur.isPro && cur.expiry > Date.now()) ? cur.expiry : Date.now();
+    const expiry = base + days * DAY_MS;
+    await writeProUser(targetId, { isPro: true, unlimited: false, expiry });
+    return `🎉 ${targetId} 님에게 PRO ${days}일을 부여했습니다! (~${new Date(expiry).toLocaleDateString('ko-KR')})`;
+  }
+
   async function grantProToUser() {
     const input = document.getElementById('admin-target-id');
     const targetId = input.value.trim().toLowerCase();
     const duration = document.getElementById('admin-duration').value;
     if (!targetId) return showToast('권한을 줄 아이디를 입력하세요.');
     try {
-      if (duration === 'unlimited') {
-        await writeProUser(targetId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
-        showToast(`🎉 ${targetId} 님에게 PRO 무제한을 부여했습니다!`);
-      } else {
-        const days = parseInt(duration, 10);
-        const cur = await readProUser(targetId);
-        if (isUnlimitedPro(cur) && cur.isPro) return showToast(`${targetId} 님은 이미 무제한이에요.`);
-        const base = (cur && cur.isPro && cur.expiry > Date.now()) ? cur.expiry : Date.now();
-        const expiry = base + days * DAY_MS;
-        await writeProUser(targetId, { isPro: true, unlimited: false, expiry });
-        showToast(`🎉 ${targetId} 님에게 PRO ${days}일을 부여했습니다! (~${new Date(expiry).toLocaleDateString('ko-KR')})`);
-      }
+      showToast(await grantPro(targetId, duration));
       input.value = '';
       renderProList();
+    } catch (e) { showToast(proErrorMessage(e)); }
+  }
+
+  // ===== 입금 인증 (반자동 결제): 사용자가 입금 후 인증 요청 → 관리자가 승인하면 PRO 자동 부여 =====
+  const PAY_PLANS = {
+    '60': { label: 'PRO 60일', amount: 990, duration: '60' },
+    'unlimited': { label: 'PRO 무제한', amount: 3000, duration: 'unlimited' }
+  };
+  let payPlanKey = '60';
+  const fmtTime = (ts) => new Date(ts).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  async function renderPayVerify() {
+    const box = document.getElementById('pay-verify');
+    if (!box) return;
+    const plan = PAY_PLANS[payPlanKey];
+    const userId = localStorage.getItem('fco_current_user');
+    if (!userId) {
+      box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
+        <div class="pay-status">입금 인증은 로그인 후 할 수 있어요. 승인되면 로그인한 아이디에 PRO가 바로 켜져요.</div>
+        <button class="bg-btn" style="width:100%; margin-top:8px;" onclick="closeDonateModal(); openAuthModal();">로그인 / 회원가입</button>`;
+      return;
+    }
+    if (!db) { box.innerHTML = `<div class="pay-status">지금은 인증 요청을 보낼 수 없어요. 메모에 아이디를 적어 송금해 주세요.</div>`; return; }
+    box.innerHTML = `<div class="pay-status">불러오는 중...</div>`;
+    let last = null;
+    try {
+      const snap = await db.collection('payments').where('userId', '==', userId).get();
+      snap.forEach(d => { const v = { id: d.id, ...d.data() }; if (!last || v.createdAt > last.createdAt) last = v; });
+    } catch (e) {}
+    if (last && last.status === 'pending') {
+      box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
+        <div class="pay-status">⏳ <b>${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')}</b> 승인 대기 중이에요.<br>
+        <span style="font-weight:600; color:var(--muted-foreground);">입금자명 ${escapeHtml(last.depositor)} · ${fmtTime(last.createdAt)} 요청</span><br>
+        관리자가 입금을 확인하면 바로 PRO가 켜져요.</div>`;
+      return;
+    }
+    const notice = last && last.status === 'rejected'
+      ? `<div class="pay-status" style="margin-bottom:10px; color:var(--lose-color);">지난 요청(${fmtTime(last.createdAt)})은 입금이 확인되지 않아 반려됐어요. 입금자명을 확인하고 다시 요청해 주세요.</div>`
+      : last && last.status === 'approved' && Date.now() - (last.handledAt || 0) < 3 * DAY_MS
+      ? `<div class="pay-status" style="margin-bottom:10px; color:var(--win-color);">🎉 ${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')} 승인 완료! 새로고침하면 PRO 기능이 켜져요.</div>` : '';
+    box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
+      ${notice}
+      <div class="pv-desc">위 계좌로 <b>${plan.amount.toLocaleString()}원</b>을 보낸 뒤, 보낸 사람 이름(입금자명)을 적고 인증을 눌러주세요. 관리자가 확인하면 <b>${escapeHtml(userId)}</b> 아이디에 ${plan.label}이 바로 켜져요.</div>
+      <input id="pay-depositor" type="text" maxlength="20" placeholder="입금자명 (통장에 찍히는 이름)">
+      <button class="pill-search-btn" style="width:100%; height:44px;" onclick="submitPaymentRequest()">입금 인증 요청</button>`;
+  }
+
+  async function submitPaymentRequest() {
+    const userId = localStorage.getItem('fco_current_user');
+    const depositor = (document.getElementById('pay-depositor')?.value || '').trim();
+    if (!userId) return showToast('로그인 후 인증할 수 있어요.');
+    if (!depositor) return showToast('입금자명을 적어주세요.');
+    const plan = PAY_PLANS[payPlanKey];
+    try {
+      await db.collection('payments').add({
+        userId, plan: payPlanKey, amount: plan.amount, depositor, status: 'pending', createdAt: Date.now()
+      });
+      showToast('✅ 인증 요청을 보냈어요! 확인되면 바로 PRO가 켜져요.');
+      renderPayVerify();
+    } catch (e) { showToast('요청을 보내지 못했어요. 잠시 후 다시 시도해주세요.'); }
+  }
+
+  async function renderPaymentRequests() {
+    const box = document.getElementById('pay-requests');
+    if (!box) return;
+    if (!db) { box.innerHTML = '<div class="visit-empty">Firebase에 연결되지 않았어요.</div>'; return; }
+    let pending = [];
+    try {
+      const snap = await db.collection('payments').where('status', '==', 'pending').get();
+      snap.forEach(d => pending.push({ id: d.id, ...d.data() }));
+    } catch (e) { box.innerHTML = `<div class="visit-empty">${proErrorMessage(e)}</div>`; return; }
+    pending.sort((a, b) => a.createdAt - b.createdAt);
+    if (!pending.length) { box.innerHTML = '<div class="visit-empty">대기 중인 요청이 없어요.</div>'; return; }
+    box.innerHTML = pending.map(r => `
+      <div class="pay-req">
+        <div style="min-width:0;">
+          <div class="who">${escapeHtml(r.depositor)} <span style="font-size:12px; color:var(--muted-foreground); font-weight:700;">→ ${escapeHtml(r.userId)}</span></div>
+          <div class="meta">${escapeHtml(PAY_PLANS[r.plan]?.label || r.plan)} · ${Number(r.amount || 0).toLocaleString()}원 · ${fmtTime(r.createdAt)}</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-shrink:0;">
+          <button class="mini-btn" style="background:var(--win-color);" data-id="${r.id}" onclick="approvePayment(this.dataset.id)">승인</button>
+          <button class="mini-btn" style="background:var(--lose-color);" data-id="${r.id}" onclick="rejectPayment(this.dataset.id)">거절</button>
+        </div>
+      </div>`).join('');
+  }
+
+  async function approvePayment(docId) {
+    try {
+      const ref = db.collection('payments').doc(docId);
+      const snap = await ref.get();
+      if (!snap.exists) return showToast('요청을 찾을 수 없어요.');
+      const r = snap.data();
+      if (r.status !== 'pending') { renderPaymentRequests(); return showToast('이미 처리된 요청이에요.'); }
+      const msg = await grantPro(r.userId, PAY_PLANS[r.plan]?.duration || '60');
+      await ref.set({ status: 'approved', handledAt: Date.now() }, { merge: true });
+      showToast(msg);
+      renderPaymentRequests();
+      renderProList();
+    } catch (e) { showToast(proErrorMessage(e)); }
+  }
+
+  async function rejectPayment(docId) {
+    if (!confirm('이 요청을 거절할까요? (입금이 확인되지 않을 때)')) return;
+    try {
+      await db.collection('payments').doc(docId).set({ status: 'rejected', handledAt: Date.now() }, { merge: true });
+      showToast('요청을 거절했어요.');
+      renderPaymentRequests();
     } catch (e) { showToast(proErrorMessage(e)); }
   }
 
@@ -3668,9 +3797,13 @@ service cloud.firestore {
     const isPro = mode === 'pro' || mode === 'pro-unlimited';
     const note = document.getElementById('donate-pro-note');
     note.style.display = isPro ? 'block' : 'none';
+    const verify = document.getElementById('pay-verify');
+    verify.style.display = isPro ? 'block' : 'none';
     if (isPro) {
       const unlimited = mode === 'pro-unlimited';
-      note.innerHTML = `<b style="color:var(--foreground); font-size:16px;">${unlimited ? '3,000원' : '990원'}</b> 송금 시 <b style="color:var(--foreground);">가입하신 아이디를 메모에 꼭 적어주세요!</b><br>입금이 확인되면 관리자가 ${unlimited ? '<b>무제한</b>' : '60일(30+30)'} 권한을 직접 부여해 드려요.`;
+      payPlanKey = unlimited ? 'unlimited' : '60';
+      note.innerHTML = `<b style="color:var(--foreground); font-size:16px;">${unlimited ? '3,000원' : '990원'}</b>을 보낸 뒤 아래에서 <b style="color:var(--foreground);">입금 인증</b>을 눌러주세요.<br>관리자가 확인하면 ${unlimited ? '<b>무제한</b>' : '60일(30+30)'} 권한이 바로 켜져요.`;
+      renderPayVerify();
     }
     safeSetText('donate-title', mode === 'pro-unlimited' ? '💎 PRO 무제한 신청 (3,000원)' : mode === 'pro' ? '💎 PRO 60일 신청 (990원)' : '💛 FCO.GG 후원하기');
     document.getElementById('donate-modal').style.display = 'flex';
