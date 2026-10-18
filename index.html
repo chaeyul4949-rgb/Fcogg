@@ -22,9 +22,6 @@
   <meta name="twitter:description" content="구단의 모든 기록, 분석의 시작. FC 온라인 전적 검색 · AI 경기 분석 · 팀컬러/특성 티어리스트">
   <meta name="twitter:image" content="https://fcogg.xyz/og-banner.png">
 
-  <!-- 방문자 통계 (Vercel Web Analytics) -->
-  <script defer src="/_vercel/insights/script.js"></script>
-
   <!-- 🌟 Firebase SDK 🌟 -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -319,6 +316,21 @@
     .admin-fb-help ol { margin: 6px 0 10px 18px; }
     .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; margin-top: 24px; }
     [data-theme="dark"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
+    .visit-stats { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 16px 0 20px; }
+    .visit-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .visit-head h4 { font-size: 15px; font-weight: 800; color: var(--foreground); }
+    .visit-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .visit-tile { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
+    .visit-tile .v { font-size: 22px; font-weight: 900; color: var(--foreground); }
+    .visit-tile .l { font-size: 11px; font-weight: 700; color: var(--muted-foreground); }
+    .visit-chart-title { font-size: 12px; font-weight: 800; color: var(--muted-foreground); margin: 4px 0 8px; }
+    .visit-bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding-bottom: 18px; position: relative; margin-bottom: 12px; }
+    .visit-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+    .visit-bar .b { width: 100%; background: var(--tier-op); border-radius: 4px 4px 0 0; min-height: 2px; }
+    .visit-bar .n { font-size: 10px; font-weight: 700; color: var(--foreground); margin-bottom: 2px; }
+    .visit-bar .x { position: absolute; bottom: -16px; font-size: 9px; color: var(--muted-foreground); white-space: nowrap; }
+    .visit-bar.today .b { background: var(--win-color); }
+    .visit-empty { font-size: 13px; color: var(--muted-foreground); text-align: center; padding: 16px 0; }
     .admin-input { flex: 1; height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--tier-op); font-size: 14px; outline: none; width: 100%; margin-bottom:12px; }
     .admin-btn { width: 100%; height: 44px; background: var(--tier-op); color: #FFF; font-weight: 800; border-radius: 12px; border: none; cursor: pointer; transition: 0.2s; }
     
@@ -914,6 +926,14 @@
             <button class="bg-btn" onclick="copyText(FIRESTORE_OPEN_RULES, '규칙이 복사되었습니다. Firebase 규칙 탭에 붙여넣고 게시하세요.')">📋 규칙 복사</button>
           </div>
           
+          <div class="visit-stats">
+            <div class="visit-head">
+              <h4>📈 방문자 통계</h4>
+              <button class="bg-btn" onclick="renderVisitStats()">새로고침</button>
+            </div>
+            <div id="visit-stats-body"><div class="visit-empty">불러오는 중...</div></div>
+          </div>
+
           <h4 style="font-size:15px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">💎 PRO 멤버십 활성 유저</h4>
           <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; padding-right:8px;">
           </div>
@@ -1232,6 +1252,73 @@
 // 1. 모달창 열고 닫기
   function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
   function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+  // ===== 방문자 통계 (Firebase stats/날짜 문서에 하루 단위로 집계) =====
+  function kstParts(ts = Date.now()) {
+    const d = new Date(ts + 9 * 3600 * 1000);
+    return { day: d.toISOString().slice(0, 10), hour: d.getUTCHours() };
+  }
+  function recordVisit() {
+    if (!db) return;
+    if (localStorage.getItem('fco_current_user') === ADMIN_ID) return; // 관리자 본인은 세지 않음
+    const { day, hour } = kstParts();
+    let firstToday = true;
+    try { firstToday = localStorage.getItem('fco_visit_day') !== day; localStorage.setItem('fco_visit_day', day); } catch (e) {}
+    const inc = firebase.firestore.FieldValue.increment(1);
+    const data = { views: inc, ['h' + hour]: inc };
+    if (firstToday) {
+      data.visitors = inc;
+      data[/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'pc'] = inc;
+    }
+    db.collection('stats').doc(day).set(data, { merge: true }).catch(() => {});
+  }
+
+  async function renderVisitStats() {
+    const body = document.getElementById('visit-stats-body');
+    if (!body) return;
+    if (!db) { body.innerHTML = '<div class="visit-empty">Firebase에 연결되지 않아 통계를 볼 수 없어요.</div>'; return; }
+    body.innerHTML = '<div class="visit-empty">불러오는 중...</div>';
+    const days = [];
+    for (let i = 13; i >= 0; i--) days.push(kstParts(Date.now() - i * 86400000).day);
+    let byDay = {};
+    try {
+      const snap = await db.collection('stats').where(firebase.firestore.FieldPath.documentId(), '>=', days[0]).get();
+      snap.forEach(d => byDay[d.id] = d.data());
+    } catch (e) {
+      body.innerHTML = `<div class="visit-empty">통계를 불러오지 못했어요. (${escapeHtml(e.code || e.message || '오류')})</div>`;
+      return;
+    }
+    const today = days[13], yesterday = days[12];
+    const g = (d, k) => Number(byDay[d]?.[k] || 0);
+    const sum = (list, k) => list.reduce((a, d) => a + g(d, k), 0);
+    const last7 = days.slice(7);
+    const mobile = sum(days, 'mobile'), pc = sum(days, 'pc');
+    const tile = (v, l) => `<div class="visit-tile"><div class="v">${v.toLocaleString()}</div><div class="l">${l}</div></div>`;
+    const bars = (items) => {
+      const max = Math.max(1, ...items.map(it => it.v));
+      return `<div class="visit-bars">${items.map(it => `
+        <div class="visit-bar ${it.hi ? 'today' : ''}" title="${it.t}: ${it.v}">
+          ${it.v ? `<span class="n">${it.v}</span>` : ''}
+          <div class="b" style="height:${Math.round(it.v / max * 85)}%;"></div>
+          <span class="x">${it.x}</span>
+        </div>`).join('')}</div>`;
+    };
+    const dayBars = days.map(d => ({ v: g(d, 'visitors'), x: d.slice(5).replace('-', '/'), t: d, hi: d === today }));
+    const nowHour = kstParts().hour;
+    const hourBars = Array.from({ length: 24 }, (_, h) => ({ v: g(today, 'h' + h), x: h % 3 === 0 ? `${h}시` : '', t: `${h}시`, hi: h === nowHour }));
+    body.innerHTML = `
+      <div class="visit-tiles">
+        ${tile(g(today, 'visitors'), '오늘 방문자')}
+        ${tile(g(today, 'views'), '오늘 조회수')}
+        ${tile(g(yesterday, 'visitors'), '어제 방문자')}
+        ${tile(sum(last7, 'visitors'), '최근 7일 방문자')}
+      </div>
+      <div class="visit-chart-title">최근 14일 방문자</div>
+      ${bars(dayBars)}
+      <div class="visit-chart-title">오늘 시간대별 조회수</div>
+      ${bars(hourBars)}
+      <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기: 📱 폰 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()} · 관리자 본인 방문은 세지 않아요.</div>`;
+  }
+
   function toggleNoticeOlder(btn) {
     const box = document.getElementById('notice-older');
     const open = box.style.display === 'none';
@@ -1473,7 +1560,7 @@
     const adminPanel = document.getElementById('admin-panel');
     if (adminPanel) {
       adminPanel.style.display = isAdmin ? 'block' : 'none';
-      if (isAdmin) renderProList();
+      if (isAdmin) { renderProList(); renderVisitStats(); }
     }
 
     if (!currentUser) {
@@ -1947,6 +2034,7 @@ service cloud.firestore {
     else localStorage.removeItem('fco_pro_mode');
 
     renderMatchTypeFilter();
+    recordVisit();
     renderTop10();
     renderSearchHistory();
     renderTeamColorTierList();
