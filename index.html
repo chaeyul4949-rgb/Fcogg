@@ -1773,13 +1773,15 @@
   function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; }
   // 처음 들어오면 테마부터 고르게 하고, 고르면 공지를 띄운다. 이미 골랐으면 바로 공지
   window.addEventListener('load', () => {
+    // 테마 업데이트 이후 한 번도 안 고른 사람(기존 방문자 포함)에게는 선택 창을 띄운다
     let chosen = null;
-    try { chosen = localStorage.getItem('fco_theme'); } catch (e) {}
+    try { chosen = localStorage.getItem(THEME_CHOSEN_KEY); } catch (e) {}
     if (chosen) openNoticeModal();
     else document.getElementById('theme-modal').style.display = 'flex';
   });
   function chooseFirstTheme(name) {
     setTheme(name, true);
+    try { localStorage.setItem(THEME_CHOSEN_KEY, '1'); } catch (e) {}
     document.getElementById('theme-modal').style.display = 'none';
     openNoticeModal();
   }
@@ -1854,11 +1856,12 @@
     neon:  { logo: '/logo-icon-neon.png', fav: '/favicon-48-neon.png', big: '/icon-192-neon.png' },
     pink:  { logo: '/logo-icon-pink.png', fav: '/favicon-48-pink.png', big: '/icon-192-pink.png' }
   };
+  const THEME_CHOSEN_KEY = 'fco_theme_chosen_1019';
   function setTheme(name, quiet, noSave) {
     const t = THEMES[name] ? name : 'light';
     if (t === 'light') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', t);
-    if (!noSave) { try { localStorage.setItem('fco_theme', t); } catch (e) {} }
+    if (!noSave) { try { localStorage.setItem('fco_theme', t); if (!quiet) localStorage.setItem(THEME_CHOSEN_KEY, '1'); } catch (e) {} }
     const conf = THEMES[t];
     const logo = document.getElementById('logo-icon');
     if (logo) logo.src = conf.logo;
