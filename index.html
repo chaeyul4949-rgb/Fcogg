@@ -222,7 +222,18 @@
     .hub-menu-item { padding: 14px 16px; border-radius: 12px; color: var(--muted-foreground); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 4px; }
     .hub-menu-item:hover { background: var(--muted); color: var(--foreground); }
     .hub-menu-item.active { background: var(--foreground); color: var(--background); }
-    .hub-content { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+    .hub-content { flex: 1; display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+    .hub-section { display: flex; flex-direction: column; gap: 24px; }
+    .fav-row { display: flex; align-items: center; gap: 8px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 8px 8px 8px 16px; }
+    .fav-row .fav-name { flex: 1; text-align: left; background: none; border: none; font-size: 15px; font-weight: 800; color: var(--foreground); cursor: pointer; font-family: inherit; padding: 6px 0; }
+    .mg-card { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .mg-stat { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+    .mg-stat .v { font-size: 17px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .mg-stat .l { font-size: 11px; font-weight: 700; color: var(--muted-foreground); margin-bottom: 4px; }
+    .mg-form { display: flex; gap: 4px; justify-content: center; margin-top: 10px; }
+    .mg-form span { width: 26px; height: 26px; border-radius: 7px; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .pay-hist { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 13px; }
+    .pay-badge { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px; color: #fff; white-space: nowrap; }
     
     .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
     .setting-row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -314,7 +325,7 @@
     .admin-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--background); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); }
     .admin-fb-help { background: var(--card); border: 1px solid var(--lose-color); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-size: 13px; line-height: 1.6; }
     .admin-fb-help ol { margin: 6px 0 10px 18px; }
-    .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; margin-top: 24px; }
+    .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; }
     [data-theme="dark"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
     .pay-verify { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: left; }
     .pay-verify .pv-title { font-size: 14px; font-weight: 900; margin-bottom: 8px; }
@@ -901,9 +912,15 @@
     </div>
     <div class="hub-container">
       <div class="hub-sidebar">
-        <div class="hub-menu-item active">내 계정 정보</div>
+        <div class="hub-menu-item active" data-hub="account" onclick="switchHubSection('account')">👤 내 계정 정보</div>
+        <div class="hub-menu-item" data-hub="mygame" onclick="switchHubSection('mygame')">🎮 내 구단</div>
+        <div class="hub-menu-item" data-hub="favorites" onclick="switchHubSection('favorites')">⭐ 즐겨찾기 구단주</div>
+        <div class="hub-menu-item" data-hub="history" onclick="switchHubSection('history')">🔍 최근 검색 기록</div>
+        <div class="hub-menu-item" data-hub="payments" onclick="switchHubSection('payments')">💳 결제 · PRO 내역</div>
+        <div class="hub-menu-item" data-hub="settings" onclick="switchHubSection('settings')">🛠️ 설정</div>
       </div>
       <div class="hub-content">
+       <div class="hub-section" data-hub-section="account">
         <div class="shadcn-card" style="padding: 24px;" id="hub-auth-container"></div>
         
         <div id="admin-panel" class="admin-panel">
@@ -942,27 +959,48 @@
             <div id="pay-requests"><div class="visit-empty">불러오는 중...</div></div>
           </div>
 
-          <div class="visit-stats">
-            <div class="visit-head">
-              <h4>📈 방문자 통계</h4>
-              <button class="bg-btn" onclick="renderVisitStats()">새로고침</button>
-            </div>
-            <div id="visit-stats-body"><div class="visit-empty">불러오는 중...</div></div>
-          </div>
-
           <h4 style="font-size:15px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">💎 PRO 멤버십 활성 유저</h4>
           <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; padding-right:8px;">
           </div>
         </div>
 
-        <div class="shadcn-card" style="padding: 24px;">
-          <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">디스플레이 설정</h3>
-          <div class="setting-row">
-            <div><div style="font-size:15px; font-weight:700;">다크 모드 (Dark Mode)</div><div style="font-size:13px; color:var(--muted-foreground);">화면 테마를 어둡게 전환합니다.</div></div>
-            <input type="checkbox" id="theme-toggle" class="toggle-switch">
+        <div id="admin-stats-card" class="shadcn-card" style="padding: 24px; display:none;">
+          <div class="visit-head" style="margin-bottom:0;">
+            <h3 style="font-size:18px; font-weight:800;">📈 방문자 통계</h3>
+            <div style="display:flex; gap:6px;">
+              <button class="bg-btn" id="visit-refresh-btn" style="display:none;" onclick="renderVisitStats()">새로고침</button>
+              <button class="pill-search-btn" style="height:36px; padding:0 16px; font-size:13px;" id="visit-toggle-btn" onclick="toggleVisitStats()">보기</button>
+            </div>
           </div>
+          <div id="visit-stats-body" style="display:none; margin-top:16px;"></div>
         </div>
+       </div>
 
+       <div class="hub-section" data-hub-section="mygame" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">🎮 내 구단</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">내 FC 온라인 구단주명을 등록하면 여기서 바로 내 티어와 최근 전적을 볼 수 있어요.</p>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="mygame-input" class="admin-input" style="margin-bottom:0; border-color:var(--border);" placeholder="내 구단주명" onkeydown="if(event.key==='Enter') saveMyNick()">
+            <button class="pill-search-btn" style="border-radius:12px; height:44px;" onclick="saveMyNick()">등록</button>
+          </div>
+          <div id="mygame-body" style="margin-top:16px;"></div>
+        </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="favorites" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">⭐ 즐겨찾기 구단주</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">전적 검색 결과에서 ☆ 즐겨찾기를 누르면 여기에 모여요. 친구·라이벌 전적을 한 번에 확인하세요. (최대 20명)</p>
+          <div style="display:flex; gap:8px; margin-bottom:14px;">
+            <input type="text" id="fav-input" class="admin-input" style="margin-bottom:0; border-color:var(--border);" placeholder="구단주명 직접 추가" onkeydown="if(event.key==='Enter') addFavoriteFromInput()">
+            <button class="bg-btn" style="height:44px;" onclick="addFavoriteFromInput()">추가</button>
+          </div>
+          <div id="fav-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="history" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3 style="font-size:18px; font-weight:800; margin-bottom: 0;">🔍 최근 검색 기록</h3>
@@ -970,6 +1008,36 @@
           </div>
           <div id="history-container" style="display:flex; flex-direction:column; gap:12px; margin-top: 16px;"></div>
         </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="payments" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">💳 결제 · PRO 내역</h3>
+          <div id="my-payments"></div>
+        </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="settings" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🛠️ 설정</h3>
+          <div class="setting-row">
+            <div><div style="font-size:15px; font-weight:700;">다크 모드</div><div style="font-size:13px; color:var(--muted-foreground);">화면 테마를 어둡게 전환합니다.</div></div>
+            <input type="checkbox" id="theme-toggle" class="toggle-switch">
+          </div>
+          <div class="setting-row">
+            <div><div style="font-size:15px; font-weight:700;">기본 경기 종류</div><div style="font-size:13px; color:var(--muted-foreground);">전적 검색을 처음 열 때 선택되는 경기 종류예요.</div></div>
+            <select id="setting-default-type" class="tool-select" style="width:auto;" onchange="saveDefaultMatchType(this.value)"></select>
+          </div>
+          <div class="setting-row">
+            <div><div style="font-size:15px; font-weight:700;">검색 기록 저장</div><div style="font-size:13px; color:var(--muted-foreground);">끄면 검색한 구단주명이 최근 검색에 남지 않아요.</div></div>
+            <input type="checkbox" id="setting-save-history" class="toggle-switch" onchange="saveHistorySetting(this.checked)">
+          </div>
+          <div class="setting-row">
+            <div><div style="font-size:15px; font-weight:700;">이 기기 데이터 초기화</div><div style="font-size:13px; color:var(--muted-foreground);">검색 기록 · 즐겨찾기 · 내 구단 · 설정을 지워요. (로그인은 유지)</div></div>
+            <button class="bg-btn" style="color:var(--lose-color);" onclick="resetLocalData()">초기화</button>
+          </div>
+        </div>
+       </div>
 
       </div>
     </div>
@@ -1014,7 +1082,16 @@
     <h2 style="font-size:20px; font-weight:900; margin-bottom:16px;">📢 업데이트 소식</h2>
 
     <div class="upd-entry">
-      <div class="upd-date">2026.10.18 <span class="upd-new">NEW</span></div>
+      <div class="upd-date">2026.10.19 <span class="upd-new">NEW</span></div>
+      <ul class="upd-list">
+        <li>내 허브 개편: <b>내 구단</b> 등록하면 내 티어 · 최근 전적을 바로 확인</li>
+        <li>검색 결과에서 <b>☆ 즐겨찾기</b> → 내 허브에서 친구 전적 · 나와 1:1 바로 보기</li>
+        <li><b>결제 · PRO 내역</b>, 남은 PRO 기간 확인</li>
+        <li><b>설정</b>: 기본 경기 종류, 검색 기록 저장 끄기, 데이터 초기화</li>
+      </ul>
+    </div>
+    <div class="upd-entry">
+      <div class="upd-date">2026.10.18</div>
       <ul class="upd-list">
         <li>전적 검색 · 자세히보기에 <b>현재 티어</b>와 <b>최고 티어</b>를 함께 표시</li>
         <li>닉네임 옆에 <b>마지막 경기 시간</b> 표시</li>
@@ -1334,6 +1411,195 @@
       <div style="font-size:12px; color:var(--muted-foreground);">최근 14일 기기별 방문: 📱 폰·태블릿 ${mobile.toLocaleString()} · 💻 PC ${pc.toLocaleString()}</div>`;
   }
 
+  // ===== 내 허브: 메뉴별 화면 =====
+  let currentHubSection = 'account';
+  function switchHubSection(name) {
+    currentHubSection = name;
+    document.querySelectorAll('.hub-menu-item').forEach(el => el.classList.toggle('active', el.dataset.hub === name));
+    document.querySelectorAll('.hub-section').forEach(el => el.style.display = el.dataset.hubSection === name ? '' : 'none');
+    renderHubSection(name);
+  }
+  function renderHubSection(name) {
+    if (name === 'mygame') renderMyGame();
+    else if (name === 'favorites') renderFavorites();
+    else if (name === 'history') renderSearchHistory();
+    else if (name === 'payments') renderMyPayments();
+    else if (name === 'settings') renderSettings();
+  }
+
+  // 방문자 통계: '보기'를 눌러야 불러온다
+  function toggleVisitStats() {
+    const body = document.getElementById('visit-stats-body');
+    const btn = document.getElementById('visit-toggle-btn');
+    const open = body.style.display === 'none';
+    body.style.display = open ? 'block' : 'none';
+    btn.textContent = open ? '접기' : '보기';
+    document.getElementById('visit-refresh-btn').style.display = open ? '' : 'none';
+    if (open) renderVisitStats();
+  }
+
+  // 즐겨찾기 구단주 (이 기기에 저장)
+  const getFavorites = () => { try { return JSON.parse(localStorage.getItem('fco_favorites')) || []; } catch (e) { return []; } };
+  const setFavorites = (list) => localStorage.setItem('fco_favorites', JSON.stringify(list.slice(0, 20)));
+  const isFavorite = (nick) => getFavorites().includes(nick);
+  function toggleFavorite(nick) {
+    if (!nick) return;
+    const list = getFavorites();
+    if (list.includes(nick)) { setFavorites(list.filter(n => n !== nick)); showToast(`☆ ${nick} 즐겨찾기 해제`); }
+    else {
+      if (list.length >= 20) return showToast('즐겨찾기는 최대 20명까지예요.');
+      setFavorites([nick, ...list]); showToast(`★ ${nick} 즐겨찾기 추가! 내 허브에서 볼 수 있어요.`);
+    }
+    const btn = document.getElementById('fav-toggle-btn');
+    if (btn) btn.textContent = isFavorite(nick) ? '★ 즐겨찾기됨' : '☆ 즐겨찾기';
+    renderFavorites();
+  }
+  function addFavoriteFromInput() {
+    const input = document.getElementById('fav-input');
+    const nick = input.value.trim();
+    if (!nick) return showToast('구단주명을 입력하세요.');
+    if (isFavorite(nick)) return showToast('이미 즐겨찾기에 있어요.');
+    toggleFavorite(nick);
+    input.value = '';
+  }
+  function renderFavorites() {
+    const box = document.getElementById('fav-list');
+    if (!box) return;
+    const list = getFavorites();
+    box.innerHTML = list.length ? list.map(n => `
+      <div class="fav-row">
+        <span style="color:#F59E0B;">★</span>
+        <button class="fav-name" data-nick="${escapeHtml(n)}">${escapeHtml(n)} <span style="color:var(--muted-foreground); font-size:12px; font-weight:600;">전적 보기 ➔</span></button>
+        <button class="bg-btn" style="height:32px; padding:0 10px;" data-h2h="${escapeHtml(n)}" onclick="startH2HWith(this.dataset.h2h)">⚔️ 나와 1:1</button>
+        <button class="history-del" data-fav-del="${escapeHtml(n)}" onclick="toggleFavorite(this.dataset.favDel)" aria-label="즐겨찾기 삭제" title="삭제">✕</button>
+      </div>`).join('')
+      : `<div style="text-align:center; padding:30px; color:var(--muted-foreground); font-size:13px; background:var(--background); border-radius:12px;">아직 즐겨찾기한 구단주가 없어요.</div>`;
+  }
+  // 즐겨찾기 → 1:1 상대전적 바로 열기 (내 구단이 등록돼 있으면 자동으로 채움)
+  function startH2HWith(nick) {
+    switchTab('h2h');
+    const inputs = document.querySelectorAll('#tab-h2h input[type="text"]');
+    const my = localStorage.getItem('fco_my_nick') || '';
+    if (inputs[0] && my) inputs[0].value = my;
+    if (inputs[1]) inputs[1].value = nick;
+    if (!my && inputs[0]) { inputs[0].focus(); showToast('내 구단주명을 입력하고 비교를 눌러주세요. (내 허브 → 내 구단에 등록하면 자동으로 채워져요)'); }
+  }
+
+  // 내 구단: 등록한 구단주명의 티어 · 최근 전적 요약
+  function saveMyNick() {
+    const nick = document.getElementById('mygame-input').value.trim();
+    if (!nick) return showToast('구단주명을 입력하세요.');
+    localStorage.setItem('fco_my_nick', nick);
+    showToast(`🎮 내 구단을 ${nick}(으)로 등록했어요.`);
+    renderMyGame();
+  }
+  async function renderMyGame() {
+    const box = document.getElementById('mygame-body');
+    const input = document.getElementById('mygame-input');
+    if (!box) return;
+    const nick = localStorage.getItem('fco_my_nick');
+    if (input && nick && !input.value) input.value = nick;
+    if (!nick) { box.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted-foreground); font-size:13px; background:var(--background); border-radius:12px;">구단주명을 등록하면 내 티어와 최근 전적이 여기에 나와요.</div>`; return; }
+    box.innerHTML = `<div class="visit-empty">⏳ ${escapeHtml(nick)} 전적 불러오는 중...</div>`;
+    try {
+      const ouid = await getOuid(nick);
+      if (!ouid) { box.innerHTML = `<div class="visit-empty">'${escapeHtml(nick)}' 구단주를 찾을 수 없어요. 철자를 확인해주세요.</div>`; return; }
+      const [basic, maxDiv, ids] = await Promise.all([
+        fetchNexonApi(`/fconline/v1/user/basic?ouid=${ouid}`).catch(() => null),
+        fetchNexonApi(`/fconline/v1/user/maxdivision?ouid=${ouid}`).catch(() => []),
+        fetchNexonApi(`/fconline/v1/user/match?ouid=${ouid}&matchtype=50&offset=0&limit=10`).catch(() => [])
+      ]);
+      await Promise.race([divisionMetaReady, delay(3000)]);
+      const details = await fetchMatchDetails(ids || []);
+      let w = 0, d = 0, l = 0, curDiv = null, form = [];
+      for (const m of details) {
+        const me = m.matchInfo?.find(i => i.ouid === ouid);
+        if (!me?.matchDetail) continue;
+        if (curDiv === null && me.division) curDiv = me.division;
+        const r = me.matchDetail.matchResult;
+        if (r === '승') w++; else if (r === '패') l++; else d++;
+        if (form.length < 5) form.push(r);
+      }
+      const best = MAX_TIER_OVERRIDE[nick] !== undefined ? { division: MAX_TIER_OVERRIDE[nick] } : pickBestDivision(maxDiv, 50);
+      const tierCell = (id) => id ? `${getTierBadge(id) ? `<img src="${getTierBadge(id)}" alt="" style="width:22px; height:22px; object-fit:contain;" onerror="this.remove()">` : ''}${escapeHtml(divisionMetaCache[String(id)] || '-')}` : '-';
+      const total = w + d + l;
+      const color = { '승': 'var(--win-color)', '무': 'var(--draw-color)', '패': 'var(--lose-color)' };
+      box.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <b style="font-size:17px;">${escapeHtml(basic?.nickname || nick)} <span style="font-size:13px; color:var(--muted-foreground);">Lv.${basic?.level ?? '-'}</span></b>
+          <button class="bg-btn" data-nick="${escapeHtml(nick)}">전체 전적 보기 ➔</button>
+        </div>
+        <div class="mg-card">
+          <div class="mg-stat"><div class="l">현재 티어</div><div class="v">${tierCell(curDiv)}</div></div>
+          <div class="mg-stat"><div class="l">최고 티어</div><div class="v">${tierCell(best?.division)}</div></div>
+          <div class="mg-stat"><div class="l">최근 ${total}경기 승률</div><div class="v">${total ? Math.round(w / total * 100) : 0}%</div></div>
+          <div class="mg-stat"><div class="l">전적</div><div class="v" style="font-size:14px;">${w}승 ${d}무 ${l}패</div></div>
+        </div>
+        ${form.length ? `<div class="mg-form">${form.map(r => `<span style="background:${color[r] || 'var(--muted-foreground)'};">${r}</span>`).join('')}</div>` : ''}
+        <div style="font-size:11px; color:var(--muted-foreground); text-align:center; margin-top:8px;">공식경기 기준 · 최근 경기는 1시간~1시간 30분 늦게 반영돼요.</div>`;
+    } catch (e) {
+      box.innerHTML = `<div class="visit-empty">${escapeHtml(apiErrorMessage(e))}</div>`;
+    }
+  }
+
+  // 결제 · PRO 내역
+  async function renderMyPayments() {
+    const box = document.getElementById('my-payments');
+    if (!box) return;
+    const userId = localStorage.getItem('fco_current_user');
+    if (!userId) { box.innerHTML = `<div class="visit-empty">로그인하면 결제 내역과 PRO 기간을 볼 수 있어요.</div>`; return; }
+    const isPro = localStorage.getItem('fco_pro_mode') === 'true';
+    const exp = localStorage.getItem('fco_pro_expiry');
+    const left = exp && exp !== 'unlimited' ? Math.max(0, Math.ceil((Number(exp) - Date.now()) / DAY_MS)) : null;
+    const statusLine = userId === ADMIN_ID ? '👑 관리자 (모든 기능 사용 가능)'
+      : !isPro ? '비활성 · <a href="#" onclick="switchTab(\'pro\'); return false;" style="color:var(--ai-blue); font-weight:800;">PRO 알아보기 ➔</a>'
+      : exp === 'unlimited' ? '💎 PRO 무제한' : `💎 PRO 이용 중 · <b>${left}일</b> 남음 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})`;
+    let rows = [];
+    if (db) {
+      try {
+        const snap = await db.collection('payments').where('userId', '==', userId.toLowerCase()).get();
+        snap.forEach(d => rows.push(d.data()));
+      } catch (e) {}
+    }
+    rows.sort((a, b) => b.createdAt - a.createdAt);
+    const badge = { auto: ['확인 중', 'var(--draw-color)'], pending: ['확인 중', 'var(--draw-color)'], approved: ['입금 확인', 'var(--win-color)'], rejected: ['미입금 해지', 'var(--lose-color)'] };
+    box.innerHTML = `
+      <div class="pay-status" style="margin-bottom:14px;">PRO 상태: ${statusLine}</div>
+      ${rows.length ? rows.map(r => {
+        const [txt, col] = badge[r.status] || ['-', 'var(--muted-foreground)'];
+        return `<div class="pay-hist">
+          <div><b>${escapeHtml(PAY_PLANS[r.plan]?.label || 'PRO')}</b> · ${Number(r.amount || 0).toLocaleString()}원<div style="font-size:11px; color:var(--muted-foreground);">${new Date(r.createdAt).toLocaleString('ko-KR')} · 입금자명 ${escapeHtml(r.depositor || '-')}</div></div>
+          <span class="pay-badge" style="background:${col};">${txt}</span>
+        </div>`; }).join('')
+      : `<div class="visit-empty">아직 결제 내역이 없어요.</div>`}`;
+  }
+
+  // 설정
+  function renderSettings() {
+    const sel = document.getElementById('setting-default-type');
+    if (sel && !sel.options.length) sel.innerHTML = SEARCH_MATCH_TYPES.map(t => `<option value="${t}">${MATCH_TYPES[t]}</option>`).join('');
+    if (sel) sel.value = String(parseInt(localStorage.getItem('fco_default_type'), 10) || 50);
+    const hist = document.getElementById('setting-save-history');
+    if (hist) hist.checked = localStorage.getItem('fco_no_history') !== '1';
+  }
+  function saveDefaultMatchType(v) {
+    localStorage.setItem('fco_default_type', v);
+    currentMatchType = parseInt(v, 10);
+    renderMatchTypeFilter();
+    showToast(`기본 경기 종류를 ${MATCH_TYPES[v]}(으)로 바꿨어요.`);
+  }
+  function saveHistorySetting(on) {
+    if (on) localStorage.removeItem('fco_no_history'); else localStorage.setItem('fco_no_history', '1');
+    showToast(on ? '검색 기록을 저장해요.' : '이제 검색 기록을 저장하지 않아요.');
+  }
+  function resetLocalData() {
+    if (!confirm('검색 기록, 즐겨찾기, 내 구단, 설정을 모두 지울까요? (로그인은 유지돼요)')) return;
+    ['fco_history', 'fco_favorites', 'fco_my_nick', 'fco_default_type', 'fco_no_history'].forEach(k => localStorage.removeItem(k));
+    renderSearchHistory(); renderFavorites(); renderSettings();
+    const mi = document.getElementById('mygame-input'); if (mi) mi.value = '';
+    showToast('이 기기의 데이터를 초기화했어요.');
+  }
+
   function toggleNoticeOlder(btn) {
     const box = document.getElementById('notice-older');
     const open = box.style.display === 'none';
@@ -1350,7 +1616,7 @@
     document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tabId));
     const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
     if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    if (tabId === 'hub') renderHubAuth();
+    if (tabId === 'hub') { renderHubAuth(); renderHubSection(currentHubSection); }
     if (tabId === 'ranking') renderTop10();
   }
 
@@ -1575,8 +1841,10 @@
     const adminPanel = document.getElementById('admin-panel');
     if (adminPanel) {
       adminPanel.style.display = isAdmin ? 'block' : 'none';
-      if (isAdmin) { renderProList(); renderVisitStats(); renderPaymentRequests(); }
+      if (isAdmin) { renderProList(); renderPaymentRequests(); }
     }
+    const statsCard = document.getElementById('admin-stats-card');
+    if (statsCard) statsCard.style.display = isAdmin ? 'block' : 'none';
 
     if (!currentUser) {
       authContainer.innerHTML = `
@@ -1947,6 +2215,7 @@ service cloud.firestore {
     }
   }
   function addSearchHistory(name) {
+    if (localStorage.getItem('fco_no_history') === '1') return;
     let history = getSearchHistory().filter(h => h !== name);
     history.unshift(name);
     localStorage.setItem('fco_history', JSON.stringify(history.slice(0, 5)));
@@ -2077,6 +2346,7 @@ service cloud.firestore {
 
   // ===== 메타데이터 (선수 이름, 티어, 시즌, 경기 종류) =====
   let globalCurTier = null, globalCurTierId = null;
+  const MAX_TIER_OVERRIDE = { '부천리버풀대장': 1300 }; // 특정 구단주 최고 티어 고정 표시
   let globalOuid = null, globalNickname = "", globalLevel = "", globalMaxTier = "", globalMaxTierId = null, globalMatchDetails = [], currentMatchLoadIndex = 0;
   let spidMetaCache = {}, divisionMetaCache = {}, seasonMetaCache = {};
 
@@ -2182,6 +2452,8 @@ service cloud.firestore {
 
     // 공유 링크로 들어오면 바로 검색 (예: fcogg.xyz/?nick=닉네임)
     const params = new URLSearchParams(location.search);
+    const savedType = parseInt(localStorage.getItem('fco_default_type'), 10);
+    if (SEARCH_MATCH_TYPES.includes(savedType)) { currentMatchType = savedType; renderMatchTypeFilter(); }
     const type = parseInt(params.get('type'), 10);
     if (SEARCH_MATCH_TYPES.includes(type)) { currentMatchType = type; renderMatchTypeFilter(); }
     if (params.get('nick')) searchNickname(params.get('nick'));
@@ -2624,7 +2896,6 @@ service cloud.firestore {
         if (pick) { globalMaxTier = divisionMetaCache[String(pick.division)] || `등급 ${pick.division}`; globalMaxTierId = pick.division; maxTierDate = pick.achievementDate || ''; }
       }
       // 특정 구단주 최고 티어 고정 표시
-      const MAX_TIER_OVERRIDE = { '부천리버풀대장': 1300 };
       if (MAX_TIER_OVERRIDE[nickname] !== undefined) {
         globalMaxTierId = MAX_TIER_OVERRIDE[nickname];
         globalMaxTier = divisionMetaCache[String(globalMaxTierId)] || '챌린저3';
@@ -2669,6 +2940,7 @@ service cloud.firestore {
           <div class="result-head">
             <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}${lastPlayed ? ` · 마지막 경기 ${lastPlayed}` : ''}</span></b>
             <div style="display:flex; gap:8px; align-items:center;">
+              <button class="bg-btn" id="fav-toggle-btn" onclick="toggleFavorite(globalNickname)">${isFavorite(nickname) ? '★ 즐겨찾기됨' : '☆ 즐겨찾기'}</button>
               <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
             </div>
           </div>
