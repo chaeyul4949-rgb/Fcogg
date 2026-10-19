@@ -75,13 +75,13 @@ module.exports = async (req, res) => {
 <meta property="og:url" content="${esc(selfUrl)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:image" content="${SITE}/og-banner-v6.png">
+<meta property="og:image" content="${SITE}/og-banner-v7.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
-<meta name="twitter:image" content="${SITE}/og-banner-v6.png">
+<meta name="twitter:image" content="${SITE}/og-banner-v7.png">
 </head><body style="background:#1E2430;color:#fff;font-family:sans-serif;text-align:center;padding-top:40vh">
 <a href="${esc(target)}" style="color:#4A8FEA">${esc(title)} 보러 가기</a>
 <script>location.replace(${JSON.stringify(target)});</script>
