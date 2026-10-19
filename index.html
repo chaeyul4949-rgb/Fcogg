@@ -365,7 +365,13 @@
     .hub-menu-item:hover { background: var(--muted); color: var(--foreground); }
     .hub-menu-item.active { background: var(--foreground); color: var(--background); }
     .hub-content { flex: 1; display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-    .hub-section { display: flex; flex-direction: column; gap: 24px; }
+    .hub-section { display: flex; flex-direction: column; gap: 24px; position: relative; }
+    .hub-section.locked > .shadcn-card { filter: blur(2px); opacity: 0.55; pointer-events: none; user-select: none; }
+    .hub-lock { display: none; position: absolute; inset: 0; z-index: 5; align-items: center; justify-content: center; }
+    .hub-section.locked > .hub-lock { display: flex; }
+    .hub-lock-box { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 26px; text-align: center; box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+    .hub-lock-box b { display: block; font-size: 16px; font-weight: 900; margin: 6px 0 4px; }
+    .hub-lock-box p { font-size: 13px; color: var(--muted-foreground); margin-bottom: 14px; }
     .fav-row { display: flex; align-items: center; gap: 8px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 8px 8px 8px 16px; }
     .fav-row .fav-name { flex: 1; text-align: left; background: none; border: none; font-size: 15px; font-weight: 800; color: var(--foreground); cursor: pointer; font-family: inherit; padding: 6px 0; }
     .mg-card { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -1710,7 +1716,19 @@
     document.querySelectorAll('.hub-section').forEach(el => el.style.display = el.dataset.hubSection === name ? '' : 'none');
     renderHubSection(name);
   }
+  // 로그인 안 했으면 계정 정보 말고는 보기만 되고 못 쓰게
+  function updateHubLock() {
+    const loggedIn = !!localStorage.getItem('fco_current_user');
+    document.querySelectorAll('.hub-section').forEach(sec => {
+      if (sec.dataset.hubSection === 'account') return;
+      if (!sec.querySelector('.hub-lock')) {
+        sec.insertAdjacentHTML('beforeend', `<div class="hub-lock"><div class="hub-lock-box"><div style="font-size:30px;">🔒</div><b>로그인해야 쓸 수 있어요</b><p>로그인하면 이 기능을 바로 쓸 수 있어요.</p><button class="pill-search-btn" style="border-radius:12px;" onclick="openAuthModal()">로그인 / 회원가입</button></div></div>`);
+      }
+      sec.classList.toggle('locked', !loggedIn);
+    });
+  }
   function renderHubSection(name) {
+    updateHubLock();
     if (name === 'mygame') renderMyGame();
     else if (name === 'favorites') renderFavorites();
     else if (name === 'history') renderSearchHistory();
@@ -1735,6 +1753,7 @@
   const isFavorite = (nick) => getFavorites().includes(nick);
   function toggleFavorite(nick) {
     if (!nick) return;
+    if (!localStorage.getItem('fco_current_user')) { showToast('🔒 즐겨찾기는 로그인해야 쓸 수 있어요.'); openAuthModal(); return; }
     const list = getFavorites();
     if (list.includes(nick)) { setFavorites(list.filter(n => n !== nick)); showToast(`☆ ${nick} 즐겨찾기 해제`); }
     else {
@@ -2235,6 +2254,7 @@
     const statsCard = document.getElementById('admin-stats-card');
     if (statsCard) statsCard.style.display = isAdmin ? 'block' : 'none';
 
+    updateHubLock();
     if (!currentUser) {
       authContainer.innerHTML = `
         <div style="text-align:center; padding: 20px 0;">
