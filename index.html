@@ -1126,6 +1126,7 @@
         <div class="hub-menu-item" data-hub="favorites" onclick="switchHubSection('favorites')">⭐ 즐겨찾기 구단주</div>
         <div class="hub-menu-item" data-hub="history" onclick="switchHubSection('history')">🔍 최근 검색 기록</div>
         <div class="hub-menu-item" data-hub="payments" onclick="switchHubSection('payments')">💳 결제 · PRO 내역</div>
+        <div class="hub-menu-item" data-hub="coupon" onclick="switchHubSection('coupon')">🎟️ 코드 등록</div>
         <div class="hub-menu-item" data-hub="settings" onclick="switchHubSection('settings')">🛠️ 설정</div>
       </div>
       <div class="hub-content">
@@ -1223,6 +1224,18 @@
         <div class="shadcn-card" style="padding: 24px;">
           <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">💳 결제 · PRO 내역</h3>
           <div id="my-payments"></div>
+        </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="coupon" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">🎟️ 코드 등록</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">이벤트 · 쿠폰 코드를 입력하면 PRO 멤버십이 바로 적용돼요.</p>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="coupon-input" class="admin-input" style="margin-bottom:0; border-color:var(--border); letter-spacing:2px; font-weight:800;" placeholder="코드 입력" maxlength="20" onkeydown="if(event.key==='Enter') redeemCoupon()">
+            <button class="pill-search-btn" style="border-radius:12px; height:44px;" onclick="redeemCoupon()">등록</button>
+          </div>
+          <div id="coupon-result" style="margin-top:14px;"></div>
         </div>
        </div>
 
@@ -1818,6 +1831,33 @@
     } catch (e) {
       box.innerHTML = `<div class="visit-empty">${escapeHtml(apiErrorMessage(e))}</div>`;
     }
+  }
+
+  // 코드 등록: 코드마다 PRO 기간, 계정당 한 번만 사용
+  const COUPON_CODES = { '6767': { days: '60', label: 'PRO 60일' } };
+  async function redeemCoupon() {
+    const input = document.getElementById('coupon-input');
+    const box = document.getElementById('coupon-result');
+    const code = (input.value || '').trim().toUpperCase();
+    const userId = (localStorage.getItem('fco_current_user') || '').toLowerCase();
+    const msg = (html, color) => { box.innerHTML = `<div class="pay-status" style="color:${color || 'var(--foreground)'};">${html}</div>`; };
+    if (!userId) { msg('로그인한 뒤 코드를 등록할 수 있어요. <a href="#" onclick="openAuthModal(); return false;" style="color:var(--ai-blue); font-weight:800;">로그인 / 회원가입 ➔</a>'); return; }
+    if (!code) return showToast('코드를 입력하세요.');
+    const coupon = COUPON_CODES[code];
+    if (!coupon) { msg('❌ 올바르지 않은 코드예요. 다시 확인해주세요.', 'var(--lose-color)'); return; }
+    try {
+      const cur = await readProUser(userId);
+      if (cur && Array.isArray(cur.codes) && cur.codes.includes(code)) { msg('이미 사용한 코드예요. 코드는 계정당 한 번만 쓸 수 있어요.', 'var(--lose-color)'); return; }
+      const result = await grantPro(userId, coupon.days);
+      const codes = Array.isArray(cur?.codes) ? [...cur.codes, code] : [code];
+      if (db) await db.collection('accounts').doc(userId).set({ codes }, { merge: true });
+      await syncUserProStatus(userId);
+      updateProTabUI(); renderHubAuth();
+      input.value = '';
+      const exp = localStorage.getItem('fco_pro_expiry');
+      msg(`🎉 <b>${coupon.label}</b>이 적용됐어요!${exp && exp !== 'unlimited' ? ` (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : ''}<br><span style="font-weight:600; color:var(--muted-foreground);">${escapeHtml(result.replace(/^🎉\s*/, ''))}</span>`, 'var(--win-color)');
+      showToast(`🎉 ${coupon.label}이 적용됐어요!`);
+    } catch (e) { msg(escapeHtml(proErrorMessage(e)), 'var(--lose-color)'); }
   }
 
   // 결제 · PRO 내역
