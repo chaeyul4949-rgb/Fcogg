@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1100">
   
+  <script>try{var t=localStorage.getItem('fco_theme');if(t&&t!=='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -53,6 +54,11 @@
       --ai-blue-bg: #EFF6FF;
       --pro-gold: #F59E0B;
       --pro-gold-bg: #FFFBEB;
+
+      /* 배경 블러 빛 */
+      --blob1: rgba(52, 199, 89, 0.20);
+      --blob2: rgba(88, 86, 214, 0.16);
+      --blob3: rgba(255, 149, 0, 0.12);
     }
 
     [data-theme="dark"] {
@@ -69,7 +75,64 @@
       --ai-blue-bg: rgba(59, 130, 246, 0.08);
       --pro-gold: #FBBF24;
       --pro-gold-bg: rgba(245, 158, 11, 0.08);
+
+      --blob1: rgba(52, 199, 89, 0.16);
+      --blob2: rgba(88, 86, 214, 0.22);
+      --blob3: rgba(255, 149, 0, 0.06);
     }
+
+    /* 네온 블루 테마 */
+    [data-theme="neon"] {
+      --background: #060A17;
+      --foreground: #EAF4FF;
+      --card: #0D1530;
+      --primary: #3BA4FF;
+      --primary-foreground: #041022;
+      --muted: #142048;
+      --muted-foreground: #8EA3CF;
+      --border: #22346A;
+      --tier-op: #7FA8FF;
+      --ai-blue: #3BA4FF;
+      --ai-blue-bg: rgba(59, 164, 255, 0.12);
+      --pro-gold: #FBBF24;
+      --pro-gold-bg: rgba(245, 158, 11, 0.08);
+
+      --blob1: rgba(34, 211, 238, 0.22);
+      --blob2: rgba(59, 91, 255, 0.32);
+      --blob3: rgba(168, 85, 247, 0.12);
+    }
+
+    /* 핑크 테마 */
+    [data-theme="pink"] {
+      --background: #FFF0F7;
+      --foreground: #2A0A1C;
+      --card: #FFFFFF;
+      --primary: #FF2D87;
+      --primary-foreground: #FFFFFF;
+      --muted: #FFE3F0;
+      --muted-foreground: #A2668A;
+      --border: #FFCFE5;
+      --tier-op: #E0247A;
+      --ai-blue: #E0247A;
+      --ai-blue-bg: #FFF0F7;
+      --pro-gold: #F59E0B;
+      --pro-gold-bg: #FFFBEB;
+
+      --blob1: rgba(255, 45, 135, 0.22);
+      --blob2: rgba(168, 85, 247, 0.18);
+      --blob3: rgba(255, 149, 0, 0.10);
+    }
+
+    /* 배경 블러 빛 (화면에 고정) */
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(640px circle at 88% -6%, var(--blob1), transparent 62%),
+        radial-gradient(720px circle at 4% 104%, var(--blob2), transparent 62%),
+        radial-gradient(520px circle at 102% 86%, var(--blob3), transparent 60%); }
+    body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image: linear-gradient(rgba(127,127,127,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(127,127,127,.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(ellipse at 80% 10%, #000 0%, transparent 55%); mask-image: radial-gradient(ellipse at 80% 10%, #000 0%, transparent 55%); }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; letter-spacing: -0.015em; }
     
@@ -189,7 +252,7 @@
     
     .pro-blur-content { filter: blur(8px); transition: filter 0.5s ease; user-select: none; pointer-events: none; }
     .pro-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.4); backdrop-filter: blur(2px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; transition: opacity 0.4s ease; border-radius: var(--radius); }
-    [data-theme="dark"] .pro-overlay { background: rgba(0,0,0,0.6); }
+    [data-theme="dark"] .pro-overlay, [data-theme="neon"] .pro-overlay { background: rgba(0,0,0,0.6); }
 
     .btn-unlock-pro { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #FFF; font-weight: 900; font-size: 16px; padding: 16px 32px; border-radius: 99px; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); transition: 0.3s; display: flex; align-items: center; gap: 8px; }
     .btn-unlock-pro:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4); }
@@ -258,6 +321,10 @@
     .mg-form { display: flex; gap: 4px; justify-content: center; margin-top: 10px; }
     .mg-form span { width: 26px; height: 26px; border-radius: 7px; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
     .pay-hist { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 13px; }
+    .theme-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+    .theme-picker button { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 8px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--background); color: var(--foreground); font-size: 13px; font-weight: 800; cursor: pointer; }
+    .theme-picker button img { width: 28px; height: 28px; }
+    .theme-picker button.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary) inset; }
     .pay-badge { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px; color: #fff; white-space: nowrap; }
     
     .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
@@ -351,7 +418,8 @@
     .admin-fb-help { background: var(--card); border: 1px solid var(--lose-color); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-size: 13px; line-height: 1.6; }
     .admin-fb-help ol { margin: 6px 0 10px 18px; }
     .admin-panel { background: #F3E8FF; border: 2px solid var(--tier-op); border-radius: var(--radius); padding: 24px; display: none; }
-    [data-theme="dark"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
+    [data-theme="dark"] .admin-panel, [data-theme="neon"] .admin-panel { background: rgba(88, 86, 214, 0.1); }
+    [data-theme="pink"] .admin-panel { background: #FFF0F7; }
     .pay-verify { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: left; }
     .pay-verify .pv-title { font-size: 14px; font-weight: 900; margin-bottom: 8px; }
     .pay-verify .pv-desc { font-size: 12px; color: var(--muted-foreground); line-height: 1.6; margin-bottom: 10px; word-break: keep-all; }
@@ -388,8 +456,6 @@
     button { font-family: inherit; }
     .logo { background: none; border: none; color: var(--foreground); padding: 0; display: inline-flex; align-items: center; }
     .logo-icon { width: 38px; height: 38px; margin-right: 10px; }
-    .logo-icon-dark, [data-theme="dark"] .logo-icon:not(.logo-icon-dark) { display: none; }
-    [data-theme="dark"] .logo-icon-dark { display: inline-block; }
     .notice-icon-btn { padding: 0; }
     button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--ai-blue); outline-offset: 2px; }
     .main-tabs { scrollbar-width: none; }
@@ -724,7 +790,7 @@
 <div class="container">
   
   <header class="header-container">
-    <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈"><img class="logo-icon" src="/logo-icon.png" alt=""><img class="logo-icon logo-icon-dark" src="/logo-icon-dark.png" alt="">FCO<span>.GG</span></button>
+    <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈"><img class="logo-icon" id="logo-icon" src="/logo-icon.png" alt="">FCO<span>.GG</span></button>
     <div class="top-right-actions">
       <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢<span id="notice-dot" class="notice-red-dot"></span></button>
       <button class="donate-btn" onclick="openDonateModal()">💛 후원하기</button>
@@ -1077,9 +1143,14 @@
        <div class="hub-section" data-hub-section="settings" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
           <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🛠️ 설정</h3>
-          <div class="setting-row">
-            <div><div style="font-size:15px; font-weight:700;">다크 모드</div><div style="font-size:13px; color:var(--muted-foreground);">화면 테마를 어둡게 전환합니다.</div></div>
-            <input type="checkbox" id="theme-toggle" class="toggle-switch">
+          <div class="setting-row" style="flex-wrap:wrap; gap:12px;">
+            <div><div style="font-size:15px; font-weight:700;">테마</div><div style="font-size:13px; color:var(--muted-foreground);">사이트 색과 로고 아이콘이 함께 바뀌어요.</div></div>
+            <div class="theme-picker" id="theme-picker">
+              <button data-theme-pick="light" onclick="setTheme('light')"><img src="/logo-icon.png" alt="">기본</button>
+              <button data-theme-pick="dark" onclick="setTheme('dark')"><img src="/logo-icon-dark.png" alt="">다크</button>
+              <button data-theme-pick="neon" onclick="setTheme('neon')"><img src="/logo-icon-neon.png" alt="">네온 블루</button>
+              <button data-theme-pick="pink" onclick="setTheme('pink')"><img src="/logo-icon-pink.png" alt="">핑크</button>
+            </div>
           </div>
           <div class="setting-row">
             <div><div style="font-size:15px; font-weight:700;">기본 경기 종류</div><div style="font-size:13px; color:var(--muted-foreground);">전적 검색을 처음 열 때 선택되는 경기 종류예요.</div></div>
@@ -1145,6 +1216,7 @@
         <li>검색 결과에서 <b>☆ 즐겨찾기</b> → 내 허브에서 친구 전적 · 나와 1:1 바로 보기</li>
         <li><b>결제 · PRO 내역</b>, 남은 PRO 기간 확인</li>
         <li><b>설정</b>: 기본 경기 종류, 검색 기록 저장 끄기, 데이터 초기화</li>
+        <li>새 <b>테마</b>: 기본 · 다크 · <b>네온 블루</b> · <b>핑크</b> (내 허브 → 설정), 배경에 은은한 블러 빛</li>
       </ul>
     </div>
 
@@ -1749,33 +1821,29 @@
     }, { passive: true });
   }
 
-  // 다크 모드면 탭 아이콘도 어두운 버전으로
-  function updateFavicon(dark) {
+  // ===== 테마 (기본 · 다크 · 네온 블루 · 핑크): 색 · 로고 아이콘 · 탭 아이콘을 함께 바꾼다 =====
+  const THEMES = {
+    light: { logo: '/logo-icon.png', fav: '/favicon-48.png', big: '/icon-192.png', ico: '/favicon.ico' },
+    dark:  { logo: '/logo-icon-dark.png', fav: '/favicon-48-dark.png', big: '/icon-192-dark.png' },
+    neon:  { logo: '/logo-icon-neon.png', fav: '/favicon-48-neon.png', big: '/icon-192-neon.png' },
+    pink:  { logo: '/logo-icon-pink.png', fav: '/favicon-48-pink.png', big: '/icon-192-pink.png' }
+  };
+  function setTheme(name, quiet) {
+    const t = THEMES[name] ? name : 'light';
+    if (t === 'light') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('fco_theme', t); } catch (e) {}
+    const conf = THEMES[t];
+    const logo = document.getElementById('logo-icon');
+    if (logo) logo.src = conf.logo;
     document.querySelectorAll('link[rel="icon"]').forEach(l => {
       const sizes = l.getAttribute('sizes');
-      if (sizes === '48x48') l.href = dark ? '/favicon-48-dark.png' : '/favicon-48.png';
-      else if (sizes === '192x192') l.href = dark ? '/icon-192-dark.png' : '/icon-192.png';
-      else l.href = dark ? '/favicon-48-dark.png' : '/favicon.ico';
+      l.href = sizes === '192x192' ? conf.big : sizes === '48x48' ? conf.fav : (conf.ico || conf.fav);
     });
+    document.querySelectorAll('#theme-picker button').forEach(btn => btn.classList.toggle('active', btn.dataset.themePick === t));
+    if (!quiet) showToast(`테마를 ${({ light: '기본', dark: '다크', neon: '네온 블루', pink: '핑크' })[t]}(으)로 바꿨어요.`);
   }
-  const themeToggle = document.getElementById('theme-toggle');
-  if(themeToggle) {
-    if (localStorage.getItem('fco_theme') === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeToggle.checked = true;
-      updateFavicon(true);
-    }
-    themeToggle.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('fco_theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('fco_theme', 'light');
-      }
-      updateFavicon(e.target.checked);
-    });
-  }
+  setTheme(localStorage.getItem('fco_theme') || 'light', true);
 
   // ===== Firebase (로그인 · 추천 · 방명록 · PRO) =====
   const firebaseConfig = {
