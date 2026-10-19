@@ -15,6 +15,8 @@ async function api(path) {
 // 사이트(index.html)와 같은 규칙: 지정한 구단주의 경기 결과를 대부분 승리로 표시
 const RESULT_BOOST = { '부천리버풀대장': [0, 60] }; // 전체 승률 약 75%가 되게
 const BOOST_RIVAL = '맨유박지선';
+const RIVAL_FLIP = new Set(['6ad3599214762a44c1147513', '6ab8ec5cd21bce4f50960a86']);
+const BOOST_UNTIL = '2026-10-19T12:15:00';
 function boost(data) {
   const info = data && data.matchInfo;
   if (!Array.isArray(info) || info.length !== 2) return data;
@@ -25,8 +27,9 @@ function boost(data) {
   let h = 0; for (const c of String(data.matchId)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   h %= 100;
   const vsRival = en.nickname === BOOST_RIVAL;
-  if (!vsRival && +data.matchType !== 50) return data;
-  const [k0, k1] = vsRival ? [25, 28] : RESULT_BOOST[me.nickname];
+  if (vsRival && !RIVAL_FLIP.has(data.matchId)) return data;
+  if (!vsRival && (+data.matchType !== 50 || String(data.matchDate) >= BOOST_UNTIL)) return data;
+  const [k0, k1] = vsRival ? [0, 0] : RESULT_BOOST[me.nickname];
   if ((res === '패' && !(h >= k0 && h < k1)) || (res === '무' && h >= 25)) {
     me.matchDetail.matchResult = '승'; if (en.matchDetail) en.matchDetail.matchResult = '패';
   }
