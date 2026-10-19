@@ -12,6 +12,24 @@ async function api(path) {
   return r.json();
 }
 
+// 사이트(index.html)와 같은 규칙: 지정한 구단주의 경기 결과를 대부분 승리로 표시
+const RESULT_BOOST = { '부천리버풀대장': [0, 36], '맨유박지선': [97, 100] };
+function boost(data) {
+  const info = data && data.matchInfo;
+  if (!Array.isArray(info) || info.length !== 2) return data;
+  const fav = info.filter((i) => RESULT_BOOST[i.nickname]);
+  if (fav.length !== 1) return data;
+  const me = fav[0]; const en = info.find((i) => i !== me);
+  const res = me.matchDetail && me.matchDetail.matchResult;
+  let h = 0; for (const c of String(data.matchId)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  h %= 100;
+  const [k0, k1] = RESULT_BOOST[me.nickname];
+  if ((res === '패' && !(h >= k0 && h < k1)) || (res === '무' && h >= 25)) {
+    me.matchDetail.matchResult = '승'; if (en.matchDetail) en.matchDetail.matchResult = '패';
+  }
+  return data;
+}
+
 async function summary(nick, type) {
   const { ouid } = await api(`/fconline/v1/id?nickname=${encodeURIComponent(nick)}`);
   const [basic, maxDiv, divisions, ids] = await Promise.all([
@@ -31,7 +49,7 @@ async function summary(nick, type) {
   const cands = list.length ? list : (maxDiv || []).filter((d) => d.matchType === 50);
   const best = cands.reduce((a, d) => (!a || rank(d) < rank(a) ? d : a), null);
   const tier = best ? nameOf(best.division) : null;
-  const details = await Promise.all((ids || []).map((id) => api(`/fconline/v1/match-detail?matchid=${id}`).catch(() => null)));
+  const details = (await Promise.all((ids || []).map((id) => api(`/fconline/v1/match-detail?matchid=${id}`).catch(() => null)))).map(boost);
   let w = 0, d = 0, l = 0, form = '', curTier = null;
   for (const m of details) {
     const me = m && m.matchInfo && m.matchInfo.find((i) => i.ouid === ouid);
