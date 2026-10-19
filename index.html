@@ -386,7 +386,10 @@
 
     /* ===== 공통 ===== */
     button { font-family: inherit; }
-    .logo { background: none; border: none; color: var(--foreground); padding: 0; }
+    .logo { background: none; border: none; color: var(--foreground); padding: 0; display: inline-flex; align-items: center; }
+    .logo-icon { width: 38px; height: 38px; margin-right: 10px; }
+    .logo-icon-dark, [data-theme="dark"] .logo-icon:not(.logo-icon-dark) { display: none; }
+    [data-theme="dark"] .logo-icon-dark { display: inline-block; }
     .notice-icon-btn { padding: 0; }
     button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--ai-blue); outline-offset: 2px; }
     .main-tabs { scrollbar-width: none; }
@@ -512,6 +515,7 @@
       body { padding: 12px; }
       .header-container { display: grid; grid-template-columns: 1fr auto; align-items: center; row-gap: 14px; margin-top: 0; margin-bottom: 20px; }
       .logo { font-size: 24px; margin-bottom: 0; justify-self: start; }
+      .logo-icon { width: 30px; height: 30px; margin-right: 8px; }
       .top-right-actions { position: static; gap: 6px; }
       .main-tabs { grid-column: 1 / -1; border-radius: 14px;
         -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
@@ -720,7 +724,7 @@
 <div class="container">
   
   <header class="header-container">
-    <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈">FCO<span>.GG</span></button>
+    <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈"><img class="logo-icon" src="/logo-icon.png" alt=""><img class="logo-icon logo-icon-dark" src="/logo-icon-dark.png" alt="">FCO<span>.GG</span></button>
     <div class="top-right-actions">
       <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢<span id="notice-dot" class="notice-red-dot"></span></button>
       <button class="donate-btn" onclick="openDonateModal()">💛 후원하기</button>
@@ -1745,11 +1749,21 @@
     }, { passive: true });
   }
 
+  // 다크 모드면 탭 아이콘도 어두운 버전으로
+  function updateFavicon(dark) {
+    document.querySelectorAll('link[rel="icon"]').forEach(l => {
+      const sizes = l.getAttribute('sizes');
+      if (sizes === '48x48') l.href = dark ? '/favicon-48-dark.png' : '/favicon-48.png';
+      else if (sizes === '192x192') l.href = dark ? '/icon-192-dark.png' : '/icon-192.png';
+      else l.href = dark ? '/favicon-48-dark.png' : '/favicon.ico';
+    });
+  }
   const themeToggle = document.getElementById('theme-toggle');
   if(themeToggle) {
     if (localStorage.getItem('fco_theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
       themeToggle.checked = true;
+      updateFavicon(true);
     }
     themeToggle.addEventListener('change', (e) => {
       if (e.target.checked) {
@@ -1759,6 +1773,7 @@
         document.documentElement.removeAttribute('data-theme');
         localStorage.setItem('fco_theme', 'light');
       }
+      updateFavicon(e.target.checked);
     });
   }
 
