@@ -1720,7 +1720,7 @@
   function updateHubLock() {
     const loggedIn = !!localStorage.getItem('fco_current_user');
     document.querySelectorAll('.hub-section').forEach(sec => {
-      if (sec.dataset.hubSection !== 'payments') return; // 결제 내역만 로그인 필요 (계정 정보는 자체 안내)
+      if (['account', 'coupon', 'settings'].includes(sec.dataset.hubSection)) return; // 코드 등록·설정은 로그인 없이 사용 (계정 정보는 자체 안내)
       if (!sec.querySelector('.hub-lock')) {
         sec.insertAdjacentHTML('beforeend', `<div class="hub-lock"><div class="hub-lock-box"><div style="font-size:30px;">🔒</div><b>로그인해야 쓸 수 있어요</b><p>로그인하면 이 기능을 바로 쓸 수 있어요.</p><button class="pill-search-btn" style="border-radius:12px;" onclick="openAuthModal()">로그인 / 회원가입</button></div></div>`);
       }
@@ -1753,6 +1753,7 @@
   const isFavorite = (nick) => getFavorites().includes(nick);
   function toggleFavorite(nick) {
     if (!nick) return;
+    if (!localStorage.getItem('fco_current_user')) { showToast('🔒 즐겨찾기는 로그인해야 쓸 수 있어요.'); openAuthModal(); return; }
     const list = getFavorites();
     if (list.includes(nick)) { setFavorites(list.filter(n => n !== nick)); showToast(`☆ ${nick} 즐겨찾기 해제`); }
     else {
