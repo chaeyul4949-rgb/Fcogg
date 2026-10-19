@@ -13,7 +13,8 @@ async function api(path) {
 }
 
 // 사이트(index.html)와 같은 규칙: 지정한 구단주의 경기 결과를 대부분 승리로 표시
-const RESULT_BOOST = { '부천리버풀대장': [0, 36], '맨유박지선': [97, 100] };
+const RESULT_BOOST = { '부천리버풀대장': [0, 36] };
+const BOOST_RIVAL = '맨유박지선';
 function boost(data) {
   const info = data && data.matchInfo;
   if (!Array.isArray(info) || info.length !== 2) return data;
@@ -23,7 +24,9 @@ function boost(data) {
   const res = me.matchDetail && me.matchDetail.matchResult;
   let h = 0; for (const c of String(data.matchId)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   h %= 100;
-  const [k0, k1] = RESULT_BOOST[me.nickname];
+  const vsRival = en.nickname === BOOST_RIVAL;
+  if (!vsRival && +data.matchType !== 50) return data;
+  const [k0, k1] = vsRival ? [25, 28] : RESULT_BOOST[me.nickname];
   if ((res === '패' && !(h >= k0 && h < k1)) || (res === '무' && h >= 25)) {
     me.matchDetail.matchResult = '승'; if (en.matchDetail) en.matchDetail.matchResult = '패';
   }

@@ -2677,7 +2677,8 @@ service cloud.firestore {
   const matchCache = new Map();
   // 지정한 구단주의 경기 결과를 대부분 승리로 표시 (본인 요청). 경기 단위로 바꿔서 상대 쪽 화면과도 맞게 보인다
   // 이름: 패배를 그대로 남길 해시 범위 [시작, 끝) → 남는 패배 비율을 계정마다 다르게
-  const RESULT_BOOST = { '부천리버풀대장': [0, 36], '맨유박지선': [97, 100] };
+  const RESULT_BOOST = { '부천리버풀대장': [0, 36] };
+  const BOOST_RIVAL = '맨유박지선'; // 이 상대와의 경기는 모든 모드에서 거의 다 승리로
   const GOAL_KEYS = ['goalTotal', 'goalTotalDisplay', 'goalHeading', 'goalFreekick', 'goalInPenalty', 'goalOutPenalty', 'goalPenaltyKick'];
   function boostMatchResult(data) {
     const info = data?.matchInfo;
@@ -2688,7 +2689,9 @@ service cloud.firestore {
     const res = me.matchDetail?.matchResult;
     let h = 0; for (const c of String(data.matchId)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
     h %= 100;
-    const [k0, k1] = RESULT_BOOST[me.nickname];
+    const vsRival = en.nickname === BOOST_RIVAL;
+    if (!vsRival && +data.matchType !== 50) return data; // 공식경기와 라이벌전만
+    const [k0, k1] = vsRival ? [25, 28] : RESULT_BOOST[me.nickname];
     const keepLoss = h >= k0 && h < k1;
     if (res === '패' && !keepLoss) {
       // 득점 기록을 서로 바꿔서 승리로
