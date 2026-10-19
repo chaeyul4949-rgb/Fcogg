@@ -135,6 +135,27 @@
     .btn-rec:hover { background: rgba(52, 199, 89, 0.1); color: var(--win-color); border-color: var(--win-color); }
     .btn-rep:hover { background: rgba(255, 59, 48, 0.1); color: var(--lose-color); border-color: var(--lose-color); }
 
+    .badge-more { font-size: 11px; font-weight: 800; color: var(--muted-foreground); }
+    .title-book-btn { margin-left: 6px; font-size: 12px; font-weight: 800; color: var(--ai-blue, #3B82F6); background: none; border: none; cursor: pointer; padding: 0; }
+    .title-chips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .title-chip { font-size: 12.5px; background: var(--background); border-radius: 8px; padding: 6px 10px; line-height: 1.5; }
+    .title-chip span { color: var(--muted-foreground); }
+    .tb-head { font-size: 20px; font-weight: 900; margin-bottom: 4px; }
+    .tb-head span { font-size: 13px; font-weight: 700; color: var(--muted-foreground); margin-left: 6px; }
+    .tb-desc { font-size: 12.5px; color: var(--muted-foreground); margin-bottom: 14px; line-height: 1.5; }
+    .tb-cat { font-size: 14px; font-weight: 900; margin: 14px 0 8px; }
+    .tb-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tb-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); opacity: 0.6; }
+    .tb-item.all { opacity: 1; }
+    .tb-legend { font-size: 12px; font-weight: 700; color: var(--muted-foreground); margin-bottom: 4px; }
+    .tb-item.on { opacity: 1; border-color: var(--pro-gold, #F59E0B); background: var(--pro-gold-bg, rgba(245,158,11,0.08)); }
+    .tb-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+    .tb-name { font-size: 14px; font-weight: 900; }
+    .tb-tier { font-size: 10px; font-weight: 800; color: #fff; padding: 1px 6px; border-radius: 5px; vertical-align: middle; }
+    .tb-got { font-size: 10px; font-weight: 800; color: var(--win-color); }
+    .tb-cond { font-size: 12px; color: var(--muted-foreground); margin-top: 2px; line-height: 1.45; word-break: keep-all; }
+    .tb-why { font-size: 12px; font-weight: 700; margin-top: 3px; }
+    @media (max-width: 640px) { .tb-list { grid-template-columns: 1fr; } }
     .style-badge { background: var(--muted); color: var(--foreground); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
     
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; animation: fadeIn 0.5s ease; }
@@ -444,6 +465,9 @@
     .goal-row.me { background: rgba(59,130,246,0.08); }
     .goal-row.en { background: rgba(239,68,68,0.08); flex-direction: row-reverse; text-align: right; }
     .goal-min { font-weight: 900; min-width: 34px; }
+    .shot-type { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px; white-space: nowrap; background: var(--muted, rgba(127,127,127,0.15)); color: var(--foreground); }
+    .shot-type.zd { background: rgba(168,85,247,0.16); color: #A855F7; }
+    .shot-type.dd { background: rgba(16,185,129,0.16); color: #10B981; }
     .lineup-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .lineup-title { font-weight: 900; text-align: center; margin-bottom: 8px; }
     .lineup-pitch { position: relative; width: 100%; aspect-ratio: 3 / 4; background: linear-gradient(#0b5d3b, #0a5034); border-radius: 12px; overflow: hidden; }
@@ -601,19 +625,39 @@
     .mu-tips-title { font-size: 13px; font-weight: 900; margin-bottom: 4px; }
     .mu-tips { margin: 0 0 6px 18px; font-size: 12.5px; line-height: 1.55; display: flex; flex-direction: column; gap: 3px; }
     .mu-note { font-size: 11px; color: var(--muted-foreground); }
+    .mu-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .mu-chip { font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: rgba(2,132,199,0.12); color: #0284C7; }
+    .mu-signal { background: var(--background); border-left: 4px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; word-break: keep-all; }
+    .mu-sig-head { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 4px; }
+    .mu-lv { font-size: 11px; font-weight: 900; padding: 2px 7px; border-radius: 6px; color: #fff; flex-shrink: 0; }
+    .mu-sig-detail { font-size: 12.5px; line-height: 1.55; color: var(--muted-foreground); }
+    .mu-sig-tip { font-size: 12.5px; line-height: 1.55; margin-top: 4px; font-weight: 600; }
+    .mu-bad { border-left-color: #EF4444; } .mu-bad .mu-lv { background: #EF4444; }
+    .mu-warn { border-left-color: #F59E0B; } .mu-warn .mu-lv { background: #F59E0B; }
+    .mu-info { border-left-color: #0284C7; } .mu-info .mu-lv { background: #0284C7; }
+    .mu-good { border-left-color: #10B981; } .mu-good .mu-lv { background: #10B981; }
     .deep-toggle { grid-column: 1 / -1; height: 46px; border-radius: 12px; border: 1px dashed var(--pro-gold); background: var(--pro-gold-bg); color: var(--foreground); font-weight: 800; font-size: 14px; cursor: pointer; }
     .deep-toggle:hover { border-style: solid; }
-    .deep-more { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .deep-more { grid-column: 1 / -1; columns: 2; column-gap: 16px; }
+    .deep-more > .deep-card { break-inside: avoid; display: inline-block; width: 100%; margin-bottom: 16px; vertical-align: top; }
+    .deep-more > .deep-card[style*="grid-column"] { column-span: all; display: block; }
+    .kind-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .deep-tip > div + div { margin-top: 6px; }
     .deep-more[hidden] { display: none; }
     .vs-diff { font-size: 10.5px; font-weight: 800; margin-left: 2px; }
     .vs-diff.up { color: var(--win-color); }
     .vs-diff.down { color: var(--lose-color); }
-    @media (max-width: 760px) { .deep-more { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .deep-more { columns: 1; } .kind-cols { grid-template-columns: 1fr; } }
     .deep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
     .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; font-size: 14px; min-width: 0; }
     .deep-title { font-size: 16px; font-weight: 900; margin-bottom: 12px; }
     .deep-title small { font-size: 11px; color: var(--muted-foreground); font-weight: 600; }
     .deep-sub { font-size: 13px; font-weight: 800; }
+    .kind-row { display: grid; grid-template-columns: 88px 1fr auto; align-items: center; gap: 8px; font-size: 12.5px; margin-bottom: 6px; }
+    .kind-name { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kind-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .kind-bar > div { height: 100%; border-radius: 99px; }
+    .kind-val { font-weight: 700; color: var(--muted-foreground); white-space: nowrap; }
     .deep-tip { margin-top: 12px; font-size: 13px; line-height: 1.6; background: var(--background); border-radius: 10px; padding: 10px 12px; word-break: keep-all; }
     .deep-tag { font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 99px; background: var(--muted); color: var(--muted-foreground); margin-left: 4px; }
     .deep-tag.up { background: rgba(52,199,89,0.15); color: var(--win-color); }
@@ -684,6 +728,7 @@
       <button class="tab-btn" data-tab="player" onclick="switchTab('player')" hidden>포지션별 선수 티어</button>
       <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
       <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
+      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">🏅 칭호 도감</button>
       <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
       <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 계산기</button>
       <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
@@ -743,6 +788,10 @@
   <div id="tab-teamcolor" class="tab-content">
     <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3></div>
     <div class="tier-board" id="teamcolor-list-container"></div>
+  </div>
+
+  <div id="tab-titles" class="tab-content">
+    <div class="shadcn-card" style="max-width:900px; margin:0 auto; padding:24px;" id="titles-tab-body"></div>
   </div>
 
   <div id="tab-trait" class="tab-content">
@@ -1090,6 +1139,19 @@
         <li><b>설정</b>: 기본 경기 종류, 검색 기록 저장 끄기, 데이터 초기화</li>
       </ul>
     </div>
+
+    <div class="upd-entry">
+      <div class="upd-date">2026.10.18 칭호 · 리포트 업데이트</div>
+      <ul class="upd-list">
+        <li><b>🏅 칭호 도감</b> 탭 추가: 칭호 29개의 등급과 조건을 한눈에 확인</li>
+        <li>칭호 대폭 추가: 프리킥 장인, 원클럽맨, <b>'(선수 이름) 원픽'</b>, 감아차기 장인, DD 마스터 등</li>
+        <li>칭호 기준을 실제 유저 기록(약 900경기)에 맞게 재조정, 칭호는 가장 잘 맞는 <b>1개</b>만</li>
+        <li>경기 상세 · PRO 리포트에 골마다 <b>슈팅 종류</b> 표시 (감아차기 ZD, 낮은 슛 DD 등)</li>
+        <li>실시간 매치업 프리뷰 개편: 상대가 나를 공략한 방법을 위험 · 주의 · 참고로 정리</li>
+        <li>PRO 심층 피드백을 5개 카드로 합쳐 더 짧고 보기 쉽게</li>
+      </ul>
+    </div>
+
     <div class="upd-entry">
       <div class="upd-date">2026.10.18</div>
       <ul class="upd-list">
@@ -1318,6 +1380,12 @@
   </div>
 </div>
 
+<div id="title-modal" class="sub-modal-overlay" style="align-items:flex-start;" onclick="if (event.target === this) closeTitleBook()">
+  <div class="sub-modal-content" style="max-width:760px;">
+    <button class="modal-close-btn" onclick="closeTitleBook()" aria-label="닫기">✕</button>
+    <div id="title-modal-body"></div>
+  </div>
+</div>
 <div id="match-modal" class="sub-modal-overlay" style="align-items:flex-start;">
   <div class="sub-modal-content" style="max-width:960px;">
     <button class="modal-close-btn" onclick="closeMatchModal()" aria-label="닫기">✕</button>
@@ -1607,6 +1675,8 @@
     btn.textContent = open ? '접기 ▲' : '이전 업데이트 보기 ▼';
   }
   function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; }
+  // 사이트에 들어올 때마다 공지 팝업 띄우기
+  window.addEventListener('load', () => openNoticeModal());
   function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
   function closeProfileModal() { document.getElementById('profile-modal').style.display = 'none'; }
   function openSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'flex'; }
@@ -1618,6 +1688,7 @@
     if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     if (tabId === 'hub') { renderHubAuth(); renderHubSection(currentHubSection); }
     if (tabId === 'ranking') renderTop10();
+    if (tabId === 'titles') renderTitlesTab();
   }
 
   function switchSubTab(subTabId, btnElement) {
@@ -3025,6 +3096,178 @@ service cloud.firestore {
     }
   }
 
+  // ===== 칭호 =====
+  // 내 최근 경기 기록으로 지표를 계산 (경기당 평균, 비율 등)
+  function computeTitleMetrics(matches, ouid) {
+    const N = (v) => +v || 0;
+    const rows = [];
+    for (const m of matches || []) {
+      const me = m?.matchInfo?.find(i => i.ouid === ouid), en = m?.matchInfo?.find(i => i.ouid !== ouid);
+      if (me?.matchDetail && en) rows.push({ me, en, res: me.matchDetail.matchResult });
+    }
+    const G = rows.length;
+    const sum = (f) => rows.reduce((s, r) => s + f(r), 0);
+    const ratio = (a, b) => b ? a / b : 0;
+    const goals = sum(r => N(r.me.shoot?.goalTotal)), conc = sum(r => N(r.en.shoot?.goalTotal));
+    const shots = sum(r => N(r.me.shoot?.shootTotal)), eff = sum(r => N(r.me.shoot?.effectiveShootTotal));
+    const kinds = {}; rows.forEach(r => goalKindCounts(r.me, kinds));
+    const kindGoals = Object.values(kinds).reduce((a, b) => a + b, 0);
+    const myGoalShots = rows.flatMap(r => (r.me.shootDetail || []).filter(s => s.result === 3));
+    // 선발 선수 (교체 28번 제외)
+    const starts = {}, scorers = {}, points = {}; let subGoals = 0;
+    rows.forEach(r => (r.me.player || []).forEach(p => {
+      if (p.spPosition === 28) { subGoals += N(p.status?.goal); return; }
+      starts[p.spId] = (starts[p.spId] || 0) + 1;
+      scorers[p.spId] = (scorers[p.spId] || 0) + N(p.status?.goal);
+      points[p.spId] = (points[p.spId] || 0) + N(p.status?.goal) + N(p.status?.assist);
+    }));
+    // 가장 오래 쓴 선수: 선발 경기 수가 가장 많고, 같으면 공격 포인트가 많은 선수
+    const fav = Object.keys(starts).sort((a, b) => starts[b] - starts[a] || (points[b] || 0) - (points[a] || 0))[0];
+    const startCounts = Object.values(starts).sort((a, b) => b - a);
+    // 선발 11명과 각자 포지션이 모든 경기에서 똑같은지
+    const lineupKey = (r) => (r.me.player || []).filter(p => p.spPosition !== 28).map(p => `${p.spId}@${p.spPosition}`).sort().join(',');
+    const sameLineup = G > 0 && rows.every(r => lineupKey(r) === lineupKey(rows[0]));
+    const coreXI = startCounts.slice(0, 11).reduce((a, b) => a + b, 0) / Math.max(1, G * 11); // 가장 많이 쓴 11명이 선발 자리를 채운 비율
+    const topStarter = Object.entries(starts).sort((a, b) => b[1] - a[1])[0];
+    const topScorer = Object.entries(scorers).sort((a, b) => b[1] - a[1])[0];
+    // 흐름: 역전승, 선제골, 연승
+    let comebacks = 0, firstGoals = 0, anyGoalGames = 0, lateGoals = 0, maxWin = 0, curWin = 0;
+    [...rows].reverse().forEach(r => { if (r.res === '승') { curWin++; maxWin = Math.max(maxWin, curWin); } else curWin = 0; });
+    rows.forEach(r => {
+      const ev = [...(r.me.shootDetail || []).filter(s => s.result === 3).map(s => ({ t: goalMinute(s.goalTime), m: 1 })),
+                  ...(r.en.shootDetail || []).filter(s => s.result === 3).map(s => ({ t: goalMinute(s.goalTime), m: 0 }))].sort((a, b) => a.t - b.t);
+      let d = 0, trailed = false;
+      ev.forEach(e => { d += e.m ? 1 : -1; if (d < 0) trailed = true; if (e.m && e.t >= 76) lateGoals++; });
+      if (ev.length) { anyGoalGames++; if (ev[0].m) firstGoals++; }
+      if (trailed && r.res === '승') comebacks++;
+    });
+    return {
+      G, wins: rows.filter(r => r.res === '승').length,
+      winRate: ratio(rows.filter(r => r.res === '승').length, G) * 100,
+      goalsPG: ratio(goals, G), concPG: ratio(conc, G), goals,
+      headPG: ratio(sum(r => N(r.me.shoot?.goalHeading)), G), headShare: ratio(sum(r => N(r.me.shoot?.goalHeading)), goals) * 100,
+      fkGoals: sum(r => N(r.me.shoot?.goalFreekick)), pkGoals: sum(r => N(r.me.shoot?.goalPenaltyKick)),
+      outShare: ratio(sum(r => N(r.me.shoot?.goalOutPenalty)), goals) * 100,
+      zdShare: ratio(kinds[2] || 0, kindGoals) * 100, ddShare: ratio(kinds[6] || 0, kindGoals) * 100,
+      volleyShare: ratio(kinds[7] || 0, kindGoals) * 100, kindGoals,
+      shotAcc: ratio(eff, shots) * 100, conversion: ratio(goals, shots) * 100, shotsPG: ratio(shots, G),
+      poss: ratio(sum(r => N(r.me.matchDetail.possession)), G),
+      passRate: ratio(sum(r => N(r.me.pass?.passSuccess)), sum(r => N(r.me.pass?.passTry))) * 100,
+      throughRate: ratio(sum(r => N(r.me.pass?.throughPassSuccess)), sum(r => N(r.me.pass?.throughPassTry))) * 100,
+      tacklePG: ratio(sum(r => N(r.me.defence?.tackleSuccess)), G),
+      foulPG: ratio(sum(r => N(r.me.matchDetail.foul)), G), yellowPG: ratio(sum(r => N(r.me.matchDetail.yellowCards)), G),
+      reds: sum(r => N(r.me.matchDetail.redCards)),
+      comebacks, firstGoalRate: ratio(firstGoals, anyGoalGames) * 100, lateShare: ratio(lateGoals, myGoalShots.length) * 100,
+      assistedShare: ratio(myGoalShots.filter(s => s.assist).length, myGoalShots.length) * 100,
+      subGoals, maxWin, coreXI: coreXI * 100, sameLineup,
+      favId: fav, favGames: starts[fav] || 0, favPoints: points[fav] || 0,
+      topStarterId: topStarter?.[0], topStarterGames: topStarter?.[1] || 0,
+      topScorerId: topScorer?.[0], topScorerGamesStarted: starts[topScorer?.[0]] || 0, topScorerShare: ratio(topScorer?.[1] || 0, goals) * 100,
+      cleanSheets: rows.filter(r => N(r.en.shoot?.goalTotal) === 0).length
+    };
+  }
+
+  // 칭호 목록: 기준값은 공식경기 유저 표본에서 상위 10~15% 안에 드는 수준으로 잡음
+  // tier: 3 전설 · 2 희귀 · 1 일반 (여러 개 받으면 높은 등급이 대표 칭호)
+  const TITLE_MIN_GAMES = 10;
+  const f1 = (v) => (+v).toFixed(1);
+  const TITLES = [
+    // ⚽ 득점
+    { cat: '득점', icon: '🔥', name: '폭격기', tier: 2, cond: '경기당 3.4골 이상', check: m => m.goalsPG >= 3.4, why: m => `경기당 ${f1(m.goalsPG)}골을 넣어요.` },
+    { cat: '득점', icon: '🎯', name: '스나이퍼', tier: 2, cond: '유효슈팅 비율 82.5% 이상 (슈팅 100개 이상)', check: m => m.shotAcc >= 82.5 && m.shotsPG * m.G >= 100, why: m => `슈팅의 ${Math.round(m.shotAcc)}%가 골문으로 가요.` },
+    { cat: '득점', icon: '🧊', name: '냉혈한', tier: 2, cond: '슈팅 대비 골 55% 이상', check: m => m.conversion >= 55, why: m => `슈팅 ${Math.round(m.conversion)}%를 골로 연결해요.` },
+    { cat: '득점', icon: '🌀', name: '감아차기 장인', tier: 1, cond: '득점의 50% 이상이 감아차기(ZD) (20골 이상)', check: m => m.kindGoals >= 20 && m.zdShare >= 50, why: m => `골의 ${Math.round(m.zdShare)}%를 ZD로 넣어요.` },
+    { cat: '득점', icon: '⚡', name: 'DD 마스터', tier: 1, cond: '득점의 25% 이상이 낮은 슛(DD) (20골 이상)', check: m => m.kindGoals >= 20 && m.ddShare >= 25, why: m => `골의 ${Math.round(m.ddShare)}%를 DD로 넣어요.` },
+    { cat: '득점', icon: '🦵', name: '발리 마스터', tier: 1, cond: '득점의 25% 이상이 발리 (20골 이상)', check: m => m.kindGoals >= 20 && m.volleyShare >= 25, why: m => `골의 ${Math.round(m.volleyShare)}%가 발리예요.` },
+    { cat: '득점', icon: '🗿', name: '타이탄', tier: 2, cond: '헤딩골이 득점의 25% 이상, 경기당 0.6골 이상', check: m => m.headShare >= 25 && m.headPG >= 0.6, why: m => `경기당 헤딩골 ${f1(m.headPG)}골, 득점의 ${Math.round(m.headShare)}%예요.` },
+    { cat: '득점', icon: '🚀', name: '중거리 포', tier: 1, cond: '득점의 16% 이상이 박스 밖 슈팅 (15골 이상)', check: m => m.goals >= 15 && m.outShare >= 16, why: m => `골의 ${Math.round(m.outShare)}%가 박스 밖에서 나왔어요.` },
+    { cat: '득점', icon: '🎩', name: '프리킥 장인', tier: 3, cond: '직접 프리킥 골 3골 이상', check: m => m.fkGoals >= 3, why: m => `프리킥으로 ${m.fkGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '🥅', name: 'PK 키커', tier: 1, cond: '페널티킥 골 5골 이상', check: m => m.pkGoals >= 5, why: m => `페널티킥으로 ${m.pkGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '🪄', name: '슈퍼서브', tier: 2, cond: '교체 선수가 3골 이상', check: m => m.subGoals >= 3, why: m => `교체로 들어간 선수가 ${m.subGoals}골을 넣었어요.` },
+    { cat: '득점', icon: '👑', name: '원맨팀', tier: 1, cond: '한 선수가 팀 득점의 55% 이상', check: m => m.goals >= 15 && m.topScorerShare >= 55, why: m => `${titlePlayer(m.topScorerId)} 혼자 팀 골의 ${Math.round(m.topScorerShare)}%를 넣어요.` },
+    { cat: '득점', icon: '🤝', name: '팀플레이어', tier: 1, cond: '한 선수 득점 비중이 32% 이하 (20골 이상)', check: m => m.goals >= 20 && m.topScorerShare <= 32, why: m => `가장 많이 넣은 선수도 팀 골의 ${Math.round(m.topScorerShare)}%뿐이에요. 고르게 넣어요.` },
+    // 🧠 운영
+    { cat: '운영', icon: '🎼', name: '마에스트로', tier: 2, cond: '패스 성공률 90.5% 이상', check: m => m.passRate >= 90.5, why: m => `패스 성공률이 ${f1(m.passRate)}%예요.` },
+    { cat: '운영', icon: '🗝️', name: '라인 브레이커', tier: 1, cond: '스루패스 성공률 87% 이상', check: m => m.throughRate >= 87, why: m => `스루패스 성공률이 ${f1(m.throughRate)}%예요.` },
+    { cat: '운영', icon: '🕹️', name: '점유왕', tier: 1, cond: '평균 점유율 53% 이상', check: m => m.poss >= 53, why: m => `평균 점유율이 ${Math.round(m.poss)}%예요.` },
+    { cat: '운영', icon: '🏹', name: '역습 장인', tier: 2, cond: '평균 점유율 47% 이하인데 승률 55% 이상', check: m => m.poss <= 47 && m.winRate >= 55, why: m => `점유율 ${Math.round(m.poss)}%로도 ${Math.round(m.winRate)}%를 이겨요.` },
+    // 🛡️ 수비
+    { cat: '수비', icon: '🧱', name: '철벽', tier: 2, cond: '경기당 실점 1.9골 이하', check: m => m.concPG <= 1.9, why: m => `경기당 ${f1(m.concPG)}골만 내줘요.` },
+    { cat: '수비', icon: '🧤', name: '클린시트 마스터', tier: 2, cond: '무실점 경기 비율 20% 이상', check: m => m.cleanSheets / m.G >= 0.2, why: m => `${m.G}경기 중 ${m.cleanSheets}경기를 무실점으로 막았어요.` },
+    { cat: '수비', icon: '🛡️', name: '통곡의 벽', tier: 1, cond: '경기당 태클 성공 9회 이상', check: m => m.tacklePG >= 9, why: m => `경기당 태클 ${f1(m.tacklePG)}회를 성공해요.` },
+    { cat: '수비', icon: '🎩', name: '젠틀맨', tier: 1, cond: '경기당 파울 0.4개 이하, 경고·퇴장 없음', check: m => m.foulPG <= 0.4 && m.yellowPG === 0 && m.reds === 0, why: m => `경기당 파울 ${f1(m.foulPG)}개, 카드는 한 장도 없어요.` },
+    { cat: '수비', icon: '🟨', name: '카드 수집가', tier: 1, cond: '경기당 경고 0.3장 이상 또는 퇴장 2번 이상', check: m => m.yellowPG >= 0.3 || m.reds >= 2, why: m => `경기당 경고 ${f1(m.yellowPG)}장${m.reds ? `, 퇴장 ${m.reds}번` : ''}이에요.` },
+    // 💪 멘탈
+    { cat: '멘탈', icon: '🔄', name: '역전의 명수', tier: 2, cond: '지고 있다가 이긴 경기 6번 이상', check: m => m.comebacks >= 6, why: m => `역전승이 ${m.comebacks}번이에요.` },
+    { cat: '멘탈', icon: '🏃', name: '선제골 사냥꾼', tier: 1, cond: '골이 나온 경기의 70% 이상에서 먼저 득점', check: m => m.firstGoalRate >= 70, why: m => `${Math.round(m.firstGoalRate)}% 경기에서 먼저 골을 넣어요.` },
+    { cat: '멘탈', icon: '⏰', name: '극장골 장인', tier: 1, cond: '득점의 24% 이상이 76분 이후 (15골 이상)', check: m => m.goals >= 15 && m.lateShare >= 24, why: m => `골의 ${Math.round(m.lateShare)}%가 76분 이후에 나와요.` },
+    { cat: '멘탈', icon: '📈', name: '연승 머신', tier: 2, cond: '최근 경기 중 5연승 이상', check: m => m.maxWin >= 5, why: m => `최근 ${m.maxWin}연승을 했어요.` },
+    // 💙 충성
+    { cat: '충성', icon: '🏠', name: '원클럽맨', tier: 2, cond: '최근 25경기 내내 선발 11명과 포지션을 한 번도 안 바꿈', check: m => m.G >= 25 && m.sameLineup, why: m => `최근 ${m.G}경기 내내 같은 선발 11명, 같은 포지션으로 뛰었어요.` },
+    { cat: '충성', icon: '💍', name: '원픽', label: m => `${titleShortName(m.favId)} 원픽`, tier: 1, cond: '가장 오래 쓴 선수 이름이 붙어요 (그 선수를 15경기 이상, 모든 경기 선발로 씀)', check: m => m.G >= 15 && m.favId && m.favGames >= m.G, why: m => `${titlePlayer(m.favId)} 선수를 최근 ${m.favGames}경기 모두 선발로 썼어요. (공격 포인트 ${m.favPoints})` },
+    { cat: '충성', icon: '🧪', name: '실험가', tier: 1, cond: '선발 라인업을 자주 바꿈 (주전 11명 비중 80% 이하)', check: m => m.coreXI <= 80, why: m => `주전 11명 비중이 ${Math.round(m.coreXI)}%예요. 여러 조합을 시험해요.` }
+  ];
+
+  // 칭호는 1개만: 기준을 가장 크게 넘긴 칭호 (기준값 대비 몇 배인지, 같으면 등급 높은 것)
+  const TITLE_SCORE = {
+    '폭격기': m => m.goalsPG / 3.4, '스나이퍼': m => m.shotAcc / 82.5, '냉혈한': m => m.conversion / 55,
+    '감아차기 장인': m => m.zdShare / 50, 'DD 마스터': m => m.ddShare / 25, '발리 마스터': m => m.volleyShare / 25,
+    '타이탄': m => Math.min(m.headShare / 25, m.headPG / 0.6), '중거리 포': m => m.outShare / 16,
+    '프리킥 장인': m => m.fkGoals / 3, 'PK 키커': m => m.pkGoals / 5, '슈퍼서브': m => m.subGoals / 3,
+    '원맨팀': m => m.topScorerShare / 55, '팀플레이어': m => 32 / Math.max(1, m.topScorerShare),
+    '마에스트로': m => m.passRate / 90.5, '라인 브레이커': m => m.throughRate / 87, '점유왕': m => m.poss / 53,
+    '역습 장인': m => Math.min(47 / Math.max(1, m.poss), m.winRate / 55), '철벽': m => 1.9 / Math.max(0.1, m.concPG),
+    '클린시트 마스터': m => (m.cleanSheets / m.G) / 0.2, '통곡의 벽': m => m.tacklePG / 9,
+    '젠틀맨': m => Math.min(2, 0.4 / Math.max(0.05, m.foulPG)), '카드 수집가': m => Math.max(m.yellowPG / 0.3, m.reds / 2),
+    '역전의 명수': m => m.comebacks / 6, '선제골 사냥꾼': m => m.firstGoalRate / 70, '극장골 장인': m => m.lateShare / 24,
+    '연승 머신': m => m.maxWin / 5, '원클럽맨': () => 1.05, '원픽': () => 1.0, '실험가': m => 80 / Math.max(1, m.coreXI)
+  };
+  const titlePlayer = (id) => escapeHtml(spidMetaCache[id] || '한 선수');
+  const titleShortName = (id) => escapeHtml(String(spidMetaCache[id] || '최애 선수').trim().split(/\s+/).pop());
+  const titleLabel = (t, m) => (t.label && m ? t.label(m) : t.name);
+  const TITLE_TIER = { 3: ['전설', '#F59E0B'], 2: ['희귀', '#8B5CF6'], 1: ['일반', '#3B82F6'] };
+  let lastTitleResult = { earned: [], metrics: null };
+
+  // 받은 칭호 전부 (등급 높은 순). 하나도 없으면 밸런스형
+  function evaluateTitles(matches, ouid) {
+    const m = computeTitleMetrics(matches, ouid);
+    const score = (t) => { try { return (TITLE_SCORE[t.name] || (() => 1))(m) + t.tier * 0.02; } catch (e) { return 0; } };
+    const passed = m.G >= TITLE_MIN_GAMES ? TITLES.filter(t => { try { return t.check(m); } catch (e) { return false; } }) : [];
+    const earned = passed.sort((a, b) => score(b) - score(a)).slice(0, 1);
+    lastTitleResult = { earned, metrics: m };
+    renderTitlesTab();
+    return lastTitleResult;
+  }
+
+  // 칭호 도감: 전체 칭호와 조건, 내가 받은 칭호 표시
+  function titleBookHTML(forTab) {
+    const { earned, metrics: m } = lastTitleResult;
+    const have = new Set(earned.map(t => t.name));
+    const cats = [...new Set(TITLES.map(t => t.cat))];
+    const who = m && globalNickname ? `전체 ${TITLES.length}개 · <b>${escapeHtml(globalNickname)}</b>님 칭호: ${earned[0] ? `${earned[0].icon} ${titleLabel(earned[0], m)}` : '⚽ 밸런스형'}` : `전체 ${TITLES.length}개`;
+    return `
+      <div class="tb-head">🏅 칭호 도감 <span>${who}</span></div>
+      <div class="tb-desc">구단주를 검색하고 '구단 스쿼드 및 상세 분석 보기'를 누르면 최근 25경기 기록으로 칭호를 받아요 (${TITLE_MIN_GAMES}경기 이상부터). 칭호는 한 사람당 1개예요. 조건을 여러 개 채우면 기준을 가장 크게 넘긴 칭호 하나가 붙어요. 하나도 없으면 ⚽ 밸런스형이에요. 기준은 공식경기 유저 표본의 상위 10~15% 수준이에요.${m ? ' 금색 칸이 받은 칭호예요.' : ''}</div>
+      <div class="tb-legend">${[3, 2, 1].map(t => `<span class="tb-tier" style="background:${TITLE_TIER[t][1]}">${TITLE_TIER[t][0]}</span> ${TITLES.filter(x => x.tier === t).length}개`).join(' &nbsp; ')}</div>
+      ${cats.map(c => `
+        <div class="tb-cat">${c}</div>
+        <div class="tb-list">${TITLES.filter(t => t.cat === c).map(t => `
+          <div class="tb-item ${have.has(t.name) ? 'on' : ''} ${m ? '' : 'all'}">
+            <div class="tb-icon">${t.icon}</div>
+            <div style="min-width:0;">
+              <div class="tb-name">${have.has(t.name) ? titleLabel(t, m) : t.name} <span class="tb-tier" style="background:${TITLE_TIER[t.tier][1]}">${TITLE_TIER[t.tier][0]}</span>${have.has(t.name) ? ' <span class="tb-got">획득</span>' : ''}</div>
+              <div class="tb-cond">${t.cond}</div>
+              ${have.has(t.name) && m ? `<div class="tb-why">${t.why(m)}</div>` : ''}
+            </div>
+          </div>`).join('')}</div>`).join('')}`;
+  }
+  function renderTitlesTab() { const el = document.getElementById('titles-tab-body'); if (el) el.innerHTML = titleBookHTML(true); }
+  function openTitleBook() {
+    document.getElementById('title-modal-body').innerHTML = titleBookHTML(false);
+    document.getElementById('title-modal').style.display = 'flex';
+  }
+  function closeTitleBook() { document.getElementById('title-modal').style.display = 'none'; }
+
   function calculateDashboardData(matchesData) {
     let wins = 0, draws = 0, losses = 0, gameCount = 0;
     let totalGoals = 0, totalConceded = 0, totalPossess = 0, totalTackle = 0, totalBlock = 0;
@@ -3101,16 +3344,16 @@ service cloud.firestore {
       safeSetText('stat-avg-goal', avgGoal); safeSetText('stat-avg-concede', avgConcede); safeSetText('stat-avg-pass-rate', overallPassRate + "%"); safeSetText('stat-avg-possess', avgPossess + "%"); safeSetText('stat-avg-defend', `${avgTackle} / ${avgBlock}`);
       safeSetText('stat-avg-concede-modal', avgConcede); safeSetText('stat-avg-possess-modal', avgPossess + "%"); safeSetText('sub-stat-pass-rate', overallPassRate + "%"); safeSetText('sub-stat-penetration', penetrationRate + "%"); safeSetText('sub-stat-dribble', dribbleSuccessRate.toFixed(1) + "%"); safeSetText('stat-avg-shoot-modal', avgShoot); safeSetText('stat-avg-eff-shoot-modal', avgEffShoot); safeSetText('sub-stat-defend-modal', `${totalTackle}회 / ${totalBlock}회`); safeSetText('sub-stat-special-goal', `${totalHeadingGoal}골 / ${totalFreekickGoal}골`); safeSetText('sub-stat-yellow', avgYellow + "개");
 
-      let badgeText = "⚽ 밸런스형"; let titleReason = "전체적인 공수 밸런스가 매우 안정적입니다.";
-      if (dribbleSuccessRate >= 55 && totalDribbleTry >= 3) { badgeText = "🌪️ 드리블러"; titleReason = `평균 유저(50%) 대비 드리블 돌파 성공률이 <b style='color:var(--ai-blue);'>${dribbleSuccessRate.toFixed(1)}%</b>로 압도적입니다.`; } 
-      else if (headingPerGame >= 0.3) { badgeText = "🗿 타이탄"; titleReason = `평균 유저(0.2골) 대비 헤딩 득점이 경기당 <b style='color:var(--ai-blue);'>${headingPerGame.toFixed(1)}골</b>로 매우 높습니다.`; } 
-      else if (freekickPerGame >= 0.1) { badgeText = "🎯 프리킥 장인"; titleReason = `평균 유저 대비 세트피스(프리킥) 득점 비율이 최상위권입니다.`; } 
-      else if (parseFloat(avgTackle) >= 3.0) { badgeText = "🛡️ 통곡의 벽"; titleReason = `평균 유저(2.0회) 대비 경기당 태클 성공이 <b style='color:var(--ai-blue);'>${avgTackle}회</b>로 월등히 높습니다.`; } 
-      else if (parseFloat(penetrationRate) >= 30.0) { badgeText = "🚀 라인 브레이커"; titleReason = `평균 유저(25%) 대비 스루패스 성공률이 <b style='color:var(--ai-blue);'>${penetrationRate}%</b>로 날카롭습니다.`; } 
-      else if (parseFloat(avgGoal) >= 2.0) { badgeText = "🔥 폭격기"; titleReason = `평균 유저(1.2골) 대비 평균 득점력이 <b style='color:var(--ai-blue);'>${avgGoal}골</b>로 파괴적입니다.`; } 
-      else if (parseFloat(overallPassRate) >= 90) { badgeText = "🎯 마에스트로"; titleReason = `평균 유저(85%) 대비 전체 패스 성공률이 <b style='color:var(--ai-blue);'>${overallPassRate}%</b>로 최상위권입니다.`; }
-
-      const badgeEl = document.getElementById('player-style-badge'); if(badgeEl) { badgeEl.innerText = badgeText; badgeEl.style.display = 'inline-flex'; }
+      const titleRes = evaluateTitles(matchesData, globalOuid);
+      const mainTitle = titleRes.earned[0];
+      const badgeText = mainTitle ? `${mainTitle.icon} ${titleLabel(mainTitle, titleRes.metrics)}` : '⚽ 밸런스형';
+      const titleReason = mainTitle ? mainTitle.why(titleRes.metrics) : '특정 지표로 쏠리지 않은 밸런스형이에요.';
+      const badgeEl = document.getElementById('player-style-badge');
+      if (badgeEl) {
+        const more = titleRes.earned.length > 1 ? ` <span class="badge-more">+${titleRes.earned.length - 1}</span>` : '';
+        badgeEl.innerHTML = `${badgeText}${more}`; badgeEl.style.display = 'inline-flex';
+        badgeEl.title = '눌러서 칭호 도감 보기'; badgeEl.style.cursor = 'pointer'; badgeEl.onclick = openTitleBook;
+      }
 
       window.currentProAIStats = { 
         avgConcede: parseFloat(avgConcede), 
@@ -3340,7 +3583,6 @@ service cloud.firestore {
         <div class="deep-stat"><div class="deep-stat-v">${wrBehind ?? '-'}${wrBehind !== null ? '%' : ''}</div><div class="deep-stat-l">선제골 먹혔을 때 승률<br><small>${firstAgainst.length}경기</small></div></div>
         <div class="deep-stat"><div class="deep-stat-v" style="color:var(--win-color)">${comebacks}</div><div class="deep-stat-l">역전승</div></div>
         <div class="deep-stat"><div class="deep-stat-v" style="color:var(--lose-color)">${blownLeads}</div><div class="deep-stat-l">앞서다 놓친 경기</div></div>
-        <div class="deep-stat"><div class="deep-stat-v">${lateGoals} / ${lateConceded}</div><div class="deep-stat-l">80분 이후 득점 / 실점</div></div>
       </div>`;
     let flowTip = '';
     if (firstAgainst.length >= 2 && wrBehind !== null && wrBehind <= 20) {
@@ -3387,10 +3629,6 @@ service cloud.firestore {
 
     // --- 5. 득점 · 실점 유형 ---
     const sumS = (side, k) => rows.reduce((s, r) => s + N(r[side].shoot?.[k]), 0);
-    const types = [['헤딩', 'goalHeading'], ['프리킥', 'goalFreekick'], ['페널티킥', 'goalPenaltyKick'], ['박스 안', 'goalInPenalty'], ['박스 밖', 'goalOutPenalty']];
-    const typeHTML = `<table class="deep-table"><tr><th></th>${types.map(t => `<th>${t[0]}</th>`).join('')}</tr>
-      <tr><td>득점</td>${types.map(t => `<td style="color:#3B82F6">${sumS('me', t[1])}</td>`).join('')}</tr>
-      <tr><td>실점</td>${types.map(t => `<td style="color:#EF4444">${sumS('en', t[1])}</td>`).join('')}</tr></table>`;
     const concHead = sumS('en', 'goalHeading'), concTotal = rows.reduce((s, r) => s + N(r.en.shoot?.goalTotal), 0);
     let typeTip = '';
     if (concTotal >= 4 && pct(concHead, concTotal) >= 30) {
@@ -3402,6 +3640,29 @@ service cloud.firestore {
     } else {
       typeTip = '득점·실점 유형에 큰 쏠림은 없어요.';
     }
+
+    // --- 5-2. 슈팅 종류별 득점 · 실점 (감아차기 ZD, 낮은 슛 DD 등) ---
+    const myKinds = {}, opKinds = {};
+    rows.forEach(r => { goalKindCounts(r.me, myKinds); goalKindCounts(r.en, opKinds); });
+    const kindBars = (counts, color) => {
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+      if (!total) return '<div style="font-size:13px; color:var(--muted-foreground);">기록 없음</div>';
+      return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `
+        <div class="kind-row"><span class="kind-name">${shotTypeText(isNaN(k) ? k : +k)}</span>
+          <div class="kind-bar"><div style="width:${n / total * 100}%; background:${color};"></div></div>
+          <span class="kind-val">${n}골 · ${Math.round(n / total * 100)}%</span></div>`).join('');
+    };
+    const kindHTML = `<div class="kind-cols"><div><div class="deep-sub" style="margin-bottom:6px;">내 득점 슈팅 종류</div>${kindBars(myKinds, '#3B82F6')}</div>
+      <div><div class="deep-sub" style="margin-bottom:6px;">내 실점 슈팅 종류</div>${kindBars(opKinds, '#EF4444')}</div></div>`;
+    const myKindTotal = Object.values(myKinds).reduce((a, b) => a + b, 0);
+    const topKind = Object.entries(myKinds).sort((a, b) => b[1] - a[1])[0];
+    let kindTip = '';
+    if (myKindTotal >= 4 && topKind) {
+      const key = isNaN(topKind[0]) ? topKind[0] : +topKind[0], share = pct(topKind[1], myKindTotal);
+      const zd = myKinds[2] || 0, dd = myKinds[6] || 0;
+      if (share >= 50) kindTip = `득점의 ${share}%가 <b>${shotTypeText(key)}</b>예요. 상대가 읽기 쉬우니 ${key === 2 ? '낮은 슛(DD)이나 컷백도 섞어 보세요.' : key === 6 ? '박스 모서리에서는 감아차기(ZD)도 섞어 보세요.' : '다른 마무리 방법도 섞어 보세요.'}`;
+      else kindTip = `가장 많이 넣은 방법은 <b>${shotTypeText(key)}</b>(${share}%)이고, 감아차기(ZD) ${zd}골 · 낮은 슛(DD) ${dd}골이에요. 마무리 방법이 고르게 섞여 있어요.`;
+    } else kindTip = '득점이 적어서 슈팅 종류를 비교하기 어려워요.';
 
     // --- 6. 선수 평점 ---
     const ps = {};
@@ -3474,24 +3735,36 @@ service cloud.firestore {
         </div>
       </div>`;
 
-    const card = (title, body, tip, full) => `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${tip ? `<div class="deep-tip">💡 ${tip}</div>` : ''}</div>`;
-    const moreCount = 9;
+    // 비슷한 내용끼리 묶어서 카드 5개로 (팁은 카드마다 한 상자에)
+    const card = (title, body, tips, full) => {
+      const list = (Array.isArray(tips) ? tips : [tips]).filter(Boolean);
+      return `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${list.length ? `<div class="deep-tip">${list.map(t => `<div>💡 ${t}</div>`).join('')}</div>` : ''}</div>`;
+    };
+    const moreCount = 5;
     return summary
       + `<button class="deep-toggle" onclick="toggleDeepMore(this)" aria-expanded="false">▼ 심층 피드백 ${moreCount}개 펼치기</button>`
       + `<div class="deep-more" id="deep-more" hidden>`
-      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요. 위 '승률 상승 솔루션'의 팁을 함께 참고하세요.` : '상대와 비교해 밀리는 지표가 없어요. 좋아요!')
-      + card('⏱️ 시간대별 득점 / 실점', `<div class="tb-wrap">${timeHTML}</div><div class="tb-legend"><span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div>`, timeTip)
-      + card('⚽ 선제골 · 역전 분석', flowHTML, flowTip)
-      + card('🎯 슈팅 위치 · 결정력', shotHTML, shotTip)
-      + card('🥅 득점 · 실점 유형', typeHTML, typeTip)
-      + card('📈 최근 흐름', `<div class="form-dots">${dots}</div>`, formTip)
-      + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 경기에서 실수가 잦았다는 뜻이에요. 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
-      + card('🔄 점유율 구간별 승률', `<div class="deep-stats">${possHTML}</div>`, possTip)
-      + card('🟨 카드 · 파울 관리', discHTML, discTip)
+      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요.` : '상대와 비교해 밀리는 지표가 없어요.')
+      + card('⏱️ 경기 흐름', `<div class="deep-sub" style="margin-bottom:6px;">최근 경기 <span style="font-weight:600; color:var(--muted-foreground);">(왼쪽이 최신)</span></div><div class="form-dots" style="margin-bottom:14px;">${dots}</div>
+          <div class="deep-sub" style="margin-bottom:6px;">시간대별 득점 / 실점 <span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div><div class="tb-wrap">${timeHTML}</div>
+          <div style="margin-top:12px;">${flowHTML}</div>`, [formTip, timeTip, flowTip])
+      + card('🎯 슈팅 · 득점 방식', `${shotHTML}<div style="margin-top:14px;">${kindHTML}</div>`, [shotTip, kindTip, typeTip !== '득점·실점 유형에 큰 쏠림은 없어요.' ? typeTip : ''])
+      + card('🔄 경기 운영 <small>(점유율 · 카드 · 파울)</small>', `<div class="deep-sub" style="margin-bottom:6px;">점유율 구간별 승률</div><div class="deep-stats">${possHTML}</div><div class="deep-sub" style="margin:12px 0 6px;">카드 · 파울</div>${discHTML}`, [possTip, discTip])
+      + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
       + `</div>`;
   }
 
   // ===== 실시간 매치업 프리뷰: 최근 경기에서 상대들이 나를 어떻게 공략했는지 =====
+  // 기준값은 공식경기 유저 44명(약 900경기) 표본에서 잰 평균
+  const MU_BASE = { wide: 45, inBox: 4.9, late: 16, head: 11, outGoal: 7 };
+  const KIND_DEFENSE_TIP = {
+    2: '박스 모서리에서 슈팅 각을 열어주지 마세요. 감아차기는 먼 포스트로 오니, 슈터에게 미드필더가 먼저 붙어야 해요.',
+    6: '1:1이나 컷백 상황에서 많이 먹혀요. 골키퍼를 너무 일찍 튀어나가게 하지 말고, 수비수가 슈팅 코스를 몸으로 막게 하세요.',
+    1: '박스 안에서 여유를 많이 줘요. 슈팅 직전 볼 터치 때 바로 붙어서 압박하세요.',
+    3: '공중볼에 약해요. 크로스가 오면 키 큰 센터백을 커서로 잡고 먼저 자리를 잡으세요.',
+    7: '크로스 세컨볼을 발리로 많이 먹혀요. 박스 안 흘러나온 볼을 먼저 걷어내세요.',
+    close: '골문 바로 앞 마무리를 많이 허용해요. 컷백 길목(페널티 지점 근처)을 미드필더가 먼저 채우세요.'
+  };
   function buildMatchupHTML(matches, ouid) {
     const N = (v) => +v || 0;
     const rows = [];
@@ -3503,82 +3776,105 @@ service cloud.firestore {
     if (G < 3) return `상대 패턴을 분석하려면 경기가 3판 이상 필요해요. (현재 ${G}경기)`;
     const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
     const sum = (list, f) => list.reduce((s, r) => s + f(r), 0);
-    const tips = [];
-
-    // 1) 상대 공격 루트: 크로스 vs 스루패스
-    const cross = sum(rows, r => N(r.en.pass?.crossTry)), through = sum(rows, r => N(r.en.pass?.throughPassTry));
-    const crossRate = pct(cross, cross + through);
-    let route = '균형형';
-    if (cross + through > 0) {
-      if (crossRate >= 60) { route = '측면 크로스형'; tips.push('풀백이 크로스 각을 먼저 막고, 크로스가 올라오면 키 큰 센터백을 커서로 잡으세요.'); }
-      else if (crossRate <= 40) { route = '중앙 침투형'; tips.push('수비 라인을 무리하게 올리지 말고, CDM으로 중앙 스루패스 길목을 먼저 막으세요.'); }
-      else tips.push('측면과 중앙을 섞어 와요. 섣부른 태클보다 포메이션을 지키는 지연 수비가 효과적이에요.');
-    }
-
-    // 2) 상대 슈팅 위치 · 득점 방식
-    let oppIn = 0, oppOut = 0;
-    rows.forEach(r => (r.en.shootDetail || []).forEach(s => {
-      const inside = s.inPenalty ?? (s.x >= 0.83 && s.y >= 0.2 && s.y <= 0.8);
-      inside ? oppIn++ : oppOut++;
-    }));
-    const oppGoals = sum(rows, r => N(r.en.shoot?.goalTotal));
-    const oppHead = sum(rows, r => N(r.en.shoot?.goalHeading));
-    const oppOutGoals = sum(rows, r => N(r.en.shoot?.goalOutPenalty));
-    if (oppGoals >= 3 && pct(oppHead, oppGoals) >= 25) tips.push(`실점의 ${pct(oppHead, oppGoals)}%가 헤딩이에요. 코너킥·크로스 때 공중볼 수비에 집중하세요.`);
-    if (oppGoals >= 3 && pct(oppOutGoals, oppGoals) >= 30) tips.push(`중거리 실점이 ${pct(oppOutGoals, oppGoals)}%예요. 박스 앞에서 슈팅 각을 주지 않게 미드필더가 먼저 붙으세요.`);
-
-    // 3) 나를 이긴 상대 vs 진 상대 비교
-    const lost = rows.filter(r => r.res === '패'), won = rows.filter(r => r.res === '승');
     const avgOf = (list, f) => list.length ? sum(list, f) / list.length : null;
-    const possLost = avgOf(lost, r => N(r.en.matchDetail.possession)), possWon = avgOf(won, r => N(r.en.matchDetail.possession));
-    const thrLost = avgOf(lost, r => N(r.en.pass?.throughPassTry)), thrWon = avgOf(won, r => N(r.en.pass?.throughPassTry));
-    let beatMe = '';
-    if (lost.length >= 2 && won.length >= 2) {
-      if (possLost - possWon >= 5) {
-        beatMe = `나를 이긴 상대는 점유율이 평균 <b>${Math.round(possLost)}%</b>로, 진 상대(${Math.round(possWon)}%)보다 볼을 오래 가졌어요.`;
-        tips.push('볼을 오래 소유하는 상대에게 약해요. 무리하게 뺏으러 나가지 말고 압박 타이밍을 기다리세요.');
-      } else if (possWon - possLost >= 5) {
-        beatMe = `나를 이긴 상대는 점유율이 평균 <b>${Math.round(possLost)}%</b>로 낮았어요. 역습형 상대에게 약해요.`;
-        tips.push('역습형 상대에게 약해요. 공격할 때도 수비형 미드필더 1명은 뒤에 남겨두세요.');
-      } else if (thrLost - thrWon >= 2) {
-        beatMe = `나를 이긴 상대는 스루패스를 경기당 <b>${thrLost.toFixed(1)}회</b>(진 상대 ${thrWon.toFixed(1)}회) 시도했어요.`;
-        tips.push('스루패스를 자주 찌르는 상대에게 약해요. 수비 라인을 한 칸 내리고 뒷공간을 먼저 지키세요.');
-      } else {
-        beatMe = '이긴 상대와 진 상대의 스타일 차이는 크지 않아요.';
+    const signals = []; // { lvl: 'bad' | 'warn' | 'good', title, detail, tip, w }
+
+    // 1) 상대 공격 루트: 상대 슈팅 직전 패스가 측면에서 왔는지, 중앙에서 왔는지
+    const oppShots = rows.flatMap(r => r.en.shootDetail || []);
+    const assisted = oppShots.filter(s => s.assist && s.assistY != null);
+    const wide = assisted.filter(s => s.assistY < 0.25 || s.assistY > 0.75).length;
+    const widePct = pct(wide, assisted.length);
+    let route = '혼합형';
+    if (assisted.length >= 6) {
+      if (widePct >= 55) {
+        route = '측면 공략형';
+        signals.push({ lvl: 'bad', w: widePct - MU_BASE.wide, title: '측면이 뚫려요', detail: `상대 슈팅의 <b>${widePct}%</b>가 측면 패스에서 시작돼요. (평균 ${MU_BASE.wide}%)`, tip: '풀백이 크로스·컷백 각을 먼저 막게 하고, 윙어에게 수비 가담 지시를 주세요.' });
+      } else if (widePct <= 35) {
+        route = '중앙 침투형';
+        signals.push({ lvl: 'bad', w: MU_BASE.wide - widePct, title: '중앙이 뚫려요', detail: `상대 슈팅의 <b>${100 - widePct}%</b>가 중앙 패스에서 시작돼요. (평균 ${100 - MU_BASE.wide}%)`, tip: '수비 라인을 무리하게 올리지 말고, CDM으로 중앙 스루패스 길목을 먼저 막으세요.' });
       }
     }
 
-    // 4) 상대 조작 방식
-    const kbd = rows.filter(r => r.en.matchDetail.controller === 'keyboard').length;
-    const kbdRate = pct(kbd, G);
+    // 2) 어떤 슛으로 실점하는지 (감아차기 ZD, 낮은 슛 DD 등)
+    const opKinds = {}; rows.forEach(r => goalKindCounts(r.en, opKinds));
+    const oppGoals = sum(rows, r => N(r.en.shoot?.goalTotal));
+    const kindTotal = Object.values(opKinds).reduce((a, b) => a + b, 0);
+    const topKind = Object.entries(opKinds).sort((a, b) => b[1] - a[1])[0];
+    const topKey = topKind ? (isNaN(topKind[0]) ? topKind[0] : +topKind[0]) : null;
+    const topShare = topKind ? pct(topKind[1], kindTotal) : 0;
+    const kindSignal = kindTotal >= 3 && topKind;
+    if (kindSignal && (kindTotal < 4 || topShare < 40))
+      signals.push({ lvl: 'info', w: topShare, title: `가장 많이 내준 골: ${shotTypeText(topKey)}`, detail: `실점 ${kindTotal}골 중 <b>${topKind[1]}골(${topShare}%)</b>이에요.`, tip: KIND_DEFENSE_TIP[topKey] || '이 슈팅이 나오는 위치를 먼저 막아 보세요.' });
+    if (kindTotal >= 4 && topShare >= 40) {
+      signals.push({ lvl: topShare >= 55 ? 'bad' : 'warn', w: topShare - 30, title: `${shotTypeText(topKey)} 실점이 많아요`, detail: `실점 ${kindTotal}골 중 <b>${topKind[1]}골(${topShare}%)</b>이 ${shotTypeText(topKey)}이에요.`, tip: KIND_DEFENSE_TIP[topKey] || '이 슈팅이 나오는 위치를 먼저 막아 보세요.' });
+    }
 
-    // 항상 나오는 데이터 기반 팁 (점유율 · 박스 안 슈팅 · 조작 방식)
-    const oppPoss = avgOf(rows, r => N(r.en.matchDetail.possession));
-    tips.push(oppPoss >= 52 ? `상대들이 평균 ${Math.round(oppPoss)}%로 볼을 오래 가져요. 라인을 내리고 패스 길목 차단 위주로 수비하세요.`
-      : oppPoss <= 48 ? `상대들 점유율이 평균 ${Math.round(oppPoss)}%로 낮은 역습형이 많아요. 공격할 때 뒷공간을 비우지 마세요.`
-      : '상대 점유율이 나와 비슷해요. 중원 싸움에서 이기는 쪽이 경기를 가져가요.');
-    tips.push(oppIn / G >= 5 ? `상대에게 박스 안 슈팅을 경기당 ${(oppIn / G).toFixed(1)}개 허용해요. 박스 앞 공간을 CDM으로 먼저 채우세요.`
-      : `박스 안 슈팅 허용이 경기당 ${(oppIn / G).toFixed(1)}개로 적어요. 지금 수비 위치 선정을 유지하세요.`);
-    if (kbdRate >= 60) tips.push(`상대 ${kbdRate}%가 키보드예요. 키보드 유저는 방향 전환이 각지니 몸을 붙여 진로를 막는 수비가 잘 통해요.`);
-    else if (kbdRate <= 40) tips.push(`상대 ${100 - kbdRate}%가 패드예요. 패드 유저는 세밀한 드리블에 강하니 성급한 태클보다 거리를 유지하세요.`);
+    // 3) 헤딩 · 중거리 실점
+    const oppHead = sum(rows, r => N(r.en.shoot?.goalHeading));
+    const oppOutGoals = sum(rows, r => N(r.en.shoot?.goalOutPenalty));
+    if (oppGoals >= 4 && pct(oppHead, oppGoals) >= 30 && topKey !== 3)
+      signals.push({ lvl: 'warn', w: pct(oppHead, oppGoals) - MU_BASE.head, title: '헤딩 실점이 많아요', detail: `실점의 <b>${pct(oppHead, oppGoals)}%</b>가 헤딩이에요. (평균 ${MU_BASE.head}%)`, tip: KIND_DEFENSE_TIP[3] });
+    if (oppGoals >= 4 && pct(oppOutGoals, oppGoals) >= 20)
+      signals.push({ lvl: 'warn', w: pct(oppOutGoals, oppGoals) - MU_BASE.outGoal, title: '중거리 실점이 많아요', detail: `실점의 <b>${pct(oppOutGoals, oppGoals)}%</b>가 박스 밖 슈팅이에요. (평균 ${MU_BASE.outGoal}%)`, tip: '박스 앞에서 슈팅 각을 주지 않게 미드필더가 먼저 붙으세요.' });
 
+    // 4) 실점 시간대: 후반 막판(76분~)
+    const oppGoalShots = oppShots.filter(s => s.result === 3);
+    const late = oppGoalShots.filter(s => goalMinute(s.goalTime) >= 76).length;
+    const latePct = pct(late, oppGoalShots.length);
+    if (oppGoalShots.length >= 4 && latePct >= 30)
+      signals.push({ lvl: 'warn', w: latePct - MU_BASE.late, title: '막판에 무너져요', detail: `실점의 <b>${latePct}%</b>가 76분 이후예요. (평균 ${MU_BASE.late}%)`, tip: '70분쯤 지친 선수를 교체하고, 이기고 있으면 전술을 수비적으로 바꾸세요.' });
+
+    // 5) 박스 안 슈팅 허용
+    const oppIn = oppShots.filter(s => s.inPenalty ?? (s.x >= 0.83 && s.y >= 0.2 && s.y <= 0.8)).length;
+    const inPer = oppIn / G;
+    if (inPer >= 6) signals.push({ lvl: 'bad', w: (inPer - MU_BASE.inBox) * 10, title: '박스 안을 너무 내줘요', detail: `상대에게 박스 안 슈팅을 경기당 <b>${inPer.toFixed(1)}개</b> 허용해요. (평균 ${MU_BASE.inBox}개)`, tip: '박스 앞 공간을 CDM으로 먼저 채우고, 센터백이 끌려나가지 않게 하세요.' });
+    else if (inPer <= 3.5) signals.push({ lvl: 'good', w: 5, title: '박스 수비가 좋아요', detail: `박스 안 슈팅 허용이 경기당 <b>${inPer.toFixed(1)}개</b>로 적어요. (평균 ${MU_BASE.inBox}개)`, tip: '지금 수비 위치 선정을 유지하세요.' });
+
+    // 6) 나를 이긴 상대 vs 진 상대
+    const lost = rows.filter(r => r.res === '패'), won = rows.filter(r => r.res === '승');
+    if (lost.length >= 2 && won.length >= 2) {
+      const possLost = avgOf(lost, r => N(r.en.matchDetail.possession)), possWon = avgOf(won, r => N(r.en.matchDetail.possession));
+      const thrLost = avgOf(lost, r => N(r.en.pass?.throughPassTry)), thrWon = avgOf(won, r => N(r.en.pass?.throughPassTry));
+      if (possLost - possWon >= 5)
+        signals.push({ lvl: 'warn', w: possLost - possWon, title: '점유형 상대에게 약해요', detail: `나를 이긴 상대의 점유율은 평균 <b>${Math.round(possLost)}%</b>, 내가 이긴 상대는 ${Math.round(possWon)}%예요.`, tip: '무리하게 뺏으러 나가지 말고 압박 타이밍을 기다리세요.' });
+      else if (possWon - possLost >= 5)
+        signals.push({ lvl: 'warn', w: possWon - possLost, title: '역습형 상대에게 약해요', detail: `나를 이긴 상대의 점유율은 평균 <b>${Math.round(possLost)}%</b>로 낮았어요. (내가 이긴 상대 ${Math.round(possWon)}%)`, tip: '공격할 때도 수비형 미드필더 1명은 뒤에 남겨두세요.' });
+      else if (thrLost - thrWon >= 2)
+        signals.push({ lvl: 'warn', w: (thrLost - thrWon) * 3, title: '스루패스에 약해요', detail: `나를 이긴 상대는 스루패스를 경기당 <b>${thrLost.toFixed(1)}회</b> 시도했어요. (내가 이긴 상대 ${thrWon.toFixed(1)}회)`, tip: '수비 라인을 한 칸 내리고 뒷공간을 먼저 지키세요.' });
+    }
+
+    const order = { bad: 0, warn: 1, info: 2, good: 3 };
+    signals.sort((a, b) => order[a.lvl] - order[b.lvl] || b.w - a.w);
+    const shown = signals.slice(0, 4);
+    const kbdRate = pct(rows.filter(r => r.en.matchDetail.controller === 'keyboard').length, G);
+    const oppPoss = Math.round(avgOf(rows, r => N(r.en.matchDetail.possession)));
+    const LV = { bad: ['위험', 'mu-bad'], warn: ['주의', 'mu-warn'], info: ['참고', 'mu-info'], good: ['좋음', 'mu-good'] };
     const stat = (v, l) => `<div class="mu-stat"><div class="mu-v">${v}</div><div class="mu-l">${l}</div></div>`;
     return `
-      <div class="mu-route">
-        <div class="mu-route-head"><span>상대 공격 루트</span><b>${route}</b></div>
-        <div class="mu-bar"><div style="width:${crossRate}%; background:#F59E0B;"></div><div style="width:${100 - crossRate}%; background:#3B82F6;"></div></div>
-        <div class="mu-route-legend"><span style="color:#D97706;">크로스 ${crossRate}%</span><span style="color:#3B82F6;">스루패스 ${100 - crossRate}%</span></div>
+      <div class="mu-chips">
+        <span class="mu-chip">${route}</span>
+        ${kindTotal >= 3 && topKind ? `<span class="mu-chip">주 실점: ${shotTypeText(topKey)}</span>` : ''}
+        <span class="mu-chip">상대 점유율 ${oppPoss}%</span>
       </div>
+      ${assisted.length ? `<div class="mu-route">
+        <div class="mu-route-head"><span>상대 슈팅은 어디서 시작됐나</span><b>${route}</b></div>
+        <div class="mu-bar"><div style="width:${widePct}%; background:#F59E0B;"></div><div style="width:${100 - widePct}%; background:#3B82F6;"></div></div>
+        <div class="mu-route-legend"><span style="color:#D97706;">측면 ${widePct}%</span><span style="color:#3B82F6;">중앙 ${100 - widePct}%</span></div>
+      </div>` : ''}
       <div class="mu-stats">
-        ${stat(`${Math.round(avgOf(rows, r => N(r.en.matchDetail.possession)))}%`, '상대 평균 점유율')}
-        ${stat((oppIn / G).toFixed(1), '경기당 박스 안 슈팅 허용')}
         ${stat((oppGoals / G).toFixed(1), '경기당 실점')}
+        ${stat(inPer.toFixed(1), '경기당 박스 안 슈팅 허용')}
+        ${stat(`${latePct}%`, '76분 이후 실점 비율')}
         ${stat(`${kbdRate}%`, '키보드 상대 비율')}
       </div>
-      ${beatMe ? `<div class="mu-line">🎯 ${beatMe}</div>` : ''}
-      <div class="mu-tips-title">📌 상대 대응 팁</div>
-      <ul class="mu-tips">${tips.slice(0, 4).map(t => `<li>${t}</li>`).join('') || '<li>상대 패턴에 큰 쏠림이 없어요. 기본 포메이션을 지키며 탐색전을 펼치세요.</li>'}</ul>
-      <div class="mu-note">최근 ${G}경기에서 실제로 만난 상대들의 기록이에요.</div>`;
+      <div class="mu-tips-title">📌 상대가 나를 공략한 방법</div>
+      ${shown.length ? shown.map(sg => `
+        <div class="mu-signal ${LV[sg.lvl][1]}">
+          <div class="mu-sig-head"><span class="mu-lv">${LV[sg.lvl][0]}</span><b>${sg.title}</b></div>
+          <div class="mu-sig-detail">${sg.detail}</div>
+          <div class="mu-sig-tip">→ ${sg.tip}</div>
+        </div>`).join('') : '<div class="mu-signal mu-good"><div class="mu-sig-head"><span class="mu-lv">좋음</span><b>뚜렷한 약점이 없어요</b></div><div class="mu-sig-detail">상대들이 특정 방법으로 나를 공략한 흔적이 적어요. 지금 수비를 유지하세요.</div></div>'}
+      <div class="mu-note">최근 ${G}경기에서 만난 상대들의 기록이에요. 괄호 안 평균은 공식경기 유저 표본 기준이에요.</div>`;
   }
 
   function generateAIReports() {
@@ -3593,9 +3889,12 @@ service cloud.firestore {
 
       setHtml('ai-basic-text', `
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b><div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div></div>
-          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다. ${goal >= 1.5 ? '결정력이 매우 우수하여 득점 창출 능력이 뛰어납니다.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
-          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다. ${concede <= 1.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
+          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b> <button class="title-book-btn" onclick="openTitleBook()">칭호 도감 보기 ›</button>
+            <div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div>
+            ${lastTitleResult.earned.length > 1 ? `<div class="title-chips">${lastTitleResult.earned.slice(1).map(t => `<div class="title-chip"><b>${t.icon} ${titleLabel(t, lastTitleResult.metrics)}</b> <span>${t.why(lastTitleResult.metrics)}</span></div>`).join('')}</div>` : ''}
+            </div>
+          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다 (공식경기 평균 약 2.6골). ${goal >= 3.0 ? '평균보다 훨씬 많이 넣어요. 득점 창출 능력이 뛰어납니다.' : goal >= 2.3 ? '평균 수준의 득점력이에요.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
+          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다 (공식경기 평균 약 2.6실점). ${concede <= 2.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : concede <= 2.8 ? '평균 수준의 수비력이에요.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
         </div>`);
 
       // 1) 약점 스캐너 + 승률 상승 솔루션 (내 경기 데이터 기반)
@@ -3823,6 +4122,42 @@ service cloud.firestore {
     LAM:[30,37], CAM:[50,37], RAM:[70,37], LF:[30,24], CF:[50,24], RF:[70,24], LW:[13,22], RW:[87,22], LS:[35,11], ST:[50,11], RS:[65,11]
   };
 
+  // 넥슨 API shootDetail.type → 슈팅 종류 (12 이상은 넥슨 문서에 설명이 없어 '기타'로 표시)
+  const SHOT_TYPES = {
+    1: ['일반 슛', 'D', ''], 2: ['감아차기', 'ZD', 'zd'], 3: ['헤더', '', ''], 4: ['로빙 슛', '', ''],
+    5: ['플레어 슛', '', ''], 6: ['낮은 슛', 'DD', 'dd'], 7: ['발리', '', ''], 8: ['프리킥', '', ''],
+    9: ['페널티킥', '', ''], 10: ['무회전 슛', '', ''], 11: ['바이시클', '', '']
+  };
+  // 넥슨 데이터의 3번은 헤더 말고 근거리 슛도 섞여 있어서, 경기 기록의 헤딩 수(shootHeading/goalHeading)와 맞춰 나눔
+  const EXTRA_SHOT_KINDS = { close: '근거리 슛', mix: '헤더·근거리' };
+  function shotTypeText(type) {
+    if (EXTRA_SHOT_KINDS[type]) return EXTRA_SHOT_KINDS[type];
+    const t = SHOT_TYPES[type];
+    return t ? (t[1] ? `${t[0]}(${t[1]})` : t[0]) : '기타 슛';
+  }
+  function shotTypeBadge(type) {
+    const t = SHOT_TYPES[type];
+    return `<span class="shot-type ${t?.[2] || ''}">${shotTypeText(type)}</span>`;
+  }
+  // 슛 하나의 종류 키 (3번은 그 경기 헤딩 수와 비교해서 헤더/근거리/둘 중 하나로)
+  function shotKindKey(info, s) {
+    if (s.type !== 3) return s.type;
+    const goal = s.result === 3;
+    const list = (info.shootDetail || []).filter(x => x.type === 3 && (!goal || x.result === 3));
+    const head = +(goal ? info.shoot?.goalHeading : info.shoot?.shootHeading) || 0;
+    return head >= list.length ? 3 : head === 0 ? 'close' : 'mix';
+  }
+  // 한 팀의 골을 슈팅 종류별로 세기 (3번은 헤딩 수만큼 헤더, 나머지는 근거리 슛)
+  function goalKindCounts(info, into = {}) {
+    const goals = (info.shootDetail || []).filter(x => x.result === 3);
+    const g3 = goals.filter(x => x.type === 3).length;
+    const head = Math.min(g3, +info.shoot?.goalHeading || 0);
+    goals.forEach(x => { if (x.type !== 3) into[x.type] = (into[x.type] || 0) + 1; });
+    if (head) into[3] = (into[3] || 0) + head;
+    if (g3 - head) into.close = (into.close || 0) + (g3 - head);
+    return into;
+  }
+
   function goalMinute(t) {
     const PERIOD = 16777216, offsets = [0, 2700, 5400, 6300, 7200];
     const period = Math.floor(t / PERIOD);
@@ -3863,9 +4198,10 @@ service cloud.firestore {
       const x = mine ? s.x * 100 : 100 - s.x * 100;
       const y = mine ? s.y * 64 : 64 - s.y * 64;
       const color = mine ? '#3B82F6' : '#EF4444';
-      if (s.result === 3) return `<circle cx="${x}" cy="${y}" r="1.8" fill="${color}" stroke="#fff" stroke-width="0.6"><title>골 ${goalMinute(s.goalTime)}'</title></circle>`;
-      if (s.result === 1) return `<circle cx="${x}" cy="${y}" r="1.1" fill="${color}" opacity="0.85"/>`;
-      return `<circle cx="${x}" cy="${y}" r="1.1" fill="none" stroke="${color}" stroke-width="0.45" opacity="0.8"/>`;
+      const kind = shotTypeText(shotKindKey(mine ? me : en, s));
+      if (s.result === 3) return `<circle cx="${x}" cy="${y}" r="1.8" fill="${color}" stroke="#fff" stroke-width="0.6"><title>골 ${goalMinute(s.goalTime)}' · ${kind}</title></circle>`;
+      if (s.result === 1) return `<circle cx="${x}" cy="${y}" r="1.1" fill="${color}" opacity="0.85"><title>유효슈팅 · ${kind}</title></circle>`;
+      return `<circle cx="${x}" cy="${y}" r="1.1" fill="none" stroke="${color}" stroke-width="0.45" opacity="0.8"><title>빗나감 · ${kind}</title></circle>`;
     };
     const shots = [...(me.shootDetail || []).map(s => dot(s, true)), ...(en.shootDetail || []).map(s => dot(s, false))].join('');
     return `
@@ -3925,6 +4261,7 @@ service cloud.firestore {
       const goalList = goals.map(g => `
         <div class="goal-row ${g.side}">
           <span class="goal-min">${goalMinute(g.goalTime)}'</span>
+          ${shotTypeBadge(shotKindKey(g.side === 'me' ? me : en, g))}
           <span>⚽ <b>${escapeHtml(spidMetaCache[g.spId] || '선수')}</b>${g.assist && g.assistSpId ? ` <span style="color:var(--muted-foreground);">(도움 ${escapeHtml(spidMetaCache[g.assistSpId] || '선수')})</span>` : ''}</span>
         </div>`).join('') || '<div style="color:var(--muted-foreground); font-size:13px; text-align:center;">득점 없음</div>';
 
