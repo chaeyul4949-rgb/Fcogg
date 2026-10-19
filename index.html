@@ -1851,19 +1851,41 @@
     }
   }
 
+  // 임시 계정: 무작위 아이디·비밀번호로 가입하고 바로 로그인 (Firebase가 로그인 상태를 기억)
+  async function createGuestAccount() {
+    const rnd = (n, chars) => Array.from(crypto.getRandomValues(new Uint32Array(n)), x => chars[x % chars.length]).join('');
+    const id = 'guest' + rnd(6, 'abcdefghjkmnpqrstuvwxyz23456789');
+    const pw = rnd(8, 'abcdefghjkmnpqrstuvwxyz23456789');
+    if (auth) await auth.createUserWithEmailAndPassword(`${id}@fcogg.dummy.com`, pw);
+    else {
+      const users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+      users[id] = { pw }; localStorage.setItem('fco_auth_users', JSON.stringify(users));
+    }
+    localStorage.setItem('fco_current_user', id);
+    localStorage.setItem('fco_guest', JSON.stringify({ id, pw }));
+    renderHubAuth();
+    return { id, pw };
+  }
+
   // 코드 등록: 코드마다 PRO 기간, 계정당 한 번만 사용
   const COUPON_CODES = { '6767': { days: '60', label: 'PRO 60일' } };
   async function redeemCoupon() {
     const input = document.getElementById('coupon-input');
     const box = document.getElementById('coupon-result');
     const code = (input.value || '').trim().toUpperCase();
-    const userId = (localStorage.getItem('fco_current_user') || '').toLowerCase();
+    let userId = (localStorage.getItem('fco_current_user') || '').toLowerCase();
     const msg = (html, color) => { box.innerHTML = `<div class="pay-status" style="color:${color || 'var(--foreground)'};">${html}</div>`; };
-    if (!userId) { msg('PRO는 계정에 저장돼서, 코드를 적용하려면 로그인이 필요해요. <a href="#" onclick="openAuthModal(); return false;" style="color:var(--ai-blue); font-weight:800;">로그인 / 회원가입 ➔</a>'); openAuthModal(); return; }
     if (!code) return showToast('코드를 입력하세요.');
     const coupon = COUPON_CODES[code];
     if (!coupon) { msg('❌ 올바르지 않은 코드예요. 다시 확인해주세요.', 'var(--lose-color)'); return; }
+    let guestNote = '';
     try {
+      // 로그인 안 했으면 임시 계정을 만들어 로그인시킨 뒤 적용
+      if (!userId) {
+        const g = await createGuestAccount();
+        userId = g.id;
+        guestNote = `<br><span style="font-weight:700; color:var(--foreground);">👤 임시 계정으로 로그인됐어요 · 아이디 <b>${g.id}</b> · 비밀번호 <b>${g.pw}</b></span><br><span style="font-weight:600; color:var(--muted-foreground);">다른 기기에서 쓰려면 이 아이디·비밀번호로 로그인하세요. (내 계정 정보에서도 볼 수 있어요)</span>`;
+      }
       const cur = await readProUser(userId);
       if (cur && Array.isArray(cur.codes) && cur.codes.includes(code)) { msg('이미 사용한 코드예요. 코드는 계정당 한 번만 쓸 수 있어요.', 'var(--lose-color)'); return; }
       const result = await grantPro(userId, coupon.days);
@@ -1873,7 +1895,7 @@
       updateProTabUI(); renderHubAuth();
       input.value = '';
       const exp = localStorage.getItem('fco_pro_expiry');
-      msg(`🎉 <b>${coupon.label}</b>이 적용됐어요!${exp && exp !== 'unlimited' ? ` (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : ''}<br><span style="font-weight:600; color:var(--muted-foreground);">${escapeHtml(result.replace(/^🎉\s*/, ''))}</span>`, 'var(--win-color)');
+      msg(`🎉 <b>${coupon.label}</b>이 적용됐어요!${exp && exp !== 'unlimited' ? ` (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : ''}${guestNote}`, 'var(--win-color)');
       showToast(`🎉 ${coupon.label}이 적용됐어요!`);
     } catch (e) { msg(escapeHtml(proErrorMessage(e)), 'var(--lose-color)'); }
   }
@@ -2266,6 +2288,8 @@
     }
 
     let badgeHtml = '', statusHtml = '미구독', statusColor = 'var(--foreground)';
+    let guestInfo = null;
+    try { const g = JSON.parse(localStorage.getItem('fco_guest') || 'null'); if (g && g.id === currentUser) guestInfo = g; } catch (e) {}
     if (isAdmin) {
       badgeHtml = '<span class="role-badge" style="background:var(--tier-op);">관리자</span>';
       statusHtml = '👑 시스템 최고 권한'; statusColor = 'var(--tier-op)';
@@ -2282,6 +2306,7 @@
         <div style="display:flex; flex-direction:column; gap:4px;">
           <div style="font-size:18px; font-weight:900; display:flex; align-items:center;">${escapeHtml(currentUser)} 님 ${badgeHtml}</div>
           <div style="font-size:13px; color:var(--muted-foreground); font-weight:600;">권한 상태: <span style="color:${statusColor}; font-weight:800;">${statusHtml}</span></div>
+          ${guestInfo ? `<div style="font-size:12px; color:var(--muted-foreground); font-weight:600;">👤 임시 계정 · 비밀번호 <b style="color:var(--foreground);">${escapeHtml(guestInfo.pw)}</b> (다른 기기 로그인용)</div>` : ''}
         </div>
         <button onclick="handleLogout()" class="bg-btn">로그아웃</button>
       </div>`;
