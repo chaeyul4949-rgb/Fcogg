@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1100">
   
-  <script>try{var t=localStorage.getItem('fco_theme');if(t&&t!=='light')document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('fco_bar')==='glass')document.documentElement.setAttribute('data-bar','glass');}catch(e){}</script>
+  <script>try{var t=localStorage.getItem('fco_theme')||'light';document.documentElement.setAttribute('data-theme',t);var bs=localStorage.getItem('fco_btn')||((t==='neon'||t==='pink')?'gradient':'solid');document.documentElement.setAttribute('data-btn',bs);if(localStorage.getItem('fco_bar')==='glass')document.documentElement.setAttribute('data-bar','glass');}catch(e){}</script>
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -123,46 +123,61 @@
       --blob3: rgba(255, 149, 0, 0.10);
     }
 
-    /* 네온 블루: 선택·누른 상태는 빛나는 파랑 그라데이션 + 흰 글자 */
-    [data-theme="neon"] .tab-btn.active,
-    [data-theme="neon"] .pill-search-btn,
-    [data-theme="neon"] .mt-chip.active,
-    [data-theme="neon"] .hub-menu-item.active,
-    [data-theme="neon"] .theme-picker button.active {
+    /* 네온 블루 공통 */
+    [data-theme="neon"] .tab-btn:hover:not(.active) { color: #8FD3FF; }
+    [data-theme="neon"] .main-tabs { background: rgba(13, 21, 48, 0.75); border-color: #22346A; box-shadow: 0 0 24px rgba(47, 123, 255, 0.12); }
+
+    /* ===== 버튼 스타일: 그라데이션 (선택된 메뉴·버튼) ===== */
+    html[data-btn="gradient"][data-theme="light"] .tab-btn.active,
+    html[data-btn="gradient"][data-theme="light"] .pill-search-btn,
+    html[data-btn="gradient"][data-theme="light"] .mt-chip.active,
+    html[data-btn="gradient"][data-theme="light"] .hub-menu-item.active,
+    html[data-btn="gradient"][data-theme="light"] .theme-picker button.active {
+      background: linear-gradient(135deg, #1D1D1F, #4A4A4F); color: #FFFFFF; border-color: transparent;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+    html[data-btn="gradient"][data-theme="dark"] .tab-btn.active,
+    html[data-btn="gradient"][data-theme="dark"] .pill-search-btn,
+    html[data-btn="gradient"][data-theme="dark"] .mt-chip.active,
+    html[data-btn="gradient"][data-theme="dark"] .hub-menu-item.active,
+    html[data-btn="gradient"][data-theme="dark"] .theme-picker button.active {
+      background: linear-gradient(135deg, #34C759, #5856D6); color: #FFFFFF; border-color: transparent;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 18px rgba(88, 86, 214, 0.45);
+    }
+    html[data-btn="gradient"][data-theme="neon"] .tab-btn.active,
+    html[data-btn="gradient"][data-theme="neon"] .pill-search-btn,
+    html[data-btn="gradient"][data-theme="neon"] .mt-chip.active,
+    html[data-btn="gradient"][data-theme="neon"] .hub-menu-item.active,
+    html[data-btn="gradient"][data-theme="neon"] .theme-picker button.active {
       background: linear-gradient(135deg, #2F6BFF, #1EC8F0); color: #FFFFFF; border-color: transparent;
       box-shadow: 0 0 0 1px rgba(120, 200, 255, 0.35) inset, 0 0 18px rgba(47, 140, 255, 0.45);
     }
-    [data-theme="neon"] .tab-btn:hover:not(.active) { color: #8FD3FF; }
-    [data-theme="neon"] .main-tabs { background: rgba(13, 21, 48, 0.75); border-color: #22346A; box-shadow: 0 0 24px rgba(47, 123, 255, 0.12); }
-    [data-theme="neon"] .tab-btn:active, [data-theme="neon"] .pill-search-btn:active, [data-theme="neon"] .bg-btn:active { filter: brightness(1.15); }
-
-    /* 핑크: 선택·누른 상태도 그라데이션 */
-    [data-theme="pink"] .tab-btn.active,
-    [data-theme="pink"] .pill-search-btn,
-    [data-theme="pink"] .mt-chip.active,
-    [data-theme="pink"] .hub-menu-item.active,
-    [data-theme="pink"] .theme-picker button.active {
+    html[data-btn="gradient"][data-theme="pink"] .tab-btn.active,
+    html[data-btn="gradient"][data-theme="pink"] .pill-search-btn,
+    html[data-btn="gradient"][data-theme="pink"] .mt-chip.active,
+    html[data-btn="gradient"][data-theme="pink"] .hub-menu-item.active,
+    html[data-btn="gradient"][data-theme="pink"] .theme-picker button.active {
       background: linear-gradient(135deg, #FF2D87, #FF7AB8); color: #FFFFFF; border-color: transparent;
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset, 0 6px 18px rgba(255, 45, 135, 0.35);
     }
 
-    /* 유리 바 디자인: 선택된 버튼과 메뉴 바를 반투명 유리처럼 */
-    html[data-bar="glass"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.35)); --g-fg: #1D1D1F; --g-border: rgba(255,255,255,0.9); --g-glow: rgba(0,0,0,0.10); --g-bar: rgba(255,255,255,0.55); }
-    html[data-bar="glass"][data-theme="dark"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)); --g-fg: #FFFFFF; --g-border: rgba(255,255,255,0.28); --g-glow: rgba(0,0,0,0.5); --g-bar: rgba(28,28,30,0.55); }
-    html[data-bar="glass"][data-theme="neon"] { --g-bg: linear-gradient(180deg, rgba(120,190,255,0.38), rgba(47,123,255,0.14)); --g-fg: #FFFFFF; --g-border: rgba(140,210,255,0.55); --g-glow: rgba(47,140,255,0.45); --g-bar: rgba(13,21,48,0.5); }
-    html[data-bar="glass"][data-theme="pink"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,120,185,0.28)); --g-fg: #B0105C; --g-border: rgba(255,255,255,0.95); --g-glow: rgba(255,45,135,0.25); --g-bar: rgba(255,255,255,0.5); }
-    html[data-bar="glass"] .tab-btn.active,
-    html[data-bar="glass"] .pill-search-btn,
-    html[data-bar="glass"] .mt-chip.active,
-    html[data-bar="glass"] .hub-menu-item.active,
-    html[data-bar="glass"] .theme-picker button.active {
+    /* ===== 유리 바 디자인 (버튼 스타일보다 우선) ===== */
+    html[data-bar="glass"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.35)); --g-fg: #1D1D1F; --g-border: rgba(255,255,255,0.9); --g-hi: rgba(255,255,255,0.85); --g-glow: rgba(0,0,0,0.10); --g-bar: rgba(255,255,255,0.55); }
+    html[data-bar="glass"][data-theme="dark"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05)); --g-fg: #FFFFFF; --g-border: rgba(255,255,255,0.10); --g-hi: rgba(255,255,255,0.22); --g-glow: rgba(0,0,0,0.35); --g-bar: rgba(28,28,30,0.55); }
+    html[data-bar="glass"][data-theme="neon"] { --g-bg: linear-gradient(180deg, rgba(110,175,255,0.26), rgba(47,123,255,0.10)); --g-fg: #FFFFFF; --g-border: rgba(140,200,255,0.16); --g-hi: rgba(190,225,255,0.30); --g-glow: rgba(47,140,255,0.22); --g-bar: rgba(13,21,48,0.5); }
+    html[data-bar="glass"][data-theme="pink"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,120,185,0.28)); --g-fg: #B0105C; --g-border: rgba(255,255,255,0.95); --g-hi: rgba(255,255,255,0.9); --g-glow: rgba(255,45,135,0.25); --g-bar: rgba(255,255,255,0.5); }
+    html[data-bar="glass"][data-theme] .tab-btn.active,
+    html[data-bar="glass"][data-theme] .pill-search-btn,
+    html[data-bar="glass"][data-theme] .mt-chip.active,
+    html[data-bar="glass"][data-theme] .hub-menu-item.active,
+    html[data-bar="glass"][data-theme] .theme-picker button.active {
       background: var(--g-bg); color: var(--g-fg); border: 1px solid var(--g-border);
       backdrop-filter: blur(14px) saturate(180%); -webkit-backdrop-filter: blur(14px) saturate(180%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(0,0,0,0.06), 0 6px 20px var(--g-glow);
+      box-shadow: inset 0 1px 0 var(--g-hi), 0 6px 20px var(--g-glow);
     }
-    html[data-bar="glass"] .main-tabs {
+    html[data-bar="glass"][data-theme] .main-tabs {
       background: var(--g-bar); backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%);
-      border: 1px solid var(--g-border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 24px rgba(0,0,0,0.06);
+      border: 1px solid var(--g-border); box-shadow: inset 0 1px 0 var(--g-hi), 0 8px 24px rgba(0,0,0,0.06);
     }
     html[data-bar="glass"] .tab-btn:active, html[data-bar="glass"] .pill-search-btn:active { transform: scale(0.97); }
 
@@ -371,6 +386,11 @@
     .bar-demo i, .bar-demo em { font-style: normal; font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 99px; }
     .bar-demo em { color: #555; }
     .bar-demo.solid i { background: #1D1D1F; color: #fff; }
+    .bar-demo.btn-solid i { background: var(--primary); color: var(--primary-foreground); }
+    .bar-demo.btn-grad i { background: linear-gradient(135deg, #34C759, #5856D6); color: #fff; }
+    html[data-theme="light"] .bar-demo.btn-grad i { background: linear-gradient(135deg, #1D1D1F, #4A4A4F); }
+    html[data-theme="neon"] .bar-demo.btn-grad i { background: linear-gradient(135deg, #2F6BFF, #1EC8F0); }
+    html[data-theme="pink"] .bar-demo.btn-grad i { background: linear-gradient(135deg, #FF2D87, #FF7AB8); }
     .bar-demo.glass { background: linear-gradient(120deg, #9DE3B0, #B4B0F2 60%, #FFD39A); }
     .bar-demo.glass i { background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.35)); color: #1D1D1F; border: 1px solid rgba(255,255,255,0.95); box-shadow: inset 0 1px 0 #fff, 0 4px 10px rgba(0,0,0,0.1); }
     .theme-choose { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -1208,6 +1228,13 @@
             </div>
           </div>
           <div class="setting-row" style="flex-wrap:wrap; gap:12px;">
+            <div><div style="font-size:15px; font-weight:700;">버튼 스타일</div><div style="font-size:13px; color:var(--muted-foreground);">선택된 메뉴·버튼을 단색 또는 그라데이션으로.</div></div>
+            <div class="theme-picker" id="btn-picker">
+              <button data-btn-pick="solid" onclick="setBtnStyle('solid')">단색</button>
+              <button data-btn-pick="gradient" onclick="setBtnStyle('gradient')">🌈 그라데이션</button>
+            </div>
+          </div>
+          <div class="setting-row" style="flex-wrap:wrap; gap:12px;">
             <div><div style="font-size:15px; font-weight:700;">바 디자인</div><div style="font-size:13px; color:var(--muted-foreground);">선택된 메뉴·버튼을 반투명 유리처럼 보이게 해요.</div></div>
             <div class="theme-picker" id="bar-picker">
               <button data-bar-pick="solid" onclick="setBar('solid')">기본 바</button>
@@ -1281,6 +1308,11 @@
       <button data-first-bar="solid" onclick="pickFirstBar('solid')"><span class="bar-demo solid"><i>선택</i><em>메뉴</em></span>기본 바</button>
       <button data-first-bar="glass" onclick="pickFirstBar('glass')"><span class="bar-demo glass"><i>선택</i><em>메뉴</em></span>유리 바 디자인</button>
     </div>
+    <div style="font-size:15px; font-weight:900; margin:18px 0 10px; text-align:left;">버튼 스타일 <span style="font-size:12px; color:var(--muted-foreground); font-weight:600;">· 선택된 메뉴·버튼 색 (유리 바에선 유리가 우선)</span></div>
+    <div class="bar-choose">
+      <button data-first-btn="solid" onclick="pickFirstBtn('solid')"><span class="bar-demo btn-solid"><i>선택</i><em>메뉴</em></span>단색</button>
+      <button data-first-btn="gradient" onclick="pickFirstBtn('gradient')"><span class="bar-demo btn-grad"><i>선택</i><em>메뉴</em></span>그라데이션</button>
+    </div>
     <button class="pill-search-btn" style="width:100%; height:48px; margin-top:20px; font-size:15px;" onclick="confirmFirstTheme()">이걸로 시작하기</button>
   </div>
 </div>
@@ -1299,6 +1331,7 @@
         <li><b>설정</b>: 기본 경기 종류, 검색 기록 저장 끄기, 데이터 초기화</li>
         <li>새 <b>테마</b>: 기본 · 다크 · <b>네온 블루</b> · <b>핑크</b> (내 허브 → 설정), 배경에 은은한 블러 빛</li>
         <li><b>💧 유리 바 디자인</b>: 선택한 메뉴·버튼을 반투명 유리처럼 (내 허브 → 설정)</li>
+        <li><b>🌈 버튼 스타일</b>: 선택한 메뉴·버튼을 단색 또는 그라데이션으로 (내 허브 → 설정)</li>
       </ul>
     </div>
 
@@ -1854,6 +1887,11 @@
     setTheme(name, true);
     document.querySelectorAll('[data-first-theme]').forEach(b => b.classList.toggle('active', b.dataset.firstTheme === name));
   }
+  let firstBtnPicked = false;
+  function pickFirstBtn(name) {
+    firstBtnPicked = true;
+    setBtnStyle(name, true);
+  }
   function pickFirstBar(name) {
     setBar(name, true);
     document.querySelectorAll('[data-first-bar]').forEach(b => b.classList.toggle('active', b.dataset.firstBar === name));
@@ -1861,6 +1899,7 @@
   function confirmFirstTheme() {
     setTheme(document.documentElement.getAttribute('data-theme') || 'light', true);
     setBar(document.documentElement.getAttribute('data-bar') || 'solid', true);
+    setBtnStyle(document.documentElement.getAttribute('data-btn') || 'solid', true);
     try { localStorage.setItem(THEME_CHOSEN_KEY, '1'); } catch (e) {}
     document.getElementById('theme-modal').style.display = 'none';
     openNoticeModal();
@@ -1939,8 +1978,8 @@
   const THEME_CHOSEN_KEY = 'fco_theme_chosen_1019';
   function setTheme(name, quiet, noSave) {
     const t = THEMES[name] ? name : 'light';
-    if (t === 'light') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme', t);
+    applyBtnStyle();
     if (!noSave) { try { localStorage.setItem('fco_theme', t); if (!quiet) localStorage.setItem(THEME_CHOSEN_KEY, '1'); } catch (e) {} }
     const conf = THEMES[t];
     const logo = document.getElementById('logo-icon');
@@ -1953,6 +1992,23 @@
     if (!quiet) showToast(`테마를 ${({ light: '기본', dark: '다크', neon: '네온 블루', pink: '핑크' })[t]}(으)로 바꿨어요.`);
   }
   setTheme(localStorage.getItem('fco_theme') || 'light', true, true);
+
+  // 버튼 스타일 (단색 / 그라데이션). 안 골랐으면 네온·핑크는 그라데이션, 기본·다크는 단색
+  function applyBtnStyle() {
+    let saved = null; try { saved = localStorage.getItem('fco_btn'); } catch (e) {}
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    const st = saved || ((theme === 'neon' || theme === 'pink') ? 'gradient' : 'solid');
+    document.documentElement.setAttribute('data-btn', st);
+    document.querySelectorAll('#btn-picker button').forEach(b => b.classList.toggle('active', b.dataset.btnPick === st));
+    document.querySelectorAll('[data-first-btn]').forEach(b => b.classList.toggle('active', b.dataset.firstBtn === st));
+    return st;
+  }
+  function setBtnStyle(name, quiet) {
+    try { localStorage.setItem('fco_btn', name === 'gradient' ? 'gradient' : 'solid'); } catch (e) {}
+    applyBtnStyle();
+    if (!quiet) showToast(name === 'gradient' ? '🌈 그라데이션 버튼으로 바꿨어요.' : '단색 버튼으로 바꿨어요.');
+  }
+  applyBtnStyle();
 
   // 바 디자인 (기본 / 유리)
   function setBar(name, quiet, noSave) {
