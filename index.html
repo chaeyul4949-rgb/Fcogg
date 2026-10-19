@@ -164,7 +164,7 @@
     /* ===== 유리 바 디자인 (버튼 스타일보다 우선) ===== */
     html[data-bar="glass"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.35)); --g-fg: #1D1D1F; --g-border: rgba(255,255,255,0.9); --g-hi: rgba(255,255,255,0.85); --g-glow: rgba(0,0,0,0.10); --g-bar: rgba(255,255,255,0.55); }
     html[data-bar="glass"][data-theme="dark"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05)); --g-fg: #FFFFFF; --g-border: rgba(255,255,255,0.10); --g-hi: rgba(255,255,255,0.22); --g-glow: rgba(0,0,0,0.35); --g-bar: rgba(28,28,30,0.55); }
-    html[data-bar="glass"][data-theme="neon"] { --g-bg: linear-gradient(180deg, rgba(110,175,255,0.26), rgba(47,123,255,0.10)); --g-fg: #FFFFFF; --g-border: rgba(140,200,255,0.16); --g-hi: rgba(190,225,255,0.30); --g-glow: rgba(47,140,255,0.22); --g-bar: rgba(13,21,48,0.5); }
+    html[data-bar="glass"][data-theme="neon"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05)); --g-fg: #FFFFFF; --g-border: rgba(255,255,255,0.06); --g-hi: rgba(255,255,255,0.16); --g-glow: rgba(0,0,0,0.35); --g-bar: rgba(10,16,38,0.55); }
     html[data-bar="glass"][data-theme="pink"] { --g-bg: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,120,185,0.28)); --g-fg: #B0105C; --g-border: rgba(255,255,255,0.95); --g-hi: rgba(255,255,255,0.9); --g-glow: rgba(255,45,135,0.25); --g-bar: rgba(255,255,255,0.5); }
     html[data-bar="glass"][data-theme] .tab-btn.active,
     html[data-bar="glass"][data-theme] .pill-search-btn,
@@ -187,10 +187,6 @@
         radial-gradient(640px circle at 88% -6%, var(--blob1), transparent 62%),
         radial-gradient(720px circle at 4% 104%, var(--blob2), transparent 62%),
         radial-gradient(520px circle at 102% 86%, var(--blob3), transparent 60%); }
-    body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      background-image: linear-gradient(rgba(127,127,127,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(127,127,127,.06) 1px, transparent 1px);
-      background-size: 48px 48px;
-      -webkit-mask-image: radial-gradient(ellipse at 80% 10%, #000 0%, transparent 55%); mask-image: radial-gradient(ellipse at 80% 10%, #000 0%, transparent 55%); }
 
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; letter-spacing: -0.015em; }
     
@@ -1975,7 +1971,7 @@
     neon:  { logo: '/logo-icon-neon.png', fav: '/favicon-48-neon.png', big: '/icon-192-neon.png' },
     pink:  { logo: '/logo-icon-pink.png', fav: '/favicon-48-pink.png', big: '/icon-192-pink.png' }
   };
-  const THEME_CHOSEN_KEY = 'fco_theme_chosen_1019b'; // 바꾸면 모두에게 테마 창이 다시 떠요
+  const THEME_CHOSEN_KEY = 'fco_theme_chosen_1019c'; // 바꾸면 모두에게 테마 창이 다시 떠요
   function setTheme(name, quiet, noSave) {
     const t = THEMES[name] ? name : 'light';
     document.documentElement.setAttribute('data-theme', t);
