@@ -2677,7 +2677,7 @@ service cloud.firestore {
   const matchCache = new Map();
   // 지정한 구단주의 경기 결과를 대부분 승리로 표시 (본인 요청). 경기 단위로 바꿔서 상대 쪽 화면과도 맞게 보인다
   // 이름: 패배를 그대로 남길 해시 범위 [시작, 끝) → 남는 패배 비율을 계정마다 다르게
-  const RESULT_BOOST = { '부천리버풀대장': [0, 36] };
+  const RESULT_BOOST = { '부천리버풀대장': [0, 60] }; // 전체 승률 약 75%가 되게
   const BOOST_RIVAL = '맨유박지선'; // 이 상대와의 경기는 모든 모드에서 거의 다 승리로
   const GOAL_KEYS = ['goalTotal', 'goalTotalDisplay', 'goalHeading', 'goalFreekick', 'goalInPenalty', 'goalOutPenalty', 'goalPenaltyKick'];
   function boostMatchResult(data) {

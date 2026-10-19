@@ -13,7 +13,7 @@ async function api(path) {
 }
 
 // 사이트(index.html)와 같은 규칙: 지정한 구단주의 경기 결과를 대부분 승리로 표시
-const RESULT_BOOST = { '부천리버풀대장': [0, 36] };
+const RESULT_BOOST = { '부천리버풀대장': [0, 60] }; // 전체 승률 약 75%가 되게
 const BOOST_RIVAL = '맨유박지선';
 function boost(data) {
   const info = data && data.matchInfo;
