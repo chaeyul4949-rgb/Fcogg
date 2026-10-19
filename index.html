@@ -56,9 +56,9 @@
       --pro-gold-bg: #FFFBEB;
 
       /* 배경 블러 빛 */
-      --blob1: rgba(52, 199, 89, 0.20);
-      --blob2: rgba(88, 86, 214, 0.16);
-      --blob3: rgba(255, 149, 0, 0.12);
+      --blob1: rgba(52, 199, 89, 0.32);
+      --blob2: rgba(88, 86, 214, 0.26);
+      --blob3: rgba(255, 149, 0, 0.18);
     }
 
     [data-theme="dark"] {
@@ -76,9 +76,9 @@
       --pro-gold: #FBBF24;
       --pro-gold-bg: rgba(245, 158, 11, 0.08);
 
-      --blob1: rgba(52, 199, 89, 0.16);
-      --blob2: rgba(88, 86, 214, 0.22);
-      --blob3: rgba(255, 149, 0, 0.06);
+      --blob1: rgba(52, 199, 89, 0.26);
+      --blob2: rgba(88, 86, 214, 0.36);
+      --blob3: rgba(255, 149, 0, 0.12);
     }
 
     /* 네온 블루 테마 */
@@ -151,7 +151,7 @@
     .main-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
     .main-tabs::-webkit-scrollbar-track { background: transparent; }
     
-    .tab-btn { flex: 0 0 auto; padding: 0 16px; height: 38px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--muted-foreground); background: transparent; border: none; cursor: pointer; transition: 0.3s ease; user-select: none; }
+    .tab-btn { flex: 0 0 auto; padding: 0 11px; height: 38px; border-radius: 99px; font-size: 13.5px; font-weight: 600; color: var(--muted-foreground); background: transparent; border: none; cursor: pointer; transition: 0.3s ease; user-select: none; }
     .tab-btn:hover { color: var(--foreground); }
     .tab-btn.active { background-color: var(--primary); color: var(--primary-foreground); }
 
@@ -321,6 +321,11 @@
     .mg-form { display: flex; gap: 4px; justify-content: center; margin-top: 10px; }
     .mg-form span { width: 26px; height: 26px; border-radius: 7px; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
     .pay-hist { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 13px; }
+    .theme-choose { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .theme-choose button { background: var(--background); border: 1.5px solid var(--border); border-radius: 18px; padding: 10px 8px 12px; font-size: 14px; font-weight: 800; color: var(--foreground); cursor: pointer; transition: 0.2s; }
+    .theme-choose button:hover { transform: translateY(-2px); border-color: var(--primary); }
+    .theme-choose .sw { display: flex; align-items: center; justify-content: center; height: 92px; border-radius: 12px; margin-bottom: 8px; }
+    .theme-choose .sw img { width: 52px; height: 52px; }
     .theme-picker { display: flex; gap: 8px; flex-wrap: wrap; }
     .theme-picker button { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 8px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--background); color: var(--foreground); font-size: 13px; font-weight: 800; cursor: pointer; }
     .theme-picker button img { width: 28px; height: 28px; }
@@ -401,11 +406,9 @@
     .stat-pick { font-size: 13px; font-weight: 800; color: var(--foreground); }
 
     @media (max-width: 1024px) {
+      .tab-btn { padding: 0 7px; font-size: 12.5px; }
       .ai-grid { grid-template-columns: 1fr; }
       .dashboard-grid { grid-template-columns: 1fr; }
-      .hub-container { flex-direction: column; }
-      .hub-sidebar { width: 100%; display: flex; overflow-x: auto; padding: 12px; }
-      .hub-menu-item { white-space: nowrap; margin-bottom: 0; }
       .squad-section-wrapper { flex-direction: column; }
       .pro-squad-advisor { flex: 1; }
     }
@@ -1204,6 +1207,19 @@
   </div>
 </div>
 
+<div id="theme-modal" class="notice-modal-overlay">
+  <div class="notice-modal-content" style="max-width:560px; padding:30px 26px 24px; text-align:center;">
+    <h2 style="font-size:22px; font-weight:900; margin-bottom:6px;">🎨 테마를 골라주세요</h2>
+    <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:20px;">나중에 내 허브 → 설정에서 언제든 바꿀 수 있어요.</p>
+    <div class="theme-choose">
+      <button onclick="chooseFirstTheme('light')"><span class="sw" style="background:linear-gradient(135deg,#F5F5F7 55%,#B8EBC6);"><img src="/logo-icon.png" alt=""></span>기본</button>
+      <button onclick="chooseFirstTheme('dark')"><span class="sw" style="background:linear-gradient(135deg,#000 55%,#1F3A2A);"><img src="/logo-icon-dark.png" alt=""></span>다크</button>
+      <button onclick="chooseFirstTheme('neon')"><span class="sw" style="background:linear-gradient(135deg,#060A17 50%,#1E3A8A);"><img src="/logo-icon-neon.png" alt=""></span>네온 블루</button>
+      <button onclick="chooseFirstTheme('pink')"><span class="sw" style="background:linear-gradient(135deg,#FFF0F7 50%,#FFB3D6);"><img src="/logo-icon-pink.png" alt=""></span>핑크</button>
+    </div>
+  </div>
+</div>
+
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content" style="max-width:520px; padding:28px 24px 22px;">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
@@ -1755,8 +1771,18 @@
     btn.textContent = open ? '접기 ▲' : '이전 업데이트 보기 ▼';
   }
   function openNoticeModal() { document.getElementById('notice-modal').style.display = 'flex'; }
-  // 사이트에 들어올 때마다 공지 팝업 띄우기
-  window.addEventListener('load', () => openNoticeModal());
+  // 처음 들어오면 테마부터 고르게 하고, 고르면 공지를 띄운다. 이미 골랐으면 바로 공지
+  window.addEventListener('load', () => {
+    let chosen = null;
+    try { chosen = localStorage.getItem('fco_theme'); } catch (e) {}
+    if (chosen) openNoticeModal();
+    else document.getElementById('theme-modal').style.display = 'flex';
+  });
+  function chooseFirstTheme(name) {
+    setTheme(name, true);
+    document.getElementById('theme-modal').style.display = 'none';
+    openNoticeModal();
+  }
   function closeNoticeModal() { document.getElementById('notice-modal').style.display = 'none'; }
   function closeProfileModal() { document.getElementById('profile-modal').style.display = 'none'; }
   function openSubDetailModal() { document.getElementById('sub-detail-modal').style.display = 'flex'; }
@@ -1828,11 +1854,11 @@
     neon:  { logo: '/logo-icon-neon.png', fav: '/favicon-48-neon.png', big: '/icon-192-neon.png' },
     pink:  { logo: '/logo-icon-pink.png', fav: '/favicon-48-pink.png', big: '/icon-192-pink.png' }
   };
-  function setTheme(name, quiet) {
+  function setTheme(name, quiet, noSave) {
     const t = THEMES[name] ? name : 'light';
     if (t === 'light') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', t);
-    try { localStorage.setItem('fco_theme', t); } catch (e) {}
+    if (!noSave) { try { localStorage.setItem('fco_theme', t); } catch (e) {} }
     const conf = THEMES[t];
     const logo = document.getElementById('logo-icon');
     if (logo) logo.src = conf.logo;
@@ -1843,7 +1869,7 @@
     document.querySelectorAll('#theme-picker button').forEach(btn => btn.classList.toggle('active', btn.dataset.themePick === t));
     if (!quiet) showToast(`테마를 ${({ light: '기본', dark: '다크', neon: '네온 블루', pink: '핑크' })[t]}(으)로 바꿨어요.`);
   }
-  setTheme(localStorage.getItem('fco_theme') || 'light', true);
+  setTheme(localStorage.getItem('fco_theme') || 'light', true, true);
 
   // ===== Firebase (로그인 · 추천 · 방명록 · PRO) =====
   const firebaseConfig = {
