@@ -520,6 +520,17 @@
     .pay-req { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
     .pay-req .who { font-size: 14px; font-weight: 800; }
     .pay-req .meta { font-size: 11px; color: var(--muted-foreground); }
+    .fb-fab { position: fixed; right: 22px; bottom: 22px; z-index: 900; height: 46px; padding: 0 18px; border-radius: 99px; border: 1px solid var(--border); background: var(--card); color: var(--foreground); font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 28px rgba(0,0,0,0.14); font-family: inherit; }
+    .fb-fab:hover { transform: translateY(-2px); }
+    .fb-cats { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .fb-text { width: 100%; min-height: 140px; resize: vertical; border-radius: 14px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); padding: 14px; font-size: 14px; font-family: inherit; line-height: 1.6; outline: none; }
+    .fb-input { width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); padding: 0 14px; font-size: 14px; font-family: inherit; outline: none; }
+    .fb-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; background: var(--lose-color); color: #fff; font-size: 11px; font-weight: 900; margin-left: 4px; }
+    .fb-item { background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+    .fb-item.unread { border-color: var(--ai-blue); box-shadow: inset 3px 0 0 var(--ai-blue); }
+    .fb-item .fb-meta { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--muted-foreground); font-weight: 700; margin-bottom: 6px; flex-wrap: wrap; }
+    .fb-item .fb-body { font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .fb-item .fb-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 8px; }
     .visit-stats { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 16px 0 20px; }
     .visit-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
     .visit-head h4 { font-size: 15px; font-weight: 800; color: var(--foreground); }
@@ -1253,6 +1264,14 @@
           
           <div class="visit-stats">
             <div class="visit-head">
+              <h4>📬 받은 피드백 <span id="fb-unread" class="fb-badge" style="display:none;"></span></h4>
+              <button class="bg-btn" onclick="renderFeedbackInbox()">새로고침</button>
+            </div>
+            <div id="fb-inbox"><div class="visit-empty">불러오는 중...</div></div>
+          </div>
+
+          <div class="visit-stats">
+            <div class="visit-head">
               <h4>💳 입금 확인 필요</h4>
               <button class="bg-btn" onclick="renderPaymentRequests()">새로고침</button>
             </div>
@@ -1376,7 +1395,7 @@
 <footer class="site-footer" style="padding:24px 0 16px; border-top:1px solid var(--border); text-align:center; font-size:13px; color:var(--muted-foreground); line-height:1.8;">
   <div><a href="/about.html" style="color:inherit;">사이트 소개</a> · <a href="/privacy.html" style="color:inherit; font-weight:700;">개인정보처리방침</a></div>
   <div>Data based on NEXON Open API · FCO.GG는 넥슨코리아·EA와 무관한 개인 운영 팬 사이트입니다.</div>
-  <div>문의 · 제휴: <a href="mailto:yulckh@gmail.com" style="color:inherit;">yulckh@gmail.com</a></div>
+  <div>문의 · 제휴: <a href="mailto:yulckh@gmail.com" style="color:inherit;">yulckh@gmail.com</a> · <a href="#" onclick="openFeedback(); return false;" style="color:inherit; font-weight:700;">💬 피드백 보내기</a></div>
   <div>© 2026 FCO.GG</div>
 </footer>
 </div>
@@ -1703,6 +1722,25 @@
   <div class="sub-modal-content" style="max-width:960px;">
     <button class="modal-close-btn" onclick="closeMatchModal()" aria-label="닫기">✕</button>
     <div id="match-modal-body"></div>
+  </div>
+</div>
+
+<button class="fb-fab" onclick="openFeedback()" aria-label="피드백 보내기">💬 피드백</button>
+
+<div id="feedback-modal" class="sub-modal-overlay">
+  <div class="sub-modal-content" style="max-width:460px;">
+    <button class="modal-close-btn" onclick="closeFeedback()" aria-label="닫기">✕</button>
+    <h3 style="font-size:22px; font-weight:900; margin-bottom:6px;">💬 운영자에게 보내기</h3>
+    <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">버그 제보, 기능 제안, 하고 싶은 말 뭐든 좋아요. 운영자만 볼 수 있어요.</p>
+    <div class="fb-cats" id="fb-cats">
+      <button class="mt-chip active" data-fbcat="제안" onclick="pickFbCat(this)">💡 기능 제안</button>
+      <button class="mt-chip" data-fbcat="버그" onclick="pickFbCat(this)">🐞 버그 제보</button>
+      <button class="mt-chip" data-fbcat="기타" onclick="pickFbCat(this)">💬 기타</button>
+    </div>
+    <textarea id="fb-text" class="fb-text" maxlength="1000" placeholder="내용을 적어주세요 (최대 1000자)" oninput="document.getElementById('fb-count').textContent=this.value.length"></textarea>
+    <div style="text-align:right; font-size:11px; color:var(--muted-foreground); margin:4px 2px 10px;"><span id="fb-count">0</span>/1000</div>
+    <input type="text" id="fb-contact" class="fb-input" maxlength="60" placeholder="답장 받을 연락처 (선택) · 카톡 아이디, 이메일 등">
+    <button class="pill-search-btn" style="width:100%; height:48px; margin-top:14px; font-size:15px;" onclick="sendFeedback()">보내기</button>
   </div>
 </div>
 
@@ -2233,6 +2271,63 @@
       <div class="sim-tile"><div class="v">${cost ? (ev / cost * 100).toFixed(0) : '-'}%</div><div class="l">환급률 (이론) · 잭팟 1/${jackP ? Math.round(1 / jackP).toLocaleString() : '-'}</div></div></div>`;
   }
 
+  // ===== 피드백: 누구나 보내고, 관리자 패널에서만 본다 =====
+  function openFeedback() { document.getElementById('feedback-modal').style.display = 'flex'; setTimeout(() => document.getElementById('fb-text').focus(), 50); }
+  function closeFeedback() { document.getElementById('feedback-modal').style.display = 'none'; }
+  function pickFbCat(btn) { document.querySelectorAll('#fb-cats .mt-chip').forEach(b => b.classList.toggle('active', b === btn)); }
+  async function sendFeedback() {
+    const text = document.getElementById('fb-text').value.trim();
+    const contact = document.getElementById('fb-contact').value.trim();
+    const category = document.querySelector('#fb-cats .mt-chip.active')?.dataset.fbcat || '기타';
+    if (text.length < 2) return showToast('내용을 적어주세요.');
+    const last = +localStorage.getItem('fco_fb_last') || 0;
+    if (Date.now() - last < 30000) return showToast('잠시 후 다시 보내주세요. (30초에 한 번)');
+    if (!db) return showToast('지금은 보낼 수 없어요. yulckh@gmail.com 으로 보내주세요.');
+    try {
+      await db.collection('feedback').add({
+        text, contact, category, read: false, createdAt: Date.now(),
+        userId: localStorage.getItem('fco_current_user') || '',
+        device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1) ? '폰·태블릿' : 'PC'
+      });
+      localStorage.setItem('fco_fb_last', String(Date.now()));
+      document.getElementById('fb-text').value = ''; document.getElementById('fb-contact').value = ''; document.getElementById('fb-count').textContent = '0';
+      closeFeedback();
+      showToast('💌 보냈어요! 소중한 의견 고마워요.');
+    } catch (e) { showToast('보내지 못했어요. 잠시 후 다시 시도해주세요.'); }
+  }
+  async function renderFeedbackInbox() {
+    const box = document.getElementById('fb-inbox');
+    if (!box) return;
+    if (!db) { box.innerHTML = '<div class="visit-empty">Firebase에 연결되지 않았어요.</div>'; return; }
+    let items = [];
+    try {
+      const snap = await db.collection('feedback').orderBy('createdAt', 'desc').limit(50).get();
+      snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+    } catch (e) { box.innerHTML = `<div class="visit-empty">${proErrorMessage(e)}</div>`; return; }
+    const unread = items.filter(f => !f.read).length;
+    const badge = document.getElementById('fb-unread');
+    badge.style.display = unread ? 'inline-flex' : 'none'; badge.textContent = unread;
+    if (!items.length) { box.innerHTML = '<div class="visit-empty">아직 받은 피드백이 없어요.</div>'; return; }
+    const icon = { '제안': '💡', '버그': '🐞', '기타': '💬' };
+    box.innerHTML = `<div style="max-height:420px; overflow-y:auto;">${items.map(f => `
+      <div class="fb-item ${f.read ? '' : 'unread'}">
+        <div class="fb-meta"><span>${icon[f.category] || '💬'} ${escapeHtml(f.category || '기타')} · ${escapeHtml(f.userId || '비회원')} · ${escapeHtml(f.device || '')}</span><span>${new Date(f.createdAt).toLocaleString('ko-KR')}</span></div>
+        <div class="fb-body">${escapeHtml(f.text || '')}</div>
+        ${f.contact ? `<div style="font-size:12px; font-weight:800; margin-top:6px; color:var(--ai-blue);">📮 연락처: ${escapeHtml(f.contact)}</div>` : ''}
+        <div class="fb-actions">
+          ${f.read ? '' : `<button class="mini-btn" style="background:var(--win-color);" data-id="${f.id}" onclick="markFeedbackRead(this.dataset.id)">읽음</button>`}
+          <button class="mini-btn" style="background:var(--lose-color);" data-id="${f.id}" onclick="deleteFeedback(this.dataset.id)">삭제</button>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+  async function markFeedbackRead(id) {
+    try { await db.collection('feedback').doc(id).set({ read: true }, { merge: true }); renderFeedbackInbox(); } catch (e) { showToast(proErrorMessage(e)); }
+  }
+  async function deleteFeedback(id) {
+    if (!confirm('이 피드백을 삭제할까요?')) return;
+    try { await db.collection('feedback').doc(id).delete(); renderFeedbackInbox(); } catch (e) { showToast(proErrorMessage(e)); }
+  }
+
   function toggleNoticeOlder(btn) {
     const box = document.getElementById('notice-older');
     const open = box.style.display === 'none';
@@ -2545,7 +2640,7 @@
     const adminPanel = document.getElementById('admin-panel');
     if (adminPanel) {
       adminPanel.style.display = isAdmin ? 'block' : 'none';
-      if (isAdmin) { renderProList(); renderPaymentRequests(); }
+      if (isAdmin) { renderProList(); renderPaymentRequests(); renderFeedbackInbox(); }
     }
     const statsCard = document.getElementById('admin-stats-card');
     if (statsCard) statsCard.style.display = isAdmin ? 'block' : 'none';
