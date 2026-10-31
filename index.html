@@ -522,6 +522,15 @@
     .pay-req .meta { font-size: 11px; color: var(--muted-foreground); }
     .fb-fab { position: fixed; right: 22px; bottom: 22px; z-index: 900; height: 46px; padding: 0 18px; border-radius: 99px; border: 1px solid var(--border); background: var(--card); color: var(--foreground); font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 28px rgba(0,0,0,0.14); font-family: inherit; }
     .fb-fab:hover { transform: translateY(-2px); }
+    .fb-fab { position: fixed; }
+    .fb-fab-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%; background: var(--lose-color); border: 2px solid var(--card); }
+    .fb-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--background); border: 1px solid var(--border); border-radius: 14px; padding: 4px; margin-bottom: 14px; }
+    .fb-tab { height: 38px; border: none; border-radius: 10px; background: transparent; color: var(--muted-foreground); font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+    .fb-tab.active { background: var(--card); color: var(--foreground); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .fb-reply { margin-top: 8px; padding: 10px 12px; border-radius: 10px; background: var(--ai-blue-bg); border: 1px solid var(--border); font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .fb-reply b { color: var(--ai-blue); }
+    .fb-reply-box { display: flex; gap: 6px; margin-top: 8px; }
+    .fb-reply-box textarea { flex: 1; min-height: 40px; height: 40px; resize: vertical; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--foreground); padding: 9px 10px; font-size: 13px; font-family: inherit; outline: none; }
     .fb-cats { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
     .fb-text { width: 100%; min-height: 140px; resize: vertical; border-radius: 14px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); padding: 14px; font-size: 14px; font-family: inherit; line-height: 1.6; outline: none; }
     .fb-input { width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--background); color: var(--foreground); padding: 0 14px; font-size: 14px; font-family: inherit; outline: none; }
@@ -1460,7 +1469,16 @@
     <h2 style="font-size:20px; font-weight:900; margin-bottom:16px;">📢 업데이트 소식</h2>
 
     <div class="upd-entry">
-      <div class="upd-date">2026.10.19 <span class="upd-new">NEW</span></div>
+      <div class="upd-date">2026.10.31 <span class="upd-new">NEW</span></div>
+      <ul class="upd-list">
+        <li><b>💬 피드백 보내기</b>: 오른쪽 아래 버튼으로 버그 제보 · 기능 제안을 운영자에게 바로 보낼 수 있어요</li>
+        <li><b>📬 운영자 답장</b>: 답장이 오면 💬 버튼에 빨간 점이 뜨고, '내 문의 · 답장'에서 확인할 수 있어요</li>
+        <li><b>🎟️ 코드 등록</b>: 내 허브에서 이벤트 코드를 넣으면 PRO가 바로 적용돼요 (로그인 없이도 가능)</li>
+      </ul>
+    </div>
+
+    <div class="upd-entry">
+      <div class="upd-date">2026.10.19</div>
       <ul class="upd-list">
         <li>내 허브 개편: <b>내 구단</b> 등록하면 내 티어 · 최근 전적을 바로 확인</li>
         <li>검색 결과에서 <b>☆ 즐겨찾기</b> → 내 허브에서 친구 전적 · 나와 1:1 바로 보기</li>
@@ -1725,13 +1743,19 @@
   </div>
 </div>
 
-<button class="fb-fab" onclick="openFeedback()" aria-label="피드백 보내기">💬 피드백</button>
+<button class="fb-fab" onclick="openFeedback()" aria-label="피드백 보내기">💬 피드백<span id="fb-fab-dot" class="fb-fab-dot" style="display:none;"></span></button>
 
 <div id="feedback-modal" class="sub-modal-overlay">
   <div class="sub-modal-content" style="max-width:460px;">
     <button class="modal-close-btn" onclick="closeFeedback()" aria-label="닫기">✕</button>
     <h3 style="font-size:22px; font-weight:900; margin-bottom:6px;">💬 운영자에게 보내기</h3>
-    <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">버그 제보, 기능 제안, 하고 싶은 말 뭐든 좋아요. 운영자만 볼 수 있어요.</p>
+    <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">버그 제보, 기능 제안, 하고 싶은 말 뭐든 좋아요. 운영자만 볼 수 있고, 답장은 여기서 확인할 수 있어요.</p>
+    <div class="fb-tabs">
+      <button class="fb-tab active" data-fbtab="write" onclick="switchFbTab('write')">✍️ 보내기</button>
+      <button class="fb-tab" data-fbtab="mine" onclick="switchFbTab('mine')">📬 내 문의 · 답장 <span id="fb-reply-dot" class="fb-badge" style="display:none;"></span></button>
+    </div>
+    <div id="fb-mine" style="display:none;"></div>
+    <div id="fb-write">
     <div class="fb-cats" id="fb-cats">
       <button class="mt-chip active" data-fbcat="제안" onclick="pickFbCat(this)">💡 기능 제안</button>
       <button class="mt-chip" data-fbcat="버그" onclick="pickFbCat(this)">🐞 버그 제보</button>
@@ -1741,6 +1765,7 @@
     <div style="text-align:right; font-size:11px; color:var(--muted-foreground); margin:4px 2px 10px;"><span id="fb-count">0</span>/1000</div>
     <input type="text" id="fb-contact" class="fb-input" maxlength="60" placeholder="답장 받을 연락처 (선택) · 카톡 아이디, 이메일 등">
     <button class="pill-search-btn" style="width:100%; height:48px; margin-top:14px; font-size:15px;" onclick="sendFeedback()">보내기</button>
+    </div>
   </div>
 </div>
 
@@ -2272,7 +2297,62 @@
   }
 
   // ===== 피드백: 누구나 보내고, 관리자 패널에서만 본다 =====
-  function openFeedback() { document.getElementById('feedback-modal').style.display = 'flex'; setTimeout(() => document.getElementById('fb-text').focus(), 50); }
+  // 비회원도 같은 기기에서 답장을 볼 수 있게 기기마다 무작위 아이디를 둔다
+  function getDeviceId() {
+    let id = localStorage.getItem('fco_device_id');
+    if (!id) { id = 'd' + Array.from(crypto.getRandomValues(new Uint32Array(3)), x => x.toString(36)).join(''); localStorage.setItem('fco_device_id', id); }
+    return id;
+  }
+  function openFeedback(tab) {
+    document.getElementById('feedback-modal').style.display = 'flex';
+    switchFbTab(tab || (document.getElementById('fb-fab-dot').style.display !== 'none' ? 'mine' : 'write'));
+  }
+  function switchFbTab(name) {
+    document.querySelectorAll('.fb-tab').forEach(b => b.classList.toggle('active', b.dataset.fbtab === name));
+    document.getElementById('fb-write').style.display = name === 'write' ? '' : 'none';
+    document.getElementById('fb-mine').style.display = name === 'mine' ? '' : 'none';
+    if (name === 'mine') renderMyFeedback(true);
+    else setTimeout(() => document.getElementById('fb-text').focus(), 50);
+  }
+  // 내가 보낸 피드백: 로그인 아이디 또는 이 기기로 보낸 것
+  async function fetchMyFeedback() {
+    if (!db) return [];
+    const uid = (localStorage.getItem('fco_current_user') || '').toLowerCase();
+    const found = {};
+    const add = (snap) => snap.forEach(d => found[d.id] = { id: d.id, ...d.data() });
+    try {
+      add(await db.collection('feedback').where('deviceId', '==', getDeviceId()).get());
+      if (uid) add(await db.collection('feedback').where('userId', '==', uid).get());
+    } catch (e) {}
+    return Object.values(found).sort((a, b) => b.createdAt - a.createdAt);
+  }
+  async function renderMyFeedback(markSeen) {
+    const box = document.getElementById('fb-mine');
+    box.innerHTML = '<div class="visit-empty">불러오는 중...</div>';
+    const items = await fetchMyFeedback();
+    if (!items.length) { box.innerHTML = '<div class="visit-empty">아직 보낸 피드백이 없어요.</div>'; return; }
+    box.innerHTML = `<div style="max-height:420px; overflow-y:auto;">${items.map(f => `
+      <div class="fb-item">
+        <div class="fb-meta"><span>${escapeHtml(f.category || '기타')}</span><span>${new Date(f.createdAt).toLocaleString('ko-KR')}</span></div>
+        <div class="fb-body">${escapeHtml(f.text || '')}</div>
+        ${f.reply ? `<div class="fb-reply"><b>운영자 답장</b> · <span style="font-size:11px; color:var(--muted-foreground);">${new Date(f.repliedAt).toLocaleString('ko-KR')}</span><br>${escapeHtml(f.reply)}</div>` : `<div style="font-size:12px; color:var(--muted-foreground); margin-top:6px; font-weight:700;">⏳ 답장을 기다리는 중</div>`}
+      </div>`).join('')}</div>`;
+    if (markSeen) {
+      const latest = Math.max(0, ...items.map(f => f.repliedAt || 0));
+      localStorage.setItem('fco_fb_seen', String(latest));
+      updateReplyDot(items);
+    }
+  }
+  // 새 답장이 있으면 피드백 버튼에 빨간 점
+  async function updateReplyDot(items) {
+    items = items || await fetchMyFeedback();
+    const seen = +localStorage.getItem('fco_fb_seen') || 0;
+    const fresh = items.filter(f => f.reply && (f.repliedAt || 0) > seen).length;
+    const dot = document.getElementById('fb-fab-dot'), tabDot = document.getElementById('fb-reply-dot');
+    if (dot) dot.style.display = fresh ? '' : 'none';
+    if (tabDot) { tabDot.style.display = fresh ? 'inline-flex' : 'none'; tabDot.textContent = fresh; }
+    if (fresh && !sessionStorage.getItem('fco_fb_toast')) { sessionStorage.setItem('fco_fb_toast', '1'); showToast('💌 운영자 답장이 도착했어요! 오른쪽 아래 💬 피드백을 눌러 확인하세요.'); }
+  }
   function closeFeedback() { document.getElementById('feedback-modal').style.display = 'none'; }
   function pickFbCat(btn) { document.querySelectorAll('#fb-cats .mt-chip').forEach(b => b.classList.toggle('active', b === btn)); }
   async function sendFeedback() {
@@ -2286,7 +2366,8 @@
     try {
       await db.collection('feedback').add({
         text, contact, category, read: false, createdAt: Date.now(),
-        userId: localStorage.getItem('fco_current_user') || '',
+        userId: (localStorage.getItem('fco_current_user') || '').toLowerCase(),
+        deviceId: getDeviceId(),
         device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1) ? '폰·태블릿' : 'PC'
       });
       localStorage.setItem('fco_fb_last', String(Date.now()));
@@ -2314,11 +2395,23 @@
         <div class="fb-meta"><span>${icon[f.category] || '💬'} ${escapeHtml(f.category || '기타')} · ${escapeHtml(f.userId || '비회원')} · ${escapeHtml(f.device || '')}</span><span>${new Date(f.createdAt).toLocaleString('ko-KR')}</span></div>
         <div class="fb-body">${escapeHtml(f.text || '')}</div>
         ${f.contact ? `<div style="font-size:12px; font-weight:800; margin-top:6px; color:var(--ai-blue);">📮 연락처: ${escapeHtml(f.contact)}</div>` : ''}
+        ${f.reply ? `<div class="fb-reply"><b>보낸 답장</b> · <span style="font-size:11px; color:var(--muted-foreground);">${new Date(f.repliedAt).toLocaleString('ko-KR')}</span><br>${escapeHtml(f.reply)}</div>` : ''}
+        <div class="fb-reply-box"><textarea id="fbr-${f.id}" maxlength="1000" placeholder="${f.reply ? '답장 고쳐 쓰기' : '답장 쓰기 · 보낸 사람이 사이트에서 바로 봐요'}"></textarea><button class="mini-btn" style="background:var(--ai-blue); height:40px;" data-id="${f.id}" onclick="replyFeedback(this.dataset.id)">답장</button></div>
         <div class="fb-actions">
           ${f.read ? '' : `<button class="mini-btn" style="background:var(--win-color);" data-id="${f.id}" onclick="markFeedbackRead(this.dataset.id)">읽음</button>`}
           <button class="mini-btn" style="background:var(--lose-color);" data-id="${f.id}" onclick="deleteFeedback(this.dataset.id)">삭제</button>
         </div>
       </div>`).join('')}</div>`;
+  }
+  async function replyFeedback(id) {
+    const ta = document.getElementById('fbr-' + id);
+    const reply = (ta?.value || '').trim();
+    if (!reply) return showToast('답장 내용을 적어주세요.');
+    try {
+      await db.collection('feedback').doc(id).set({ reply, repliedAt: Date.now(), read: true }, { merge: true });
+      showToast('💌 답장을 보냈어요. 보낸 사람이 사이트에 들어오면 바로 보여요.');
+      renderFeedbackInbox();
+    } catch (e) { showToast(proErrorMessage(e)); }
   }
   async function markFeedbackRead(id) {
     try { await db.collection('feedback').doc(id).set({ read: true }, { merge: true }); renderFeedbackInbox(); } catch (e) { showToast(proErrorMessage(e)); }
@@ -3279,6 +3372,7 @@ service cloud.firestore {
     renderMatchTypeFilter();
     shopRender(); slotRender();
     recordVisit();
+    setTimeout(() => updateReplyDot(), 1500);
     renderTop10();
     renderSearchHistory();
     renderTeamColorTierList();
