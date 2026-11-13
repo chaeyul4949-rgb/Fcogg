@@ -353,7 +353,7 @@
     .review-input-box { display: flex; gap: 8px; margin-bottom: 20px; margin-top: 16px;}
     .review-input { flex: 1; height: 44px; background-color: var(--muted); border: 1px solid transparent; border-radius: 12px; padding: 8px 16px; color: var(--foreground); font-size: 14px; outline: none; transition: 0.2s; }
     .review-input:focus { border-color: var(--muted-foreground); background: var(--card); }
-    .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; }
+    .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 20px; white-space: nowrap; flex-shrink: 0; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; }
     .review-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
     .review-item { background: var(--background); border-radius: 12px; padding: 16px; border: 1px solid var(--border); }
     .review-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted-foreground); margin-bottom: 8px; font-weight: 600; }
@@ -1018,34 +1018,34 @@
       <div class="trait-left-panel">
         <h4 style="font-size:18px; font-weight:800; margin-bottom:6px; color:var(--foreground);">포지션을 선택하세요.</h4>
         <div class="trait-pitch-board">
-          <div class="t-node active" style="top:12%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
-          <div class="t-node" style="top:12%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
-          <div class="t-node" style="top:12%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
-          <div class="t-node" style="top:25%; left:12%;" onclick="selectTrait('LW', event)">LW</div>
-          <div class="t-node" style="top:25%; left:31%;" onclick="selectTrait('LF', event)">LF</div>
-          <div class="t-node" style="top:25%; left:50%;" onclick="selectTrait('CF', event)">CF</div>
-          <div class="t-node" style="top:25%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
-          <div class="t-node" style="top:25%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
-          <div class="t-node" style="top:38%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
-          <div class="t-node" style="top:38%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
-          <div class="t-node" style="top:38%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
-          <div class="t-node" style="top:51%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
-          <div class="t-node" style="top:51%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
-          <div class="t-node" style="top:51%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
-          <div class="t-node" style="top:51%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
-          <div class="t-node" style="top:51%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
-          <div class="t-node" style="top:64%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
-          <div class="t-node" style="top:64%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
-          <div class="t-node" style="top:64%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
-          <div class="t-node" style="top:77%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
-          <div class="t-node" style="top:77%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
-          <div class="t-node" style="top:77%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
-          <div class="t-node" style="top:77%; left:69%;" onclick="selectTrait('RCB', event)">RCB</div>
-          <div class="t-node" style="top:77%; left:88%;" onclick="selectTrait('RWB', event)">RWB</div>
-          <div class="t-node" style="top:88%; left:31%;" onclick="selectTrait('LB', event)">LB</div>
-          <div class="t-node" style="top:88%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
-          <div class="t-node" style="top:88%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
-          <div class="t-node" style="top:94%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
+          <div class="t-node active" style="top:9%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
+          <div class="t-node" style="top:9%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
+          <div class="t-node" style="top:9%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
+          <div class="t-node" style="top:20.5%; left:12%;" onclick="selectTrait('LW', event)">LW</div>
+          <div class="t-node" style="top:20.5%; left:31%;" onclick="selectTrait('LF', event)">LF</div>
+          <div class="t-node" style="top:20.5%; left:50%;" onclick="selectTrait('CF', event)">CF</div>
+          <div class="t-node" style="top:20.5%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
+          <div class="t-node" style="top:20.5%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
+          <div class="t-node" style="top:32%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
+          <div class="t-node" style="top:32%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
+          <div class="t-node" style="top:32%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
+          <div class="t-node" style="top:43.5%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
+          <div class="t-node" style="top:43.5%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
+          <div class="t-node" style="top:43.5%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
+          <div class="t-node" style="top:43.5%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
+          <div class="t-node" style="top:43.5%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
+          <div class="t-node" style="top:55%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
+          <div class="t-node" style="top:55%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
+          <div class="t-node" style="top:55%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
+          <div class="t-node" style="top:66.5%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
+          <div class="t-node" style="top:66.5%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
+          <div class="t-node" style="top:66.5%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
+          <div class="t-node" style="top:66.5%; left:69%;" onclick="selectTrait('RCB', event)">RCB</div>
+          <div class="t-node" style="top:66.5%; left:88%;" onclick="selectTrait('RWB', event)">RWB</div>
+          <div class="t-node" style="top:78%; left:31%;" onclick="selectTrait('LB', event)">LB</div>
+          <div class="t-node" style="top:78%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
+          <div class="t-node" style="top:78%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
+          <div class="t-node" style="top:90%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
         </div>
       </div>
       <div class="trait-right-panel">
@@ -1092,7 +1092,7 @@
             <button class="pill-search-btn" style="background:var(--pro-gold); color:#FFF;" onclick="openDonateModal('pro-unlimited')">💎 무제한 신청하기</button>
           </div>
         </div>
-        <p style="font-size:13px; color:var(--muted-foreground); margin-top:14px; line-height:1.6; word-break:keep-all;">PRO는 자동결제가 아니라 관리자가 입금을 확인한 뒤 직접 부여해요. 송금할 때 <b style="color:var(--foreground);">가입한 아이디를 메모에 꼭</b> 적어주세요.</p>
+        <p style="font-size:13px; color:var(--muted-foreground); margin-top:14px; line-height:1.6; word-break:keep-all;">신청하기를 눌러 송금한 뒤 <b style="color:var(--foreground);">입금 인증</b>을 누르면 로그인한 아이디에 PRO가 바로 켜져요. 입금이 확인되지 않으면 나중에 해지될 수 있어요.</p>
       </div>
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
@@ -1660,7 +1660,7 @@
       </div>
 
       <div class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr;">
-        <div class="shadcn-card">
+        <div class="shadcn-card" style="padding:24px;">
           <div class="card-title">최근 전적 기록 <span style="font-size:11px; color:var(--muted-foreground); font-weight:600; text-transform:none; letter-spacing:0;">· 누르면 경기 상세</span></div>
           <div class="match-list-container" id="match-list-container"></div>
           <button id="btn-load-more" class="btn-load-more" onclick="loadMoreMatches()" style="display:none;">더보기 (See All)</button>
@@ -3282,6 +3282,14 @@ service cloud.firestore {
     const pos = ids.indexOf(Number(divisionId));
     return pos >= 0 && pos <= 20 ? `ico_rank${pos}.png` : '';
   }
+  // 선수 사진이 없을 때: 액션 사진 → 기본 사진 → 사람 모양 그림 순서로 바꿔 보여준다
+  const PLAYER_PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#D1D5DB"/><circle cx="32" cy="25" r="11" fill="#9CA3AF"/><path d="M10 64c2-14 11-21 22-21s20 7 22 21z" fill="#9CA3AF"/></svg>');
+  function playerImgError(img, spId) {
+    const step = +(img.dataset.fb || 0);
+    img.dataset.fb = step + 1;
+    if (step === 0) img.src = playerImgFallback(spId);
+    else { img.onerror = null; img.src = PLAYER_PLACEHOLDER; }
+  }
   function playerImg(spId) {
     return `https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/playersAction/p${spId}.png`;
   }
@@ -4182,7 +4190,7 @@ service cloud.firestore {
         const color = avg >= 7.5 ? 'var(--win-color)' : avg > 0 && avg < 6.0 ? 'var(--lose-color)' : '#fff';
         return `
           <div class="lu-node" style="left:${x}%; top:${y}%;">
-            <img src="${playerImg(p.spId)}" onerror="this.onerror=null; this.src='${playerImgFallback(p.spId)}';" alt="" style="border:2px solid ${color};">
+            <img src="${playerImg(p.spId)}" onerror="playerImgError(this, ${p.spId})" alt="" style="border:2px solid ${color};">
             ${seasonIcon(p.spId) ? `<img class="lu-season" src="${seasonIcon(p.spId)}" alt="">` : ''}
             <span class="lu-grade">+${p.spGrade || 1}</span>
             <span class="lu-name">${escapeHtml(spidMetaCache[p.spId] || pos)}</span>
@@ -4517,6 +4525,10 @@ service cloud.firestore {
 
     // --- 총평 ---
     const top = winAnalysis?.factors?.[0];
+    if (top) {
+      const dup = checklist.findIndex(c => c.startsWith(`<b>${top.label}</b>이(가)`));
+      if (dup >= 0) checklist.splice(dup, 1);
+    }
     if (top) checklist.unshift(`<b>${top.label}</b> ${top.higher ? '올리기' : '줄이기'} — 잘한 경기 승률 ${Math.round(top.wrGood)}% vs 못한 경기 ${Math.round(top.wrBad)}%`);
     const overall = winRateOf(rows);
     const grade = overall >= 60 ? 'S' : overall >= 50 ? 'A' : overall >= 40 ? 'B' : overall >= 30 ? 'C' : 'D';
@@ -4976,7 +4988,7 @@ service cloud.firestore {
       const goals = +p.status?.goal || 0, assists = +p.status?.assist || 0;
       return `
         <div class="lu-node" style="left:${x}%; top:${y}%;">
-          <img src="${playerImg(p.spId)}" onerror="this.onerror=null; this.src='${playerImgFallback(p.spId)}';" alt="">
+          <img src="${playerImg(p.spId)}" onerror="playerImgError(this, ${p.spId})" alt="">
           ${seasonIcon(p.spId) ? `<img class="lu-season" src="${seasonIcon(p.spId)}" alt="">` : ''}
           <span class="lu-grade">+${p.spGrade || 1}</span>
           <span class="lu-name">${escapeHtml(spidMetaCache[p.spId] || pos)}</span>
