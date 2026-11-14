@@ -27,7 +27,7 @@
   <meta name="twitter:description" content="구단의 모든 기록, 분석의 시작. FC 온라인 전적 검색 · AI 경기 분석 · 팀컬러/특성 티어리스트">
   <meta name="twitter:image" content="https://fcogg.xyz/og-banner-v7.png">
 
-  <!-- 🌟 Firebase SDK 🌟 -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -826,8 +826,8 @@
     .pro-plan-desc { font-size: 12px; color: var(--muted-foreground); font-weight: 600; margin-bottom: 8px; }
     .pro-plan .pill-search-btn { width: 100%; height: 42px; }
     @media (max-width: 480px) { .pro-plans { grid-template-columns: 1fr; } }
-    .pro-benefits { display: flex; flex-direction: column; gap: 12px; }
-    .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
+    .pro-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
     .pro-benefit b { font-size: 15px; }
     .pro-benefit div { font-size: 13px; color: var(--muted-foreground); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
     .mu-route { background: var(--background); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
@@ -936,9 +936,9 @@
   <header class="header-container">
     <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈"><img class="logo-icon" id="logo-icon" src="/logo-icon.png" alt="">FCO<span>.GG</span></button>
     <div class="top-right-actions">
-      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢<span id="notice-dot" class="notice-red-dot"></span></button>
-      <button class="donate-btn" onclick="openDonateModal()">💛 후원하기</button>
-      <button id="top-user-icon" class="notice-icon-btn" style="font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입" aria-label="로그인 / 회원가입">👤</button>
+      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span id="notice-dot" class="notice-red-dot"></span></button>
+      <button class="donate-btn" onclick="openDonateModal()">후원하기</button>
+      <button id="top-user-icon" class="notice-icon-btn" style="font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입" aria-label="로그인 / 회원가입"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
     </div>
     <nav class="main-tabs">
       <button class="tab-btn active" data-tab="search" onclick="switchTab('search')">전적 & 구단 분석</button>
@@ -946,12 +946,12 @@
       <button class="tab-btn" data-tab="player" onclick="switchTab('player')" hidden>포지션별 선수 티어</button>
       <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
       <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
-      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">🏅 칭호 도감</button>
-      <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
-      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 계산기</button>
-      <button class="tab-btn" data-tab="sim" onclick="switchTab('sim')">🎰 시뮬레이터</button>
-      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
-      <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">⚙️ 내 허브</button>
+      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">칭호 도감</button>
+      <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">인기 구단주</button>
+      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">수수료 계산기</button>
+      <button class="tab-btn" data-tab="sim" onclick="switchTab('sim')">시뮬레이터</button>
+      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">PRO 멤버십</button>
+      <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">내 허브</button>
     </nav>
   </header>
 
@@ -961,7 +961,7 @@
         <span class="hero-sub">구단의 모든 기록,</span><br>
         <span class="hero-main">분석의 시작.</span>
       </h1>
-      <p class="hero-desc">구단주명을 입력하여 실시간 승률 및 스쿼드 전적을 한눈에 확인하세요.</p>
+      <p class="hero-desc">구단주명으로 최근 전적과 스쿼드를 확인해 보세요.</p>
       <div class="pill-search-box">
         <input type="text" id="user-search-input" placeholder="구단주명 입력..." enterkeyhint="search" onkeydown="if(event.key==='Enter') searchDirectData()">
         <button class="pill-search-btn" onclick="searchDirectData()">전적 검색</button>
@@ -971,21 +971,21 @@
     </div>
     <div id="global-loading" style="display: none; text-align: center; padding: 60px; color: var(--muted-foreground);">
       <div class="spinner">⏳</div>
-      <div style="font-weight:700; font-size:15px; color:var(--foreground);">데이터를 불러오는 중입니다...</div>
+      <div style="font-weight:700; font-size:15px; color:var(--foreground);">불러오는 중이에요...</div>
     </div>
     <div id="detailed-result-area" style="display: none;"></div>
   </div>
 
   <div id="tab-h2h" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title">⚔️ 1:1 라이벌 전적 스캔</h3>
+      <h3 class="page-title">1:1 상대전적</h3>
       <div style="display:flex; flex-direction:column; gap:16px; max-width:600px; width:100%; margin:0 auto;">
         <div class="h2h-focus-box">
           <input type="text" id="h2h-user1" placeholder="첫 번째 구단주" onkeydown="if(event.key==='Enter') searchH2HData()">
           <div class="h2h-vs-badge">VS</div>
           <input type="text" id="h2h-user2" placeholder="두 번째 구단주" onkeydown="if(event.key==='Enter') searchH2HData()">
         </div>
-        <button class="pill-search-btn" style="width:100%; height: 48px; font-size: 16px;" onclick="searchH2HData()">🔥 정밀 스캔하기</button>
+        <button class="pill-search-btn" style="width:100%; height: 48px; font-size: 16px;" onclick="searchH2HData()">전적 비교하기</button>
       </div>
     </div>
     <div id="h2h-result"></div>
@@ -1005,7 +1005,7 @@
   </div>
 
   <div id="tab-teamcolor" class="tab-content">
-    <div class="hero-search-section"><h3 class="page-title">🎨 인기 팀컬러 티어리스트</h3></div>
+    <div class="hero-search-section"><h3 class="page-title">인기 팀컬러 티어리스트</h3></div>
     <div class="tier-board" id="teamcolor-list-container"></div>
   </div>
 
@@ -1064,87 +1064,87 @@
 
   <div id="tab-ranking" class="tab-content">
     <div class="hero-search-section">
-      <h3 style="font-size:28px; font-weight:900; margin-bottom:8px;">🏆 명예의 전당</h3>
+      <h3 style="font-size:28px; font-weight:900; margin-bottom:8px;">명예의 전당</h3>
     </div>
     <div id="top10-list-container" style="max-width: 800px; margin: 0 auto; padding: 24px;"></div>
   </div>
 
   <div id="tab-pro" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title" style="color:var(--pro-gold);">💎 FCO PRO 멤버십</h3>
+      <h3 class="page-title" style="color:var(--pro-gold);">FCO PRO 멤버십</h3>
     </div>
     <div class="shadcn-card" style="padding: 32px; max-width: 660px; margin: 0 auto;">
       <div style="background:var(--background); padding:24px; border-radius:16px; text-align:center; border:1px solid var(--border);">
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🔒 현재 PRO 상태: <span id="pro-status-text" style="color:var(--muted-foreground);">비활성</span></h3>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">현재 PRO 상태: <span id="pro-status-text" style="color:var(--muted-foreground);">비활성</span></h3>
         <div class="pro-plans">
           <div class="pro-plan">
-            <div class="pro-plan-badge">🎉 가을 한정 1+1</div>
+            <div class="pro-plan-badge">가을 한정 1+1</div>
             <div class="pro-plan-name">60일 이용권</div>
             <div class="pro-plan-price">990<span>원</span></div>
             <div class="pro-plan-desc">30일 + 30일 (총 60일)</div>
-            <button class="pill-search-btn" onclick="openDonateModal('pro')">💳 60일 신청하기</button>
+            <button class="pill-search-btn" onclick="openDonateModal('pro')">60일 신청하기</button>
           </div>
           <div class="pro-plan best">
-            <div class="pro-plan-badge gold">👑 추천</div>
+            <div class="pro-plan-badge gold">추천</div>
             <div class="pro-plan-name">무제한 이용권</div>
             <div class="pro-plan-price">3,000<span>원</span></div>
             <div class="pro-plan-desc">기간 제한 없이 평생 이용</div>
-            <button class="pill-search-btn" style="background:var(--pro-gold); color:#FFF;" onclick="openDonateModal('pro-unlimited')">💎 무제한 신청하기</button>
+            <button class="pill-search-btn" style="background:var(--pro-gold); color:#FFF;" onclick="openDonateModal('pro-unlimited')">무제한 신청하기</button>
           </div>
         </div>
         <p style="font-size:13px; color:var(--muted-foreground); margin-top:14px; line-height:1.6; word-break:keep-all;">신청하기를 눌러 송금한 뒤 <b style="color:var(--foreground);">입금 인증</b>을 누르면 로그인한 아이디에 PRO가 바로 켜져요. 입금이 확인되지 않으면 나중에 해지될 수 있어요.</p>
       </div>
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h4 style="font-size:15px; font-weight:800; margin-bottom:16px; color:var(--foreground);">💡 제공되는 PRO 프리미엄 혜택 모아보기</h4>
+        <h4 style="font-size:15px; font-weight:800; margin-bottom:16px; color:var(--foreground);">PRO에서 볼 수 있는 것</h4>
         <div class="pro-benefits">
-          <div class="pro-benefit" style="border-left-color:#EA580C;">
-            <b style="color:#EA580C;">🚨 치명적 약점 스캐너 (TOP 5)</b>
-            <div>최근 25경기를 잘한 경기 / 못한 경기로 나눠, 승패를 가장 크게 가른 약점 5가지를 찾아냅니다.</div>
+          <div class="pro-benefit">
+            <b>약점 TOP 5</b>
+            <div>최근 25경기를 잘한 경기와 못한 경기로 나눠서, 승패를 가장 크게 가른 항목 5개를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#16A34A;">
-            <b style="color:#16A34A;">📈 승률 상승 솔루션 & 예상 그래프</b>
-            <div>약점을 보완하면 승률이 얼마나 오를지 내 기록으로 계산하고, 목표 수치와 구체적인 조작 팁을 알려드립니다.</div>
+          <div class="pro-benefit">
+            <b>승률 올리는 방법</b>
+            <div>약점을 고치면 승률이 얼마나 오를지 내 기록으로 계산하고, 목표 수치와 조작 팁을 알려줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#0EA5E9;">
-            <b style="color:#0EA5E9;">🧭 AI 코치 총평 & 우선순위 체크리스트</b>
-            <div>등급(S~D)과 강점·약점 요약, 이번 주에 고칠 것 최대 6가지를 순서대로 정리해드립니다.</div>
+          <div class="pro-benefit">
+            <b>AI 코치 총평</b>
+            <div>등급(S~D), 강점과 약점, 이번 주에 고칠 것을 순서대로 정리해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#6366F1;">
-            <b style="color:#6366F1;">📊 상대 대비 지표</b>
-            <div>점유율 · 슈팅 · 유효슈팅 · 패스 · 태클 · 파울 · 평점을 상대 평균과 비교해 우위/열세를 보여드립니다.</div>
+          <div class="pro-benefit">
+            <b>상대와 비교</b>
+            <div>점유율, 슈팅, 패스, 태클, 평점을 내가 만난 상대 평균과 비교해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#DC2626;">
-            <b style="color:#DC2626;">⏱️ 시간대별 득점 / 실점</b>
-            <div>15분 단위로 언제 골을 넣고 언제 먹히는지 분석해, 집중력이 떨어지는 시간대를 짚어드립니다.</div>
+          <div class="pro-benefit">
+            <b>시간대별 득점 · 실점</b>
+            <div>15분 단위로 언제 넣고 언제 먹히는지 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#059669;">
-            <b style="color:#059669;">⚽ 선제골 · 역전 분석</b>
-            <div>선제골 넣었을 때 / 먹혔을 때 승률, 역전승, 앞서다 놓친 경기, 80분 이후 득실점을 분석합니다.</div>
+          <div class="pro-benefit">
+            <b>선제골 · 역전</b>
+            <div>선제골을 넣었을 때와 먹혔을 때 승률, 역전승, 앞서다 놓친 경기를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#D97706;">
-            <b style="color:#D97706;">🎯 슈팅 위치 · 결정력</b>
-            <div>박스 안 / 중거리 슈팅 비중과 결정력, 상대에게 허용한 박스 안 슈팅을 분석합니다.</div>
+          <div class="pro-benefit">
+            <b>슈팅 위치 · 결정력</b>
+            <div>박스 안과 중거리 슈팅 비중, 결정력, 상대에게 내준 박스 안 슈팅을 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#7C3AED;">
-            <b style="color:#7C3AED;">🥅 득점 · 실점 유형</b>
-            <div>헤딩 · 프리킥 · 페널티킥 · 박스 안/밖 득점과 실점을 비교해 취약한 유형을 알려드립니다.</div>
+          <div class="pro-benefit">
+            <b>득점 · 실점 유형</b>
+            <div>헤딩, 프리킥, 페널티킥, 박스 안팎으로 나눠 약한 유형을 찾아요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#0284C7;">
-            <b style="color:#0284C7;">⚔️ 실시간 매치업 프리뷰</b>
-            <div>상대의 주요 공격 루트(크로스 vs 스루패스)를 미리 예측해드립니다.</div>
+          <div class="pro-benefit">
+            <b>상대 공략 패턴</b>
+            <div>최근 상대들이 나를 어떻게 공략했는지(크로스, 스루패스 등) 정리해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#8B5CF6;">
-            <b style="color:#8B5CF6;">🔍 스쿼드 구멍 색출 & 교체 추천</b>
-            <div>스쿼드에서 평점이 가장 낮은 선수를 찾고, 같은 자리에 더 잘했던 선수를 추천합니다.</div>
+          <div class="pro-benefit">
+            <b>스쿼드 교체 추천</b>
+            <div>평점이 가장 낮은 선수 3명과 그 자리에 필요한 유형을 알려줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#EAB308;">
-            <b style="color:#EAB308;">🌟 선수 평점 TOP / 하위 3 · 공격 포인트</b>
-            <div>누가 잘하고 누가 부진한지, 누가 골과 도움을 책임지는지 한눈에 보여드립니다.</div>
+          <div class="pro-benefit">
+            <b>선수 평점</b>
+            <div>평점 상위·하위 3명, 골과 도움을 가장 많이 올린 선수를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#14B8A6;">
-            <b style="color:#14B8A6;">📈 최근 흐름 · 점유율 구간별 승률 · 카드 관리</b>
-            <div>연승/연패, 최근 폼 변화, 나에게 맞는 점유율 운영, 경고·퇴장 관리까지 피드백합니다.</div>
+          <div class="pro-benefit">
+            <b>최근 흐름 · 경기 운영</b>
+            <div>연승·연패, 점유율 구간별 승률, 카드와 파울을 보여줘요.</div>
           </div>
         </div>
       </div>
@@ -1153,7 +1153,7 @@
 
   <div id="tab-tools" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title">🧰 이적시장 수수료 계산기</h3>
+      <h3 class="page-title">이적시장 수수료 계산기</h3>
     </div>
     <div class="shadcn-card tool-card fee-card">
       <div class="tool-label">공통 할인</div>
@@ -1176,10 +1176,10 @@
 
   <div id="tab-sim" class="tab-content">
     <div class="hero-search-section">
-      <h3 class="page-title">🎰 뽑기 시뮬레이터</h3>
+      <h3 class="page-title">뽑기 시뮬레이터</h3>
       <div class="mt-filter" style="justify-content:center; margin-top:8px;">
-        <button class="mt-chip active" data-sim="shop" onclick="switchSim('shop')">🛍️ 스페셜 상점</button>
-        <button class="mt-chip" data-sim="pachinko" onclick="switchSim('pachinko')">🎰 빠칭코</button>
+        <button class="mt-chip active" data-sim="shop" onclick="switchSim('shop')">스페셜 상점</button>
+        <button class="mt-chip" data-sim="pachinko" onclick="switchSim('pachinko')">빠칭코</button>
       </div>
     </div>
 
@@ -1196,7 +1196,7 @@
           <button class="pill-search-btn" onclick="shopPull(1)">1회 뽑기</button>
           <button class="pill-search-btn" onclick="shopPull(10)">10회</button>
           <button class="pill-search-btn" onclick="shopPull(100)">100회</button>
-          <button class="bg-btn" onclick="shopUntilTop()">🏆 1등 나올 때까지</button>
+          <button class="bg-btn" onclick="shopUntilTop()">1등 나올 때까지</button>
           <button class="bg-btn" onclick="shopReset()">초기화</button>
         </div>
         <div id="shop-reveal" class="sim-reveal"></div>
@@ -1212,7 +1212,7 @@
           <div class="slot-msg" id="slot-msg">돌려서 잭팟을 노려보세요!</div>
         </div>
         <div class="sim-btns" style="justify-content:center;">
-          <button class="pill-search-btn" id="slot-spin" onclick="slotSpin(1)">🎰 1회 돌리기</button>
+          <button class="pill-search-btn" id="slot-spin" onclick="slotSpin(1)">1회 돌리기</button>
           <button class="pill-search-btn" onclick="slotSpin(10)">10회</button>
           <button class="pill-search-btn" onclick="slotSpin(100)">100회</button>
           <button class="bg-btn" onclick="slotReset()">초기화</button>
@@ -1227,23 +1227,23 @@
 
   <div id="tab-hub" class="tab-content">
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
-      <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">⚙️ 내 허브</h2></div>
+      <div><h2 style="font-size:32px; font-weight:900; margin-bottom:8px;">내 허브</h2></div>
     </div>
     <div class="hub-container">
       <div class="hub-sidebar">
-        <div class="hub-menu-item active" data-hub="account" onclick="switchHubSection('account')">👤 내 계정 정보</div>
-        <div class="hub-menu-item" data-hub="mygame" onclick="switchHubSection('mygame')">🎮 내 구단</div>
-        <div class="hub-menu-item" data-hub="favorites" onclick="switchHubSection('favorites')">⭐ 즐겨찾기 구단주</div>
-        <div class="hub-menu-item" data-hub="history" onclick="switchHubSection('history')">🔍 최근 검색 기록</div>
-        <div class="hub-menu-item" data-hub="payments" onclick="switchHubSection('payments')">💳 결제 · PRO 내역</div>
-        <div class="hub-menu-item" data-hub="settings" onclick="switchHubSection('settings')">🛠️ 설정</div>
+        <div class="hub-menu-item active" data-hub="account" onclick="switchHubSection('account')">내 계정 정보</div>
+        <div class="hub-menu-item" data-hub="mygame" onclick="switchHubSection('mygame')">내 구단</div>
+        <div class="hub-menu-item" data-hub="favorites" onclick="switchHubSection('favorites')">즐겨찾기 구단주</div>
+        <div class="hub-menu-item" data-hub="history" onclick="switchHubSection('history')">최근 검색 기록</div>
+        <div class="hub-menu-item" data-hub="payments" onclick="switchHubSection('payments')">결제 · PRO 내역</div>
+        <div class="hub-menu-item" data-hub="settings" onclick="switchHubSection('settings')">설정</div>
       </div>
       <div class="hub-content">
        <div class="hub-section" data-hub-section="account">
         <div class="shadcn-card" style="padding: 24px;" id="hub-auth-container"></div>
         
         <div id="admin-panel" class="admin-panel">
-          <h3 style="font-size:18px; font-weight:900; margin-bottom:8px; color:var(--tier-op);">👑 최고 관리자 패널</h3>
+          <h3 style="font-size:18px; font-weight:900; margin-bottom:8px; color:var(--tier-op);">최고 관리자 패널</h3>
           <p style="font-size:13px; color:var(--foreground); margin-bottom:16px;">아이디와 기간을 골라 PRO를 부여하거나 해지할 수 있어요.</p>
           
           <div class="admin-grant">
@@ -1257,22 +1257,22 @@
               <option value="365">365일</option>
               <option value="unlimited">무제한 (3,000원)</option>
             </select>
-            <button class="admin-btn" onclick="grantProToUser()">🎁 부여</button>
+            <button class="admin-btn" onclick="grantProToUser()">부여</button>
             <button class="admin-btn" style="background:var(--lose-color);" onclick="revokeProFromInput()">해지</button>
           </div>
           <div id="admin-fb-help" class="admin-fb-help" hidden>
-            <b>🔧 Firebase 규칙 바꾸는 법 (한 번만 하면 돼요)</b>
+            <b>Firebase 규칙 바꾸는 법 (한 번만 하면 돼요)</b>
             <ol>
               <li>Firebase 콘솔(console.firebase.google.com) → <b>fcogg</b> 프로젝트 열기</li>
               <li>왼쪽 메뉴 <b>Firestore Database</b> → 위쪽 <b>규칙</b> 탭</li>
               <li>안에 있는 내용을 전부 지우고 아래 "규칙 복사" 내용을 붙여넣은 뒤 <b>게시</b></li>
             </ol>
-            <button class="bg-btn" onclick="copyText(FIRESTORE_OPEN_RULES, '규칙이 복사되었습니다. Firebase 규칙 탭에 붙여넣고 게시하세요.')">📋 규칙 복사</button>
+            <button class="bg-btn" onclick="copyText(FIRESTORE_OPEN_RULES, '규칙이 복사되었습니다. Firebase 규칙 탭에 붙여넣고 게시하세요.')">규칙 복사</button>
           </div>
           
           <div class="visit-stats">
             <div class="visit-head">
-              <h4>📬 받은 피드백 <span id="fb-unread" class="fb-badge" style="display:none;"></span></h4>
+              <h4>받은 피드백 <span id="fb-unread" class="fb-badge" style="display:none;"></span></h4>
               <button class="bg-btn" onclick="renderFeedbackInbox()">새로고침</button>
             </div>
             <div id="fb-inbox"><div class="visit-empty">불러오는 중...</div></div>
@@ -1280,20 +1280,20 @@
 
           <div class="visit-stats">
             <div class="visit-head">
-              <h4>💳 입금 확인 필요</h4>
+              <h4>입금 확인 필요</h4>
               <button class="bg-btn" onclick="renderPaymentRequests()">새로고침</button>
             </div>
             <div id="pay-requests"><div class="visit-empty">불러오는 중...</div></div>
           </div>
 
-          <h4 style="font-size:15px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">💎 PRO 멤버십 활성 유저</h4>
+          <h4 style="font-size:15px; font-weight:800; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px; color:var(--foreground);">PRO 멤버십 활성 유저</h4>
           <div id="admin-pro-list" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; padding-right:8px;">
           </div>
         </div>
 
         <div id="admin-stats-card" class="shadcn-card" style="padding: 24px; display:none;">
           <div class="visit-head" style="margin-bottom:0;">
-            <h3 style="font-size:18px; font-weight:800;">📈 방문자 통계</h3>
+            <h3 style="font-size:18px; font-weight:800;">방문자 통계</h3>
             <div style="display:flex; gap:6px;">
               <button class="bg-btn" id="visit-refresh-btn" style="display:none;" onclick="renderVisitStats()">새로고침</button>
               <button class="pill-search-btn" style="height:36px; padding:0 16px; font-size:13px;" id="visit-toggle-btn" onclick="toggleVisitStats()">보기</button>
@@ -1305,7 +1305,7 @@
 
        <div class="hub-section" data-hub-section="mygame" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
-          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">🎮 내 구단</h3>
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">내 구단</h3>
           <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">내 FC 온라인 구단주명을 등록하면 여기서 바로 내 티어와 최근 전적을 볼 수 있어요.</p>
           <div style="display:flex; gap:8px;">
             <input type="text" id="mygame-input" class="admin-input" style="margin-bottom:0; border-color:var(--border);" placeholder="내 구단주명" onkeydown="if(event.key==='Enter') saveMyNick()">
@@ -1317,7 +1317,7 @@
 
        <div class="hub-section" data-hub-section="favorites" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
-          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">⭐ 즐겨찾기 구단주</h3>
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:6px;">즐겨찾기 구단주</h3>
           <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">전적 검색 결과에서 ☆ 즐겨찾기를 누르면 여기에 모여요. 친구·라이벌 전적을 한 번에 확인하세요. (최대 20명)</p>
           <div style="display:flex; gap:8px; margin-bottom:14px;">
             <input type="text" id="fav-input" class="admin-input" style="margin-bottom:0; border-color:var(--border);" placeholder="구단주명 직접 추가" onkeydown="if(event.key==='Enter') addFavoriteFromInput()">
@@ -1330,7 +1330,7 @@
        <div class="hub-section" data-hub-section="history" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="font-size:18px; font-weight:800; margin-bottom: 0;">🔍 최근 검색 기록</h3>
+            <h3 style="font-size:18px; font-weight:800; margin-bottom: 0;">최근 검색 기록</h3>
             <button onclick="clearSearchHistory()" style="background:var(--muted); border:none; padding:6px 14px; border-radius:99px; font-size:12px; font-weight:700; cursor:pointer;">전체 삭제</button>
           </div>
           <div id="history-container" style="display:flex; flex-direction:column; gap:12px; margin-top: 16px;"></div>
@@ -1339,14 +1339,14 @@
 
        <div class="hub-section" data-hub-section="payments" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
-          <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">💳 결제 · PRO 내역</h3>
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">결제 · PRO 내역</h3>
           <div id="my-payments"></div>
         </div>
        </div>
 
        <div class="hub-section" data-hub-section="settings" style="display:none;">
         <div class="shadcn-card" style="padding: 24px;">
-          <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">🛠️ 설정</h3>
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">설정</h3>
           <div class="setting-row" style="flex-wrap:wrap; gap:12px;">
             <div><div style="font-size:15px; font-weight:700;">테마</div><div style="font-size:13px; color:var(--muted-foreground);">사이트 색과 로고 아이콘이 함께 바뀌어요.</div></div>
             <div class="theme-picker" id="theme-picker">
@@ -1360,14 +1360,14 @@
             <div><div style="font-size:15px; font-weight:700;">버튼 스타일</div><div style="font-size:13px; color:var(--muted-foreground);">선택된 메뉴·버튼을 단색 또는 그라데이션으로. <span class="glass-lock-inline">(유리 바에서는 고를 수 없어요)</span></div></div>
             <div class="theme-picker" id="btn-picker">
               <button data-btn-pick="solid" onclick="setBtnStyle('solid')">단색</button>
-              <button data-btn-pick="gradient" onclick="setBtnStyle('gradient')">🌈 그라데이션</button>
+              <button data-btn-pick="gradient" onclick="setBtnStyle('gradient')">그라데이션</button>
             </div>
           </div>
           <div class="setting-row" style="flex-wrap:wrap; gap:12px;">
             <div><div style="font-size:15px; font-weight:700;">바 디자인</div><div style="font-size:13px; color:var(--muted-foreground);">선택된 메뉴·버튼을 반투명 유리처럼 보이게 해요.</div></div>
             <div class="theme-picker" id="bar-picker">
               <button data-bar-pick="solid" onclick="setBar('solid')">기본 바</button>
-              <button data-bar-pick="glass" onclick="setBar('glass')">💧 유리 바 디자인</button>
+              <button data-bar-pick="glass" onclick="setBar('glass')">유리 바 디자인</button>
             </div>
           </div>
           <div class="setting-row">
@@ -1391,7 +1391,7 @@
 <footer class="site-footer" style="padding:24px 0 16px; border-top:1px solid var(--border); text-align:center; font-size:13px; color:var(--muted-foreground); line-height:1.8;">
   <div><a href="/about.html" style="color:inherit;">사이트 소개</a> · <a href="/privacy.html" style="color:inherit; font-weight:700;">개인정보처리방침</a></div>
   <div>Data based on NEXON Open API · FCO.GG는 넥슨코리아·EA와 무관한 개인 운영 팬 사이트입니다.</div>
-  <div>문의 · 제휴: <a href="mailto:yulckh@gmail.com" style="color:inherit;">yulckh@gmail.com</a> · <a href="#" onclick="openFeedback(); return false;" style="color:inherit; font-weight:700;">💬 피드백 보내기</a></div>
+  <div>문의 · 제휴: <a href="mailto:yulckh@gmail.com" style="color:inherit;">yulckh@gmail.com</a> · <a href="#" onclick="openFeedback(); return false;" style="color:inherit; font-weight:700;">피드백 보내기</a></div>
   <div>© 2026 FCO.GG</div>
 </footer>
 </div>
@@ -1424,7 +1424,7 @@
 
 <div id="theme-modal" class="notice-modal-overlay">
   <div class="notice-modal-content" style="max-width:560px; padding:30px 26px 24px; text-align:center;">
-    <h2 style="font-size:22px; font-weight:900; margin-bottom:6px;">🎨 테마를 골라주세요</h2>
+    <h2 style="font-size:22px; font-weight:900; margin-bottom:6px;">테마를 골라주세요</h2>
     <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:20px;">나중에 내 허브 → 설정에서 언제든 바꿀 수 있어요.</p>
     <div class="theme-choose">
       <button data-first-theme="light" onclick="pickFirstTheme('light')"><span class="sw" style="background:linear-gradient(135deg,#F5F5F7 55%,#B8EBC6);"><img src="/logo-icon.png" alt=""></span>기본</button>
@@ -1435,7 +1435,7 @@
     <div style="font-size:15px; font-weight:900; margin:22px 0 10px; text-align:left;">바 디자인</div>
     <div class="bar-choose">
       <button data-first-bar="solid" onclick="pickFirstBar('solid')"><b>기본 바</b></button>
-      <button data-first-bar="glass" onclick="pickFirstBar('glass')"><b>💧 유리 바 디자인</b></button>
+      <button data-first-bar="glass" onclick="pickFirstBar('glass')"><b>유리 바 디자인</b></button>
     </div>
     <div class="live-preview" aria-hidden="true">
       <div class="main-tabs lp-tabs"><span class="tab-btn active">전적 & 구단 분석</span><span class="tab-btn">1:1 상대전적</span><span class="tab-btn">팀컬러</span><span class="tab-btn">내 허브</span></div>
@@ -1453,13 +1453,13 @@
 <div id="notice-modal" class="notice-modal-overlay">
   <div class="notice-modal-content" style="max-width:520px; padding:28px 24px 22px;">
     <button class="modal-close-btn" onclick="closeNoticeModal()">✕</button>
-    <h2 style="font-size:20px; font-weight:900; margin-bottom:16px;">📢 업데이트 소식</h2>
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:16px;">업데이트 소식</h2>
 
     <div class="upd-entry">
       <div class="upd-date">2026.10.31 <span class="upd-new">NEW</span></div>
       <ul class="upd-list">
-        <li><b>💬 피드백 보내기</b>: 오른쪽 아래 버튼으로 버그 제보 · 기능 제안을 운영자에게 바로 보낼 수 있어요</li>
-        <li><b>📬 운영자 답장</b>: 답장이 오면 💬 버튼에 빨간 점이 뜨고, '내 문의 · 답장'에서 확인할 수 있어요</li>
+        <li><b>피드백 보내기</b>: 오른쪽 아래 버튼으로 버그 제보 · 기능 제안을 운영자에게 바로 보낼 수 있어요</li>
+        <li><b>운영자 답장</b>: 답장이 오면 피드백 버튼에 빨간 점이 뜨고, '내 문의 · 답장'에서 확인할 수 있어요</li>
       </ul>
     </div>
 
@@ -1471,15 +1471,15 @@
         <li><b>결제 · PRO 내역</b>, 남은 PRO 기간 확인</li>
         <li><b>설정</b>: 기본 경기 종류, 검색 기록 저장 끄기, 데이터 초기화</li>
         <li>새 <b>테마</b>: 기본 · 다크 · <b>네온 블루</b> · <b>핑크</b> (내 허브 → 설정), 배경에 은은한 블러 빛</li>
-        <li><b>💧 유리 바 디자인</b>: 선택한 메뉴·버튼을 반투명 유리처럼 (내 허브 → 설정)</li>
-        <li><b>🌈 버튼 스타일</b>: 선택한 메뉴·버튼을 단색 또는 그라데이션으로 (내 허브 → 설정)</li>
+        <li><b>유리 바 디자인</b>: 선택한 메뉴·버튼을 반투명 유리처럼 (내 허브 → 설정)</li>
+        <li><b>버튼 스타일</b>: 선택한 메뉴·버튼을 단색 또는 그라데이션으로 (내 허브 → 설정)</li>
       </ul>
     </div>
 
     <div class="upd-entry">
       <div class="upd-date">2026.10.18 칭호 · 리포트 업데이트</div>
       <ul class="upd-list">
-        <li><b>🏅 칭호 도감</b> 탭 추가: 칭호 29개의 등급과 조건을 한눈에 확인</li>
+        <li><b>칭호 도감</b> 탭 추가: 칭호 29개의 등급과 조건을 한눈에 확인</li>
         <li>칭호 대폭 추가: 프리킥 장인, 원클럽맨, <b>'(선수 이름) 원픽'</b>, 감아차기 장인, DD 마스터 등</li>
         <li>칭호 기준을 실제 유저 기록(약 900경기)에 맞게 재조정, 칭호는 가장 잘 맞는 <b>1개</b>만</li>
         <li>경기 상세 · PRO 리포트에 골마다 <b>슈팅 종류</b> 표시 (감아차기 ZD, 낮은 슛 DD 등)</li>
@@ -1536,7 +1536,7 @@
     <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
     <div id="modal-loading" style="text-align: center; padding: 120px 20px; color: var(--muted-foreground);">
       <div class="spinner">⏳</div>
-      <div style="font-weight:700; font-size:16px; color:var(--foreground);">매치 기록을 스캔하여 정밀 분석 중입니다...</div>
+      <div style="font-weight:700; font-size:16px; color:var(--foreground);">경기 기록을 불러오는 중이에요...</div>
     </div>
     
     <div id="profile-result-area" style="display: none;">
@@ -1571,18 +1571,18 @@
           </div>
           <div class="user-action-btns" style="margin: 0; flex-direction: column;">
             <button class="action-btn btn-rec" style="width: 100%;" onclick="actRecommend()">👍 추천 (<span id="prof-rec-cnt">0</span>)</button>
-            <button class="action-btn btn-rep" style="width: 100%;" onclick="actReport()">🚨 비매너 신고</button>
+            <button class="action-btn btn-rep" style="width: 100%;" onclick="actReport()">비매너 신고</button>
           </div>
         </div>
       </div>
 
       <div id="ai-loading" style="text-align:center; padding:30px 0; display:none;">
         <div class="spinner" style="font-size:24px;">⚽</div>
-        <div style="font-size:14px; font-weight:700; color:var(--ai-blue); margin-top:12px;">최근 25경기 데이터를 기반으로 AI 리포트를 생성 중입니다...</div>
+        <div style="font-size:14px; font-weight:700; color:var(--ai-blue); margin-top:12px;">최근 25경기를 분석하는 중이에요...</div>
       </div>
 
       <div id="ai-content-basic" class="ai-box ai-basic" style="display:none;">
-        <div class="ai-header">🔍 FCO AI 심층 분석 리포트</div>
+        <div class="ai-header">경기 분석 리포트</div>
         <div class="ai-grid">
           <div class="ai-card" style="grid-column: 1 / -1; padding: 0; background: transparent; border: none; box-shadow: none;">
             <div class="ai-card-text" id="ai-basic-text">AI 분석 중...</div>
@@ -1593,21 +1593,21 @@
       <div id="ai-content-pro" class="ai-box ai-pro" style="display:none; flex-direction:column; padding-bottom: 20px;">
         <div class="pro-overlay" id="pro-overlay">
           <div style="font-size:18px; font-weight:900; margin-bottom:16px; color:var(--foreground);">프리미엄 1:1 맞춤형 솔루션이 준비되었습니다.</div>
-          <button class="btn-unlock-pro" onclick="goToProTab()">✨ FCO PRO AI 리포트 알아보기</button>
+          <button class="btn-unlock-pro" onclick="goToProTab()">PRO 리포트 알아보기</button>
         </div>
         <div id="pro-blur-target" class="pro-blur-content">
-          <div class="ai-header">👑 FCO PRO AI 정밀 분석 리포트 <span style="background:var(--pro-gold); color:#FFF; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px;">PRO</span></div>
+          <div class="ai-header">PRO 분석 리포트 <span style="background:var(--pro-gold); color:#FFF; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px;">PRO</span></div>
           <div class="ai-grid">
             <div class="ai-card">
-              <div class="ai-card-title" style="color: #EA580C;">🚨 치명적 약점 스캐너</div>
+              <div class="ai-card-title" style="color: #EA580C;">약점 TOP 5</div>
               <div class="ai-card-text" id="pro-ai-weakness">AI 분석 중...</div>
             </div>
             <div class="ai-card">
-              <div class="ai-card-title" style="color: #0284C7;">⚔️ 실시간 매치업 프리뷰</div>
+              <div class="ai-card-title" style="color: #0284C7;">상대 공략 패턴</div>
               <div class="ai-card-text" id="pro-ai-matchup">AI 분석 중...</div>
             </div>
             <div class="ai-card" style="grid-column: 1 / -1;">
-              <div class="ai-card-title" style="color: #16A34A;">📈 승률 상승 솔루션</div>
+              <div class="ai-card-title" style="color: #16A34A;">승률 올리는 방법</div>
               <div class="ai-card-text" id="pro-ai-solution">AI 분석 중...</div>
             </div>
           </div>
@@ -1631,7 +1631,7 @@
           <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">전체 패스 성공률</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-pass-rate">0%</b></div>
           <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">점유율</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-possess">0%</b></div>
           <div class="stat-row" style="padding: 10px 0; font-size: 13px;"><span style="font-weight:600; color:var(--muted-foreground);">태클 / 블록 성공</span><b style="font-size: 16px; color:var(--foreground);" id="stat-avg-defend">0 / 0</b></div>
-          <button class="btn-detail-more" onclick="openSubDetailModal()" style="margin-top:16px; height: 40px; font-size:13px; border-radius: 8px;">📊 자세한 리포트 보기</button>
+          <button class="btn-detail-more" onclick="openSubDetailModal()" style="margin-top:16px; height: 40px; font-size:13px; border-radius: 8px;">자세한 리포트 보기</button>
         </div>
       </div>
 
@@ -1644,13 +1644,13 @@
               <button class="btn-unlock-pro" style="font-size:12px; padding:8px 16px; margin-top:12px;" onclick="goToProTab()">알아보기</button>
             </div>
             <div id="squad-pro-blur" class="pro-blur-content" style="display: flex; flex-direction: column; height: 100%;">
-              <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:10px;">🚨 스쿼드 워스트 TOP 3</div>
+              <div style="font-size:14px; font-weight:800; color:var(--lose-color); margin-bottom:10px;">스쿼드 워스트 TOP 3</div>
               <div id="worst-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
-              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:10px;">💡 교체 추천</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--ai-blue); margin-bottom:10px;">교체 추천</div>
               <div id="replace-player-info" style="font-size:13px; font-weight:600; color:var(--foreground); line-height:1.5;">분석 중...</div>
-              <div style="margin-top:18px; font-size:14px; font-weight:800; color:#16A34A; margin-bottom:10px;">📊 라인별 평균 평점</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:#16A34A; margin-bottom:10px;">라인별 평균 평점</div>
               <div id="squad-lines-info" style="font-size:13px; font-weight:600;">분석 중...</div>
-              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--pro-gold); margin-bottom:10px;">⭐ 스쿼드 MVP</div>
+              <div style="margin-top:18px; font-size:14px; font-weight:800; color:var(--pro-gold); margin-bottom:10px;">스쿼드 MVP</div>
               <div id="squad-mvp-info" style="font-size:13px; font-weight:600;">분석 중...</div>
             </div>
           </div>
@@ -1682,7 +1682,7 @@
 <div id="sub-detail-modal" class="sub-modal-overlay">
   <div class="sub-modal-content">
     <button class="modal-close-btn" onclick="closeSubDetailModal()">✕</button>
-    <div style="font-size:24px; font-weight:900; color:var(--foreground); margin-bottom:24px; text-align:center;">📈 플레이 스타일 상세 분석</div>
+    <div style="font-size:24px; font-weight:900; color:var(--foreground); margin-bottom:24px; text-align:center;">플레이 스타일 상세 분석</div>
     <div style="font-size:15px; color:var(--muted-foreground); display:flex; flex-direction:column; gap:24px; background:var(--background); padding:32px; border-radius:20px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:700;">평균 실점</span> <b id="stat-avg-concede-modal" style="color:var(--lose-color); font-size:20px;">-</b>
@@ -1729,23 +1729,23 @@
   </div>
 </div>
 
-<button class="fb-fab" onclick="openFeedback()" aria-label="피드백 보내기">💬 피드백<span id="fb-fab-dot" class="fb-fab-dot" style="display:none;"></span></button>
+<button class="fb-fab" onclick="openFeedback()" aria-label="피드백 보내기">피드백<span id="fb-fab-dot" class="fb-fab-dot" style="display:none;"></span></button>
 
 <div id="feedback-modal" class="sub-modal-overlay">
   <div class="sub-modal-content" style="max-width:460px;">
     <button class="modal-close-btn" onclick="closeFeedback()" aria-label="닫기">✕</button>
-    <h3 style="font-size:22px; font-weight:900; margin-bottom:6px;">💬 운영자에게 보내기</h3>
+    <h3 style="font-size:22px; font-weight:900; margin-bottom:6px;">운영자에게 보내기</h3>
     <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:14px;">버그 제보, 기능 제안, 하고 싶은 말 뭐든 좋아요. 운영자만 볼 수 있고, 답장은 여기서 확인할 수 있어요.</p>
     <div class="fb-tabs">
-      <button class="fb-tab active" data-fbtab="write" onclick="switchFbTab('write')">✍️ 보내기</button>
-      <button class="fb-tab" data-fbtab="mine" onclick="switchFbTab('mine')">📬 내 문의 · 답장 <span id="fb-reply-dot" class="fb-badge" style="display:none;"></span></button>
+      <button class="fb-tab active" data-fbtab="write" onclick="switchFbTab('write')">보내기</button>
+      <button class="fb-tab" data-fbtab="mine" onclick="switchFbTab('mine')">내 문의 · 답장 <span id="fb-reply-dot" class="fb-badge" style="display:none;"></span></button>
     </div>
     <div id="fb-mine" style="display:none;"></div>
     <div id="fb-write">
     <div class="fb-cats" id="fb-cats">
-      <button class="mt-chip active" data-fbcat="제안" onclick="pickFbCat(this)">💡 기능 제안</button>
-      <button class="mt-chip" data-fbcat="버그" onclick="pickFbCat(this)">🐞 버그 제보</button>
-      <button class="mt-chip" data-fbcat="기타" onclick="pickFbCat(this)">💬 기타</button>
+      <button class="mt-chip active" data-fbcat="제안" onclick="pickFbCat(this)">기능 제안</button>
+      <button class="mt-chip" data-fbcat="버그" onclick="pickFbCat(this)">버그 제보</button>
+      <button class="mt-chip" data-fbcat="기타" onclick="pickFbCat(this)">기타</button>
     </div>
     <textarea id="fb-text" class="fb-text" maxlength="1000" placeholder="내용을 적어주세요 (최대 1000자)" oninput="document.getElementById('fb-count').textContent=this.value.length"></textarea>
     <div style="text-align:right; font-size:11px; color:var(--muted-foreground); margin:4px 2px 10px;"><span id="fb-count">0</span>/1000</div>
@@ -1758,13 +1758,13 @@
 <div id="donate-modal" class="sub-modal-overlay">
   <div class="sub-modal-content" style="max-width:420px; text-align:center;">
     <button class="modal-close-btn" onclick="closeDonateModal()" aria-label="닫기">✕</button>
-    <h3 id="donate-title" style="font-size:22px; font-weight:900; margin-bottom:16px;">💛 FCO.GG 후원하기</h3>
+    <h3 id="donate-title" style="font-size:22px; font-weight:900; margin-bottom:16px;">FCO.GG 후원하기</h3>
     <div style="background:var(--background); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px;">
       <div style="font-size:13px; color:var(--muted-foreground); font-weight:700;">카카오뱅크 · 예금주 김*율</div>
       <div style="font-size:24px; font-weight:900; letter-spacing:1px; margin-top:4px;">3333-38-6607369</div>
     </div>
     <div id="donate-pro-note" style="display:none; font-size:13px; color:var(--muted-foreground); line-height:1.6; margin-bottom:16px; word-break:keep-all;">990원 송금 시 <b style="color:var(--foreground);">가입하신 아이디를 메모에 꼭 적어주세요!</b><br>입금이 확인되면 관리자가 60일(30+30) 권한을 직접 부여해 드려요.</div>
-    <button class="pill-search-btn" style="width:100%; height:48px;" onclick="copyText('카카오뱅크 3333386607369', '계좌번호가 복사되었습니다. 감사합니다! 💛')">계좌번호 복사</button>
+    <button class="pill-search-btn" style="width:100%; height:48px;" onclick="copyText('카카오뱅크 3333386607369', '계좌번호가 복사되었습니다. 감사합니다!')">계좌번호 복사</button>
     <div id="pay-verify" class="pay-verify" style="display:none;"></div>
   </div>
 </div>
@@ -1886,7 +1886,7 @@
   const isFavorite = (nick) => getFavorites().includes(nick);
   function toggleFavorite(nick) {
     if (!nick) return;
-    if (!localStorage.getItem('fco_current_user')) { showToast('🔒 즐겨찾기는 로그인해야 쓸 수 있어요.'); openAuthModal(); return; }
+    if (!localStorage.getItem('fco_current_user')) { showToast('즐겨찾기는 로그인해야 쓸 수 있어요.'); openAuthModal(); return; }
     const list = getFavorites();
     if (list.includes(nick)) { setFavorites(list.filter(n => n !== nick)); showToast(`☆ ${nick} 즐겨찾기 해제`); }
     else {
@@ -1913,7 +1913,7 @@
       <div class="fav-row">
         <span style="color:#F59E0B;">★</span>
         <button class="fav-name" data-nick="${escapeHtml(n)}">${escapeHtml(n)} <span style="color:var(--muted-foreground); font-size:12px; font-weight:600;">전적 보기 ➔</span></button>
-        <button class="bg-btn" style="height:32px; padding:0 10px;" data-h2h="${escapeHtml(n)}" onclick="startH2HWith(this.dataset.h2h)">⚔️ 나와 1:1</button>
+        <button class="bg-btn" style="height:32px; padding:0 10px;" data-h2h="${escapeHtml(n)}" onclick="startH2HWith(this.dataset.h2h)">나와 1:1</button>
         <button class="history-del" data-fav-del="${escapeHtml(n)}" onclick="toggleFavorite(this.dataset.favDel)" aria-label="즐겨찾기 삭제" title="삭제">✕</button>
       </div>`).join('')
       : `<div style="text-align:center; padding:30px; color:var(--muted-foreground); font-size:13px; background:var(--background); border-radius:12px;">아직 즐겨찾기한 구단주가 없어요.</div>`;
@@ -1933,7 +1933,7 @@
     const nick = document.getElementById('mygame-input').value.trim();
     if (!nick) return showToast('구단주명을 입력하세요.');
     localStorage.setItem('fco_my_nick', nick);
-    showToast(`🎮 내 구단을 ${nick}(으)로 등록했어요.`);
+    showToast(`내 구단을 ${nick}(으)로 등록했어요.`);
     renderMyGame();
   }
   async function renderMyGame() {
@@ -1943,7 +1943,7 @@
     const nick = localStorage.getItem('fco_my_nick');
     if (input && nick && !input.value) input.value = nick;
     if (!nick) { box.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted-foreground); font-size:13px; background:var(--background); border-radius:12px;">구단주명을 등록하면 내 티어와 최근 전적이 여기에 나와요.</div>`; return; }
-    box.innerHTML = `<div class="visit-empty">⏳ ${escapeHtml(nick)} 전적 불러오는 중...</div>`;
+    box.innerHTML = `<div class="visit-empty">${escapeHtml(nick)} 전적 불러오는 중...</div>`;
     try {
       const ouid = await getOuid(nick);
       if (!ouid) { box.innerHTML = `<div class="visit-empty">'${escapeHtml(nick)}' 구단주를 찾을 수 없어요. 철자를 확인해주세요.</div>`; return; }
@@ -1994,9 +1994,9 @@
     const isPro = localStorage.getItem('fco_pro_mode') === 'true';
     const exp = localStorage.getItem('fco_pro_expiry');
     const left = exp && exp !== 'unlimited' ? Math.max(0, Math.ceil((Number(exp) - Date.now()) / DAY_MS)) : null;
-    const statusLine = userId === ADMIN_ID ? '👑 관리자 (모든 기능 사용 가능)'
+    const statusLine = userId === ADMIN_ID ? '관리자 (모든 기능 사용 가능)'
       : !isPro ? '비활성 · <a href="#" onclick="switchTab(\'pro\'); return false;" style="color:var(--ai-blue); font-weight:800;">PRO 알아보기 ➔</a>'
-      : exp === 'unlimited' ? '💎 PRO 무제한' : `💎 PRO 이용 중 · <b>${left}일</b> 남음 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})`;
+      : exp === 'unlimited' ? 'PRO 무제한' : `PRO 이용 중 · <b>${left}일</b> 남음 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})`;
     let rows = [];
     if (db) {
       try {
@@ -2053,10 +2053,10 @@
 
   // --- 스페셜 상점 ---
   let shopItems = [
-    { name: '🏆 최상위 시즌 선수', p: 0.5 },
-    { name: '🥈 +8 강화 선수', p: 2 },
-    { name: '🥉 +5 강화 선수', p: 7.5 },
-    { name: '💰 BP 팩', p: 30 },
+    { name: '최상위 시즌 선수', p: 0.5 },
+    { name: '+8 강화 선수', p: 2 },
+    { name: '+5 강화 선수', p: 7.5 },
+    { name: 'BP 팩', p: 30 },
     { name: '일반 선수', p: 60 }
   ];
   let shopLog = { pulls: 0, counts: [], firstTop: null };
@@ -2098,7 +2098,7 @@
       document.getElementById('shop-reveal').innerHTML = (n > 10 ? `<span class="sim-pick" style="background:var(--muted); color:var(--muted-foreground);">마지막 10개</span>` : '') +
         shown.map((i, k) => `<span class="sim-pick" style="background:${SIM_COLORS[i % SIM_COLORS.length]}; animation-delay:${k * 0.05}s;">${escapeHtml(shopItems[i].name)}</span>`).join('');
       const tops = got.filter(i => i === 0).length;
-      if (tops) showToast(`🎉 ${shopItems[0].name} ${tops}개 당첨!`);
+      if (tops) showToast(`${shopItems[0].name} ${tops}개 당첨!`);
     }
     shopStats();
     return got;
@@ -2108,7 +2108,7 @@
     let tries = 0;
     while (tries < 100000) { tries++; if (shopPull(1, true)[0] === 0) break; }
     const cost = (+document.getElementById('shop-cost').value || 0) * tries;
-    document.getElementById('shop-reveal').innerHTML = `<span class="sim-pick" style="background:${SIM_COLORS[0]};">🎉 ${tries.toLocaleString()}번째에 ${escapeHtml(shopItems[0].name)}! · ${cost.toLocaleString()} ${escapeHtml(document.getElementById('shop-unit').value)}</span>`;
+    document.getElementById('shop-reveal').innerHTML = `<span class="sim-pick" style="background:${SIM_COLORS[0]};">${tries.toLocaleString()}번째에 ${escapeHtml(shopItems[0].name)}! · ${cost.toLocaleString()} ${escapeHtml(document.getElementById('shop-unit').value)}</span>`;
     shopStats();
   }
   function shopReset() { shopLog = { pulls: 0, counts: [], firstTop: null }; const r = document.getElementById('shop-reveal'); if (r) r.innerHTML = ''; shopStats(); }
@@ -2207,7 +2207,7 @@
       clearInterval(timers[i]); el.classList.remove('spin'); el.textContent = reels[i].s;
       if (i === 2) {
         slotBusy = false;
-        if (res.kind === 3 && res.sym === slotSymbols[0]) { msg.className = 'slot-msg win'; msg.textContent = `🎉 잭팟!! +${res.pay.toLocaleString()} 코인`; }
+        if (res.kind === 3 && res.sym === slotSymbols[0]) { msg.className = 'slot-msg win'; msg.textContent = `잭팟!! +${res.pay.toLocaleString()} 코인`; }
         else if (res.pay) { msg.className = 'slot-msg win'; msg.textContent = `당첨! +${res.pay.toLocaleString()} 코인`; }
         else msg.textContent = '꽝! 다시 도전해보세요';
         slotStatsRender();
@@ -2272,7 +2272,7 @@
       <div class="fb-item">
         <div class="fb-meta"><span>${escapeHtml(f.category || '기타')}</span><span>${new Date(f.createdAt).toLocaleString('ko-KR')}</span></div>
         <div class="fb-body">${escapeHtml(f.text || '')}</div>
-        ${f.reply ? `<div class="fb-reply"><b>운영자 답장</b> · <span style="font-size:11px; color:var(--muted-foreground);">${new Date(f.repliedAt).toLocaleString('ko-KR')}</span><br>${escapeHtml(f.reply)}</div>` : `<div style="font-size:12px; color:var(--muted-foreground); margin-top:6px; font-weight:700;">⏳ 답장을 기다리는 중</div>`}
+        ${f.reply ? `<div class="fb-reply"><b>운영자 답장</b> · <span style="font-size:11px; color:var(--muted-foreground);">${new Date(f.repliedAt).toLocaleString('ko-KR')}</span><br>${escapeHtml(f.reply)}</div>` : `<div style="font-size:12px; color:var(--muted-foreground); margin-top:6px; font-weight:700;">답장을 기다리는 중</div>`}
       </div>`).join('')}</div>`;
     if (markSeen) {
       const latest = Math.max(0, ...items.map(f => f.repliedAt || 0));
@@ -2288,7 +2288,7 @@
     const dot = document.getElementById('fb-fab-dot'), tabDot = document.getElementById('fb-reply-dot');
     if (dot) dot.style.display = fresh ? '' : 'none';
     if (tabDot) { tabDot.style.display = fresh ? 'inline-flex' : 'none'; tabDot.textContent = fresh; }
-    if (fresh && !sessionStorage.getItem('fco_fb_toast')) { sessionStorage.setItem('fco_fb_toast', '1'); showToast('💌 운영자 답장이 도착했어요! 오른쪽 아래 💬 피드백을 눌러 확인하세요.'); }
+    if (fresh && !sessionStorage.getItem('fco_fb_toast')) { sessionStorage.setItem('fco_fb_toast', '1'); showToast('운영자 답장이 도착했어요! 오른쪽 아래 피드백 버튼을 눌러 확인하세요.'); }
   }
   function closeFeedback() { document.getElementById('feedback-modal').style.display = 'none'; }
   function pickFbCat(btn) { document.querySelectorAll('#fb-cats .mt-chip').forEach(b => b.classList.toggle('active', b === btn)); }
@@ -2310,7 +2310,7 @@
       localStorage.setItem('fco_fb_last', String(Date.now()));
       document.getElementById('fb-text').value = ''; document.getElementById('fb-contact').value = ''; document.getElementById('fb-count').textContent = '0';
       closeFeedback();
-      showToast('💌 보냈어요! 소중한 의견 고마워요.');
+      showToast('보냈어요! 소중한 의견 고마워요.');
     } catch (e) { showToast('보내지 못했어요. 잠시 후 다시 시도해주세요.'); }
   }
   async function renderFeedbackInbox() {
@@ -2331,7 +2331,7 @@
       <div class="fb-item ${f.read ? '' : 'unread'}">
         <div class="fb-meta"><span>${icon[f.category] || '💬'} ${escapeHtml(f.category || '기타')} · ${escapeHtml(f.userId || '비회원')} · ${escapeHtml(f.device || '')}</span><span>${new Date(f.createdAt).toLocaleString('ko-KR')}</span></div>
         <div class="fb-body">${escapeHtml(f.text || '')}</div>
-        ${f.contact ? `<div style="font-size:12px; font-weight:800; margin-top:6px; color:var(--ai-blue);">📮 연락처: ${escapeHtml(f.contact)}</div>` : ''}
+        ${f.contact ? `<div style="font-size:12px; font-weight:800; margin-top:6px; color:var(--ai-blue);">연락처: ${escapeHtml(f.contact)}</div>` : ''}
         ${f.reply ? `<div class="fb-reply"><b>보낸 답장</b> · <span style="font-size:11px; color:var(--muted-foreground);">${new Date(f.repliedAt).toLocaleString('ko-KR')}</span><br>${escapeHtml(f.reply)}</div>` : ''}
         <div class="fb-reply-box"><textarea id="fbr-${f.id}" maxlength="1000" placeholder="${f.reply ? '답장 고쳐 쓰기' : '답장 쓰기 · 보낸 사람이 사이트에서 바로 봐요'}"></textarea><button class="mini-btn" style="background:var(--ai-blue); height:40px;" data-id="${f.id}" onclick="replyFeedback(this.dataset.id)">답장</button></div>
         <div class="fb-actions">
@@ -2346,7 +2346,7 @@
     if (!reply) return showToast('답장 내용을 적어주세요.');
     try {
       await db.collection('feedback').doc(id).set({ reply, repliedAt: Date.now(), read: true }, { merge: true });
-      showToast('💌 답장을 보냈어요. 보낸 사람이 사이트에 들어오면 바로 보여요.');
+      showToast('답장을 보냈어요. 보낸 사람이 사이트에 들어오면 바로 보여요.');
       renderFeedbackInbox();
     } catch (e) { showToast(proErrorMessage(e)); }
   }
@@ -2501,7 +2501,7 @@
   function setBtnStyle(name, quiet) {
     try { localStorage.setItem('fco_btn', name === 'gradient' ? 'gradient' : 'solid'); } catch (e) {}
     applyBtnStyle();
-    if (!quiet) showToast(name === 'gradient' ? '🌈 그라데이션 버튼으로 바꿨어요.' : '단색 버튼으로 바꿨어요.');
+    if (!quiet) showToast(name === 'gradient' ? '그라데이션 버튼으로 바꿨어요.' : '단색 버튼으로 바꿨어요.');
   }
   applyBtnStyle();
 
@@ -2512,7 +2512,7 @@
     else document.documentElement.removeAttribute('data-bar');
     if (!noSave) { try { localStorage.setItem('fco_bar', b); } catch (e) {} }
     document.querySelectorAll('#bar-picker button').forEach(btn => btn.classList.toggle('active', btn.dataset.barPick === b));
-    if (!quiet) showToast(b === 'glass' ? '💧 유리 바 디자인으로 바꿨어요.' : '기본 바 디자인으로 바꿨어요.');
+    if (!quiet) showToast(b === 'glass' ? '유리 바 디자인으로 바꿨어요.' : '기본 바 디자인으로 바꿨어요.');
   }
   setBar(localStorage.getItem('fco_bar') || 'solid', true, true);
 
@@ -2578,7 +2578,7 @@
     if (id === ADMIN_ID && pw === "kim5708!") {
       localStorage.setItem('fco_current_user', ADMIN_ID);
       localStorage.setItem('fco_pro_mode', 'true');
-      showToast('👑 최고 관리자님 환영합니다.');
+      showToast('최고 관리자님 환영합니다.');
       closeAuthModal(); renderHubAuth(); updateProTabUI();
       // PRO 권한 저장이 Firebase에서 막히지 않도록 관리자 계정으로 Firebase에도 로그인
       if (auth) {
@@ -2692,21 +2692,21 @@
     try { const g = JSON.parse(localStorage.getItem('fco_guest') || 'null'); if (g && g.id === currentUser) guestInfo = g; } catch (e) {}
     if (isAdmin) {
       badgeHtml = '<span class="role-badge" style="background:var(--tier-op);">관리자</span>';
-      statusHtml = '👑 시스템 최고 권한'; statusColor = 'var(--tier-op)';
+      statusHtml = '시스템 최고 권한'; statusColor = 'var(--tier-op)';
     } else if (isPro) {
       badgeHtml = '<span class="role-badge" style="background:var(--pro-gold);">PRO</span>';
       const exp = localStorage.getItem('fco_pro_expiry');
-      statusHtml = exp === 'unlimited' ? '💎 PRO 무제한' : exp ? `💎 PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : '💎 PRO 구독 중';
+      statusHtml = exp === 'unlimited' ? 'PRO 무제한' : exp ? `PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : 'PRO 구독 중';
       statusColor = 'var(--pro-gold)';
     }
 
     authContainer.innerHTML = `
-      <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">👤 계정 정보</h3>
+      <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">계정 정보</h3>
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:var(--background); border:1px solid var(--border); padding:16px 20px; border-radius:16px;">
         <div style="display:flex; flex-direction:column; gap:4px;">
           <div style="font-size:18px; font-weight:900; display:flex; align-items:center;">${escapeHtml(currentUser)} 님 ${badgeHtml}</div>
           <div style="font-size:13px; color:var(--muted-foreground); font-weight:600;">권한 상태: <span style="color:${statusColor}; font-weight:800;">${statusHtml}</span></div>
-          ${guestInfo ? `<div style="font-size:12px; color:var(--muted-foreground); font-weight:600;">👤 임시 계정 · 비밀번호 <b style="color:var(--foreground);">${escapeHtml(guestInfo.pw)}</b> (다른 기기 로그인용)</div>` : ''}
+          ${guestInfo ? `<div style="font-size:12px; color:var(--muted-foreground); font-weight:600;">임시 계정 · 비밀번호 <b style="color:var(--foreground);">${escapeHtml(guestInfo.pw)}</b> (다른 기기 로그인용)</div>` : ''}
         </div>
         <button onclick="handleLogout()" class="bg-btn">로그아웃</button>
       </div>`;
@@ -2717,7 +2717,7 @@
     const statusText = document.getElementById('pro-status-text');
     if (!statusText) return;
     const exp = localStorage.getItem('fco_pro_expiry');
-    statusText.innerText = !isPro ? "비활성" : exp === 'unlimited' ? "💎 PRO 무제한" : exp ? `💎 PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : "💎 PRO 구독 중 (활성화됨)";
+    statusText.innerText = !isPro ? "비활성" : exp === 'unlimited' ? "PRO 무제한" : exp ? `PRO 이용 중 (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : "PRO 구독 중 (활성화됨)";
     statusText.style.color = isPro ? "var(--pro-gold)" : "var(--muted-foreground)";
   }
 
@@ -2795,7 +2795,7 @@
   async function grantPro(targetId, duration) {
     if (duration === 'unlimited') {
       await writeProUser(targetId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
-      return `🎉 ${targetId} 님에게 PRO 무제한을 부여했습니다!`;
+      return `${targetId} 님에게 PRO 무제한을 부여했습니다!`;
     }
     const days = parseInt(duration, 10);
     const cur = await readProUser(targetId);
@@ -2803,7 +2803,7 @@
     const base = (cur && cur.isPro && cur.expiry > Date.now()) ? cur.expiry : Date.now();
     const expiry = base + days * DAY_MS;
     await writeProUser(targetId, { isPro: true, unlimited: false, expiry });
-    return `🎉 ${targetId} 님에게 PRO ${days}일을 부여했습니다! (~${new Date(expiry).toLocaleDateString('ko-KR')})`;
+    return `${targetId} 님에게 PRO ${days}일을 부여했습니다! (~${new Date(expiry).toLocaleDateString('ko-KR')})`;
   }
 
   async function grantProToUser() {
@@ -2832,7 +2832,7 @@
     const plan = PAY_PLANS[payPlanKey];
     const userId = localStorage.getItem('fco_current_user');
     if (!userId) {
-      box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
+      box.innerHTML = `<div class="pv-title">입금 인증</div>
         <div class="pay-status">입금 인증은 로그인 후 할 수 있어요. 승인되면 로그인한 아이디에 PRO가 바로 켜져요.</div>
         <button class="bg-btn" style="width:100%; margin-top:8px;" onclick="closeDonateModal(); openAuthModal();">로그인 / 회원가입</button>`;
       return;
@@ -2845,8 +2845,8 @@
       snap.forEach(d => { const v = { id: d.id, ...d.data() }; if (!last || v.createdAt > last.createdAt) last = v; });
     } catch (e) {}
     if (last && (last.status === 'auto' || last.status === 'pending')) {
-      box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
-        <div class="pay-status" style="color:var(--win-color);">🎉 <b>${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')}</b>이 켜졌어요!<br>
+      box.innerHTML = `<div class="pv-title">입금 인증</div>
+        <div class="pay-status" style="color:var(--win-color);"><b>${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')}</b>이 켜졌어요!<br>
         <span style="font-weight:600; color:var(--muted-foreground);">입금자명 ${escapeHtml(last.depositor)} · ${fmtTime(last.createdAt)} 인증</span><br>
         <span style="color:var(--foreground);">관리자가 입금 내역을 확인하는 중이에요. 입금이 확인되지 않으면 PRO가 해지될 수 있어요.</span></div>`;
       return;
@@ -2854,8 +2854,8 @@
     const notice = last && last.status === 'rejected'
       ? `<div class="pay-status" style="margin-bottom:10px; color:var(--lose-color);">지난 인증(${fmtTime(last.createdAt)})은 입금이 확인되지 않아 PRO가 해지됐어요. 입금자명을 확인하고 다시 인증해 주세요.</div>`
       : last && last.status === 'approved' && Date.now() - (last.handledAt || 0) < 3 * DAY_MS
-      ? `<div class="pay-status" style="margin-bottom:10px; color:var(--win-color);">✅ ${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')} 입금 확인 완료! 감사합니다.</div>` : '';
-    box.innerHTML = `<div class="pv-title">✅ 입금 인증</div>
+      ? `<div class="pay-status" style="margin-bottom:10px; color:var(--win-color);">${escapeHtml(PAY_PLANS[last.plan]?.label || 'PRO')} 입금 확인 완료! 감사합니다.</div>` : '';
+    box.innerHTML = `<div class="pv-title">입금 인증</div>
       ${notice}
       <div class="pv-desc">위 계좌로 <b>${plan.amount.toLocaleString()}원</b>을 보낸 뒤, 보낸 사람 이름(입금자명)을 적고 인증을 누르면 <b>${escapeHtml(userId)}</b> 아이디에 ${plan.label}이 <b>바로</b> 켜져요. 입금이 확인되지 않으면 나중에 해지될 수 있어요.</div>
       <input id="pay-depositor" type="text" maxlength="20" placeholder="입금자명 (통장에 찍히는 이름)">
@@ -2875,7 +2875,7 @@
       });
       await grantPro(id, plan.duration);
       await syncUserProStatus(id);
-      showToast(`🎉 ${plan.label}이 켜졌어요! 새로고침하면 PRO 기능을 쓸 수 있어요.`);
+      showToast(`${plan.label}이 켜졌어요! 새로고침하면 PRO 기능을 쓸 수 있어요.`);
       renderPayVerify();
     } catch (e) { showToast('인증하지 못했어요. 잠시 후 다시 시도해주세요.'); }
   }
@@ -2914,7 +2914,7 @@
       const r = snap.data();
       if (r.status !== 'pending' && r.status !== 'auto') { renderPaymentRequests(); return showToast('이미 처리된 요청이에요.'); }
       // 'auto'는 인증할 때 이미 PRO가 켜졌으므로 확인 표시만 한다
-      const msg = r.status === 'pending' ? await grantPro(r.userId, PAY_PLANS[r.plan]?.duration || '60') : `✅ ${r.userId} 님 입금 확인 완료`;
+      const msg = r.status === 'pending' ? await grantPro(r.userId, PAY_PLANS[r.plan]?.duration || '60') : `${r.userId} 님 입금 확인 완료`;
       await ref.set({ status: 'approved', handledAt: Date.now() }, { merge: true });
       showToast(msg);
       renderPaymentRequests();
@@ -2947,7 +2947,7 @@
       const cur = await readProUser(userId);
       const base = (cur && cur.expiry > Date.now()) ? cur.expiry : Date.now();
       await writeProUser(userId, { isPro: true, unlimited: false, expiry: base + 30 * DAY_MS });
-      showToast(`✨ ${userId} 님의 멤버십 기간이 30일 연장되었습니다.`);
+      showToast(`${userId} 님의 멤버십 기간이 30일 연장되었습니다.`);
       renderProList();
     } catch (e) { showToast(proErrorMessage(e)); }
   }
@@ -2956,7 +2956,7 @@
     if (!confirm(`${userId} 님을 PRO 무제한으로 바꾸시겠습니까?`)) return;
     try {
       await writeProUser(userId, { isPro: true, unlimited: true, expiry: PRO_UNLIMITED_TS });
-      showToast(`💎 ${userId} 님이 PRO 무제한이 되었습니다.`);
+      showToast(`${userId} 님이 PRO 무제한이 되었습니다.`);
       renderProList();
     } catch (e) { showToast(proErrorMessage(e)); }
   }
@@ -2965,7 +2965,7 @@
     if (!confirm(`정말 ${userId} 님의 PRO 멤버십을 해지하시겠습니까?`)) return;
     try {
       await writeProUser(userId, { isPro: false, unlimited: false, expiry: 0 });
-      showToast(`🗑️ ${userId} 님의 멤버십이 해지되었습니다.`);
+      showToast(`${userId} 님의 멤버십이 해지되었습니다.`);
       renderProList();
     } catch (e) { showToast(proErrorMessage(e)); }
   }
@@ -3011,7 +3011,7 @@ service cloud.firestore {
     return `
       <div class="playstyle-box">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-          <div><span class="playstyle-label">🧬 플레이스타일</span> <b style="color:var(--tier-op); font-size:17px;">${ps.t} (${ps.code})</b></div>
+          <div><span class="playstyle-label">플레이스타일</span> <b style="color:var(--tier-op); font-size:17px;">${ps.t} (${ps.code})</b></div>
           <button class="bg-btn" style="height:30px; font-size:12px;" data-copy="[FCO.GG] ${escapeHtml(nickname)} 님의 플레이스타일: ${ps.t} (${ps.code})" onclick="copyText(this.dataset.copy, '결과가 복사되었습니다! 커뮤니티에 공유해보세요.')">결과 공유하기</button>
         </div>
         <p style="font-size:13px; margin-top:6px; line-height:1.6;">${ps.d}</p>
@@ -3375,7 +3375,7 @@ service cloud.firestore {
     } catch (e) { showToast('추천에 실패했습니다. 잠시 후 다시 시도해주세요.'); }
   }
 
-  function actReport() { if (confirm('🚨 신고하시겠습니까?')) showToast('접수되었습니다.'); }
+  function actReport() { if (confirm('신고하시겠습니까?')) showToast('접수되었습니다.'); }
 
   async function addReview() {
     const input = document.getElementById('review-input');
@@ -3452,7 +3452,7 @@ service cloud.firestore {
     listEl.style.cssText = "background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);";
     let htmlString = `
       <div style="background: var(--muted); border-radius: 12px; padding: 12px 20px; font-weight: 800; font-size: 15px; color: var(--foreground); margin-bottom: 16px; border-left: 4px solid var(--tier-op); display: flex; align-items: center; gap: 8px;">
-          👑 최다 추천 구단주 TOP 10
+          최다 추천 구단주 TOP 10
       </div>
     `;
     htmlString += arr.slice(0, 10).map((u, index) => {
@@ -3533,7 +3533,7 @@ service cloud.firestore {
     const container = document.getElementById("teamcolor-list-container");
     if (!container) return;
     const tiers = (i) => i < 3 ? ["op", "OP"] : i < 8 ? ["t1", "1 Tier"] : i < 15 ? ["t2", "2 Tier"] : ["t3", "3 Tier"];
-    container.innerHTML = `<div class="tier-category-header op">👑 인기 팀컬러 리스트 (TOP ${teamColorData.length})</div>` + teamColorData.map((tc, i) => {
+    container.innerHTML = `<div class="tier-category-header op">인기 팀컬러 리스트 (TOP ${teamColorData.length})</div>` + teamColorData.map((tc, i) => {
       const [badgeClass, badgeLabel] = tiers(i);
       return `
         <div class="player-row">
@@ -3818,7 +3818,7 @@ service cloud.firestore {
             <b style="font-size:24px;">${escapeHtml(nickname)} <span style="font-size:14px; color:var(--muted-foreground); font-weight:600;">${globalLevel}${lastPlayed ? ` · 마지막 경기 ${lastPlayed}` : ''}</span></b>
             <div style="display:flex; gap:8px; align-items:center;">
               <button class="bg-btn" id="fav-toggle-btn" onclick="toggleFavorite(globalNickname)">${isFavorite(nickname) ? '★ 즐겨찾기됨' : '☆ 즐겨찾기'}</button>
-              <button class="bg-btn" onclick="shareResult()">🔗 링크 복사</button>
+              <button class="bg-btn" onclick="shareResult()">링크 복사</button>
             </div>
           </div>
           <div class="result-stats">
@@ -3830,7 +3830,7 @@ service cloud.firestore {
           <h4 class="section-title"><span style="color:var(--win-color);">●</span> 최근 ${typeName} (${total}경기) <span style="font-size:12px; color:var(--muted-foreground); font-weight:600;">· 경기를 누르면 라인업·슈팅맵</span></h4>
           <div style="font-size:11px; color:var(--muted-foreground); margin:-6px 0 10px;">※ 실제 경기보다 1시간~1시간 30분 늦게 반영돼요.</div>
           <div class="match-list-container" style="margin-bottom:20px;">${rows.join('') || `<div style="text-align:center; padding:30px; color:var(--muted-foreground);">최근 ${typeName} 기록이 없습니다.</div>`}</div>
-          ${total ? `<button class="pill-search-btn" style="width:100%; height:48px; font-size:15px;" onclick="openDetailedProfile()">📊 구단 스쿼드 및 상세 분석 보기</button>` : ''}
+          ${total ? `<button class="pill-search-btn" style="width:100%; height:48px; font-size:15px;" onclick="openDetailedProfile()">구단 스쿼드 및 상세 분석 보기</button>` : ''}
         </div>`);
     } catch (e) {
       showResult(messageCard('⚠️', '오류가 발생했습니다', apiErrorMessage(e)));
@@ -3844,13 +3844,13 @@ service cloud.firestore {
     const url = local
       ? `${location.origin}${location.pathname}?nick=${encodeURIComponent(globalNickname)}${typeQ ? '&' + typeQ : ''}`
       : `${location.origin}/s/${encodeURIComponent(globalNickname)}${typeQ ? '?' + typeQ : ''}`;
-    copyText(url, '🔗 전적 링크가 복사되었습니다!');
+    copyText(url, '전적 링크가 복사되었습니다!');
   }
 
   async function openDetailedProfile() {
     document.getElementById('profile-modal').style.display = 'flex';
     const loadingEl = document.getElementById('modal-loading');
-    loadingEl.innerHTML = `<div class="spinner">⏳</div><div style="font-weight:700; font-size:16px; color:var(--foreground);">매치 기록을 분석 중입니다...</div>`;
+    loadingEl.innerHTML = `<div class="spinner">⏳</div><div style="font-weight:700; font-size:16px; color:var(--foreground);">경기 기록을 분석하는 중이에요...</div>`;
     loadingEl.style.display = 'block';
     document.getElementById('profile-result-area').style.display = 'none';
     document.getElementById('ai-loading').style.display = 'block';
@@ -3898,7 +3898,7 @@ service cloud.firestore {
       loadingEl.style.display = 'none';
       document.getElementById('profile-result-area').style.display = 'block';
     } catch (e) {
-      loadingEl.innerHTML = `<div style="padding:40px; font-weight:800; color:var(--lose-color); text-align:center;">⚠️ ${apiErrorMessage(e)}</div>`;
+      loadingEl.innerHTML = `<div style="padding:40px; font-weight:800; color:var(--lose-color); text-align:center;">${apiErrorMessage(e)}</div>`;
     }
   }
 
@@ -4052,7 +4052,7 @@ service cloud.firestore {
     const cats = [...new Set(TITLES.map(t => t.cat))];
     const who = m && globalNickname ? `전체 ${TITLES.length}개 · <b>${escapeHtml(globalNickname)}</b>님 칭호: ${earned[0] ? `${earned[0].icon} ${titleLabel(earned[0], m)}` : '⚽ 밸런스형'}` : `전체 ${TITLES.length}개`;
     return `
-      <div class="tb-head">🏅 칭호 도감 <span>${who}</span></div>
+      <div class="tb-head">칭호 도감 <span>${who}</span></div>
       <div class="tb-desc">구단주를 검색하고 '구단 스쿼드 및 상세 분석 보기'를 누르면 최근 25경기 기록으로 칭호를 받아요 (${TITLE_MIN_GAMES}경기 이상부터). 칭호는 한 사람당 1개예요. 조건을 여러 개 채우면 기준을 가장 크게 넘긴 칭호 하나가 붙어요. 하나도 없으면 ⚽ 밸런스형이에요. 기준은 공식경기 유저 표본의 상위 10~15% 수준이에요.${m ? ' 금색 칸이 받은 칭호예요.' : ''}</div>
       <div class="tb-legend">${[3, 2, 1].map(t => `<span class="tb-tier" style="background:${TITLE_TIER[t][1]}">${TITLE_TIER[t][0]}</span> ${TITLES.filter(x => x.tier === t).length}개`).join(' &nbsp; ')}</div>
       ${cats.map(c => `
@@ -4127,7 +4127,7 @@ service cloud.firestore {
 
     const total = wins + draws + losses; const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
     const ctrlInfo = document.getElementById('controller-info');
-    if (ctrlInfo) { ctrlInfo.innerHTML = (kbdCount > padCount) ? "⌨️ 키보드" : "🎮 패드"; ctrlInfo.style.display = 'inline-flex'; }
+    if (ctrlInfo) { ctrlInfo.innerHTML = (kbdCount > padCount) ? "⌨️ 키보드" : "패드"; ctrlInfo.style.display = 'inline-flex'; }
 
     safeSetText('stat-winrate-pct', `${winRate}%`); safeSetText('stat-record-text', `${wins}승 ${draws}무 ${losses}패`);
     
@@ -4136,7 +4136,7 @@ service cloud.firestore {
       const winDeg = (wins / total) * 360; const drawDeg = winDeg + (draws / total) * 360;
       pieBox.style.background = `conic-gradient(var(--win-color) 0deg ${winDeg}deg, var(--draw-color) ${winDeg}deg ${drawDeg}deg, var(--lose-color) ${drawDeg}deg 360deg)`;
     }
-    safeSetText('winrate-comment', winRate >= 50 ? "🔥 우수한 승률" : "📉 분발이 필요합니다");
+    safeSetText('winrate-comment', winRate >= 50 ? "우수한 승률" : "분발이 필요합니다");
 
     if (gameCount > 0) {
       const avgGoal = (totalGoals / gameCount).toFixed(1); const avgConcede = (totalConceded / gameCount).toFixed(1);
@@ -4286,7 +4286,7 @@ service cloud.firestore {
     const open = box.hidden;
     box.hidden = !open;
     btn.setAttribute('aria-expanded', String(open));
-    btn.textContent = open ? '▲ 접기' : `▼ 심층 피드백 ${box.querySelectorAll('.deep-card').length}개 펼치기`;
+    btn.textContent = open ? '▲ 접기' : `▼ 분석 ${box.querySelectorAll('.deep-card').length}개 더 보기`;
     if (!open) btn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
@@ -4485,8 +4485,8 @@ service cloud.firestore {
     const pRow = (p, extra) => `<div class="p-row"><span>${p.pos} <b>${nameOf(p.id)}</b></span><span>${extra}</span></div>`;
     const playerHTML = `
       <div class="p-cols">
-        <div><div class="p-head" style="color:var(--win-color)">⭐ 평점 TOP 3</div>${topP.map(p => pRow(p, p.avg.toFixed(2))).join('') || '-'}</div>
-        <div><div class="p-head" style="color:var(--lose-color)">⚠️ 평점 하위 3</div>${lowP.map(p => pRow(p, p.avg.toFixed(2))).join('') || '-'}</div>
+        <div><div class="p-head" style="color:var(--win-color)">평점 TOP 3</div>${topP.map(p => pRow(p, p.avg.toFixed(2))).join('') || '-'}</div>
+        <div><div class="p-head" style="color:var(--lose-color)">평점 하위 3</div>${lowP.map(p => pRow(p, p.avg.toFixed(2))).join('') || '-'}</div>
         <div><div class="p-head" style="color:#3B82F6">⚽ 공격 포인트</div>${apP.map(p => pRow(p, `${p.g}골 ${p.a}도움`)).join('') || '<div class="p-row">기록 없음</div>'}</div>
       </div>`;
     if (lowP[0] && lowP[0].avg < 6.3) checklist.push(`<b>${lowP[0].pos} ${nameOf(lowP[0].id)}</b>의 평점이 ${lowP[0].avg.toFixed(2)}점으로 낮아요. 교체나 역할 변경을 고려하세요.`);
@@ -4534,12 +4534,12 @@ service cloud.firestore {
     const grade = overall >= 60 ? 'S' : overall >= 50 ? 'A' : overall >= 40 ? 'B' : overall >= 30 ? 'C' : 'D';
     const summary = `
       <div class="deep-card deep-summary" style="grid-column:1/-1;">
-        <div class="deep-title">🧭 AI 코치 총평</div>
+        <div class="deep-title">AI 코치 총평</div>
         <div class="sum-wrap">
           <div class="sum-grade grade-${grade}">${grade}</div>
           <div style="flex:1;">
             <div style="font-size:15px; line-height:1.7;">최근 <b>${G}경기 승률 ${overall}%</b>. ${strengths.length ? `강점은 <b style="color:var(--win-color)">${strengths.slice(0, 3).join(', ')}</b>` : '아직 뚜렷한 강점이 없어요'}${worstCmp ? `, 보완할 점은 <b style="color:var(--lose-color)">${worstCmp.label}</b>` : ''}이에요.</div>
-            <div class="deep-sub" style="margin-top:10px;">✅ 이번 주 우선순위 체크리스트</div>
+            <div class="deep-sub" style="margin-top:10px;">이번 주 우선순위 체크리스트</div>
             <ol class="check-list">${checklist.slice(0, 6).map(c => `<li>${c}</li>`).join('') || '<li>지금처럼만 하세요! 큰 문제는 보이지 않아요.</li>'}</ol>
           </div>
         </div>
@@ -4548,19 +4548,19 @@ service cloud.firestore {
     // 비슷한 내용끼리 묶어서 카드 5개로 (팁은 카드마다 한 상자에)
     const card = (title, body, tips, full) => {
       const list = (Array.isArray(tips) ? tips : [tips]).filter(Boolean);
-      return `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${list.length ? `<div class="deep-tip">${list.map(t => `<div>💡 ${t}</div>`).join('')}</div>` : ''}</div>`;
+      return `<div class="deep-card"${full ? ' style="grid-column:1/-1;"' : ''}><div class="deep-title">${title}</div>${body}${list.length ? `<div class="deep-tip">${list.map(t => `<div>${t}</div>`).join('')}</div>` : ''}</div>`;
     };
     const moreCount = 5;
     return summary
-      + `<button class="deep-toggle" onclick="toggleDeepMore(this)" aria-expanded="false">▼ 심층 피드백 ${moreCount}개 펼치기</button>`
+      + `<button class="deep-toggle" onclick="toggleDeepMore(this)" aria-expanded="false">▼ 분석 ${moreCount}개 더 보기</button>`
       + `<div class="deep-more" id="deep-more" hidden>`
-      + card(`📊 나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요.` : '상대와 비교해 밀리는 지표가 없어요.')
-      + card('⏱️ 경기 흐름', `<div class="deep-sub" style="margin-bottom:6px;">최근 경기 <span style="font-weight:600; color:var(--muted-foreground);">(왼쪽이 최신)</span></div><div class="form-dots" style="margin-bottom:14px;">${dots}</div>
+      + card(`나 vs 내가 만난 상대들 <small>(최근 ${G}경기 평균 · 왼쪽 나 / 오른쪽 상대)</small>`, cmpHTML, worstCmp ? `${worstCmp.label}에서 상대에게 밀려요.` : '상대와 비교해 밀리는 지표가 없어요.')
+      + card('경기 흐름', `<div class="deep-sub" style="margin-bottom:6px;">최근 경기 <span style="font-weight:600; color:var(--muted-foreground);">(왼쪽이 최신)</span></div><div class="form-dots" style="margin-bottom:14px;">${dots}</div>
           <div class="deep-sub" style="margin-bottom:6px;">시간대별 득점 / 실점 <span style="color:#3B82F6">■ 득점</span> <span style="color:#EF4444">■ 실점</span></div><div class="tb-wrap">${timeHTML}</div>
           <div style="margin-top:12px;">${flowHTML}</div>`, [formTip, timeTip, flowTip])
-      + card('🎯 슈팅 · 득점 방식', `${shotHTML}<div style="margin-top:14px;">${kindHTML}</div>`, [shotTip, kindTip, typeTip !== '득점·실점 유형에 큰 쏠림은 없어요.' ? typeTip : ''])
-      + card('🔄 경기 운영 <small>(점유율 · 카드 · 파울)</small>', `<div class="deep-sub" style="margin-bottom:6px;">점유율 구간별 승률</div><div class="deep-stats">${possHTML}</div><div class="deep-sub" style="margin:12px 0 6px;">카드 · 파울</div>${discHTML}`, [possTip, discTip])
-      + card('🌟 선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
+      + card('슈팅 · 득점 방식', `${shotHTML}<div style="margin-top:14px;">${kindHTML}</div>`, [shotTip, kindTip, typeTip !== '득점·실점 유형에 큰 쏠림은 없어요.' ? typeTip : ''])
+      + card('경기 운영 <small>(점유율 · 카드 · 파울)</small>', `<div class="deep-sub" style="margin-bottom:6px;">점유율 구간별 승률</div><div class="deep-stats">${possHTML}</div><div class="deep-sub" style="margin:12px 0 6px;">카드 · 파울</div>${discHTML}`, [possTip, discTip])
+      + card('선수 평점 분석', playerHTML, lowP[0] ? `평점 하위 선수는 같은 포지션의 다른 선수를 시험해보세요.` : '', true)
       + `</div>`;
   }
 
@@ -4677,7 +4677,7 @@ service cloud.firestore {
         ${stat(`${latePct}%`, '76분 이후 실점 비율')}
         ${stat(`${kbdRate}%`, '키보드 상대 비율')}
       </div>
-      <div class="mu-tips-title">📌 상대가 나를 공략한 방법</div>
+      <div class="mu-tips-title">상대가 나를 공략한 방법</div>
       ${shown.length ? shown.map(sg => `
         <div class="mu-signal ${LV[sg.lvl][1]}">
           <div class="mu-sig-head"><span class="mu-lv">${LV[sg.lvl][0]}</span><b>${sg.title}</b></div>
@@ -4699,12 +4699,12 @@ service cloud.firestore {
 
       setHtml('ai-basic-text', `
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div class="ai-line"><b style="font-size:15px;">🏅 획득 칭호 분석: [${stats.badgeText}]</b> <button class="title-book-btn" onclick="openTitleBook()">칭호 도감 보기 ›</button>
+          <div class="ai-line"><b style="font-size:15px;">칭호: ${stats.badgeText}</b> <button class="title-book-btn" onclick="openTitleBook()">칭호 도감 보기 ›</button>
             <div style="font-size:13px; color:var(--muted-foreground); margin-top:6px;">${stats.titleReason}</div>
             ${lastTitleResult.earned.length > 1 ? `<div class="title-chips">${lastTitleResult.earned.slice(1).map(t => `<div class="title-chip"><b>${t.icon} ${titleLabel(t, lastTitleResult.metrics)}</b> <span>${t.why(lastTitleResult.metrics)}</span></div>`).join('')}</div>` : ''}
             </div>
-          <div class="ai-line"><b>⚔️ 득점력 지표:</b> 경기당 평균 <b>${goal}골</b>을 기록 중입니다 (공식경기 평균 약 2.6골). ${goal >= 3.0 ? '평균보다 훨씬 많이 넣어요. 득점 창출 능력이 뛰어납니다.' : goal >= 2.3 ? '평균 수준의 득점력이에요.' : '파이널 서드에서의 세밀한 마무리가 다소 아쉽습니다.'}</div>
-          <div class="ai-line"><b>🛡️ 수비력 지표:</b> 경기당 평균 <b>${concede}실점</b>을 기록 중입니다 (공식경기 평균 약 2.6실점). ${concede <= 2.0 ? '실점을 최소화하는 안정적인 수비 라인을 유지하고 있습니다.' : concede <= 2.8 ? '평균 수준의 수비력이에요.' : '수비 복귀 속도와 대인 마크에 더욱 집중해야 합니다.'}</div>
+          <div class="ai-line"><b>득점:</b> 경기당 <b>${goal}골</b> (공식경기 평균 약 2.6골). ${goal >= 3.0 ? '평균보다 훨씬 많이 넣어요.' : goal >= 2.3 ? '평균 수준이에요.' : '평균보다 적어요. 박스 근처 마무리가 아쉬워요.'}</div>
+          <div class="ai-line"><b>실점:</b> 경기당 <b>${concede}실점</b> (공식경기 평균 약 2.6실점). ${concede <= 2.0 ? '평균보다 적게 먹어요. 수비가 안정적이에요.' : concede <= 2.8 ? '평균 수준이에요.' : '평균보다 많이 먹어요. 수비 복귀와 대인 마크를 챙겨보세요.'}</div>
         </div>`);
 
       // 1) 약점 스캐너 + 승률 상승 솔루션 (내 경기 데이터 기반)
@@ -4730,9 +4730,9 @@ service cloud.firestore {
             const rest = a.all.filter(f => !a.factors.includes(f));
             const best = a.factors[0];
             return (rest.length ? `
-            <div class="wk-sub">✅ 승패에 영향이 적은 항목 (잘하고 있어요)</div>
+            <div class="wk-sub">승패에 영향이 적은 항목 (잘하고 있어요)</div>
             ${rest.map(f => `<div class="wk-mini"><span>${f.label}</span><span>평균 ${fmt(f.myAvg, f.unit)} · <b style="color:var(--win-color);">${Math.round(f.wrGood)}%</b> / <b style="color:var(--lose-color);">${Math.round(f.wrBad)}%</b></span></div>`).join('')}` : '')
-            + (best ? `<div class="wk-foot">💡 <b>${best.label}</b> 하나만 보완해도 승률이 약 <b style="color:var(--pro-gold);">+${Math.max(0, Math.round(best.gain))}%p</b> 오를 수 있어요.</div>` : '');
+            + (best ? `<div class="wk-foot"><b>${best.label}</b> 하나만 보완해도 승률이 약 <b style="color:var(--pro-gold);">+${Math.max(0, Math.round(best.gain))}%p</b> 오를 수 있어요.</div>` : '');
           })()}`);
 
         const cur = Math.round(a.overall);
@@ -4751,13 +4751,13 @@ service cloud.firestore {
                 <div style="font-size:12.5px; color:var(--muted-foreground); margin-bottom:10px;">지금 평균 <b style="color:var(--foreground);">${fmt(f.myAvg, f.unit)}</b> → 목표 <b style="color:var(--foreground);">${fmt(f.target, f.unit)}</b> ${f.higher ? '이상' : '이하'} <span style="font-size:11px;">(내가 잘했던 경기 평균)</span></div>
                 ${bar('현재 승률', cur, 'var(--muted-foreground)')}
                 ${bar(`보완 시 예상 승률 (+${Math.max(0, after - cur)}%p)`, after, 'var(--pro-gold)')}
-                <div style="font-size:12.5px; line-height:1.6; margin-top:8px;">💡 ${f.tip}</div>
+                <div style="font-size:12.5px; line-height:1.6; margin-top:8px;">${f.tip}</div>
               </div>`;
             }).join('')}
           </div>
           <div style="font-size:13px; line-height:1.6; margin-top:14px;">${isKb
-            ? `<b>[⌨️ 키보드 사용자 팁]</b> 수비 시 E키(달리기) 남발을 줄이고 C키로 길목을 먼저 막으세요. 윙어에게 '뒤에서 침투' 지시를 주면 키보드에서도 침투가 잘 나와요.`
-            : `<b>[🎮 패드 사용자 팁]</b> 아날로그 스틱의 세밀한 방향 조절을 살려, 박스 근처에서 등지기(LT/L2) 후 방향 전환으로 슈팅·컷백 공간을 만드세요.`}</div>
+            ? `<b>[키보드 사용자 팁]</b> 수비 시 E키(달리기) 남발을 줄이고 C키로 길목을 먼저 막으세요. 윙어에게 '뒤에서 침투' 지시를 주면 키보드에서도 침투가 잘 나와요.`
+            : `<b>[패드 사용자 팁]</b> 아날로그 스틱의 세밀한 방향 조절을 살려, 박스 근처에서 등지기(LT/L2) 후 방향 전환으로 슈팅·컷백 공간을 만드세요.`}</div>
           <div style="font-size:11.5px; color:var(--muted-foreground); margin-top:10px;">※ 예상 승률은 내 최근 ${a.games}경기 기록으로 계산한 대략적인 수치예요. 경기 수가 많을수록 정확해져요.</div>`);
       }
 
@@ -4785,11 +4785,11 @@ service cloud.firestore {
           <div class="sq-row"><span class="sq-rank">${i + 1}</span><span class="sq-name">${w.pos} ${pname(w.spId)}</span><b style="color:${rateColor(w.avg)}">${w.avg.toFixed(2)}</b></div>`).join('')
           + `<div class="sq-note">최근 ${sq.gameCount}경기 평균 평점 기준, 선발 중 낮은 순</div>`);
         setHtml('replace-player-info', sq.worstList.map(w => w.replacement
-          ? `<div class="sq-tip">🔁 <b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${pname(w.replacement.spId)}</b> <span class="sq-note">(같은 자리 평균 ${w.replacement.avg.toFixed(2)}, ${w.replacement.games}경기)</span></div>`
-          : `<div class="sq-tip">🔎 <b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${needFor(w.pos)}</b> 추천</div>`).join(''));
+          ? `<div class="sq-tip"><b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${pname(w.replacement.spId)}</b> <span class="sq-note">(같은 자리 평균 ${w.replacement.avg.toFixed(2)}, ${w.replacement.games}경기)</span></div>`
+          : `<div class="sq-tip"><b>${w.pos}</b> ${pname(w.spId)} → <b style="color:var(--ai-blue)">${needFor(w.pos)}</b> 추천</div>`).join(''));
       } else {
         setHtml('worst-player-info', "선발 라인업 내에서 뚜렷한 부진 선수가 없습니다.");
-        setHtml('replace-player-info', "현재 스쿼드의 밸런스가 매우 안정적입니다.");
+        setHtml('replace-player-info', "지금 스쿼드는 고르게 잘하고 있어요.");
       }
       const LINE_NAMES = { fw: '공격', mf: '미드필드', df: '수비', gk: '골키퍼' };
       const lineEntries = Object.entries(sq.lineAvg || {}).filter(([, v]) => v !== null);
@@ -4799,10 +4799,10 @@ service cloud.firestore {
                           df: '수비 라인이 흔들려요. 속력과 대인 수비가 좋은 수비수가 필요해요.', gk: '골키퍼 선방이 아쉬워요. 반응속도 높은 골키퍼를 고려하세요.' }[weakest[0]];
         setHtml('squad-lines-info', lineEntries.map(([l, v]) => `
           <div class="sq-line"><span>${LINE_NAMES[l]}</span><div class="sq-bar"><div style="width:${Math.max(0, Math.min(100, (v - 5) / 4 * 100))}%; background:${l === weakest[0] ? 'var(--lose-color)' : 'var(--win-color)'};"></div></div><b>${v.toFixed(2)}</b></div>`).join('')
-          + `<div class="sq-tip" style="margin-top:8px;">⚠️ 가장 약한 라인은 <b>${LINE_NAMES[weakest[0]]}</b>${weakest[0] === 'fw' ? '이에요' : '예요'}. ${lineTip}</div>`);
+          + `<div class="sq-tip" style="margin-top:8px;">가장 약한 라인은 <b>${LINE_NAMES[weakest[0]]}</b>${weakest[0] === 'fw' ? '이에요' : '예요'}. ${lineTip}</div>`);
       } else setHtml('squad-lines-info', '데이터가 부족해요.');
       setHtml('squad-mvp-info', sq.mvp ? `
-        <div class="sq-tip">⭐ <b>MVP</b> ${sq.mvp.pos} <b style="color:var(--pro-gold)">${pname(sq.mvp.spId)}</b> · 평균 ${sq.mvp.avg.toFixed(2)}</div>
+        <div class="sq-tip"><b>MVP</b> ${sq.mvp.pos} <b style="color:var(--pro-gold)">${pname(sq.mvp.spId)}</b> · 평균 ${sq.mvp.avg.toFixed(2)}</div>
         ${sq.scorer && (sq.scorer.goals + sq.scorer.assists) > 0 ? `<div class="sq-tip">⚽ <b>공격 포인트 1위</b> ${pname(sq.scorer.spId)} · ${sq.scorer.goals}골 ${sq.scorer.assists}도움</div>` : ''}` : '데이터가 부족해요.');
     }, 600);
   }
@@ -4895,7 +4895,7 @@ service cloud.firestore {
       }
       const total = w + d + l;
       const pct = (n) => total ? Math.round(n / total * 100) : 0;
-      const comment = w > l ? `😎 ${escapeHtml(user1)}님이 한 수 위입니다!` : w < l ? `😱 ${escapeHtml(user2)}님이 한 수 위입니다!` : `🔥 막상막하! 라이벌입니다!`;
+      const comment = w > l ? `${escapeHtml(user1)}님이 앞서요` : w < l ? `${escapeHtml(user2)}님이 앞서요` : `전적이 같아요`;
       const typeChips = Object.entries(byType).map(([t, n]) => `<span class="mt-chip static">${MATCH_TYPES[t] || t} ${n}</span>`).join('');
 
       resultBox.innerHTML = `
@@ -5086,22 +5086,22 @@ service cloud.firestore {
           </div>
         </div>
         <div class="md-grid">
-          <div class="md-section"><div class="md-section-title">📊 경기 기록</div>${statRows}</div>
+          <div class="md-section"><div class="md-section-title">경기 기록</div>${statRows}</div>
           <div class="md-section">
-            <div class="md-section-title">🎯 슈팅 맵</div>
+            <div class="md-section-title">슈팅 맵</div>
             ${shotMapSVG(me, en)}
             <div class="shot-legend"><span><i class="lg-dot me"></i>${escapeHtml(me.nickname)} →</span><span>← ${escapeHtml(en.nickname)}<i class="lg-dot en"></i></span></div>
             <div class="shot-legend" style="justify-content:center; gap:14px;"><span>● 큰 점: 골</span><span>● 유효슈팅</span><span>○ 빗나감</span></div>
-            <div class="md-section-title" style="margin-top:16px;">⏱️ 득점 기록</div>
+            <div class="md-section-title" style="margin-top:16px;">득점 기록</div>
             ${goalList}
           </div>
         </div>
         <div class="md-section" style="margin-top:16px;">
-          <div class="md-section-title">👥 라인업</div>
+          <div class="md-section-title">라인업</div>
           <div class="lineup-wrap">${lineupHTML(me)}${lineupHTML(en)}</div>
         </div>`;
     } catch (e) {
-      body.innerHTML = `<div style="text-align:center; padding:60px 0; font-weight:700; color:var(--lose-color);">⚠️ ${e.message === 'NO_DATA' ? '경기 정보를 찾을 수 없습니다.' : apiErrorMessage(e)}</div>`;
+      body.innerHTML = `<div style="text-align:center; padding:60px 0; font-weight:700; color:var(--lose-color);">${e.message === 'NO_DATA' ? '경기 정보를 찾을 수 없습니다.' : apiErrorMessage(e)}</div>`;
     }
   }
   function closeMatchModal() { const m = document.getElementById('match-modal'); if (m) m.style.display = 'none'; }
@@ -5234,7 +5234,7 @@ service cloud.firestore {
       note.innerHTML = `<b style="color:var(--foreground); font-size:16px;">${unlimited ? '3,000원' : '990원'}</b>을 보낸 뒤 아래에서 <b style="color:var(--foreground);">입금 인증</b>을 눌러주세요.<br>관리자가 확인하면 ${unlimited ? '<b>무제한</b>' : '60일(30+30)'} 권한이 바로 켜져요.`;
       renderPayVerify();
     }
-    safeSetText('donate-title', mode === 'pro-unlimited' ? '💎 PRO 무제한 신청 (3,000원)' : mode === 'pro' ? '💎 PRO 60일 신청 (990원)' : '💛 FCO.GG 후원하기');
+    safeSetText('donate-title', mode === 'pro-unlimited' ? 'PRO 무제한 신청 (3,000원)' : mode === 'pro' ? 'PRO 60일 신청 (990원)' : 'FCO.GG 후원하기');
     document.getElementById('donate-modal').style.display = 'flex';
   }
   function closeDonateModal() { document.getElementById('donate-modal').style.display = 'none'; }
