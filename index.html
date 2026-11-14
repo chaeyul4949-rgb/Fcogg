@@ -353,7 +353,7 @@
     .review-input-box { display: flex; gap: 8px; margin-bottom: 20px; margin-top: 16px;}
     .review-input { flex: 1; height: 44px; background-color: var(--muted); border: 1px solid transparent; border-radius: 12px; padding: 8px 16px; color: var(--foreground); font-size: 14px; outline: none; transition: 0.2s; }
     .review-input:focus { border-color: var(--muted-foreground); background: var(--card); }
-    .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; }
+    .review-submit { background: var(--primary); color: var(--primary-foreground); height: 44px; padding: 0 20px; white-space: nowrap; flex-shrink: 0; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; }
     .review-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
     .review-item { background: var(--background); border-radius: 12px; padding: 16px; border: 1px solid var(--border); }
     .review-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted-foreground); margin-bottom: 8px; font-weight: 600; }
@@ -794,8 +794,8 @@
     .pro-plan-desc { font-size: 12px; color: var(--muted-foreground); font-weight: 600; margin-bottom: 8px; }
     .pro-plan .pill-search-btn { width: 100%; height: 42px; }
     @media (max-width: 480px) { .pro-plans { grid-template-columns: 1fr; } }
-    .pro-benefits { display: flex; flex-direction: column; gap: 12px; }
-    .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border-left: 4px solid; }
+    .pro-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pro-benefit { background: var(--background); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
     .pro-benefit b { font-size: 15px; }
     .pro-benefit div { font-size: 13px; color: var(--muted-foreground); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
     .mu-route { background: var(--background); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
@@ -904,9 +904,9 @@
   <header class="header-container">
     <button class="logo" onclick="switchTab('search')" aria-label="FCO.GG 홈"><img class="logo-icon" id="logo-icon" src="/logo-icon.png" alt="">FCO<span>.GG</span></button>
     <div class="top-right-actions">
-      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항">📢<span id="notice-dot" class="notice-red-dot"></span></button>
+      <button class="notice-icon-btn" onclick="openNoticeModal()" title="공지사항" aria-label="공지사항"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span id="notice-dot" class="notice-red-dot"></span></button>
       <button class="donate-btn" onclick="openDonateModal()">💛 후원하기</button>
-      <button id="top-user-icon" class="notice-icon-btn" style="font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입" aria-label="로그인 / 회원가입">👤</button>
+      <button id="top-user-icon" class="notice-icon-btn" style="font-size:18px;" onclick="openAuthModal()" title="로그인 / 회원가입" aria-label="로그인 / 회원가입"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
     </div>
     <nav class="main-tabs">
       <button class="tab-btn active" data-tab="search" onclick="switchTab('search')">전적 & 구단 분석</button>
@@ -914,11 +914,11 @@
       <button class="tab-btn" data-tab="player" onclick="switchTab('player')" hidden>포지션별 선수 티어</button>
       <button class="tab-btn" data-tab="teamcolor" onclick="switchTab('teamcolor')">팀컬러 티어리스트</button>
       <button class="tab-btn" data-tab="trait" onclick="switchTab('trait')">특성 티어리스트</button>
-      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">🏅 칭호 도감</button>
-      <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">🏆 인기 구단주</button>
-      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">🧰 수수료 계산기</button>
-      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">💎 PRO 멤버십</button>
-      <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">⚙️ 내 허브</button>
+      <button class="tab-btn" data-tab="titles" onclick="switchTab('titles')">칭호 도감</button>
+      <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">인기 구단주</button>
+      <button class="tab-btn" data-tab="tools" onclick="switchTab('tools')">수수료 계산기</button>
+      <button class="tab-btn" data-tab="pro" onclick="switchTab('pro')">PRO 멤버십</button>
+      <button class="tab-btn" data-tab="hub" onclick="switchTab('hub')">내 허브</button>
     </nav>
   </header>
 
@@ -985,34 +985,34 @@
       <div class="trait-left-panel">
         <h4 style="font-size:18px; font-weight:800; margin-bottom:6px; color:var(--foreground);">포지션을 선택하세요.</h4>
         <div class="trait-pitch-board">
-          <div class="t-node active" style="top:12%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
-          <div class="t-node" style="top:12%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
-          <div class="t-node" style="top:12%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
-          <div class="t-node" style="top:25%; left:12%;" onclick="selectTrait('LW', event)">LW</div>
-          <div class="t-node" style="top:25%; left:31%;" onclick="selectTrait('LF', event)">LF</div>
-          <div class="t-node" style="top:25%; left:50%;" onclick="selectTrait('CF', event)">CF</div>
-          <div class="t-node" style="top:25%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
-          <div class="t-node" style="top:25%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
-          <div class="t-node" style="top:38%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
-          <div class="t-node" style="top:38%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
-          <div class="t-node" style="top:38%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
-          <div class="t-node" style="top:51%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
-          <div class="t-node" style="top:51%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
-          <div class="t-node" style="top:51%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
-          <div class="t-node" style="top:51%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
-          <div class="t-node" style="top:51%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
-          <div class="t-node" style="top:64%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
-          <div class="t-node" style="top:64%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
-          <div class="t-node" style="top:64%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
-          <div class="t-node" style="top:77%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
-          <div class="t-node" style="top:77%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
-          <div class="t-node" style="top:77%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
-          <div class="t-node" style="top:77%; left:69%;" onclick="selectTrait('RCB', event)">RCB</div>
-          <div class="t-node" style="top:77%; left:88%;" onclick="selectTrait('RWB', event)">RWB</div>
-          <div class="t-node" style="top:88%; left:31%;" onclick="selectTrait('LB', event)">LB</div>
-          <div class="t-node" style="top:88%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
-          <div class="t-node" style="top:88%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
-          <div class="t-node" style="top:94%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
+          <div class="t-node active" style="top:9%; left:50%;" onclick="selectTrait('ST', event)">ST</div>
+          <div class="t-node" style="top:9%; left:28%;" onclick="selectTrait('LS', event)">LS</div>
+          <div class="t-node" style="top:9%; left:72%;" onclick="selectTrait('RS', event)">RS</div>
+          <div class="t-node" style="top:20.5%; left:12%;" onclick="selectTrait('LW', event)">LW</div>
+          <div class="t-node" style="top:20.5%; left:31%;" onclick="selectTrait('LF', event)">LF</div>
+          <div class="t-node" style="top:20.5%; left:50%;" onclick="selectTrait('CF', event)">CF</div>
+          <div class="t-node" style="top:20.5%; left:69%;" onclick="selectTrait('RF', event)">RF</div>
+          <div class="t-node" style="top:20.5%; left:88%;" onclick="selectTrait('RW', event)">RW</div>
+          <div class="t-node" style="top:32%; left:31%;" onclick="selectTrait('LAM', event)">LAM</div>
+          <div class="t-node" style="top:32%; left:50%;" onclick="selectTrait('CAM', event)">CAM</div>
+          <div class="t-node" style="top:32%; left:69%;" onclick="selectTrait('RAM', event)">RAM</div>
+          <div class="t-node" style="top:43.5%; left:12%;" onclick="selectTrait('LM', event)">LM</div>
+          <div class="t-node" style="top:43.5%; left:31%;" onclick="selectTrait('LCM', event)">LCM</div>
+          <div class="t-node" style="top:43.5%; left:50%;" onclick="selectTrait('CM', event)">CM</div>
+          <div class="t-node" style="top:43.5%; left:69%;" onclick="selectTrait('RCM', event)">RCM</div>
+          <div class="t-node" style="top:43.5%; left:88%;" onclick="selectTrait('RM', event)">RM</div>
+          <div class="t-node" style="top:55%; left:31%;" onclick="selectTrait('LDM', event)">LDM</div>
+          <div class="t-node" style="top:55%; left:50%;" onclick="selectTrait('CDM', event)">CDM</div>
+          <div class="t-node" style="top:55%; left:69%;" onclick="selectTrait('RDM', event)">RDM</div>
+          <div class="t-node" style="top:66.5%; left:12%;" onclick="selectTrait('LWB', event)">LWB</div>
+          <div class="t-node" style="top:66.5%; left:31%;" onclick="selectTrait('LCB', event)">LCB</div>
+          <div class="t-node" style="top:66.5%; left:50%;" onclick="selectTrait('CB', event)">CB</div>
+          <div class="t-node" style="top:66.5%; left:69%;" onclick="selectTrait('RCB', event)">RCB</div>
+          <div class="t-node" style="top:66.5%; left:88%;" onclick="selectTrait('RWB', event)">RWB</div>
+          <div class="t-node" style="top:78%; left:31%;" onclick="selectTrait('LB', event)">LB</div>
+          <div class="t-node" style="top:78%; left:50%;" onclick="selectTrait('SW', event)">SW</div>
+          <div class="t-node" style="top:78%; left:69%;" onclick="selectTrait('RB', event)">RB</div>
+          <div class="t-node" style="top:90%; left:50%;" onclick="selectTrait('GK', event)">GK</div>
         </div>
       </div>
       <div class="trait-right-panel">
@@ -1063,55 +1063,55 @@
       </div>
       
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h4 style="font-size:15px; font-weight:800; margin-bottom:16px; color:var(--foreground);">💡 제공되는 PRO 프리미엄 혜택 모아보기</h4>
+        <h4 style="font-size:15px; font-weight:800; margin-bottom:16px; color:var(--foreground);">PRO에서 볼 수 있는 것</h4>
         <div class="pro-benefits">
-          <div class="pro-benefit" style="border-left-color:#EA580C;">
-            <b style="color:#EA580C;">🚨 치명적 약점 스캐너 (TOP 5)</b>
-            <div>최근 25경기를 잘한 경기 / 못한 경기로 나눠, 승패를 가장 크게 가른 약점 5가지를 찾아냅니다.</div>
+          <div class="pro-benefit">
+            <b>약점 TOP 5</b>
+            <div>최근 25경기를 잘한 경기와 못한 경기로 나눠서, 승패를 가장 크게 가른 항목 5개를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#16A34A;">
-            <b style="color:#16A34A;">📈 승률 상승 솔루션 & 예상 그래프</b>
-            <div>약점을 보완하면 승률이 얼마나 오를지 내 기록으로 계산하고, 목표 수치와 구체적인 조작 팁을 알려드립니다.</div>
+          <div class="pro-benefit">
+            <b>승률 올리는 방법</b>
+            <div>약점을 고치면 승률이 얼마나 오를지 내 기록으로 계산하고, 목표 수치와 조작 팁을 알려줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#0EA5E9;">
-            <b style="color:#0EA5E9;">🧭 AI 코치 총평 & 우선순위 체크리스트</b>
-            <div>등급(S~D)과 강점·약점 요약, 이번 주에 고칠 것 최대 6가지를 순서대로 정리해드립니다.</div>
+          <div class="pro-benefit">
+            <b>AI 코치 총평</b>
+            <div>등급(S~D), 강점과 약점, 이번 주에 고칠 것을 순서대로 정리해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#6366F1;">
-            <b style="color:#6366F1;">📊 상대 대비 지표</b>
-            <div>점유율 · 슈팅 · 유효슈팅 · 패스 · 태클 · 파울 · 평점을 상대 평균과 비교해 우위/열세를 보여드립니다.</div>
+          <div class="pro-benefit">
+            <b>상대와 비교</b>
+            <div>점유율, 슈팅, 패스, 태클, 평점을 내가 만난 상대 평균과 비교해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#DC2626;">
-            <b style="color:#DC2626;">⏱️ 시간대별 득점 / 실점</b>
-            <div>15분 단위로 언제 골을 넣고 언제 먹히는지 분석해, 집중력이 떨어지는 시간대를 짚어드립니다.</div>
+          <div class="pro-benefit">
+            <b>시간대별 득점 · 실점</b>
+            <div>15분 단위로 언제 넣고 언제 먹히는지 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#059669;">
-            <b style="color:#059669;">⚽ 선제골 · 역전 분석</b>
-            <div>선제골 넣었을 때 / 먹혔을 때 승률, 역전승, 앞서다 놓친 경기, 80분 이후 득실점을 분석합니다.</div>
+          <div class="pro-benefit">
+            <b>선제골 · 역전</b>
+            <div>선제골을 넣었을 때와 먹혔을 때 승률, 역전승, 앞서다 놓친 경기를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#D97706;">
-            <b style="color:#D97706;">🎯 슈팅 위치 · 결정력</b>
-            <div>박스 안 / 중거리 슈팅 비중과 결정력, 상대에게 허용한 박스 안 슈팅을 분석합니다.</div>
+          <div class="pro-benefit">
+            <b>슈팅 위치 · 결정력</b>
+            <div>박스 안과 중거리 슈팅 비중, 결정력, 상대에게 내준 박스 안 슈팅을 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#7C3AED;">
-            <b style="color:#7C3AED;">🥅 득점 · 실점 유형</b>
-            <div>헤딩 · 프리킥 · 페널티킥 · 박스 안/밖 득점과 실점을 비교해 취약한 유형을 알려드립니다.</div>
+          <div class="pro-benefit">
+            <b>득점 · 실점 유형</b>
+            <div>헤딩, 프리킥, 페널티킥, 박스 안팎으로 나눠 약한 유형을 찾아요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#0284C7;">
-            <b style="color:#0284C7;">⚔️ 실시간 매치업 프리뷰</b>
-            <div>상대의 주요 공격 루트(크로스 vs 스루패스)를 미리 예측해드립니다.</div>
+          <div class="pro-benefit">
+            <b>상대 공략 패턴</b>
+            <div>최근 상대들이 나를 어떻게 공략했는지(크로스, 스루패스 등) 정리해요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#8B5CF6;">
-            <b style="color:#8B5CF6;">🔍 스쿼드 구멍 색출 & 교체 추천</b>
-            <div>스쿼드에서 평점이 가장 낮은 선수를 찾고, 같은 자리에 더 잘했던 선수를 추천합니다.</div>
+          <div class="pro-benefit">
+            <b>스쿼드 교체 추천</b>
+            <div>평점이 가장 낮은 선수 3명과 그 자리에 필요한 유형을 알려줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#EAB308;">
-            <b style="color:#EAB308;">🌟 선수 평점 TOP / 하위 3 · 공격 포인트</b>
-            <div>누가 잘하고 누가 부진한지, 누가 골과 도움을 책임지는지 한눈에 보여드립니다.</div>
+          <div class="pro-benefit">
+            <b>선수 평점</b>
+            <div>평점 상위·하위 3명, 골과 도움을 가장 많이 올린 선수를 보여줘요.</div>
           </div>
-          <div class="pro-benefit" style="border-left-color:#14B8A6;">
-            <b style="color:#14B8A6;">📈 최근 흐름 · 점유율 구간별 승률 · 카드 관리</b>
-            <div>연승/연패, 최근 폼 변화, 나에게 맞는 점유율 운영, 경고·퇴장 관리까지 피드백합니다.</div>
+          <div class="pro-benefit">
+            <b>최근 흐름 · 경기 운영</b>
+            <div>연승·연패, 점유율 구간별 승률, 카드와 파울을 보여줘요.</div>
           </div>
         </div>
       </div>
