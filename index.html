@@ -3266,30 +3266,30 @@ service cloud.firestore {
     img.replaceWith(span);
   }
 
-  // ===== 팀컬러 이용률 (넥슨 데이터센터 · 2026.10.17 기준) =====
-  const DATA_AS_OF = "2026.10.17(토) 10:00";
+  // ===== 팀컬러 이용률 (넥슨 데이터센터 · 2026.11.22 기준) =====
+  const DATA_AS_OF = "2026.11.22(일) 12:00";
   const teamColorData = [
-    { name: "FC 바르셀로나", rate: 6.9, count: 314, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
-    { name: "레알 마드리드", rate: 6.8, count: 307, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
-    { name: "바이에른 뮌헨", rate: 6.7, count: 306, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
-    { name: "첼시", rate: 6.2, count: 280, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
-    { name: "리버풀", rate: 5.9, count: 267, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
-    { name: "롬바르디아 FC", rate: 5.4, count: 244, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
-    { name: "아스널", rate: 5.0, count: 227, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
-    { name: "브라질", rate: 4.3, count: 197, logo: "https://flagcdn.com/w160/br.png" },
-    { name: "맨체스터 유나이티드", rate: 4.1, count: 188, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
-    { name: "대한민국", rate: 3.6, count: 163, logo: "https://flagcdn.com/w160/kr.png" },
-    { name: "맨체스터 시티", rate: 3.3, count: 151, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
-    { name: "프랑스", rate: 3.3, count: 150, logo: "https://flagcdn.com/w160/fr.png" },
-    { name: "파리 생제르맹", rate: 3.1, count: 139, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
-    { name: "밀라노 FC", rate: 3.0, count: 134, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
-    { name: "스페인", rate: 2.9, count: 130, logo: "https://flagcdn.com/w160/es.png" },
-    { name: "유벤투스", rate: 2.8, count: 129, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
-    { name: "독일", rate: 2.5, count: 114, logo: "https://flagcdn.com/w160/de.png" },
-    { name: "잉글랜드", rate: 2.4, count: 111, logo: "https://flagcdn.com/w160/gb-eng.png" },
-    { name: "아틀레티코 마드리드", rate: 2.4, count: 110, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png" },
-    { name: "토트넘 홋스퍼", rate: 1.7, count: 78, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
-    { name: "바이엘 04 레버쿠젠", rate: 1.4, count: 62, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
+    { name: "레알 마드리드", rate: 7.8, count: 373, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png" },
+    { name: "FC 바르셀로나", rate: 7.0, count: 334, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png" },
+    { name: "바이에른 뮌헨", rate: 6.4, count: 305, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png" },
+    { name: "첼시", rate: 5.3, count: 255, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png" },
+    { name: "아스널", rate: 5.3, count: 252, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png" },
+    { name: "브라질", rate: 5.0, count: 238, logo: "https://flagcdn.com/w160/br.png" },
+    { name: "롬바르디아 FC", rate: 4.6, count: 218, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png" },
+    { name: "맨체스터 유나이티드", rate: 4.4, count: 211, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png" },
+    { name: "대한민국", rate: 4.4, count: 210, logo: "https://flagcdn.com/w160/kr.png" },
+    { name: "리버풀", rate: 4.2, count: 199, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png" },
+    { name: "맨체스터 시티", rate: 3.7, count: 176, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png" },
+    { name: "독일", rate: 3.6, count: 174, logo: "https://flagcdn.com/w160/de.png" },
+    { name: "잉글랜드", rate: 3.5, count: 165, logo: "https://flagcdn.com/w160/gb-eng.png" },
+    { name: "프랑스", rate: 3.1, count: 149, logo: "https://flagcdn.com/w160/fr.png" },
+    { name: "유벤투스", rate: 3.0, count: 141, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png" },
+    { name: "파리 생제르맹", rate: 3.0, count: 141, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png" },
+    { name: "밀라노 FC", rate: 2.6, count: 122, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png" },
+    { name: "스페인", rate: 2.5, count: 121, logo: "https://flagcdn.com/w160/es.png" },
+    { name: "아틀레티코 마드리드", rate: 2.3, count: 112, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png" },
+    { name: "토트넘 홋스퍼", rate: 1.9, count: 92, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png" },
+    { name: "바이엘 04 레버쿠젠", rate: 1.9, count: 89, logo: "https://images.fotmob.com/image_resources/logo/teamlogo/8178.png" }
   ];
 
   // 매일 낮 12시 넥슨 갱신분을 서버(/api/teamcolor)에서 받아와 목록을 바꾼다. 실패하면 위 기본 데이터 유지
