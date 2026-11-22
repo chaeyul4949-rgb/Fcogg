@@ -1703,7 +1703,11 @@
     return String(unsafe).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
 // 1. 모달창 열고 닫기
-  function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+  // 이미 로그인돼 있으면 로그인 창 대신 내 허브 > 내 계정 정보로 이동
+  function openAuthModal() {
+    if (localStorage.getItem('fco_current_user')) { switchTab('hub'); switchHubSection('account'); renderHubAuth(); return; }
+    document.getElementById('auth-modal').style.display = 'flex';
+  }
   function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
   // ===== 방문자 통계 (Firebase stats/날짜 문서에 하루 단위로 집계) =====
   function kstParts(ts = Date.now()) {
@@ -1956,6 +1960,7 @@
       await syncUserProStatus(userId);
       updateProTabUI(); renderHubAuth(); updateHubLock();
       input.value = '';
+      if (guestNote) { switchHubSection('account'); renderHubAuth(); }
       const exp = localStorage.getItem('fco_pro_expiry');
       msg(`PRO 60일이 적용됐어요!${exp && exp !== 'unlimited' ? ` (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : ''}${guestNote}`, 'var(--win-color)');
       showToast('PRO 60일이 적용됐어요!');
@@ -2437,8 +2442,20 @@
       if (user) {
         const dispName = user.displayName || user.email.split('@')[0];
         localStorage.setItem('fco_current_user', dispName);
-        syncUserProStatus(dispName);
+        Promise.resolve(syncUserProStatus(dispName)).finally(() => { renderHubAuth(); updateProTabUI(); });
       } else if (localStorage.getItem('fco_current_user') !== ADMIN_ID) {
+        // 코드로 만든 임시 계정은 저장해 둔 아이디·비밀번호로 다시 로그인
+        try {
+          const g = JSON.parse(localStorage.getItem('fco_guest') || 'null');
+          if (g && g.id && g.pw && g.id === localStorage.getItem('fco_current_user') && !window.__guestRelogin) {
+            window.__guestRelogin = true;
+            auth.signInWithEmailAndPassword(`${g.id}@fcogg.dummy.com`, g.pw).catch(() => {
+              localStorage.removeItem('fco_current_user'); localStorage.removeItem('fco_pro_mode');
+              renderHubAuth(); updateProTabUI();
+            });
+            return;
+          }
+        } catch (e) {}
         localStorage.removeItem('fco_current_user');
         localStorage.removeItem('fco_pro_mode');
         renderHubAuth(); updateProTabUI();
