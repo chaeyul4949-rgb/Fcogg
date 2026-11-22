@@ -1152,6 +1152,7 @@
         <div class="hub-menu-item" data-hub="favorites" onclick="switchHubSection('favorites')">⭐ 즐겨찾기 구단주</div>
         <div class="hub-menu-item" data-hub="history" onclick="switchHubSection('history')">🔍 최근 검색 기록</div>
         <div class="hub-menu-item" data-hub="payments" onclick="switchHubSection('payments')">💳 결제 · PRO 내역</div>
+        <div class="hub-menu-item" data-hub="coupon" onclick="switchHubSection('coupon')">🎟️ 코드 등록</div>
         <div class="hub-menu-item" data-hub="settings" onclick="switchHubSection('settings')">🛠️ 설정</div>
       </div>
       <div class="hub-content">
@@ -1257,6 +1258,17 @@
         <div class="shadcn-card" style="padding: 24px;">
           <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">💳 결제 · PRO 내역</h3>
           <div id="my-payments"></div>
+        </div>
+       </div>
+
+       <div class="hub-section" data-hub-section="coupon" style="display:none;">
+        <div class="shadcn-card" style="padding: 24px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">코드 등록</h3>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="coupon-input" class="admin-input" style="margin-bottom:0; border-color:var(--border); font-weight:700;" placeholder="코드 입력" maxlength="30" autocomplete="off" onkeydown="if(event.key==='Enter') redeemCoupon()">
+            <button class="pill-search-btn" style="border-radius:12px; height:44px;" onclick="redeemCoupon()">등록</button>
+          </div>
+          <div id="coupon-result" style="margin-top:14px;"></div>
         </div>
        </div>
 
@@ -1769,7 +1781,7 @@
   function updateHubLock() {
     const loggedIn = !!localStorage.getItem('fco_current_user');
     document.querySelectorAll('.hub-section').forEach(sec => {
-      if (['account', 'settings'].includes(sec.dataset.hubSection)) return; // 설정은 로그인 없이 사용 (계정 정보는 자체 안내)
+      if (['account', 'coupon', 'settings'].includes(sec.dataset.hubSection)) return; // 코드 등록·설정은 로그인 없이 사용 (계정 정보는 자체 안내)
       if (!sec.querySelector('.hub-lock')) {
         sec.insertAdjacentHTML('beforeend', `<div class="hub-lock"><div class="hub-lock-box"><div style="font-size:30px;">🔒</div><b>로그인해야 쓸 수 있어요</b><p>로그인하면 이 기능을 바로 쓸 수 있어요.</p><button class="pill-search-btn" style="border-radius:12px;" onclick="openAuthModal()">로그인 / 회원가입</button></div></div>`);
       }
@@ -1899,6 +1911,55 @@
     } catch (e) {
       box.innerHTML = `<div class="visit-empty">${escapeHtml(apiErrorMessage(e))}</div>`;
     }
+  }
+
+  // 코드 등록: 코드 + 원하는 아이디 → 그 아이디로 임시 계정을 만들고 PRO 60일 적용
+  async function redeemCoupon() {
+    const input = document.getElementById('coupon-input');
+    const box = document.getElementById('coupon-result');
+    const raw = (input.value || '').trim().replace(/\s+/g, '');
+    const msg = (html, color) => { box.innerHTML = `<div class="pay-status" style="color:${color || 'var(--foreground)'};">${html}</div>`; };
+    if (!raw) return showToast('코드를 입력하세요.');
+    const KEY = String.fromCharCode(54, 55, 54, 55);
+    if (!raw.startsWith(KEY)) { msg('올바르지 않은 코드예요.', 'var(--lose-color)'); return; }
+    let userId = (localStorage.getItem('fco_current_user') || '').toLowerCase();
+    const wanted = raw.slice(KEY.length).toLowerCase();
+    let guestNote = '';
+    try {
+      if (!userId) {
+        if (!wanted) { msg('코드 뒤에 쓸 아이디를 붙여서 입력해 주세요.', 'var(--lose-color)'); return; }
+        if (!/^[a-z0-9_]{2,20}$/.test(wanted)) { msg('아이디는 영문·숫자 2~20자만 쓸 수 있어요.', 'var(--lose-color)'); return; }
+        if (wanted === ADMIN_ID) { msg('사용할 수 없는 아이디예요.', 'var(--lose-color)'); return; }
+        const rnd = n => Array.from(crypto.getRandomValues(new Uint32Array(n)), x => 'abcdefghjkmnpqrstuvwxyz23456789'[x % 31]).join('');
+        const pw = rnd(8);
+        if (auth) {
+          try { await auth.createUserWithEmailAndPassword(`${wanted}@fcogg.dummy.com`, pw); }
+          catch (e) {
+            if (e && e.code === 'auth/email-already-in-use') { msg('이미 있는 아이디예요. 다른 아이디로 해 주세요.', 'var(--lose-color)'); return; }
+            throw e;
+          }
+        } else {
+          const users = JSON.parse(localStorage.getItem('fco_auth_users') || '{}');
+          if (users[wanted]) { msg('이미 있는 아이디예요. 다른 아이디로 해 주세요.', 'var(--lose-color)'); return; }
+          users[wanted] = { pw }; localStorage.setItem('fco_auth_users', JSON.stringify(users));
+        }
+        userId = wanted;
+        localStorage.setItem('fco_current_user', userId);
+        localStorage.setItem('fco_guest', JSON.stringify({ id: userId, pw }));
+        guestNote = `<br><span style="font-weight:700; color:var(--foreground);">임시 계정으로 로그인됐어요 · 아이디 <b>${escapeHtml(userId)}</b> · 비밀번호 <b>${pw}</b></span><br><span style="font-weight:600; color:var(--muted-foreground);">다른 기기에서는 이 아이디·비밀번호로 로그인하세요. (내 계정 정보에서도 볼 수 있어요)</span>`;
+      }
+      const cur = await readProUser(userId);
+      if (cur && Array.isArray(cur.codes) && cur.codes.includes(KEY)) { msg('이미 사용한 코드예요. 코드는 계정당 한 번만 쓸 수 있어요.', 'var(--lose-color)'); return; }
+      await grantPro(userId, '60');
+      const codes = Array.isArray(cur?.codes) ? [...cur.codes, KEY] : [KEY];
+      if (db) await db.collection('accounts').doc(userId).set({ codes }, { merge: true });
+      await syncUserProStatus(userId);
+      updateProTabUI(); renderHubAuth(); updateHubLock();
+      input.value = '';
+      const exp = localStorage.getItem('fco_pro_expiry');
+      msg(`PRO 60일이 적용됐어요!${exp && exp !== 'unlimited' ? ` (~${new Date(Number(exp)).toLocaleDateString('ko-KR')})` : ''}${guestNote}`, 'var(--win-color)');
+      showToast('PRO 60일이 적용됐어요!');
+    } catch (e) { msg(escapeHtml(proErrorMessage(e)), 'var(--lose-color)'); }
   }
 
   // 결제 · PRO 내역
